@@ -1,0 +1,8 @@
+{
+  "headerbar_height": 49,
+  "control_width": 32,
+  "control_height": 32,
+  "glyph_width": 16,
+  "glyph_height": 16,
+  "explanation": "48px visual row plus 1px separator; actual CSS border-box allocations."
+}

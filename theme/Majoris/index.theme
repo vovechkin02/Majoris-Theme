@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Majoris
+Comment=Majoris light GTK and GNOME Shell theme
+[X-GNOME-Metatheme]
+GtkTheme=Majoris
+IconTheme=Majoris

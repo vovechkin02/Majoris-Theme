@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.majoris.ThemeFactory</id>
+  <name>Majoris Widget Factory</name>
+  <summary>Native GTK and libadwaita theme regression gallery</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <description><p>Inspect Majoris native widgets and headerbar geometry.</p></description>
+  <launchable type="desktop-id">com.majoris.ThemeFactory.desktop</launchable>
+</component>

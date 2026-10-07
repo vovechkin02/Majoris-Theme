@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Majoris Widget Factory
+Exec=majoris-theme-factory
+Type=Application
+Icon=preferences-desktop-theme
+Categories=Development;GTK;

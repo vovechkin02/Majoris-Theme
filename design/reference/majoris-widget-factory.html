@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<title>Majoris Widget Factory — Exact Window Icons</title>
+<style>
+:root{
+  --p50:#EEF2FF; --p100:#E0E7FF; --p200:#C7D2FE; --p300:#A5B4FC;
+  --p400:#818CF8; --p500:#6366F1; --p600:#4F46E5; --p700:#4338CA; --p800:#3730A3;
+  --success:#22A06B; --warning:#D97706; --danger:#DC3C4D; --danger-press:#B92F3E;
+
+  --bg:#F7F7F8; --surface:#FFFFFF; --surface2:#F2F2F4;
+  --hover:#ECECEF; --active:#E2E2E6;
+  --border:#D8D8DD; --border-soft:#E5E5E9;
+  --text:#1C1C1F; --text2:#626269; --text3:#8A8A92;
+
+  --r-control:4px; --r-struct:8px;
+  --shadow-control:0 1px 2px rgba(20,20,25,.10);
+  --shadow-control-hover:0 2px 4px rgba(20,20,25,.12);
+  --shadow-control-active:0 1px 1px rgba(20,20,25,.08);
+  --shadow-card:0 4px 8px rgba(20,20,25,.08),0 1px 2px rgba(20,20,25,.05);
+  --shadow-pop:0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08);
+  --shadow-window:0 20px 40px rgba(20,20,25,.18),0 6px 12px rgba(20,20,25,.08);
+
+  --motion-control:128ms cubic-bezier(.2,0,0,1);
+  --motion-surface:256ms cubic-bezier(.2,.8,.2,1);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; padding:32px;
+  font-family:"Plus Jakarta Sans","Noto Sans","Cantarell",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 12% 0%,rgba(99,102,241,.10),transparent 26%),
+    linear-gradient(180deg,#EEF0F5,#E7E8ED);
+  color:var(--text);
+}
+.page{max-width:1520px;margin:0 auto}
+.intro{margin-bottom:20px}
+.intro h1{margin:0 0 6px;font-size:30px;letter-spacing:-.025em}
+.intro p{margin:0;color:var(--text2);font-size:14px;line-height:1.55;max-width:1120px}
+.token-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.token{height:28px;display:inline-flex;align-items:center;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.85);border:1px solid var(--border);box-shadow:0 1px 2px rgba(20,20,25,.04);font-size:12px;font-weight:600;color:var(--text2)}
+
+.window{
+  background:var(--bg); border:1px solid rgba(20,20,25,.12); border-radius:8px;
+  overflow:hidden; box-shadow:var(--shadow-window); min-height:920px;
+}
+.headerbar{
+  height:48px; padding:8px; display:grid; grid-template-columns:auto 1fr auto;
+  align-items:center; gap:8px; background:rgba(255,255,255,.92);
+  border-bottom:1px solid var(--border-soft);
+}
+.toolbar{display:flex;gap:4px;align-items:center}
+.title{justify-self:center;font-size:14px;font-weight:700}
+.shell{display:grid;grid-template-columns:212px 1fr;min-height:870px}
+.sidebar{background:var(--surface2);border-right:1px solid var(--border-soft);padding:12px 8px}
+.side-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:8px 8px 6px}
+.nav{height:34px;display:flex;align-items:center;gap:8px;padding:0 8px;border-radius:4px;font-size:13px;margin-bottom:2px;cursor:pointer;position:relative;transition:background-color var(--motion-control),color var(--motion-control)}
+.nav:hover{background:var(--hover)}
+.nav.active{background:var(--p50);color:var(--p700);font-weight:650}
+.nav.active:before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:2px;border-radius:2px;background:var(--p500)}
+.content{padding:24px;overflow:hidden}
+.page-title{margin:0 0 4px;font-size:24px;letter-spacing:-.02em}
+.page-sub{margin:0 0 20px;color:var(--text2);font-size:13px}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border-soft);border-radius:8px;box-shadow:var(--shadow-card);overflow:hidden}
+.card.wide{grid-column:1/-1}
+.card-head{padding:14px 16px 10px;border-bottom:1px solid var(--border-soft)}
+.card-head h3{margin:0 0 3px;font-size:14px}
+.card-head p{margin:0;color:var(--text2);font-size:11.5px;line-height:1.45}
+.card-body{padding:16px}
+.group{margin-bottom:16px}
+.group:last-child{margin-bottom:0}
+.group-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:8px}
+.row-flex{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stack{display:grid;gap:8px}
+.note{font-size:11.5px;color:var(--text2);line-height:1.55;margin-top:10px}
+kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px solid var(--border);border-bottom-width:2px;border-radius:4px;padding:2px 6px}
+
+.btn,.icon-btn,.entry,.search,.select,.spin,.font-button,.color-button,.split-main,.split-arrow,.state-select{
+  border:1px solid var(--border); background:var(--surface); color:var(--text);
+  box-shadow:var(--shadow-control);
+  font:inherit;
+}
+.btn,.select,.font-button,.color-button,.split-main,.state-select{height:32px;border-radius:4px;padding:0 12px;font-size:13px}
+.btn,.icon-btn,.entry,.search,.select,.font-button,.color-button,.split-main,.split-arrow,.toggle,.tab,.state-select{
+  transition: background-color var(--motion-control), border-color var(--motion-control), box-shadow var(--motion-control), color var(--motion-control), opacity var(--motion-control);
+}
+.btn{font-weight:600;cursor:pointer}
+.btn:hover{background:var(--hover);box-shadow:var(--shadow-control-hover)}
+.btn:active{background:var(--active);box-shadow:var(--shadow-control-active)}
+.btn:focus-visible,.icon-btn:focus-visible,.entry:focus,.search:focus,.select:focus-visible,.font-button:focus-visible,.color-button:focus-visible,.split-main:focus-visible,.split-arrow:focus-visible,.state-select:focus-visible,.toggle:focus-visible,.tab:focus-visible,.window-control:focus-visible{
+  outline:none;border-color:var(--p500);box-shadow:0 0 0 2px rgba(99,102,241,.24),var(--shadow-control)
+}
+.btn.primary{
+  background:var(--p600);border-color:var(--p600);color:#fff;
+  box-shadow:0 1px 2px rgba(20,20,25,.14),inset 0 1px 0 rgba(255,255,255,.10)
+}
+.btn.primary:hover{
+  background:var(--p700);border-color:var(--p700);
+  box-shadow:0 2px 4px rgba(20,20,25,.16),inset 0 1px 0 rgba(255,255,255,.10)
+}
+.btn.primary:active{
+  background:var(--p800);border-color:var(--p800);
+  box-shadow:0 1px 1px rgba(20,20,25,.10),inset 0 1px 0 rgba(255,255,255,.08)
+}
+.btn.primary:focus-visible{
+  box-shadow:0 0 0 2px rgba(99,102,241,.24),0 1px 2px rgba(20,20,25,.14),inset 0 1px 0 rgba(255,255,255,.10)
+}
+.btn.danger{
+  background:var(--danger);border-color:var(--danger);color:#fff;
+  box-shadow:0 1px 2px rgba(20,20,25,.14),inset 0 1px 0 rgba(255,255,255,.10)
+}
+.btn.danger:hover{filter:brightness(.95);box-shadow:0 2px 4px rgba(20,20,25,.16),inset 0 1px 0 rgba(255,255,255,.10)}
+.btn.danger:active{filter:brightness(.90);box-shadow:0 1px 1px rgba(20,20,25,.10),inset 0 1px 0 rgba(255,255,255,.08)}
+.btn.flat,.icon-btn.flat{background:transparent;border-color:transparent;box-shadow:none}
+.btn.flat:hover,.icon-btn.flat:hover{background:var(--hover)}
+.btn.flat:active,.icon-btn.flat:active{background:var(--active)}
+.btn:disabled,.icon-btn:disabled,.select:disabled,.font-button:disabled,.color-button:disabled,.split-main:disabled,.split-arrow:disabled,.entry:disabled,.search:disabled,.state-select:disabled{opacity:.45;box-shadow:none;cursor:not-allowed}
+
+.icon-btn{
+  width:32px;height:32px;border-radius:4px;display:grid;place-items:center;padding:0;cursor:pointer;font-size:15px;
+}
+.icon-btn:hover,.select:hover,.font-button:hover,.color-button:hover,.split-main:hover,.split-arrow:hover,.state-select:hover{background:var(--hover);box-shadow:var(--shadow-control-hover)}
+.icon-btn:active,.select:active,.font-button:active,.color-button:active,.split-main:active,.split-arrow:active,.state-select:active{background:var(--active);box-shadow:var(--shadow-control-active)}
+
+.window-controls{display:flex;gap:2px;margin-left:6px}
+.window-control{
+  width:32px;height:32px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--text2);
+  display:grid;place-items:center;padding:0;box-shadow:none;transition:background-color var(--motion-control), color var(--motion-control), border-color var(--motion-control), box-shadow var(--motion-control);
+}
+.window-control svg{display:block;width:16px;height:16px;flex:none}
+.window-control:hover{background:var(--hover);color:var(--text)}
+.window-control:active{background:var(--active);color:var(--text)}
+.window-control.close:hover{background:var(--danger);color:#fff}
+.window-control.close:active{background:var(--danger-press);color:#fff}
+.window-control:focus-visible{
+  box-shadow:0 0 0 2px rgba(99,102,241,.24);
+}
+.window-control.inactive{color:var(--text3)}
+
+.split{display:flex}
+.split-main{border-radius:4px 0 0 4px;font-weight:600}
+.split-arrow{height:32px;width:32px;border-left:0;border-radius:0 4px 4px 0;padding:0;display:grid;place-items:center}
+
+.toggle-group{display:inline-flex;padding:2px;border:1px solid var(--border);background:var(--surface2);border-radius:6px;gap:2px}
+.toggle{height:28px;padding:0 10px;border:0;background:transparent;border-radius:4px;font:inherit;font-size:12px;color:var(--text2)}
+.toggle:hover{background:rgba(255,255,255,.55);color:var(--text)}
+.toggle:active{background:rgba(255,255,255,.75)}
+.toggle.active{background:var(--surface);color:var(--text);font-weight:600;box-shadow:var(--shadow-control)}
+
+.checkline{display:flex;align-items:center;gap:8px;font-size:13px}
+.checkbox,.radio{
+  width:18px;height:18px;border:1px solid var(--border);background:var(--surface);box-shadow:inset 0 1px 1px rgba(20,20,25,.04);display:grid;place-items:center;transition:background-color var(--motion-control),border-color var(--motion-control),box-shadow var(--motion-control)
+}
+.checkbox{border-radius:4px}.radio{border-radius:50%}
+.checkbox.checked,.radio.checked{background:var(--p500);border-color:var(--p500);color:white}
+.checkbox.checked:after{content:"✓";font-size:12px;font-weight:800}.radio.checked:after{content:"";width:6px;height:6px;background:#fff;border-radius:50%}
+.checkbox.mixed:after{content:"−";font-size:14px;font-weight:800;color:var(--p600)}
+
+.switch{
+  width:40px;height:22px;padding:2px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;box-shadow:inset 0 1px 2px rgba(20,20,25,.05);
+  transition:background-color var(--motion-control),border-color var(--motion-control),box-shadow var(--motion-control)
+}
+.switch:hover{box-shadow:inset 0 1px 2px rgba(20,20,25,.08),0 1px 2px rgba(20,20,25,.05)}
+.switch:after{content:"";width:16px;height:16px;border-radius:4px;background:white;border:1px solid rgba(0,0,0,.08);box-shadow:0 1px 2px rgba(20,20,25,.18)}
+.switch.on{justify-content:flex-end;background:var(--p500);border-color:var(--p500)}
+
+.entry,.search{height:32px;border-radius:4px;padding:0 10px;font-size:13px;outline:none;min-width:160px}
+.entry:hover,.search:hover{box-shadow:var(--shadow-control-hover)}
+.input-wrap{position:relative;display:inline-flex;align-items:center}
+.input-wrap .glass{position:absolute;left:10px;color:var(--text3);font-size:12px;z-index:1}
+.search{padding-left:30px}
+.password{position:relative;display:inline-flex}
+.password .entry{padding-right:34px}
+.password .eye{position:absolute;right:8px;top:7px;font-size:12px;color:var(--text3)}
+
+.select,.state-select{display:inline-flex;align-items:center;justify-content:space-between;gap:18px;min-width:150px;cursor:pointer}
+.spin{height:32px;display:inline-flex;padding:0;overflow:hidden;border-radius:4px}
+.spin span{display:flex;align-items:center;padding:0 10px;min-width:54px;font-size:13px}
+.spin button{width:28px;border:0;border-left:1px solid var(--border-soft);background:transparent;transition:background-color var(--motion-control)}
+.spin button:hover{background:var(--hover)} .spin button:active{background:var(--active)}
+.color-button{display:flex;align-items:center;gap:8px;cursor:pointer}
+.color-dot{width:16px;height:16px;border-radius:4px;background:var(--p500);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.font-button{display:flex;align-items:center;gap:8px;cursor:pointer}
+
+.slider-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.slider{height:18px;display:flex;align-items:center}
+.track{height:4px;background:#D8D9DF;border-radius:4px;flex:1;position:relative}
+.track .fill{position:absolute;left:0;top:0;bottom:0;width:62%;background:var(--p500);border-radius:4px}
+.thumb{position:absolute;left:62%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border-radius:50%;background:white;border:2px solid var(--p500);box-shadow:var(--shadow-control)}
+.progress{height:8px;background:#E7E8EC;border-radius:4px;overflow:hidden}
+.progress span{display:block;width:68%;height:100%;background:var(--p500)}
+.level{height:8px;display:flex;gap:2px}
+.level span{flex:1;border-radius:2px;background:#E4E5E9}
+.level span.on{background:var(--success)}
+.spinner{width:20px;height:20px;border:2px solid var(--p200);border-top-color:var(--p600);border-radius:50%;animation:spin 800ms linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.banner{border:1px solid var(--p200);background:var(--p50);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--p800)}
+.banner .grow{flex:1}.banner .btn{height:28px}
+.listbox{border:1px solid var(--border-soft);border-radius:8px;background:var(--surface);overflow:hidden}
+.pref-row{min-height:50px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:8px 12px 8px 16px;border-bottom:1px solid var(--border-soft)}
+.pref-row:last-child{border-bottom:0}
+.pref-title{font-size:13px;font-weight:600}
+.pref-desc{font-size:11.5px;color:var(--text2);margin-top:2px}
+.chev{color:var(--text3)}
+.expander-body{padding:10px 16px 12px;background:var(--surface2);font-size:12px;color:var(--text2);border-top:1px solid var(--border-soft)}
+
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border-soft);padding:0 6px;background:var(--surface)}
+.tab{height:36px;padding:0 12px;border:0;background:transparent;font:inherit;font-size:12px;color:var(--text2);position:relative}
+.tab:hover{background:rgba(0,0,0,.02);color:var(--text)}
+.tab:active{background:rgba(0,0,0,.035)}
+.tab.active{color:var(--text);font-weight:650}
+.tab.active:after{content:"";height:2px;background:var(--p500);position:absolute;left:10px;right:10px;bottom:-1px;border-radius:2px}
+.view-switch{display:inline-flex;border:1px solid var(--border);background:var(--surface2);border-radius:6px;padding:2px}
+.view-switch button{height:28px;border:0;background:transparent;border-radius:4px;padding:0 12px;font:inherit;font-size:12px;transition:background-color var(--motion-control), box-shadow var(--motion-control), color var(--motion-control)}
+.view-switch button:hover{background:rgba(255,255,255,.55)}
+.view-switch button.active{background:white;box-shadow:var(--shadow-control);font-weight:600}
+
+.table{border:1px solid var(--border-soft);border-radius:8px;overflow:hidden}
+.table-head,.table-row{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:0}
+.table-head{background:var(--surface2);font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase}
+.table-head div,.table-row div{padding:9px 12px;border-right:1px solid var(--border-soft)}
+.table-head div:last-child,.table-row div:last-child{border-right:0}
+.table-row{font-size:12px;border-top:1px solid var(--border-soft);background:white}
+.table-row.selected{background:var(--p50);color:var(--p800)}
+
+.popover-wrap{position:relative;height:190px;border:1px dashed var(--border);border-radius:8px;background:linear-gradient(#FAFAFB,#F4F4F7);padding:12px}
+.popover{position:absolute;left:24px;top:48px;width:205px;border:1px solid var(--border-soft);border-radius:8px;background:rgba(255,255,255,.97);box-shadow:var(--shadow-pop);padding:6px}
+.menu-item{height:32px;border-radius:4px;padding:0 10px;display:flex;align-items:center;justify-content:space-between;font-size:12px;transition:background-color var(--motion-control), color var(--motion-control)}
+.menu-item:hover{background:var(--hover)}
+.menu-item:active{background:var(--active)}
+.menu-item.destructive{color:var(--danger)}
+.separator{height:1px;background:var(--border-soft);margin:5px}
+
+.toast{display:flex;align-items:center;gap:10px;background:#222226;color:#fff;border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 12px;font-size:12px;max-width:360px}
+.toast .grow{flex:1}.toast a{color:var(--p300);font-weight:700}
+.dialog-demo{border:1px dashed var(--border);border-radius:8px;background:rgba(20,20,25,.04);padding:26px;display:grid;place-items:center}
+.dialog{width:360px;background:white;border:1px solid var(--border-soft);border-radius:8px;box-shadow:0 18px 36px rgba(20,20,25,.20),0 6px 12px rgba(20,20,25,.10);overflow:hidden}
+.dialog-body{padding:20px;text-align:center}
+.dialog-body h4{margin:0 0 6px;font-size:16px}.dialog-body p{margin:0;color:var(--text2);font-size:12px;line-height:1.5}
+.dialog-actions{display:flex;justify-content:flex-end;gap:8px;padding:12px;border-top:1px solid var(--border-soft);background:var(--surface2)}
+.status{display:grid;place-items:center;text-align:center;padding:26px;color:var(--text2)}
+.status .icon{width:48px;height:48px;border-radius:8px;background:var(--p50);color:var(--p600);display:grid;place-items:center;font-size:24px;margin-bottom:10px}
+.status h4{margin:0 0 4px;color:var(--text);font-size:15px}.status p{margin:0;font-size:12px;max-width:320px}
+.tooltip-demo{display:flex;align-items:center;gap:14px;min-height:72px}
+.tooltip{background:#222226;color:white;border-radius:4px;padding:6px 8px;font-size:11px;box-shadow:var(--shadow-pop);position:relative}
+.tooltip:before{content:"";position:absolute;left:-5px;top:50%;transform:translateY(-50%);border-width:5px 5px 5px 0;border-style:solid;border-color:transparent #222226 transparent transparent}
+.scroll-demo{height:115px;border:1px solid var(--border-soft);border-radius:8px;background:white;position:relative;overflow:hidden;padding:12px 22px 12px 12px}
+.scroll-content{font-size:12px;color:var(--text2);line-height:1.65}
+.scrollbar{position:absolute;right:6px;top:6px;bottom:6px;width:6px}
+.scroll-thumb{position:absolute;top:10px;width:6px;height:44px;border-radius:4px;background:#B9BAC1}
+
+.state-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.state-block{border:1px solid var(--border-soft);border-radius:8px;background:linear-gradient(180deg,var(--surface),var(--surface2));padding:12px}
+.state-block h4{margin:0 0 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text3)}
+.state-block .row-flex{min-height:40px}
+.state-select{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.window-state-line{display:flex;align-items:center;gap:2px}
+
+.is-hover{background:var(--hover)!important;box-shadow:var(--shadow-control-hover)!important}
+.is-active{background:var(--active)!important;box-shadow:var(--shadow-control-active)!important}
+.is-focus{border-color:var(--p500)!important;box-shadow:0 0 0 2px rgba(99,102,241,.24),var(--shadow-control)!important}
+.is-disabled{opacity:.45!important;box-shadow:none!important;cursor:not-allowed!important}
+.is-primary{background:var(--p600)!important;border-color:var(--p600)!important;color:#fff!important;box-shadow:0 1px 2px rgba(20,20,25,.14),inset 0 1px 0 rgba(255,255,255,.10)!important}
+.is-primary.is-hover{background:var(--p700)!important;border-color:var(--p700)!important;box-shadow:0 2px 4px rgba(20,20,25,.16),inset 0 1px 0 rgba(255,255,255,.10)!important}
+.is-primary.is-active{background:var(--p800)!important;border-color:var(--p800)!important;box-shadow:0 1px 1px rgba(20,20,25,.10),inset 0 1px 0 rgba(255,255,255,.08)!important}
+.is-primary.is-focus{box-shadow:0 0 0 2px rgba(99,102,241,.24),0 1px 2px rgba(20,20,25,.14),inset 0 1px 0 rgba(255,255,255,.10)!important}
+.window-control.is-hover{background:var(--hover)!important;color:var(--text)!important;box-shadow:none!important;border-color:transparent!important}
+.window-control.is-active{background:var(--active)!important;color:var(--text)!important;box-shadow:none!important;border-color:transparent!important}
+.window-control.is-focus{box-shadow:0 0 0 2px rgba(99,102,241,.24)!important;border-color:transparent!important}
+.window-control.close.is-hover{background:var(--danger)!important;color:#fff!important}
+.window-control.close.is-active{background:var(--danger-press)!important;color:#fff!important}
+.window-preview{
+  border:1px solid var(--border-soft);border-radius:8px;background:linear-gradient(180deg,#fff,#f8f8fa);padding:12px
+}
+.window-preview.inactive{background:linear-gradient(180deg,#fcfcfd,#f5f5f7)}
+.window-preview .mini-titlebar{
+  height:44px;border:1px solid var(--border-soft);border-radius:6px;padding:5px 8px;background:rgba(255,255,255,.9);
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px
+}
+.window-preview.inactive .mini-titlebar{background:rgba(255,255,255,.75)}
+.window-preview .mini-title{font-size:12px;font-weight:700;justify-self:center;color:var(--text)}
+.window-preview.inactive .mini-title{color:var(--text3)}
+
+@media(max-width:1100px){
+  .gallery{grid-template-columns:1fr}
+  .card.wide{grid-column:auto}
+  .state-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:850px){
+  .shell{grid-template-columns:1fr}.sidebar{display:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="intro">
+<h1>Majoris Widget Factory — Exact Window Icons</h1>
+<p>This revision uses the exact 16×16 symbolic SVG geometry supplied for minimise, maximise, restore and close. The SVG owns only the glyph; the 32×32 titlebar control owns the 8px padding, hover/pressed background, focus ring and destructive close state.</p>
+<div class="token-row"><div class="token">Exact supplied SVG geometry</div><div class="token">16×16 symbolic artwork</div><div class="token">32×32 controls</div><div class="token">8px control padding</div><div class="token">No SVG layout padding</div><div class="token">128ms stationary fades</div></div>
+</div>
+<section class="window">
+<div class="headerbar">
+<div class="toolbar">
+<button aria-label="Back" class="icon-btn">←</button>
+<button aria-label="Forward" class="icon-btn">→</button>
+</div>
+<div class="title">Majoris Widget Factory</div>
+<div style="display:flex;align-items:center">
+<div class="toolbar">
+<button aria-label="Search" class="icon-btn flat">⌕</button>
+<button aria-label="View" class="icon-btn flat">☰</button>
+<button aria-label="Menu" class="icon-btn flat">⋮</button>
+</div>
+<div aria-label="Window controls" class="window-controls">
+<button aria-label="Minimise" class="window-control">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="2" rx="1" width="16" x="0" y="12"></rect>
+</svg>
+</button>
+<button aria-label="Maximise" class="window-control">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="     M2 0     H14     Q16 0 16 2     V14     Q16 16 14 16     H2     Q0 16 0 14     V2     Q0 0 2 0     Z      M2 3     Q2 2 3 2     H13     Q14 2 14 3     V13     Q14 14 13 14     H3     Q2 14 2 13     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</button>
+<button aria-label="Close" class="window-control close">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg>
+</button>
+</div>
+</div>
+</div>
+<div class="shell">
+<aside class="sidebar">
+<div class="side-label">Controls</div>
+<div class="nav active">◈ <span>Overview</span></div>
+<div class="nav">▣ <span>Buttons</span></div>
+<div class="nav">⌨ <span>Inputs</span></div>
+<div class="nav">✓ <span>Selection</span></div>
+<div class="nav">↔ <span>Ranges</span></div>
+<div class="side-label">Adwaita</div>
+<div class="nav">☷ <span>Rows &amp; Lists</span></div>
+<div class="nav">▤ <span>Navigation</span></div>
+<div class="nav">◫ <span>Menus</span></div>
+<div class="nav">◇ <span>Dialogs</span></div>
+<div class="nav">● <span>Status &amp; Feedback</span></div>
+</aside>
+<main class="content">
+<h2 class="page-title">GTK &amp; libadwaita Controls</h2>
+<p class="page-sub">Majoris control gallery with revised titlebar controls and verified interaction states.</p>
+<div class="gallery">
+<section class="card wide">
+<div class="card-head">
+<h3>Window Controls — Behaviour &amp; States</h3>
+<p>Uses the exact supplied 16×16 SVGs. The button provides the 32×32 allocation and 8px padding; the SVG contains only the symbolic glyph geometry.</p>
+</div>
+<div class="card-body">
+<div class="group">
+<div class="group-title">State verification</div>
+<div class="state-grid">
+<div class="state-block">
+<h4>Default</h4>
+<div class="window-state-line">
+<button aria-label="Minimise default" class="window-control">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="2" rx="1" width="16" x="0" y="12"></rect>
+</svg>
+</button>
+<button aria-label="Maximise default" class="window-control">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="     M2 0     H14     Q16 0 16 2     V14     Q16 16 14 16     H2     Q0 16 0 14     V2     Q0 0 2 0     Z      M2 3     Q2 2 3 2     H13     Q14 2 14 3     V13     Q14 14 13 14     H3     Q2 14 2 13     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</button>
+<button aria-label="Close default" class="window-control close">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg>
+</button>
+</div>
+</div>
+<div class="state-block">
+<h4>Hover</h4>
+<div class="window-state-line">
+<button aria-label="Minimise hover" class="window-control is-hover">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="2" rx="1" width="16" x="0" y="12"></rect>
+</svg>
+</button>
+<button aria-label="Maximise hover" class="window-control is-hover">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="     M2 0     H14     Q16 0 16 2     V14     Q16 16 14 16     H2     Q0 16 0 14     V2     Q0 0 2 0     Z      M2 3     Q2 2 3 2     H13     Q14 2 14 3     V13     Q14 14 13 14     H3     Q2 14 2 13     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</button>
+<button aria-label="Close hover" class="window-control close is-hover">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg>
+</button>
+</div>
+</div>
+<div class="state-block">
+<h4>Pressed</h4>
+<div class="window-state-line">
+<button aria-label="Minimise pressed" class="window-control is-active">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="2" rx="1" width="16" x="0" y="12"></rect>
+</svg>
+</button>
+<button aria-label="Maximise pressed" class="window-control is-active">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="     M2 0     H14     Q16 0 16 2     V14     Q16 16 14 16     H2     Q0 16 0 14     V2     Q0 0 2 0     Z      M2 3     Q2 2 3 2     H13     Q14 2 14 3     V13     Q14 14 13 14     H3     Q2 14 2 13     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</button>
+<button aria-label="Close pressed" class="window-control close is-active">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg>
+</button>
+</div>
+</div>
+<div class="state-block">
+<h4>Focus</h4>
+<div class="window-state-line">
+<button aria-label="Minimise focus" class="window-control is-focus">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="2" rx="1" width="16" x="0" y="12"></rect>
+</svg>
+</button>
+<button aria-label="Maximise focus" class="window-control is-focus">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="     M2 0     H14     Q16 0 16 2     V14     Q16 16 14 16     H2     Q0 16 0 14     V2     Q0 0 2 0     Z      M2 3     Q2 2 3 2     H13     Q14 2 14 3     V13     Q14 14 13 14     H3     Q2 14 2 13     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</button>
+<button aria-label="Close focus" class="window-control close is-focus">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="group">
+<div class="group-title">Window states</div>
+<div class="row-flex" style="align-items:flex-start">
+<div class="window-preview" style="flex:1;min-width:300px">
+<div class="mini-titlebar">
+<div></div>
+<div class="mini-title">Active window</div>
+<div class="window-state-line">
+<button aria-label="Minimise preview" class="window-control">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="2" rx="1" width="16" x="0" y="12"></rect>
+</svg>
+</button>
+<button aria-label="Maximise preview" class="window-control">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="     M2 0     H14     Q16 0 16 2     V14     Q16 16 14 16     H2     Q0 16 0 14     V2     Q0 0 2 0     Z      M2 3     Q2 2 3 2     H13     Q14 2 14 3     V13     Q14 14 13 14     H3     Q2 14 2 13     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</button>
+<button aria-label="Close preview" class="window-control close">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg>
+</button>
+</div>
+</div>
+</div>
+<div class="window-preview inactive" style="flex:1;min-width:300px">
+<div class="mini-titlebar">
+<div></div>
+<div class="mini-title">Inactive window</div>
+<div class="window-state-line">
+<button aria-label="Minimise inactive" class="window-control inactive">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="2" rx="1" width="16" x="0" y="12"></rect>
+</svg>
+</button>
+<button aria-label="Restore inactive" class="window-control inactive">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<!-- Rear window -->
+<path d="     M6 0     H14     Q16 0 16 2     V10     Q16 12 14 12     H12     V10     H14     V2     H6     V4     H4     V2     Q4 0 6 0     Z" fill="currentColor"></path>
+<!-- Front window -->
+<path d="     M2 4     H10     Q12 4 12 6     V14     Q12 16 10 16     H2     Q0 16 0 14     V6     Q0 4 2 4     Z      M3 6     Q2 6 2 7     V13     Q2 14 3 14     H9     Q10 14 10 13     V7     Q10 6 9 6     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</button>
+<button aria-label="Close inactive" class="window-control close inactive">
+<svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="group"><div class="group-title">Exact 16×16 glyph set</div><div class="row-flex"><div style="display:flex;align-items:center;gap:8px;margin-right:12px"><button aria-label="Minimise exact glyph" class="window-control"><svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="2" rx="1" width="16" x="0" y="12"></rect>
+</svg></button><span style="font-size:12px;color:var(--text2)">Minimise</span></div><div style="display:flex;align-items:center;gap:8px;margin-right:12px"><button aria-label="Maximise exact glyph" class="window-control"><svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="     M2 0     H14     Q16 0 16 2     V14     Q16 16 14 16     H2     Q0 16 0 14     V2     Q0 0 2 0     Z      M2 3     Q2 2 3 2     H13     Q14 2 14 3     V13     Q14 14 13 14     H3     Q2 14 2 13     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg></button><span style="font-size:12px;color:var(--text2)">Maximise</span></div><div style="display:flex;align-items:center;gap:8px;margin-right:12px"><button aria-label="Restore exact glyph" class="window-control"><svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<!-- Rear window -->
+<path d="     M6 0     H14     Q16 0 16 2     V10     Q16 12 14 12     H12     V10     H14     V2     H6     V4     H4     V2     Q4 0 6 0     Z" fill="currentColor"></path>
+<!-- Front window -->
+<path d="     M2 4     H10     Q12 4 12 6     V14     Q12 16 10 16     H2     Q0 16 0 14     V6     Q0 4 2 4     Z      M3 6     Q2 6 2 7     V13     Q2 14 3 14     H9     Q10 14 10 13     V7     Q10 6 9 6     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg></button><span style="font-size:12px;color:var(--text2)">Restore</span></div><div style="display:flex;align-items:center;gap:8px;margin-right:12px"><button aria-label="Close exact glyph" class="window-control close"><svg height="16" viewbox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg></button><span style="font-size:12px;color:var(--text2)">Close</span></div></div></div><div class="note">Spec summary: 32×32 control target, 16×16 SVG allocation, 8px control padding, 4px control radius, transparent default state, neutral hover/press for minimise &amp; maximise/restore, red hover/press for close, indigo focus ring, no titlebar-button shadow, and reduced contrast for inactive windows.</div>
+</div>
+</section>
+<section class="card wide">
+<div class="card-head">
+<h3>State Verification — Buttons &amp; Chooser Controls</h3>
+<p>Explicit state samples so hover/active/focus/disabled behaviour can be checked visually.</p>
+</div>
+<div class="card-body">
+<div class="group">
+<div class="group-title">Primary button</div>
+<div class="state-grid">
+<div class="state-block"><h4>Default</h4><button class="btn primary">Apply</button></div>
+<div class="state-block"><h4>Hover</h4><button class="btn primary is-hover">Apply</button></div>
+<div class="state-block"><h4>Pressed</h4><button class="btn primary is-active">Apply</button></div>
+<div class="state-block"><h4>Focus</h4><button class="btn primary is-focus">Apply</button></div>
+</div>
+</div>
+<div class="group">
+<div class="group-title">Dropdown / chooser controls</div>
+<div class="state-grid">
+<div class="state-block"><h4>Default</h4><div class="state-select"><span>Dropdown</span><span>⌄</span></div></div>
+<div class="state-block"><h4>Hover</h4><div class="state-select is-hover"><span>Dropdown</span><span>⌄</span></div></div>
+<div class="state-block"><h4>Pressed</h4><div class="state-select is-active"><span>Dropdown</span><span>⌄</span></div></div>
+<div class="state-block"><h4>Focus</h4><div class="state-select is-focus"><span>Dropdown</span><span>⌄</span></div></div>
+</div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Buttons &amp; Actions</h3><p>General control gallery using the verified state treatments.</p></div>
+<div class="card-body">
+<div class="group">
+<div class="group-title">Standard</div>
+<div class="row-flex">
+<button class="btn">Default</button>
+<button class="btn primary">Suggested</button>
+<button class="btn danger">Destructive</button>
+<button class="btn flat">Flat</button>
+<button class="btn" disabled="">Disabled</button>
+</div>
+</div>
+<div class="group">
+<div class="group-title">Icon / Split</div>
+<div class="row-flex">
+<button class="icon-btn">＋</button>
+<button class="icon-btn">✎</button>
+<button class="icon-btn flat">⋮</button>
+<div class="split"><button class="split-main">Open</button><button class="split-arrow">⌄</button></div>
+</div>
+</div>
+<div class="group">
+<div class="group-title">Toggle Group / Segmented</div>
+<div class="toggle-group"><button class="toggle active">Day</button><button class="toggle">Week</button><button class="toggle">Month</button></div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Selection Controls</h3><p>Checkboxes, radio buttons and switches use strong indigo only for selected/active state.</p></div>
+<div class="card-body">
+<div class="group">
+<div class="group-title">Checkboxes</div>
+<div class="stack">
+<div class="checkline"><span class="checkbox"></span>Unchecked</div>
+<div class="checkline"><span class="checkbox checked"></span>Checked</div>
+<div class="checkline"><span class="checkbox mixed"></span>Mixed</div>
+</div>
+</div>
+<div class="group">
+<div class="group-title">Radio</div>
+<div class="row-flex">
+<div class="checkline"><span class="radio checked"></span>Option A</div>
+<div class="checkline"><span class="radio"></span>Option B</div>
+</div>
+</div>
+<div class="group">
+<div class="group-title">Switch</div>
+<div class="row-flex"><div class="switch"></div><span style="font-size:12px;color:var(--text2)">Off</span><div class="switch on"></div><span style="font-size:12px;color:var(--text2)">On</span></div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Text &amp; Value Inputs</h3><p>Entry, search entry, password entry, dropdown, spin input, colour and font selectors.</p></div>
+<div class="card-body">
+<div class="stack">
+<input class="entry" value="Standard text entry"/>
+<div class="input-wrap"><span class="glass">⌕</span><input class="search" value="Search"/></div>
+<div class="password"><input class="entry" value="••••••••"/><span class="eye">◉</span></div>
+<div class="row-flex">
+<div class="select"><span>Dropdown</span><span>⌄</span></div>
+<div class="spin"><span>16</span><button>−</button><button>＋</button></div>
+</div>
+<div class="row-flex">
+<button class="color-button"><span class="color-dot"></span>Indigo</button>
+<button class="font-button">Aa   Plus Jakarta Sans</button>
+</div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Ranges &amp; Progress</h3><p>GTK scale, progress bar, level bar and spinner treatments.</p></div>
+<div class="card-body">
+<div class="group"><div class="group-title">Scale</div><div class="slider-row"><span>−</span><div class="slider"><div class="track"><span class="fill"></span><span class="thumb"></span></div></div><span>＋</span></div></div>
+<div class="group"><div class="group-title">Progress</div><div class="progress"><span></span></div></div>
+<div class="group"><div class="group-title">Level Bar</div><div class="level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div></div>
+<div class="group"><div class="group-title">Spinner</div><div class="row-flex"><div class="spinner"></div><span style="font-size:12px;color:var(--text2)">Loading…</span></div></div>
+</div>
+</section>
+<section class="card wide">
+<div class="card-head"><h3>Adwaita Boxed Lists &amp; Preference Rows</h3><p>Action row, switch row, combo row, entry row, spin row, expander row and button row equivalents.</p></div>
+<div class="card-body">
+<div class="listbox">
+<div class="pref-row"><div><div class="pref-title">Action Row</div><div class="pref-desc">A standard preference row with secondary text.</div></div><span class="chev">›</span></div>
+<div class="pref-row"><div><div class="pref-title">Switch Row</div><div class="pref-desc">Enable automatic updates.</div></div><div class="switch on"></div></div>
+<div class="pref-row"><div><div class="pref-title">Combo Row</div><div class="pref-desc">Choose a preferred behaviour.</div></div><div class="select"><span>Automatic</span><span>⌄</span></div></div>
+<div class="pref-row"><div><div class="pref-title">Entry Row</div><div class="pref-desc">Editable value embedded into the row.</div></div><input class="entry" value="Majoris"/></div>
+<div class="pref-row"><div><div class="pref-title">Spin Row</div><div class="pref-desc">Numeric preference.</div></div><div class="spin"><span>8</span><button>−</button><button>＋</button></div></div>
+<div class="pref-row"><div><div class="pref-title">Expander Row</div><div class="pref-desc">Reveal additional configuration.</div></div><span class="chev">⌃</span></div>
+<div class="expander-body">Expanded content uses a neutral secondary surface without adding another floating card.</div>
+<div class="pref-row"><div><div class="pref-title">Button Row</div><div class="pref-desc">A direct action placed inside a preferences list.</div></div><button class="btn">Configure</button></div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Navigation</h3><p>Tabs and view switchers keep active state simple: text emphasis plus a small indigo indicator.</p></div>
+<div class="card-body">
+<div class="group"><div class="group-title">Tabs</div><div class="tabs"><button class="tab active">General</button><button class="tab">Details</button><button class="tab">Permissions</button></div></div>
+<div class="group"><div class="group-title">View Switcher</div><div class="view-switch"><button class="active">List</button><button>Grid</button><button>Columns</button></div></div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Banner &amp; Toast</h3><p>Transient feedback remains compact; informational surfaces use soft colour rather than giant cards.</p></div>
+<div class="card-body">
+<div class="group"><div class="banner"><span>ⓘ</span><span class="grow">A system update is ready to install.</span><button class="btn primary">Install</button></div></div>
+<div class="group"><div class="toast"><span>✓</span><span class="grow">File copied successfully.</span><a>Undo</a></div></div>
+</div>
+</section>
+<section class="card wide">
+<div class="card-head"><h3>Lists, Tables &amp; Selection</h3><p>Majoris keeps dense desktop information views available instead of forcing every data view into oversized cards.</p></div>
+<div class="card-body">
+<div class="table">
+<div class="table-head"><div>Name</div><div>Type</div><div>Modified</div></div>
+<div class="table-row"><div>Documents</div><div>Folder</div><div>Today</div></div>
+<div class="table-row selected"><div>Majoris Design.md</div><div>Markdown</div><div>14:28</div></div>
+<div class="table-row"><div>Wallpaper.png</div><div>PNG image</div><div>Yesterday</div></div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Popover &amp; Menu</h3><p>Transient surfaces receive stronger elevation. Menu rows themselves remain flat.</p></div>
+<div class="card-body">
+<div class="popover-wrap">
+<button class="btn">Open menu</button>
+<div class="popover">
+<div class="menu-item"><span>Open</span><span><kbd>Enter</kbd></span></div>
+<div class="menu-item"><span>Rename</span><span><kbd>F2</kbd></span></div>
+<div class="menu-item">Duplicate</div>
+<div class="separator"></div>
+<div class="menu-item destructive">Move to Trash</div>
+</div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Tooltip &amp; Scrollbar</h3><p>Small supporting surfaces stay concise; scrollbars sit over content with no permanent trough background.</p></div>
+<div class="card-body">
+<div class="tooltip-demo"><button class="icon-btn">⌕</button><div class="tooltip">Search</div></div>
+<div class="scroll-demo">
+<div class="scroll-content">Majoris scrollbars should remain visually quiet until needed. The thumb can sit directly above the content surface, without a large dedicated background strip. This better matches the cleaner desktop treatment used throughout the system.</div>
+<div class="scrollbar"><div class="scroll-thumb"></div></div>
+</div>
+</div>
+</section>
+<section class="card wide">
+<div class="card-head"><h3>Dialog / Alert Dialog</h3><p>8px structural radius, restrained strong shadow, clear button hierarchy, and no exaggerated corner treatment.</p></div>
+<div class="card-body">
+<div class="dialog-demo">
+<div class="dialog">
+<div class="dialog-body"><h4>Discard changes?</h4><p>Your unsaved changes will be lost. This action cannot be undone.</p></div>
+<div class="dialog-actions"><button class="btn">Cancel</button><button class="btn danger">Discard</button></div>
+</div>
+</div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>Status Page</h3><p>Used for empty states, errors or first-run views.</p></div>
+<div class="card-body">
+<div class="status"><div class="icon">◇</div><h4>No files found</h4><p>Try a different search or clear the current filters.</p></div>
+</div>
+</section>
+<section class="card">
+<div class="card-head"><h3>System Design Notes</h3><p>Rules reflected throughout the gallery.</p></div>
+<div class="card-body">
+<div class="stack" style="font-size:12px;color:var(--text2);line-height:1.55">
+<div><strong style="color:var(--text)">4px controls:</strong> buttons, entries, tabs and compact selectors.</div>
+<div><strong style="color:var(--text)">8px structures:</strong> cards, popovers, dialogs and windows.</div>
+<div><strong style="color:var(--text)">128ms stationary fades:</strong> no button jumping on hover or click.</div>
+<div><strong style="color:var(--text)">Window controls are structural:</strong> transparent by default, no shadow, red only for close interaction.</div>
+<div><strong style="color:var(--text)">Elevation is semantic:</strong> shadows show hierarchy, not decoration.</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+</section>
+</div>
+</body>
+</html>

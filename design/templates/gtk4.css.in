@@ -1,0 +1,24 @@
+window.background, window.csd, window.solid-csd { border-radius: ${window_radius}; }
+window.csd { box-shadow: ${window_shadow}; }
+check, radio { -gtk-icon-size: 16px; }
+/* libadwaita's windowhandle has its own padding and minimum size. */
+headerbar > windowhandle { min-height: 0; padding: 0; }
+headerbar > windowhandle > box { min-height: 0; padding: 0; }
+headerbar dropdown row { min-height: 0; padding: 0; }
+headerbar dropdown > button { min-height: ${control_content_size}; padding-top: 0; padding-bottom: 0; }
+windowcontrols { border-spacing: 2px; margin-left: 6px; }
+windowcontrols > button { min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0; border: 1px solid transparent; border-radius: ${control_radius}; background-color: transparent; background-image: none; box-shadow: none; color: @text_secondary; }
+windowcontrols > button > image { min-width: ${window_control_glyph}; min-height: ${window_control_glyph}; padding: 0; margin: 0; -gtk-icon-size: ${window_control_glyph}; }
+windowcontrols > button:hover { background-color: @hover; color: @text; }
+windowcontrols > button:active { background-color: @active; }
+windowcontrols > button.close:hover { background-color: @danger; color: @surface; }
+windowcontrols > button.close:active { background-color: @danger_pressed; color: @surface; }
+windowcontrols > button:backdrop { color: @text_tertiary; }
+popover.background { background-color: transparent; }
+popover > contents { border-radius: ${structure_radius}; border: 1px solid @border_soft; background-color: @surface; padding: 6px; box-shadow: ${pop_shadow}; }
+button.model, modelbutton { min-height: ${control_content_size}; border: none; border-radius: ${control_radius}; box-shadow: none; background-color: transparent; }
+button.model:hover, modelbutton:hover { background-color: @hover; }
+banner { background-color: @primary_50; color: @primary_800; border-radius: ${structure_radius}; }
+toast { background-color: @text; color: @surface; border-radius: ${structure_radius}; box-shadow: ${pop_shadow}; }
+statuspage { color: @text_secondary; }
+alertdialog .dialog, .dialog { border-radius: ${structure_radius}; background-color: @surface; }

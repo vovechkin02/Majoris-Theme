@@ -1,0 +1,11 @@
+[Icon Theme]
+Name=Majoris
+Comment=Exact Majoris window glyph overlay
+Inherits=Adwaita,hicolor
+Directories=scalable/ui
+[scalable/ui]
+Size=16
+MinSize=16
+MaxSize=16
+Type=Scalable
+Context=UI

@@ -1,0 +1,6 @@
+<svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<!-- Rear window -->
+<path d="     M6 0     H14     Q16 0 16 2     V10     Q16 12 14 12     H12     V10     H14     V2     H6     V4     H4     V2     Q4 0 6 0     Z" fill="currentColor"></path>
+<!-- Front window -->
+<path d="     M2 4     H10     Q12 4 12 6     V14     Q12 16 10 16     H2     Q0 16 0 14     V6     Q0 4 2 4     Z      M3 6     Q2 6 2 7     V13     Q2 14 3 14     H9     Q10 14 10 13     V7     Q10 6 9 6     Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>

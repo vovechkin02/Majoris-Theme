@@ -1,0 +1,84 @@
+/* Generated; edit design/templates and regenerate. */
+@import url("colors.css");
+* { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; }
+window { font-size: 13px; }
+window, .background { background-color: @background; color: @text; }
+button, entry, searchentry, passwordentry, spinbutton, combobox, dropdown > button {
+  min-height: 30px; padding: 0 10px; border: 1px solid @border;
+  border-radius: 4px; background-color: @surface; background-image: none;
+  color: @text; box-shadow: 0 1px 2px rgba(20,20,25,.10);
+  transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), border-color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1);
+}
+button:hover, entry:hover, dropdown > button:hover { background-color: @hover; box-shadow: 0 2px 4px rgba(20,20,25,.12); }
+button:active, button:checked { background-color: @active; box-shadow: 0 1px 1px rgba(20,20,25,.08); }
+button:disabled, entry:disabled { opacity: .45; box-shadow: none; }
+button:focus, entry:focus, entry:focus-within { outline: 2px solid alpha(@primary_500,.24); outline-offset: 0; border-color: @primary_500; }
+button.suggested-action { background-color: @primary_600; border-color: @primary_600; color: @surface; }
+button.suggested-action:hover { background-color: @primary_700; }
+button.suggested-action:active { background-color: @primary_800; }
+button.destructive-action { background-color: @danger; border-color: @danger; color: @surface; }
+button.destructive-action:active { background-color: @danger_pressed; }
+button.flat { background-color: transparent; border-color: transparent; box-shadow: none; }
+button.flat:hover { background-color: @hover; }
+button.flat:active { background-color: @active; }
+button.image-button { min-width: 30px; padding: 0; }
+headerbar { min-height: 32px; padding: 8px; border-radius: 0; border-bottom: 1px solid @border_soft; background-color: @surface; background-image: none; box-shadow: none; }
+headerbar button, headerbar entry, headerbar dropdown > button { min-height: 30px; margin: 0; padding-top: 0; padding-bottom: 0; }
+headerbar button { box-shadow: none; }
+headerbar button.image-button { min-width: 30px; }
+check, radio { min-width: 16px; min-height: 16px; padding: 0; margin: 0; border: 1px solid @border; background-color: @surface; color: @surface; }
+check { border-radius: 4px; }
+radio { border-radius: 50%; }
+check:checked, radio:checked { background-color: @primary_500; border-color: @primary_500; }
+check:indeterminate { color: @primary_600; }
+switch { min-width: 38px; min-height: 20px; padding: 0; border: 1px solid @border; border-radius: 8px; background-color: @surface_secondary; }
+switch:checked { background-color: @primary_500; border-color: @primary_500; }
+switch slider { min-width: 16px; min-height: 16px; margin: 2px; border-radius: 4px; background-color: @surface; }
+scale trough { min-height: 4px; border-radius: 4px; background-color: @border; }
+scale highlight { background-color: @primary_500; border-radius: 4px; }
+scale slider { min-width: 12px; min-height: 12px; border: 2px solid @primary_500; border-radius: 50%; background-color: @surface; box-shadow: 0 1px 2px rgba(20,20,25,.10); }
+progressbar trough, levelbar trough { min-height: 8px; border-radius: 4px; background-color: @border_soft; }
+progressbar progress { min-height: 8px; background-color: @primary_500; border-radius: 4px; }
+levelbar block.filled { background-color: @success; }
+levelbar block.empty { background-color: @border_soft; }
+notebook > header { background-color: @surface; border-bottom: 1px solid @border_soft; }
+notebook tab, stackswitcher button, viewswitcher button { border-radius: 4px; }
+notebook tab:checked { color: @primary_600; border-bottom: 2px solid @primary_500; }
+row { padding: 8px 12px; border-radius: 4px; }
+row:hover { background-color: @hover; }
+row:selected, .navigation-sidebar row:selected, .sidebar row:selected { background-color: @primary_50; color: @primary_700; }
+.sidebar, .navigation-sidebar { background-color: @surface_secondary; }
+.card, .boxed-list { border: 1px solid @border_soft; border-radius: 8px; background-color: @surface; box-shadow: 0 4px 8px rgba(20,20,25,.08),0 1px 2px rgba(20,20,25,.05); }
+.card, .boxed-list, popover, dialog { transition: background-color 256ms cubic-bezier(.2,.8,.2,1), box-shadow 256ms cubic-bezier(.2,.8,.2,1); }
+.boxed-list row { border-bottom: 1px solid @border_soft; }
+tooltip { border-radius: 4px; background-color: @text; color: @surface; padding: 6px 10px; }
+scrollbar { background-color: transparent; border: none; }
+scrollbar trough { background-color: transparent; }
+scrollbar slider { min-width: 6px; min-height: 6px; margin: 2px; border-radius: 4px; background-color: alpha(@text_tertiary,.45); }
+scrollbar slider:hover { background-color: @text_secondary; }
+dialog { border-radius: 8px; background-color: @surface; }
+selection { background-color: @primary_200; color: @text; }
+window.background, window.csd, window.solid-csd { border-radius: 8px; }
+window.csd { box-shadow: 0 20px 40px rgba(20,20,25,.18),0 6px 12px rgba(20,20,25,.08); }
+check, radio { -gtk-icon-size: 16px; }
+/* libadwaita's windowhandle has its own padding and minimum size. */
+headerbar > windowhandle { min-height: 0; padding: 0; }
+headerbar > windowhandle > box { min-height: 0; padding: 0; }
+headerbar dropdown row { min-height: 0; padding: 0; }
+headerbar dropdown > button { min-height: 30px; padding-top: 0; padding-bottom: 0; }
+windowcontrols { border-spacing: 2px; margin-left: 6px; }
+windowcontrols > button { min-width: 30px; min-height: 30px; padding: 0; margin: 0; border: 1px solid transparent; border-radius: 4px; background-color: transparent; background-image: none; box-shadow: none; color: @text_secondary; }
+windowcontrols > button > image { min-width: 16px; min-height: 16px; padding: 0; margin: 0; -gtk-icon-size: 16px; }
+windowcontrols > button:hover { background-color: @hover; color: @text; }
+windowcontrols > button:active { background-color: @active; }
+windowcontrols > button.close:hover { background-color: @danger; color: @surface; }
+windowcontrols > button.close:active { background-color: @danger_pressed; color: @surface; }
+windowcontrols > button:backdrop { color: @text_tertiary; }
+popover.background { background-color: transparent; }
+popover > contents { border-radius: 8px; border: 1px solid @border_soft; background-color: @surface; padding: 6px; box-shadow: 0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08); }
+button.model, modelbutton { min-height: 30px; border: none; border-radius: 4px; box-shadow: none; background-color: transparent; }
+button.model:hover, modelbutton:hover { background-color: @hover; }
+banner { background-color: @primary_50; color: @primary_800; border-radius: 8px; }
+toast { background-color: @text; color: @surface; border-radius: 8px; box-shadow: 0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08); }
+statuspage { color: @text_secondary; }
+alertdialog .dialog, .dialog { border-radius: 8px; background-color: @surface; }

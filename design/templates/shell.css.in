@@ -1,0 +1,24 @@
+stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; font-size: 13px; color: ${text}; }
+#panel { background-color: ${surface}; color: ${text}; height: 32px; }
+.panel-button { border-radius: ${control_radius}; padding: 0 8px; transition-duration: ${control_duration}; }
+.panel-button:hover, .popup-menu-item:hover, .quick-toggle:hover { background-color: ${hover}; }
+.panel-button:active, .popup-menu-item:active { background-color: ${active}; }
+.popup-menu-content, .quick-settings, .calendar, .message-list, .notification-banner, .modal-dialog, .osd-window { background-color: ${surface}; color: ${text}; border: 1px solid ${border_soft}; border-radius: ${structure_radius}; padding: 8px; box-shadow: ${pop_shadow}; }
+.popup-menu-content, .modal-dialog { transition-duration: ${surface_duration}; }
+.popup-menu-item { border-radius: ${control_radius}; padding: 6px 10px; }
+.popup-menu-item:checked, .quick-toggle:checked { background-color: ${primary_500}; color: ${surface}; }
+.popup-separator-menu-item .popup-separator-menu-item-separator { background-color: ${border_soft}; height: 1px; }
+.quick-toggle, .quick-menu-toggle, .modal-dialog-button { border-radius: ${control_radius}; background-color: ${surface_secondary}; padding: 8px 12px; }
+.quick-slider .slider, .slider { -barlevel-height: 4px; -barlevel-background-color: ${border}; -barlevel-active-background-color: ${primary_500}; -barlevel-overdrive-color: ${danger}; -slider-handle-radius: 8px; }
+.calendar-day { border-radius: ${control_radius}; }
+.calendar-day:hover { background-color: ${hover}; }
+.calendar-today { background-color: ${primary_500}; color: ${surface}; }
+.message { background-color: ${surface_secondary}; border-radius: ${structure_radius}; }
+.search-entry { background-color: ${surface}; color: ${text}; border: 1px solid ${border}; border-radius: ${control_radius}; padding: 8px 12px; }
+.search-entry:focus { border-color: ${primary_500}; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
+#overview { background-color: ${background}; }
+.workspace-thumbnail, .workspace-background { border-radius: ${structure_radius}; }
+.dash-background { background-color: ${surface_secondary}; border-radius: ${structure_radius}; }
+.dash-label, .tooltip { background-color: ${text}; color: ${surface}; border-radius: ${control_radius}; padding: 6px 10px; }
+.app-well-app:focus, .app-well-app:hover { background-color: ${hover}; border-radius: ${control_radius}; }
+.modal-dialog-button:focus { border-color: ${primary_500}; }

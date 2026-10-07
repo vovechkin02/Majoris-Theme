@@ -1,0 +1,58 @@
+* { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; }
+window { font-size: 13px; }
+window, .background { background-color: @background; color: @text; }
+button, entry, searchentry, passwordentry, spinbutton, combobox, dropdown > button {
+  min-height: ${control_content_size}; padding: 0 10px; border: 1px solid @border;
+  border-radius: ${control_radius}; background-color: @surface; background-image: none;
+  color: @text; box-shadow: ${control_shadow};
+  transition: background-color ${control_motion}, color ${control_motion}, border-color ${control_motion}, box-shadow ${control_motion};
+}
+button:hover, entry:hover, dropdown > button:hover { background-color: @hover; box-shadow: ${control_hover_shadow}; }
+button:active, button:checked { background-color: @active; box-shadow: ${control_active_shadow}; }
+button:disabled, entry:disabled { opacity: .45; box-shadow: none; }
+button:focus, entry:focus, entry:focus-within { outline: 2px solid alpha(@primary_500,.24); outline-offset: 0; border-color: @primary_500; }
+button.suggested-action { background-color: @primary_600; border-color: @primary_600; color: @surface; }
+button.suggested-action:hover { background-color: @primary_700; }
+button.suggested-action:active { background-color: @primary_800; }
+button.destructive-action { background-color: @danger; border-color: @danger; color: @surface; }
+button.destructive-action:active { background-color: @danger_pressed; }
+button.flat { background-color: transparent; border-color: transparent; box-shadow: none; }
+button.flat:hover { background-color: @hover; }
+button.flat:active { background-color: @active; }
+button.image-button { min-width: ${control_content_size}; padding: 0; }
+headerbar { min-height: ${window_control_size}; padding: ${header_padding}; border-radius: 0; border-bottom: 1px solid @border_soft; background-color: @surface; background-image: none; box-shadow: none; }
+headerbar button, headerbar entry, headerbar dropdown > button { min-height: ${control_content_size}; margin: 0; padding-top: 0; padding-bottom: 0; }
+headerbar button { box-shadow: none; }
+headerbar button.image-button { min-width: ${control_content_size}; }
+check, radio { min-width: 16px; min-height: 16px; padding: 0; margin: 0; border: 1px solid @border; background-color: @surface; color: @surface; }
+check { border-radius: ${control_radius}; }
+radio { border-radius: 50%; }
+check:checked, radio:checked { background-color: @primary_500; border-color: @primary_500; }
+check:indeterminate { color: @primary_600; }
+switch { min-width: 38px; min-height: 20px; padding: 0; border: 1px solid @border; border-radius: ${structure_radius}; background-color: @surface_secondary; }
+switch:checked { background-color: @primary_500; border-color: @primary_500; }
+switch slider { min-width: 16px; min-height: 16px; margin: 2px; border-radius: ${control_radius}; background-color: @surface; }
+scale trough { min-height: 4px; border-radius: ${control_radius}; background-color: @border; }
+scale highlight { background-color: @primary_500; border-radius: ${control_radius}; }
+scale slider { min-width: 12px; min-height: 12px; border: 2px solid @primary_500; border-radius: 50%; background-color: @surface; box-shadow: ${control_shadow}; }
+progressbar trough, levelbar trough { min-height: 8px; border-radius: ${control_radius}; background-color: @border_soft; }
+progressbar progress { min-height: 8px; background-color: @primary_500; border-radius: ${control_radius}; }
+levelbar block.filled { background-color: @success; }
+levelbar block.empty { background-color: @border_soft; }
+notebook > header { background-color: @surface; border-bottom: 1px solid @border_soft; }
+notebook tab, stackswitcher button, viewswitcher button { border-radius: ${control_radius}; }
+notebook tab:checked { color: @primary_600; border-bottom: 2px solid @primary_500; }
+row { padding: 8px 12px; border-radius: ${control_radius}; }
+row:hover { background-color: @hover; }
+row:selected, .navigation-sidebar row:selected, .sidebar row:selected { background-color: @primary_50; color: @primary_700; }
+.sidebar, .navigation-sidebar { background-color: @surface_secondary; }
+.card, .boxed-list { border: 1px solid @border_soft; border-radius: ${structure_radius}; background-color: @surface; box-shadow: ${card_shadow}; }
+.card, .boxed-list, popover, dialog { transition: background-color ${surface_motion}, box-shadow ${surface_motion}; }
+.boxed-list row { border-bottom: 1px solid @border_soft; }
+tooltip { border-radius: ${control_radius}; background-color: @text; color: @surface; padding: 6px 10px; }
+scrollbar { background-color: transparent; border: none; }
+scrollbar trough { background-color: transparent; }
+scrollbar slider { min-width: 6px; min-height: 6px; margin: 2px; border-radius: ${control_radius}; background-color: alpha(@text_tertiary,.45); }
+scrollbar slider:hover { background-color: @text_secondary; }
+dialog { border-radius: ${structure_radius}; background-color: @surface; }
+selection { background-color: @primary_200; color: @text; }

@@ -1,0 +1,25 @@
+/* Generated from Majoris HTML tokens. */
+stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; font-size: 13px; color: #1C1C1F; }
+#panel { background-color: #FFFFFF; color: #1C1C1F; height: 32px; }
+.panel-button { border-radius: 4px; padding: 0 8px; transition-duration: 128ms; }
+.panel-button:hover, .popup-menu-item:hover, .quick-toggle:hover { background-color: #ECECEF; }
+.panel-button:active, .popup-menu-item:active { background-color: #E2E2E6; }
+.popup-menu-content, .quick-settings, .calendar, .message-list, .notification-banner, .modal-dialog, .osd-window { background-color: #FFFFFF; color: #1C1C1F; border: 1px solid #E5E5E9; border-radius: 8px; padding: 8px; box-shadow: 0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08); }
+.popup-menu-content, .modal-dialog { transition-duration: 256ms; }
+.popup-menu-item { border-radius: 4px; padding: 6px 10px; }
+.popup-menu-item:checked, .quick-toggle:checked { background-color: #6366F1; color: #FFFFFF; }
+.popup-separator-menu-item .popup-separator-menu-item-separator { background-color: #E5E5E9; height: 1px; }
+.quick-toggle, .quick-menu-toggle, .modal-dialog-button { border-radius: 4px; background-color: #F2F2F4; padding: 8px 12px; }
+.quick-slider .slider, .slider { -barlevel-height: 4px; -barlevel-background-color: #D8D8DD; -barlevel-active-background-color: #6366F1; -barlevel-overdrive-color: #DC3C4D; -slider-handle-radius: 8px; }
+.calendar-day { border-radius: 4px; }
+.calendar-day:hover { background-color: #ECECEF; }
+.calendar-today { background-color: #6366F1; color: #FFFFFF; }
+.message { background-color: #F2F2F4; border-radius: 8px; }
+.search-entry { background-color: #FFFFFF; color: #1C1C1F; border: 1px solid #D8D8DD; border-radius: 4px; padding: 8px 12px; }
+.search-entry:focus { border-color: #6366F1; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
+#overview { background-color: #F7F7F8; }
+.workspace-thumbnail, .workspace-background { border-radius: 8px; }
+.dash-background { background-color: #F2F2F4; border-radius: 8px; }
+.dash-label, .tooltip { background-color: #1C1C1F; color: #FFFFFF; border-radius: 4px; padding: 6px 10px; }
+.app-well-app:focus, .app-well-app:hover { background-color: #ECECEF; border-radius: 4px; }
+.modal-dialog-button:focus { border-color: #6366F1; }

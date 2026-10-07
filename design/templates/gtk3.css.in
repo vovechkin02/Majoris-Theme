@@ -1,0 +1,12 @@
+decoration { border-radius: ${window_radius}; box-shadow: ${window_shadow}; border: 1px solid alpha(@text,.12); }
+window.csd { border-radius: ${window_radius}; }
+button.titlebutton { min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0; border: 1px solid transparent; border-radius: ${control_radius}; background-color: transparent; box-shadow: none; }
+button.titlebutton image { -gtk-icon-transform: none; }
+button.titlebutton:hover { background-color: @hover; }
+button.titlebutton:active { background-color: @active; }
+button.titlebutton.close:hover { background-color: @danger; color: @surface; }
+button.titlebutton.close:active { background-color: @danger_pressed; }
+button.titlebutton:backdrop { color: @text_tertiary; }
+popover.background, menu { background-color: @surface; border: 1px solid @border_soft; border-radius: ${structure_radius}; padding: 6px; box-shadow: ${pop_shadow}; }
+menuitem { border-radius: ${control_radius}; padding: 6px 10px; }
+menuitem:hover { background-color: @hover; }

@@ -1,0 +1,3 @@
+* text=auto eol=lf
+# Preserve the supplied visual authority verbatim, including CRLF.
+design/reference/majoris-widget-factory.html -text
