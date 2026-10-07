@@ -5,6 +5,7 @@ gi.require_version('Gtk','3.0')
 from gi.repository import Gtk,Gdk,GLib
 root=Path(__file__).resolve().parents[1]
 Gtk.init([])
+Gtk.Settings.get_default().set_property('gtk-enable-animations',False)
 provider=Gtk.CssProvider(); provider.load_from_path(str(root/'theme/Majoris/gtk-3.0/gtk.css'))
 Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),provider,Gtk.STYLE_PROVIDER_PRIORITY_USER)
 window=Gtk.Window(); window.set_default_size(600,300)
@@ -23,6 +24,6 @@ for widget in [button,entry]:
     assert border.left==1 and border.right==1
     assert widget.get_allocated_height()==32,(type(widget).__name__,widget.get_allocated_height())
 color=button.get_style_context().get_color(Gtk.StateFlags.NORMAL)
-assert round(color.red*255)==28 and round(color.green*255)==28 and round(color.blue*255)==31
+assert round(color.red*255)==28 and round(color.green*255)==28 and round(color.blue*255)==31,color.to_string()
 window.destroy()
 print('Realized GTK3 button/entry geometry, borders and text color passed; radius remains a visual check')

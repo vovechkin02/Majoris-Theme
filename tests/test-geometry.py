@@ -1,26 +1,38 @@
 import json,os,subprocess,sys,tempfile
 from pathlib import Path
+from css_contract import html
+def px(selector,property):return int(html(selector,property).removesuffix("px"))
 root=Path(__file__).resolve().parents[1]
-expected=json.loads((root/'tests/expected/headerbars.json').read_text())
+tokens=json.loads((root/'design/tokens.json').read_text())
 with tempfile.TemporaryDirectory(prefix='majoris-geometry-') as directory:
     config=Path(directory)/'gtk-4.0'; config.mkdir()
     for f in ('colors.css','gtk.css','gtk-dark.css'): (config/f).symlink_to(root/'theme/Majoris/gtk-4.0'/f)
+    (config/'assets').symlink_to(root/'theme/Majoris/gtk-4.0/assets')
     data=Path(directory)/'data'; (data/'icons').mkdir(parents=True)
     (data/'icons/Majoris').symlink_to(root/'icons/Majoris')
     env={**os.environ,'XDG_CONFIG_HOME':directory,'XDG_DATA_HOME':str(data),'GTK_A11Y':'none','GSK_RENDERER':'cairo'}
     result=subprocess.run([sys.argv[1],'--geometry-report'],env=env,text=True,capture_output=True,check=True,timeout=20)
     report=json.loads(result.stdout)
-    assert 'Theme parser error' not in result.stderr,result.stderr
-    print(json.dumps(report,indent=2),flush=True)
-    for scenario in ('simple','dense'):
-        h=report['headerbar_'+scenario]['height']; assert h==expected['headerbar_height'],(scenario,h)
-        buttons=[w for w in report['windowcontrols_'+scenario] if w['type']=='GtkButton']
-        assert len(buttons)==3,(scenario,buttons)
-        for b in buttons: assert (b['width'],b['height'])==(32,32),(scenario,b)
-        images=[w for w in report['windowcontrols_'+scenario] if w['type']=='GtkImage']
-        assert len(images)==3
-        for image in images: assert (image['width'],image['height'])==(16,16),(scenario,image)
-    assert report['headerbar_simple']['height']==report['headerbar_dense']['height']
+    assert 'Theme parser error' not in result.stderr and 'CRITICAL' not in result.stderr,result.stderr
+    for scenario in ('simple_headerbar','dense_headerbar','split_sidebar_headerbar','split_content_headerbar'):
+        h=report[scenario]
+        assert h['painted_height']==tokens['window']['headerbar_height'],(scenario,h)
+        assert h['content_height']==tokens['window']['window_control_size']
+        assert h['divider']==1
+        assert h['allocation_height']==h['content_height']+15+h['divider']
+    for scenario in ('simple_window_controls','dense_window_controls'):
+        controls=report[scenario]; assert set(controls)=={'minimize','maximize','close'}
+        for name,b in controls.items():
+            assert (b['width'],b['height'])==(tokens['window']['window_control_size'],)*2,(scenario,name,b)
+            assert (b['glyph']['width'],b['glyph']['height'])==(tokens['window']['window_control_glyph'],)*2
+    for name in ('normal_icon_button','flat_icon_button'):
+        assert (report[name]['width'],report[name]['height'])==(px('.icon-btn','width'),px('.icon-btn','height')),(name,report[name])
+    assert report['entry']['height']==px('.entry','height')
+    assert report['dropdown']['height']==px('.select','height') and report['dropdown']['width']>=px('.select','min-width')
+    for name in ('switch','switch_off'):assert (report[name]['width'],report[name]['height'])==(px('.switch','width'),px('.switch','height')),(name,report[name])
+    assert report['view_switcher_button']['height']==px('.view-switch button','height'),report['view_switcher_button']
+    assert report['tab']['label']['height']==px('.tab','height'),report['tab']
+    assert any(w['type']=='GtkListBoxRow' and w['height']==px('.nav','height')+px('.nav','margin-bottom') for w in report['widget_tree']),'Sidebar 34px target plus 2px gap disappeared'
     (root/'artifacts').mkdir(exist_ok=True)
     (root/'artifacts/geometry.json').write_text(json.dumps(report,indent=2)+'\n')
-    print(json.dumps(report,indent=2))
+    print(json.dumps({k:v for k,v in report.items() if k!='widget_tree'},indent=2))

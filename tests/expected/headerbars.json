@@ -1,8 +1,8 @@
 {
-  "headerbar_height": 49,
+  "headerbar_height": 48,
   "control_width": 32,
   "control_height": 32,
   "glyph_width": 16,
   "glyph_height": 16,
-  "explanation": "48px visual row plus 1px separator; actual CSS border-box allocations."
+  "explanation": "HTML is border-box: 48 includes its 1px divider. Native content is 32, padding 7+8, divider 1. Tests derive the target from current HTML tokens."
 }

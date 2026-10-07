@@ -1,24 +1,90 @@
 window.background, window.csd, window.solid-csd { border-radius: ${window_radius}; }
 window.csd { box-shadow: ${window_shadow}; }
+stacksidebar.sidebar { padding: 0; }
+stacksidebar list.navigation-sidebar { border-right: none; }
+menubutton.flat > button, menubutton.flat > button:hover, menubutton.flat > button:active { border-color: transparent; background-image: none; box-shadow: none; }
+menubutton.flat > button { background-color: transparent; }
+menubutton.flat > button:hover { background-color: @hover; }
+menubutton.flat > button:active { background-color: @active; }
 check, radio { -gtk-icon-size: 16px; }
-/* libadwaita's windowhandle has its own padding and minimum size. */
-headerbar > windowhandle { min-height: 0; padding: 0; }
-headerbar > windowhandle > box { min-height: 0; padding: 0; }
+headerbar > windowhandle, headerbar > windowhandle > box { min-height: 0; padding: 0; }
 headerbar dropdown row { min-height: 0; padding: 0; }
 headerbar dropdown > button { min-height: ${control_content_size}; padding-top: 0; padding-bottom: 0; }
-windowcontrols { border-spacing: 2px; margin-left: 6px; }
-windowcontrols > button { min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0; border: 1px solid transparent; border-radius: ${control_radius}; background-color: transparent; background-image: none; box-shadow: none; color: @text_secondary; }
+windowcontrols { border-spacing: ${.window-controls|gap}; margin-left: ${.window-controls|margin-left}; }
+windowcontrols.empty { margin: 0; }
+/* State-specific resets are intentional: generic button selectors must not leak. */
+windowcontrols > button, windowcontrols > button:hover, windowcontrols > button:active, windowcontrols > button:backdrop {
+  min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0;
+  border: 1px solid transparent; border-radius: ${.window-control|border-radius}; background-image: none; box-shadow: none; outline: none;
+}
+windowcontrols > button { background-color: transparent; color: @text_secondary; }
 windowcontrols > button > image { min-width: ${window_control_glyph}; min-height: ${window_control_glyph}; padding: 0; margin: 0; -gtk-icon-size: ${window_control_glyph}; }
-windowcontrols > button:hover { background-color: @hover; color: @text; }
-windowcontrols > button:active { background-color: @active; }
-windowcontrols > button.close:hover { background-color: @danger; color: @surface; }
-windowcontrols > button.close:active { background-color: @danger_pressed; color: @surface; }
-windowcontrols > button:backdrop { color: @text_tertiary; }
+windowcontrols > button:hover { background-color: @hover; color: @text; border-color: transparent; box-shadow: none; outline: none; }
+windowcontrols > button:active { background-color: @active; color: @text; border-color: transparent; box-shadow: none; outline: none; }
+windowcontrols > button.close:hover { background-color: @danger; color: @surface; border-color: transparent; box-shadow: none; outline: none; }
+windowcontrols > button.close:active { background-color: @danger_pressed; color: @surface; border-color: transparent; box-shadow: none; outline: none; }
+windowcontrols > button:focus-visible { border-color: ${.window-control.is-focus|border-color}; outline: none; box-shadow: ${.window-control:focus-visible|box-shadow}; }
+windowcontrols > button:focus:not(:focus-visible) { outline: none; box-shadow: none; }
+windowcontrols > button:backdrop { background-color: transparent; color: @text_tertiary; box-shadow: none; outline: none; border-color: transparent; }
+dropdown > button { min-width: ${dropdown_content_width}; }
+dropdown > button > box { padding: 0; min-height: 0; border-spacing: ${.select|gap}; }
+dropdown > button row { min-height: 0; padding: 0; }
+searchentry, passwordentry { min-height: ${control_content_size}; min-width: ${entry_content_width}; padding: ${.entry|padding}; border: 1px solid @border; border-radius: ${control_radius}; background: @surface; box-shadow: ${control_shadow}; }
+searchentry:focus-within, passwordentry:focus-within { border-color: @primary_500; box-shadow: 0 0 0 2px rgba(99,102,241,.24), ${control_shadow}; }
+searchentry text, passwordentry text { min-height: 0; padding: 0; }
 popover.background { background-color: transparent; }
-popover > contents { border-radius: ${structure_radius}; border: 1px solid @border_soft; background-color: @surface; padding: 6px; box-shadow: ${pop_shadow}; }
-button.model, modelbutton { min-height: ${control_content_size}; border: none; border-radius: ${control_radius}; box-shadow: none; background-color: transparent; }
-button.model:hover, modelbutton:hover { background-color: @hover; }
-banner { background-color: @primary_50; color: @primary_800; border-radius: ${structure_radius}; }
-toast { background-color: @text; color: @surface; border-radius: ${structure_radius}; box-shadow: ${pop_shadow}; }
+popover > contents { border-radius: ${structure_radius}; border: 1px solid @border_soft; background-color: ${.popover|background}; padding: ${.popover|padding}; box-shadow: ${pop_shadow}; }
+button.model, modelbutton, button.majoris-menu-danger { min-height: ${.menu-item|height}; padding: ${.menu-item|padding}; border: none; border-radius: ${control_radius}; box-shadow: none; background-color: transparent; background-image: none; font-size: ${.menu-item|font-size}; font-weight: 400; }
+button.model:hover, modelbutton:hover, button.majoris-menu-danger:hover { background-color: @hover; box-shadow: none; }
+button.model:active, modelbutton:active, button.majoris-menu-danger:active { background-color: @active; box-shadow: none; }
+button.majoris-menu-danger, button.majoris-menu-danger:hover, button.majoris-menu-danger:active { color: @danger; border-color: transparent; }
+button.majoris-menu-danger:focus { box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
+popover separator { min-height: ${.separator|height}; margin: ${.separator|margin}; background-color: @border_soft; }
+.boxed-list > row > box { min-height: 0; padding: 0; }
+.boxed-list > row .title, .boxed-list > row .subtitle { min-height: 0; padding: 0; margin: 0; }
+.boxed-list > row .subtitle { margin-top: ${.pref-desc|margin-top}; }
+.boxed-list > row.expander .expander { background-color: @surface_secondary; box-shadow: none; }
+viewswitcher button { min-width: 0; padding: ${.view-switch button|padding}; }
+viewswitcher button box { min-height: 0; padding: 0; margin: 0; }
+viewswitcher button label { font-size: ${.view-switch button|font-size}; }
+splitbutton > button { border-radius: ${.split-main|border-radius}; }
+splitbutton > menubutton > button { min-width: ${control_content_size}; padding: 0; border-left: none; border-radius: ${.split-arrow|border-radius}; }
+banner { background-color: @primary_50; color: @primary_800; border: 1px solid @primary_200; border-radius: ${structure_radius}; padding: ${.banner|padding}; font-size: ${.banner|font-size}; }
+banner > revealer > box { padding: 0; border-spacing: ${.banner|gap}; }
+banner > revealer > widget { min-height: 28px; padding: 0; background: transparent; border-spacing: ${.banner|gap}; }
+banner .heading { font-weight: 400; color: @primary_800; }
+banner button { min-height: ${banner_button_content_height}; }
+toast { background-color: ${.toast|background}; color: @surface; border: none; border-radius: ${structure_radius}; box-shadow: ${pop_shadow}; padding: ${.toast|padding}; font-size: ${.toast|font-size}; }
+toast > box { padding: 0; border-spacing: ${.toast|gap}; }
+toast { min-width: 0; }
+toast button { color: @primary_300; font-weight: ${.toast a|font-weight}; background: transparent; border: none; box-shadow: none; }
+toast button:hover, toast button:active { box-shadow: none; }
 statuspage { color: @text_secondary; }
-alertdialog .dialog, .dialog { border-radius: ${structure_radius}; background-color: @surface; }
+statuspage image.icon { min-width: ${.status .icon|width}; min-height: ${.status .icon|height}; padding: 0; -gtk-icon-size: 24px; border-radius: ${structure_radius}; background-color: @primary_50; color: @primary_600; margin-bottom: ${.status .icon|margin-bottom}; }
+statuspage .title { font-size: ${.status h4|font-size}; color: @text; margin-bottom: 4px; }
+statuspage .description { font-size: ${.status p|font-size}; color: @text_secondary; }
+alertdialog .dialog, .dialog { border: 1px solid @border_soft; border-radius: ${structure_radius}; background-color: @surface; box-shadow: ${.dialog|box-shadow}; }
+alertdialog .heading { font-size: ${.dialog-body h4|font-size}; }
+alertdialog .body { font-size: ${.dialog-body p|font-size}; color: @text_secondary; }
+alertdialog .response-area { padding: ${.dialog-actions|padding}; border-top: 1px solid @border_soft; background-color: @surface_secondary; }
+dialog.alert { background: transparent; border: none; box-shadow: none; }
+dialog.alert floating-sheet .background { background-color: @surface; border: 1px solid @border_soft; border-radius: ${structure_radius}; box-shadow: ${.dialog|box-shadow}; }
+dialog.alert .message-area { padding: ${.dialog-body|padding}; margin: 0; }
+dialog.alert .heading-bin { margin-bottom: 6px; }
+dialog.alert .title-2 { font-size: ${.dialog-body h4|font-size}; }
+dialog.alert .body { font-size: ${.dialog-body p|font-size}; color: @text_secondary; }
+dialog.alert .response-area { padding: ${.dialog-actions|padding}; border-top: 1px solid @border_soft; background-color: @surface_secondary; border-radius: 0 0 ${structure_radius} ${structure_radius}; }
+.boxed-list > row .subtitle { opacity: 1; }
+spinbutton > text { min-height: 0; padding: 0 10px; }
+banner button { background-color: @primary_600; border-color: @primary_600; color: @surface; box-shadow: ${.btn.primary|box-shadow}; }
+banner button:hover { background-color: @primary_700; border-color: @primary_700; box-shadow: ${.btn.primary:hover|box-shadow}; }
+banner button:active { background-color: @primary_800; border-color: @primary_800; box-shadow: ${.btn.primary:active|box-shadow}; }
+windowcontrols > button > image, windowcontrols > button:hover > image, windowcontrols > button:active > image, windowcontrols > button:backdrop > image { background: transparent; border: none; border-radius: 0; box-shadow: none; }
+popover.menu > contents { min-width: 191px; }
+headerbar.default-decoration windowcontrols > button { min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0; }
+headerbar.default-decoration windowcontrols > button > image { min-width: ${window_control_glyph}; min-height: ${window_control_glyph}; padding: 0; margin: 0; background: transparent; border-radius: 0; box-shadow: none; }
+columnview.majoris-data-view row { min-height: 0; padding: 0; }
+columnview.majoris-data-view cell { padding: ${.table-row div|padding}; font-size: ${.table-row|font-size}; }
+columnview.majoris-data-view header button { min-height: 0; padding: ${.table-head div|padding}; border: none; border-radius: 0; background: @surface_secondary; color: @text_tertiary; font-size: ${.table-head|font-size}; font-weight: ${.table-head|font-weight}; box-shadow: none; }
+
+columnview.majoris-data-view header button > box { color: @text_tertiary; font-size: ${.table-head|font-size}; font-weight: ${.table-head|font-weight}; }

@@ -19,6 +19,6 @@ stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; 
 #overview { background-color: ${background}; }
 .workspace-thumbnail, .workspace-background { border-radius: ${structure_radius}; }
 .dash-background { background-color: ${surface_secondary}; border-radius: ${structure_radius}; }
-.dash-label, .tooltip { background-color: ${text}; color: ${surface}; border-radius: ${control_radius}; padding: 6px 10px; }
+.dash-label, .tooltip { background-color: ${.tooltip|background}; color: ${surface}; border-radius: ${control_radius}; padding: ${.tooltip|padding}; font-size: ${.tooltip|font-size}; box-shadow: ${pop_shadow}; }
 .app-well-app:focus, .app-well-app:hover { background-color: ${hover}; border-radius: ${control_radius}; }
 .modal-dialog-button:focus { border-color: ${primary_500}; }

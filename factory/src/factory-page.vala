@@ -3,7 +3,7 @@ namespace MajorisThemeFactory {
         Gtk.FlowBox flow;
         public ControlFlow () {
             Object (orientation: Gtk.Orientation.VERTICAL);
-            flow=new Gtk.FlowBox(); flow.selection_mode=Gtk.SelectionMode.NONE; flow.column_spacing=8; flow.row_spacing=8; flow.max_children_per_line=6;
+            flow=new Gtk.FlowBox(); flow.halign=Gtk.Align.START; flow.selection_mode=Gtk.SelectionMode.NONE; flow.column_spacing=8; flow.row_spacing=8; flow.max_children_per_line=6;
             base.append(flow);
         }
         public new void append (Gtk.Widget widget) {
@@ -13,62 +13,109 @@ namespace MajorisThemeFactory {
     }
     public class FactoryPage : Gtk.Box {
         public Adw.ToastOverlay? toast_overlay;
+        public HashTable<string,Gtk.Widget> probes = new HashTable<string,Gtk.Widget>(str_hash,str_equal);
+        public string filter;
         Gtk.Window owner;
         Gtk.Grid gallery;
         int section_count = 0;
-        Gtk.Box section (string title) {
-            var card = new Gtk.Box (Gtk.Orientation.VERTICAL, 12); card.add_css_class ("card");
+        Gtk.Box section (string title, string id) {
+            var card = new Gtk.Box (Gtk.Orientation.VERTICAL, 0); card.add_css_class ("card");
+            var head=new Gtk.Box(Gtk.Orientation.VERTICAL,3); head.add_css_class("majoris-card-header");
+            var label = new Gtk.Label(title); label.xalign=0; label.add_css_class("heading"); head.append(label); card.append(head);
+            string description="";
+            switch(id) {
+                case "buttons":description="General control gallery using the verified state treatments.";break;
+                case "selection":description="Checkboxes, radio buttons and switches use strong indigo only for selected/active state.";break;
+                case "inputs":description="Entry, search entry, password entry, dropdown, spin input, colour and font selectors.";break;
+                case "ranges":description="GTK scale, progress bar, level bar and spinner treatments.";break;
+                case "preferences":description="Action row, switch row, combo row, entry row, spin row, expander row and button row equivalents.";break;
+                case "navigation":description="Tabs and view switchers keep active state simple: text emphasis plus a small indigo indicator.";break;
+                case "data":description="Majoris keeps dense desktop information views available instead of forcing every data view into oversized cards.";break;
+                case "menus":description="Transient surfaces receive stronger elevation. Menu rows themselves remain flat.";break;
+                case "feedback":description="Transient feedback remains compact; informational surfaces use soft colour rather than giant cards.";break;
+            }
+            var subtitle=new Gtk.Label(description);subtitle.xalign=0;subtitle.wrap=true;subtitle.add_css_class("majoris-card-description");head.append(subtitle);
             var inner = new Gtk.Box (Gtk.Orientation.VERTICAL,12); inner.margin_top=16; inner.margin_bottom=16; inner.margin_start=16; inner.margin_end=16;
-            var label = new Gtk.Label(title); label.xalign=0; label.add_css_class("heading"); inner.append(label); card.append(inner);
+            card.append(inner);
             card.hexpand=true; card.valign=Gtk.Align.START;
-            if(section_count<4) gallery.attach(card,section_count%2,section_count/2,1,1);
+            if(filter != "overview") { if(filter == id) gallery.attach(card,0,0,2,1); }
+            else if(section_count<4) gallery.attach(card,section_count%2,section_count/2,1,1);
             else gallery.attach(card,0,section_count-2,2,1);
             section_count++; return inner;
         }
         ControlFlow row () { return new ControlFlow(); }
-        public FactoryPage (Gtk.Window window) {
+        public void show_toast () {
+            var t=new Adw.Toast("File copied successfully."); t.button_label="Undo"; t.timeout=0;
+            toast_overlay.add_toast(t);
+        }
+        public void show_dialog () {
+            var d=new Adw.AlertDialog("Discard changes?","Your unsaved changes will be lost. This action cannot be undone.");
+            d.content_width=360;
+            d.add_response("cancel","Cancel"); d.add_response("discard","Discard");
+            d.set_response_appearance("discard",Adw.ResponseAppearance.DESTRUCTIVE); d.present(owner);
+        }
+        public FactoryPage (Gtk.Window window, string selected = "overview") {
             Object (orientation: Gtk.Orientation.VERTICAL, spacing: 16);
-            owner=window; margin_start=24; margin_end=24; margin_top=24; margin_bottom=24;
-            var title=new Gtk.Label("Majoris native widget gallery"); title.xalign=0; title.add_css_class("title-1"); append(title);
+            owner=window; filter=selected; margin_start=24; margin_end=24; margin_top=24; margin_bottom=24;
+            var title=new Gtk.Label("GTK & libadwaita Controls"); title.xalign=0; title.add_css_class("title-1"); append(title);
             append(new Gtk.Label("Hover and hold buttons to test real states; Tab moves keyboard focus. No simulated CSS states."));
             gallery=new Gtk.Grid(); gallery.column_spacing=16; gallery.row_spacing=16; gallery.column_homogeneous=true; append(gallery);
-            var buttons=section("Buttons and interaction states"); var r=row(); buttons.append(r);
+            var buttons=section("Buttons & Actions","buttons"); var r=row(); buttons.append(r);
             string[] labels={"Default","Suggested","Destructive","Flat","Disabled"};
             string[] classes={"","suggested-action","destructive-action","flat",""};
             for(int i=0;i<labels.length;i++){var b=new Gtk.Button.with_label(labels[i]); if(classes[i]!="")b.add_css_class(classes[i]); b.sensitive=i!=4; r.append(b);}
-            r.append(icon_button("document-save-symbolic","Save — real GTK tooltip"));
+            var normal_icon=icon_button("document-save-symbolic","Save — real GTK tooltip"); r.append(normal_icon); probes.insert("normal_icon_button",normal_icon); var flat_icon=icon_button("open-menu-symbolic","Flat icon button"); flat_icon.add_css_class("flat"); r.append(flat_icon); probes.insert("flat_icon_button",flat_icon);
             var split=new Adw.SplitButton(); split.label="Split button"; var sm=new Menu(); sm.append("New window","win.new"); split.menu_model=sm; r=row(); r.append(split); buttons.append(r);
-            var selection=section("Selection"); r=row(); selection.append(r);
+            var segmented=new Gtk.Box(Gtk.Orientation.HORIZONTAL,0); segmented.add_css_class("majoris-segmented");
+            Gtk.ToggleButton? leader=null;
+            foreach(var label in new string[]{"Day","Week","Month"}) { var segment=new Gtk.ToggleButton.with_label(label); if(leader==null){leader=segment;segment.active=true;}else segment.group=leader; segmented.append(segment); }
+            segmented.halign=Gtk.Align.START; buttons.append(segmented);
+            var selection=section("Selection","selection"); r=row(); selection.append(r);
             var check=new Gtk.CheckButton.with_label("Checkbox"); r.append(check);
             var checked=new Gtk.CheckButton.with_label("Checked"); checked.active=true; r.append(checked);
             var mixed=new Gtk.CheckButton.with_label("Indeterminate"); mixed.inconsistent=true; r.append(mixed);
             var radio=new Gtk.CheckButton.with_label("Radio A"); var radio2=new Gtk.CheckButton.with_label("Radio B"); radio2.group=radio; radio.active=true; r.append(radio); r.append(radio2);
-            var sw=new Gtk.Switch(); sw.valign=Gtk.Align.CENTER; sw.active=true; r.append(sw);
-            var inputs=section("Inputs"); r=row(); inputs.append(r);
-            var entry=new Gtk.Entry(); entry.placeholder_text="Text entry"; r.append(entry);
+            var off=new Gtk.Switch(); off.valign=Gtk.Align.CENTER; r.append(off); probes.insert("switch_off",off); var sw=new Gtk.Switch(); sw.valign=Gtk.Align.CENTER; sw.active=true; r.append(sw); probes.insert("switch",sw); var disabled_check=new Gtk.CheckButton.with_label("Disabled"); disabled_check.active=true; disabled_check.sensitive=false; r.append(disabled_check);
+            var inputs=section("Inputs","inputs"); r=row(); inputs.append(r);
+            var entry=new Gtk.Entry(); entry.text="Standard text entry"; r.append(entry); probes.insert("entry",entry);
             var search=new Gtk.SearchEntry(); r.append(search);
             var password=new Gtk.PasswordEntry(); password.show_peek_icon=true; r.append(password);
-            r=row(); inputs.append(r); r.append(new Gtk.DropDown.from_strings({"Majoris","GTK","libadwaita"})); r.append(new Gtk.SpinButton.with_range(0,100,1)); r.append(new Gtk.ColorButton()); r.append(new Gtk.FontButton());
-            var ranges=section("Range and progress"); var scale=new Gtk.Scale.with_range(Gtk.Orientation.HORIZONTAL,0,100,1); scale.set_value(62); ranges.append(scale);
+            r=row(); inputs.append(r); var chooser=new Gtk.DropDown.from_strings({"Dropdown","Automatic updates","Ask every time"}); r.append(chooser); probes.insert("dropdown",chooser); r.append(new Gtk.SpinButton.with_range(0,100,1)); r.append(new Gtk.ColorButton()); r.append(new Gtk.FontButton());
+            var ranges=section("Ranges & Progress","ranges"); var scale=new Gtk.Scale.with_range(Gtk.Orientation.HORIZONTAL,0,100,1); scale.set_value(62); ranges.append(scale);
             var progress=new Gtk.ProgressBar(); progress.fraction=0.68; ranges.append(progress);
-            var level=new Gtk.LevelBar(); level.value=0.7; ranges.append(level); var spinner=new Gtk.Spinner(); spinner.start(); ranges.append(spinner);
-            var rows=section("Adwaita rows"); var list=new Gtk.ListBox(); list.add_css_class("boxed-list"); list.selection_mode=Gtk.SelectionMode.NONE; rows.append(list);
+            var level=new Gtk.LevelBar.for_interval(0,8); level.mode=Gtk.LevelBarMode.DISCRETE; level.value=6; ranges.append(level); var spinner=new Gtk.Spinner(); spinner.halign=Gtk.Align.START; spinner.start(); ranges.append(spinner); var stopped=new Gtk.Spinner(); stopped.halign=Gtk.Align.START; ranges.append(stopped);
+            var rows=section("Adwaita Boxed Lists & Preference Rows","preferences"); var list=new Gtk.ListBox(); list.add_css_class("boxed-list"); list.selection_mode=Gtk.SelectionMode.NONE; rows.append(list);
             var action=new Adw.ActionRow(); action.title="Action row"; action.subtitle="Native subtitle and suffix"; action.add_suffix(icon_button("go-next-symbolic","Open")); list.append(action);
             var switchrow=new Adw.SwitchRow(); switchrow.title="Switch row"; switchrow.active=true; list.append(switchrow);
             var combo=new Adw.ComboRow(); combo.title="Combo row"; combo.model=new Gtk.StringList({"Standard","Compact"}); list.append(combo);
             var er=new Adw.EntryRow(); er.title="Entry row"; list.append(er);
             var pr=new Adw.PasswordEntryRow(); pr.title="Password row"; list.append(pr);
             var sr=new Adw.SpinRow.with_range(0,100,1); sr.title="Spin row"; list.append(sr);
-            var exp=new Adw.ExpanderRow(); exp.title="Expander row"; var nested=new Adw.ActionRow(); nested.title="Expanded detail"; exp.add_row(nested); list.append(exp);
-            var nav=section("Navigation and data"); var ns=new Adw.ViewStack(); ns.add_titled(new Gtk.Label("Overview content"),"overview","Overview"); ns.add_titled(new Gtk.Label("Details content"),"details","Details"); var switcher=new Adw.ViewSwitcher(); switcher.stack=ns; nav.append(switcher); nav.append(ns);
-            var notebook=new Gtk.Notebook(); notebook.append_page(new Gtk.Label("Native GTK tab"),new Gtk.Label("Tab one")); notebook.append_page(new Gtk.Label("Second tab"),new Gtk.Label("Tab two")); nav.append(notebook);
-            var data=new Gtk.ListBox(); data.add_css_class("boxed-list"); for(int i=0;i<8;i++){var label=new Gtk.Label("Document %02d                 Modified today                 24 KB".printf(i+1)); label.xalign=0; data.append(label);} nav.append(data); data.select_row(data.get_row_at_index(1));
-            var feedback=section("Menus, popovers and feedback"); r=row(); feedback.append(r); r.append(menu_button());
-            var pop=new Gtk.MenuButton(); pop.label="Plain popover"; var p=new Gtk.Popover(); var pc=new Gtk.Box(Gtk.Orientation.VERTICAL,8); pc.append(new Gtk.Label("Native popover contents")); var destructive=new Gtk.Button.with_label("Destructive item"); destructive.add_css_class("destructive-action"); pc.append(destructive); p.child=pc; pop.popover=p; r.append(pop);
-            var toast=new Gtk.Button.with_label("Show toast"); toast.clicked.connect(()=>toast_overlay.add_toast(new Adw.Toast("Majoris notification"))); r.append(toast);
-            var dialog=new Gtk.Button.with_label("Open alert dialog"); dialog.clicked.connect(()=>{var d=new Adw.AlertDialog("Save changes?","Native Majoris dialog surface and response buttons."); d.add_response("cancel","Cancel"); d.add_response("save","Save"); d.set_response_appearance("save",Adw.ResponseAppearance.SUGGESTED); d.present(owner);}); r.append(dialog);
-            var banner=new Adw.Banner("Majoris update available"); banner.button_label="Details"; banner.revealed=true; feedback.append(banner);
-            for(int i=0;i<12;i++) append(new Gtk.Label("Overlay scrollbar test row %d".printf(i+1)));
+            var exp=new Adw.ExpanderRow(); exp.title="Expander row"; var nested=new Adw.ActionRow(); nested.title="Expanded detail"; exp.add_row(nested); list.append(exp); exp.expanded=true; var buttonrow=new Adw.ActionRow(); buttonrow.title="Button Row"; buttonrow.subtitle="A direct action inside preferences"; buttonrow.add_suffix(new Gtk.Button.with_label("Configure")); list.append(buttonrow);
+            var nav=section("Navigation","navigation"); var ns=new Gtk.Stack(); ns.add_titled(new Gtk.Label("List content"),"list","List"); ns.add_titled(new Gtk.Label("Grid content"),"grid","Grid"); ns.add_titled(new Gtk.Label("Columns content"),"columns","Columns"); var switcher=new Gtk.StackSwitcher(); switcher.stack=ns; switcher.halign=Gtk.Align.START; nav.append(switcher); probes.insert("view_switcher",switcher); nav.append(ns);
+            var notebook=new Gtk.Notebook(); notebook.append_page(new Gtk.Label("Native GTK tab"),new Gtk.Label("Tab one")); notebook.append_page(new Gtk.Label("Second tab"),new Gtk.Label("Tab two")); nav.append(notebook); probes.insert("notebook",notebook);
+            var data_card=section("Lists, Tables & Selection","data");
+            var data_model=new Gtk.StringList({"Documents|Folder|Today","Majoris Design.md|Markdown|14:28","Wallpaper.png|PNG image|Yesterday"});
+            var data_selection=new Gtk.SingleSelection(data_model); data_selection.selected=1;
+            var data=new Gtk.ColumnView(data_selection); data.add_css_class("majoris-data-view"); data.add_css_class("boxed-list");
+            string[] headings={"NAME","TYPE","MODIFIED"};
+            data.show_column_separators=true; data.show_row_separators=true;
+            for(int i=0;i<headings.length;i++) {
+                int column_index=i;
+                var cell_factory=new Gtk.SignalListItemFactory();
+                cell_factory.setup.connect((item)=>{var label=new Gtk.Label("");label.xalign=0;((Gtk.ListItem)item).child=label;});
+                cell_factory.bind.connect((item)=>{var value=(Gtk.StringObject)((Gtk.ListItem)item).item; ((Gtk.Label)((Gtk.ListItem)item).child).label=value.get_string().split("|")[column_index];});
+                var column=new Gtk.ColumnViewColumn(headings[i],cell_factory); column.expand=false;data.append_column(column);
+            }
+            int last_data_width=0;
+            data.add_tick_callback((widget,clock)=>{int width=data.get_width();if(width!=last_data_width && width>200){last_data_width=width;int[] widths={(int)(width*1.4/3),(int)(width*0.8/3),0};widths[2]=width-widths[0]-widths[1];for(uint c=0;c<3;c++)((Gtk.ColumnViewColumn)data.columns.get_item(c)).fixed_width=widths[c];}return Source.CONTINUE;});
+            data_card.append(data);
+            var feedback=section("Popover & Menu","menus"); r=row(); feedback.append(r); r.append(menu_button());
+            var pop=new Gtk.MenuButton(); pop.label="Plain popover"; var p=new Gtk.Popover(); var pc=new Gtk.Box(Gtk.Orientation.VERTICAL,8); pc.append(new Gtk.Label("Native popover contents")); var destructive=new Gtk.Button.with_label("Move to Trash"); destructive.add_css_class("majoris-menu-danger"); pc.append(destructive); p.child=pc; pop.popover=p; r.append(pop);
+            var toast=new Gtk.Button.with_label("Show toast"); toast.clicked.connect(()=>show_toast()); r.append(toast);
+            var dialog=new Gtk.Button.with_label("Open alert dialog"); dialog.clicked.connect(()=>{show_dialog();}); r.append(dialog);
+            var feedbackpage=section("Banner & Toast","feedback"); var banner=new Adw.Banner("A system update is ready to install."); banner.button_label="Install"; banner.revealed=true; feedbackpage.append(banner); var tb=new Gtk.Button.with_label("Show toast with Undo"); tb.clicked.connect(()=>show_toast()); feedbackpage.append(tb);
+            if(filter=="overview") for(int i=0;i<12;i++) append(new Gtk.Label("Overlay scrollbar test row %d".printf(i+1)));
         }
     }
 }

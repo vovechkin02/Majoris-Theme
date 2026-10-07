@@ -1,12 +1,39 @@
 decoration { border-radius: ${window_radius}; box-shadow: ${window_shadow}; border: 1px solid alpha(@text,.12); }
 window.csd { border-radius: ${window_radius}; }
-button.titlebutton { min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0; border: 1px solid transparent; border-radius: ${control_radius}; background-color: transparent; box-shadow: none; }
+headerbar { -GtkWidget-window-dragging: true; }
+button.titlebutton, button.titlebutton:hover, button.titlebutton:active, button.titlebutton:backdrop {
+  min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0 1px;
+  border: 1px solid transparent; border-radius: ${control_radius}; background-image: none; box-shadow: none; outline: none;
+}
+button.titlebutton { background-color: transparent; color: @text_secondary; }
 button.titlebutton image { -gtk-icon-transform: none; }
-button.titlebutton:hover { background-color: @hover; }
-button.titlebutton:active { background-color: @active; }
-button.titlebutton.close:hover { background-color: @danger; color: @surface; }
-button.titlebutton.close:active { background-color: @danger_pressed; }
+button.titlebutton:hover { background-color: @hover; color: @text; box-shadow: none; }
+button.titlebutton:active { background-color: @active; color: @text; box-shadow: none; }
+button.titlebutton.close:hover { background-color: @danger; color: @surface; box-shadow: none; }
+button.titlebutton.close:active { background-color: @danger_pressed; color: @surface; box-shadow: none; }
+button.titlebutton:focus { border-color: ${.window-control.is-focus|border-color}; outline: none; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
 button.titlebutton:backdrop { color: @text_tertiary; }
-popover.background, menu { background-color: @surface; border: 1px solid @border_soft; border-radius: ${structure_radius}; padding: 6px; box-shadow: ${pop_shadow}; }
-menuitem { border-radius: ${control_radius}; padding: 6px 10px; }
-menuitem:hover { background-color: @hover; }
+popover.background, menu { background-color: ${.popover|background}; border: 1px solid @border_soft; border-radius: ${structure_radius}; padding: ${.popover|padding}; box-shadow: ${pop_shadow}; }
+menuitem { min-height: ${.menu-item|height}; border: none; border-radius: ${control_radius}; padding: ${.menu-item|padding}; box-shadow: none; font-size: ${.menu-item|font-size}; }
+menuitem:hover { background-color: @hover; box-shadow: none; }
+menuitem:active { background-color: @active; box-shadow: none; }
+menuitem.destructive, menuitem.majoris-menu-danger { color: @danger; }
+menu separator { min-height: 1px; margin: 5px; background-color: @border_soft; }
+viewswitcher button, stackswitcher button { min-width: 0; }
+notebook > header tab:checked { background-image: none; }
+notebook > header tab:checked label { min-height: 34px; padding: 0 2px; margin: 0 -2px; border-bottom: 2px solid @primary_500; }
+dialog decoration { box-shadow: ${.dialog|box-shadow}; }
+dialog .dialog-action-area { background-color: @surface_secondary; border-top: 1px solid @border_soft; padding: ${.dialog-actions|padding}; }
+button.suggested-action, button.suggested-action:hover, button.suggested-action:active, button.suggested-action:disabled, button.destructive-action, button.destructive-action:hover, button.destructive-action:active, button.destructive-action:disabled { background-image: none; text-shadow: none; -gtk-icon-shadow: none; }
+check, check:checked, check:indeterminate, radio, radio:checked, switch, switch:checked, switch slider { background-image: none; }
+progressbar trough, progressbar progress { background-image: none; min-height: ${.progress|height}; border: none; }
+notebook > header tab:checked { border: none; box-shadow: none; }
+levelbar trough { border: none; background: transparent; }
+spinner { background-color: transparent; }
+progressbar.horizontal trough, progressbar.horizontal progress { min-height: ${.progress|height}; background-image: none; border: none; }
+notebook > header > tabs > tab:checked { border: none; box-shadow: none; background-image: none; }
+button:hover, button:active { background-image: none; }
+menu { min-width: 191px; }
+notebook > header.top > tabs > tab:checked, notebook > header.bottom > tabs > tab:checked, notebook > header.left > tabs > tab:checked, notebook > header.right > tabs > tab:checked { border: none; background-image: none; box-shadow: none; }
+combobox { min-height: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
+combobox button.combo { min-height: ${control_content_size}; min-width: ${dropdown_content_width}; padding: ${.select|padding}; border: 1px solid @border; border-radius: ${control_radius}; background-image: none; box-shadow: ${control_shadow}; }

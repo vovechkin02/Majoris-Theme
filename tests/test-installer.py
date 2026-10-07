@@ -1,4 +1,4 @@
-import os,subprocess,tempfile
+import json,os,subprocess,tempfile
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
 with tempfile.TemporaryDirectory() as d:
@@ -8,6 +8,16 @@ with tempfile.TemporaryDirectory() as d:
     subprocess.run(command+['install'],env=env,check=True)
     subprocess.run(command+['install'],env=env,check=True)
     assert css.is_symlink()
+    journal=Path(d)/'state/majoris-theme/install.json'
+    records=json.loads(journal.read_text())
+    assets=Path(d)/'config/gtk-4.0/assets'
+    assets.unlink()
+    legacy=[r for r in records if r['path']!=str(assets)]
+    journal.write_text(json.dumps(legacy))
+    subprocess.run(command+['install'],env=env,check=True)
+    migrated=json.loads(journal.read_text())
+    assert migrated[:len(legacy)]==legacy,'Existing backups changed during asset migration'
+    assert assets.is_symlink() and (assets/'spinner.svg').is_file()
     css.unlink(); css.write_text('subsequent edit')
     assert subprocess.run(command+['uninstall'],env=env,capture_output=True).returncode!=0
     assert css.read_text()=='subsequent edit'

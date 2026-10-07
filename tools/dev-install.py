@@ -10,24 +10,28 @@ journal=state/'install.json'
 def present(p): return p.exists() or p.is_symlink()
 def expected(p,target): return p.is_symlink() and os.readlink(p)==target
 if sys.argv[1]=='install':
+    previous=[]
     if journal.exists():
-        records=json.loads(journal.read_text())
-        assert all(expected(Path(r['path']),r['target']) for r in records),'Installation changed; restore or resolve conflicts first'
-        print('Majoris development installation already active'); sys.exit()
+        previous=json.loads(journal.read_text())
+        assert all(expected(Path(r['path']),r['target']) for r in previous),'Installation changed; restore or resolve conflicts first'
     state.mkdir(parents=True,exist_ok=True)
     pairs=[(data/'themes/Majoris',root/'theme/Majoris'),(data/'icons/Majoris',root/'icons/Majoris'),
            (config/'gtk-4.0/colors.css',root/'theme/Majoris/gtk-4.0/colors.css'),(config/'gtk-4.0/gtk.css',root/'theme/Majoris/gtk-4.0/gtk.css'),(config/'gtk-4.0/gtk-dark.css',root/'theme/Majoris/gtk-4.0/gtk-dark.css'),
+           (config/'gtk-4.0/assets',root/'theme/Majoris/gtk-4.0/assets'),
            (config/'fontconfig/conf.d/65-majoris-fonts.conf',root/'fonts/fontconfig/65-majoris-fonts.conf')]
     if (root/'fonts/PlusJakartaSans').is_dir(): pairs.append((data/'fonts/PlusJakartaSans',root/'fonts/PlusJakartaSans'))
-    records=[]
-    for i,(path,target) in enumerate(pairs):
+    installed={r['path'] for r in previous}
+    pairs=[(path,target) for path,target in pairs if str(path) not in installed]
+    if not pairs:print('Majoris development installation already active');sys.exit()
+    records=previous.copy()
+    for i,(path,target) in enumerate(pairs,start=len(previous)):
         path.parent.mkdir(parents=True,exist_ok=True)
         backup=state/('backup-'+str(i))
         assert not present(backup),'Unexpected backup: '+str(backup)
         records.append({'path':str(path),'target':str(target),'backup':str(backup) if present(path) else None})
     journal.write_text(json.dumps(records,indent=2)+'\n')
     try:
-        for r in records:
+        for r in records[len(previous):]:
             path=Path(r['path'])
             if r['backup']: shutil.move(str(path),r['backup'])
             path.symlink_to(r['target'],target_is_directory=Path(r['target']).is_dir())
