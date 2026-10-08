@@ -1,0 +1,162 @@
+{
+  "review_date": "2026-10-08",
+  "scope": "Dark native component review against unchanged supplied authority.",
+  "rows": [
+    [
+      "Surfaces",
+      "overview.png",
+      "PASS",
+      "Neutral window/card/elevated hierarchy, soft dividers and semantic shadows match the dark cascade."
+    ],
+    [
+      "Typography",
+      "overview.png",
+      "PASS",
+      "Exact Plus Jakarta Sans in realized Pango; primary/secondary/tertiary text match. Same font and sizes in both variants."
+    ],
+    [
+      "Buttons",
+      "states-buttons.png",
+      "PASS",
+      "Neutral, primary and destructive normal/hover/pressed/focus/disabled states; primary hover #7377F3, explicit danger hover #E34B5B."
+    ],
+    [
+      "Window controls",
+      "states-controls.png",
+      "PASS",
+      "32\u00d732 plates, exact 16\u00d716 glyphs, 4px corners, no generic shadow; neutral/red states, .36 focus halo, #666670 inactive."
+    ],
+    [
+      "Sidebar",
+      "overview.png",
+      "PASS",
+      "Surface #1D1D20, translucent selection, #C7D2FE text and #818CF8 indicator."
+    ],
+    [
+      "Selection",
+      "selection.png",
+      "PASS",
+      "18px native check/radio, dark unchecked borders and white selected glyphs; inactive/disabled controls remain native."
+    ],
+    [
+      "Inputs",
+      "inputs.png",
+      "PASS",
+      "Elevated entry/search/password/dropdown/spin/font/colour selectors; caret, selection and dark focus overrides."
+    ],
+    [
+      "Switch",
+      "selection.png",
+      "PASS",
+      "40\u00d722 track, 16px thumb, dark off track/neutral thumb, indigo on/white thumb."
+    ],
+    [
+      "Ranges",
+      "ranges.png",
+      "PASS",
+      "Dark trough, indigo fill, light thumb with #818CF8 border and distinct thumb shadow."
+    ],
+    [
+      "Progress",
+      "ranges.png",
+      "PASS",
+      "8px bar, 4px radius, #38383D trough and #6366F1 fill."
+    ],
+    [
+      "Level bar",
+      "ranges.png",
+      "PASS",
+      "Eight discrete blocks, six success filled, two neutral; 2px gaps/radii."
+    ],
+    [
+      "Spinner",
+      "ranges.png",
+      "PASS",
+      "Separate dark vector is actually used. Both native rendered-window tests find #34365D ring and #818CF8 arc at 20\u00d720."
+    ],
+    [
+      "Preferences",
+      "preferences.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: native row internals differ from HTML; surface, divider, no boxed-list shadow and expander detail treatment match."
+    ],
+    [
+      "Tabs",
+      "navigation.png",
+      "PASS",
+      "36px header, #818CF8 2px underline, neutral hover/press; shared geometry retained."
+    ],
+    [
+      "View switcher",
+      "navigation.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: native content policy/label layout differs; outer 6px radius/2px inset and selected #35353A treatment match."
+    ],
+    [
+      "Tables",
+      "data.png",
+      "PASS",
+      "Elevated header, surface rows, soft separators; selected text #E0E7FF distinct from sidebar."
+    ],
+    [
+      "Popover/menu",
+      "menus-popup.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: anchoring/arrow/width are toolkit owned; translucent elevated surface, border, strong shadow and flat menu rows match. Appearance submenu is functional."
+    ],
+    [
+      "Banner",
+      "feedback.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: Adw centers its message. Dark banner fill/border/text and primary action match; hidden surface stays zero height."
+    ],
+    [
+      "Toast",
+      "feedback.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: adaptive width and close/action placement differ. #0F0F12 surface, white text, subtle white border and #A5B4FC action match."
+    ],
+    [
+      "Dialog",
+      "dialog.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: native response structure and sizing differ. Surface, 8px corners, border, elevation and elevated footer match."
+    ],
+    [
+      "Status page",
+      "status.png",
+      "PASS",
+      "48px translucent indigo tile with #A5B4FC icon, primary title and secondary description."
+    ],
+    [
+      "Tooltip",
+      "tooltip-popup.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: GTK has no HTML left-pointing arrow. Actual tooltip is light #F4F4F5 with #18181B text, 4px corners and dark shadow."
+    ],
+    [
+      "Scrollbar",
+      "gtk3-scrolled.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: overlay visibility/allocation depends on toolkit/input. Quiet track and #686872 6px thumb treatment implemented."
+    ],
+    [
+      "GTK3",
+      "gtk3-native.png",
+      "PARTIAL \u2014 native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: fallback decoration frame/WM geometry differs. Imported Adwaita combined states, spin child backgrounds and notebook stack have explicit dark resets; native loader/auto and rendered asset tests pass."
+    ],
+    [
+      "GTK4",
+      "overview.png",
+      "PASS",
+      "Native parser, state, font, geometry, live/system switching and factory checks pass; per-component structural limits remain listed."
+    ],
+    [
+      "GNOME Shell",
+      "split.png",
+      "NOT VALIDATABLE UNDER WSL",
+      "GNOME SESSION VALIDATION REQUIRED: both stylesheet variants and conventional dark alias pass static checks; Shell runtime and switching need the target GNOME VM."
+    ]
+  ]
+}

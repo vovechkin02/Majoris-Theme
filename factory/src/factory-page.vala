@@ -58,7 +58,9 @@ namespace MajorisThemeFactory {
             Object (orientation: Gtk.Orientation.VERTICAL, spacing: 16);
             owner=window; filter=selected; margin_start=24; margin_end=24; margin_top=24; margin_bottom=24;
             var title=new Gtk.Label("GTK & libadwaita Controls"); title.xalign=0; title.add_css_class("title-1"); append(title);
-            append(new Gtk.Label("Hover and hold buttons to test real states; Tab moves keyboard focus. No simulated CSS states."));
+            var description=new Gtk.Label("Majoris control gallery with revised titlebar controls and verified interaction states."); description.xalign=0; var description_box=new Gtk.Box(Gtk.Orientation.VERTICAL,0); description_box.append(description); append(description_box);
+            var hidden_banner=new Adw.Banner("Hidden banner must not leave a surface");
+            hidden_banner.revealed=false; description_box.append(hidden_banner); probes.insert("hidden_banner",hidden_banner);
             gallery=new Gtk.Grid(); gallery.column_spacing=16; gallery.row_spacing=16; gallery.column_homogeneous=true; append(gallery);
             var buttons=section("Buttons & Actions","buttons"); var r=row(); buttons.append(r);
             string[] labels={"Default","Suggested","Destructive","Flat","Disabled"};
@@ -80,7 +82,7 @@ namespace MajorisThemeFactory {
             var entry=new Gtk.Entry(); entry.text="Standard text entry"; r.append(entry); probes.insert("entry",entry);
             var search=new Gtk.SearchEntry(); r.append(search);
             var password=new Gtk.PasswordEntry(); password.show_peek_icon=true; r.append(password);
-            r=row(); inputs.append(r); var chooser=new Gtk.DropDown.from_strings({"Dropdown","Automatic updates","Ask every time"}); r.append(chooser); probes.insert("dropdown",chooser); r.append(new Gtk.SpinButton.with_range(0,100,1)); r.append(new Gtk.ColorButton()); r.append(new Gtk.FontButton());
+            r=row(); inputs.append(r); var chooser=new Gtk.DropDown.from_strings({"Dropdown","Automatic updates","Ask every time"}); r.append(chooser); probes.insert("dropdown",chooser); r.append(new Gtk.SpinButton.with_range(0,100,1)); var color_button=new Gtk.ColorButton(); Gdk.RGBA indigo=Gdk.RGBA(); indigo.parse("#6366F1"); color_button.rgba=indigo; r.append(color_button); var font_button=new Gtk.FontButton(); font_button.font="Plus Jakarta Sans 10"; r.append(font_button);
             var ranges=section("Ranges & Progress","ranges"); var scale=new Gtk.Scale.with_range(Gtk.Orientation.HORIZONTAL,0,100,1); scale.set_value(62); ranges.append(scale);
             var progress=new Gtk.ProgressBar(); progress.fraction=0.68; ranges.append(progress);
             var level=new Gtk.LevelBar.for_interval(0,8); level.mode=Gtk.LevelBarMode.DISCRETE; level.value=6; ranges.append(level); var spinner=new Gtk.Spinner(); spinner.halign=Gtk.Align.START; spinner.start(); ranges.append(spinner); var stopped=new Gtk.Spinner(); stopped.halign=Gtk.Align.START; ranges.append(stopped);

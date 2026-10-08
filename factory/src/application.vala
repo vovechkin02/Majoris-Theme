@@ -1,14 +1,27 @@
 namespace MajorisThemeFactory {
+    [CCode (cname = "majoris_theme_attach")]
+    public extern static void attach_theme ();
     public class Application : Adw.Application {
         bool report;
         string page;
-        public Application (bool geometry,string selected="overview") {
+        string variant;
+        public Application (bool geometry,string selected="overview",string scheme="light") {
             Object (application_id: "com.majoris.ThemeFactory", flags: ApplicationFlags.NON_UNIQUE);
             report = geometry;
             page=selected;
+            variant=scheme;
         }
         protected override void activate () {
-            Adw.StyleManager.get_default ().color_scheme = Adw.ColorScheme.FORCE_LIGHT;
+            var style = Adw.StyleManager.get_default ();
+            style.color_scheme = variant=="dark" ? Adw.ColorScheme.FORCE_DARK : (variant=="system" ? Adw.ColorScheme.DEFAULT : Adw.ColorScheme.FORCE_LIGHT);
+            attach_theme ();
+            var scheme_action = new SimpleAction.stateful ("scheme", VariantType.STRING, new Variant.string (variant));
+            scheme_action.activate.connect ((value) => {
+                string mode=value.get_string ();
+                style.color_scheme=mode=="dark" ? Adw.ColorScheme.FORCE_DARK : (mode=="system" ? Adw.ColorScheme.DEFAULT : Adw.ColorScheme.FORCE_LIGHT);
+                scheme_action.set_state (value);
+            });
+            add_action (scheme_action);
             Gtk.Settings.get_default ().gtk_decoration_layout = ":minimize,maximize,close";
             Gtk.Settings.get_default ().gtk_icon_theme_name = "Majoris";
             if(Environment.get_variable("MAJORIS_CAPTURE")=="1") Gtk.Settings.get_default().gtk_enable_animations=false;

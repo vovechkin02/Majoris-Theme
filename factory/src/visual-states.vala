@@ -13,7 +13,7 @@ namespace MajorisThemeFactory {
                 if(group=="inputs" && (k<6 || k>7))continue;
                 if(group=="selection" && (k<8 || k>10))continue;
                 if(group=="navigation" && k<11)continue;
-                var card=new Gtk.Box(Gtk.Orientation.VERTICAL,8); card.add_css_class("card");
+                var card=new Gtk.Box(Gtk.Orientation.VERTICAL,8); card.add_css_class("card"); card.add_css_class("majoris-state-block");
                 var heading=new Gtk.Label(kinds[k]); heading.xalign=0; heading.margin_top=12; heading.margin_start=12; card.append(heading);
                 var grid=new Gtk.Grid(); grid.column_spacing=12; grid.row_spacing=10; grid.margin_start=12; grid.margin_end=12; grid.margin_bottom=12;
                 string[] names={"Default","Hover","Pressed","Focus","Disabled","Selected","Backdrop"};

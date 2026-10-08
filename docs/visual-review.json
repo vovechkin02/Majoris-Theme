@@ -1,36 +1,228 @@
 {
-  "review_date": "2026-10-07",
-  "scope": "Structured native visual review, not pixel equality. PASS covers the stated component treatment; the separate typography and VM rows remain acceptance boundaries.",
+  "review_date": "2026-10-08",
+  "scope": "Exact supplied-font completion review. PASS covers exposed Majoris styling; native structure and full GNOME validation are separately classified.",
   "rows": [
-    ["Window controls", "states-controls.png", "PASS", "32x32 plates, 16x16 exact glyphs and 4px corners. Neutral hover/pressed and red close states have no generic control shadows. Dedicated focus ring; tertiary backdrop glyphs. Native image-circle leak reset."],
-    ["Simple headerbar", "simple.png", "PASS", "48px including the divider; 32px content and 15px total vertical padding. Actual native fixture, not a geometry-only claim."],
-    ["Dense headerbar", "dense.png", "PASS", "48px including divider, real entry/dropdown and bordered navigation versus flat search/view/menu. Controls remain 32px."],
-    ["Split headerbars", "split.png", "PASS", "Both native headers are 48px; 212px sidebar, square internal pane join and coherent shared divider. Outer corners remain structural."],
-    ["Normal/primary/destructive buttons", "states-buttons.png", "PASS", "Native state samples visibly distinguish neutral, p600/p700/p800 and danger states, with 4px corners and semantic shadows. GTK3 painted-background tests additionally verify palette without trusting computed color alone."],
-    ["Flat/icon/split buttons", "buttons.png", "PASS", "32px ordinary/icon plates; flat buttons remain unelevated. Real Adw.SplitButton demonstrates asymmetric joined corners."],
-    ["Sidebar", "overview.png", "PASS", "212px pane; selected p50/p700 row with a 2px left indicator inset 9px vertically. Native target is 34px plus 2px row gap."],
-    ["Cards/boxed lists", "preferences.png", "PASS", "Card elevation and 8px structure differ from unelevated boxed lists. Card heading/divider/body hierarchy now follows the reference."],
-    ["Preference rows", "preferences.png", "PARTIAL", "50px minimum, padding, separators and title/subtitle colors are implemented and inspected. Real EntryRow/PasswordEntryRow/SpinRow own editable layouts rather than HTML's right-aligned input equivalents; natural font metrics and expanded content can exceed 50px."],
-    ["Segmented toggles", "selection.png", "PASS", "Native grouped toggles use a radius-6 surface2 container, 2px padding/gap, 28px children and selected white/control elevation."],
-    ["Tabs", "navigation.png", "PASS", "36px target, text emphasis and 2px inset active underline. GTK3 removes its orientation-specific stock underline and uses the label for exact 10px inset; unsupported weight650 translates to600."],
-    ["View switcher", "states-navigation.png", "PARTIAL", "Container and 28px treatment are native. Label-only Gtk.StackSwitcher matches the reference gallery; real Adw.ViewSwitcher is also tested and adds toolkit-required page icons, so its content differs from the iconless HTML example."],
-    ["Entry/search/password/dropdown", "inputs.png", "PASS", "32px entries and native focus, realistic dropdown labels and >=150px minimum; nested rows reset so they do not stretch the header. GTK3 avoids double combobox borders."],
-    ["Font/color/spin choosers", "inputs.png", "PARTIAL", "Native chooser and spin controls are themed and functional; toolkit-owned color/font preview and value/text sizing differ from the simplified HTML swatch/value examples."],
-    ["Checkbox/radio/switch", "states-selection.png", "PASS", "Native unchecked/checked/mixed/disabled and focus examples; selected p500. Switch allocations are 40x22 with a 16px bordered, shadowed thumb. Disabled indicator opacity no longer compounds with the parent."],
-    ["Scale/progress/discrete level", "ranges.png", "PASS", "Exact component trough colors, 8px progress, eight discrete level blocks with six filled, 2px gaps and radius2. Native range thumb remains circular."],
-    ["Spinner", "ranges.png", "PASS", "Real GtkSpinner uses a generated 20px vector with a 2px p200 ring and p600 top arc, rotating through native CSS at 800ms. Factory alignment prevents stretching the icon across a vertical card."],
-    ["Popover/menu", "menus-popup.png", "PARTIAL", "Complete native popup surface: 205px plate, radius8, white .97, strong surface shadow, flat 32px Open/Rename/Duplicate rows and a text-danger Trash row. Toolkit arrow and keyboard accelerators remain native additions; the reference has no arrow."],
-    ["Banner", "feedback.png", "PARTIAL", "p50/p200 surface, 8px radius, padding and 28px primary Install treatment verified. Adw.Banner centers its message and does not expose HTML's leading info glyph layout through theme CSS."],
-    ["Toast", "feedback.png", "PARTIAL", "Dark #222226 surface, radius8, surface shadow, p300 Undo and spacing verified. Adw.ToastWidget retains its close control and its native minimum/layout produces a wider surface than HTML's max-width360; GTK CSS has no max-width property."],
-    ["Dialog", "dialog.png", "PARTIAL", "Real Adw.AlertDialog has radius8, dedicated dialog shadow, padded message and surface2 divided footer with Cancel/Discard. Libadwaita response layout distributes the buttons equally rather than using HTML's compact right-aligned actions."],
-    ["Status page", "status.png", "PASS", "Native 48px p50 tile, p600 glyph and reference title/description styling. Uses the available symbolic search glyph for the same empty-search meaning."],
-    ["Dense data", "data.png", "PASS", "Real Gtk.ColumnView, native selection model, exact reference sample data and three columns. Header uses text3/surface2 and 1.4:.8:.8 allocation; selected document uses p50/p800 separately from sidebar p700."],
-    ["Tooltip", "tooltip-popup.png", "PASS", "Actual pointer-triggered native tooltip has #222226 background, white text, 4px radius, 6/8 padding and 11px type. Explicit background/child resets prevent a stock white tooltip from masking the rule."],
-    ["Overlay scrollbars GTK4", "scrolled.png", "PASS", "Real scroller with excess content and programmatic scrolling; quiet transparent track and 6px #B9BAC1 thumb. Native overlay fading remains toolkit behavior."],
-    ["Overlay scrollbars GTK3", "gtk3-scrolled.png", "PASS", "Real Gtk.ScrolledWindow with 30 extra rows, overlay mode and actual scrolling. Same quiet thumb palette and transparent trough."],
-    ["GTK3 parity", "gtk3-native.png", "PARTIAL", "Native theme capture and painted colors support control/range parity. GTK3 cannot express weight650 and uses600; its notebook, chooser and subtitle/header layout APIs differ from libadwaita. Full desktop integration still needs the VM."],
-    ["Typography", "overview.png", "PARTIAL", "Strong sans-serif and system-ui mappings pass. Required Plus Jakarta Sans is absent, so both native and reference captures use installed fallback; exact font test skips77. Glyph metrics/line wrapping cannot be certified until the font is supplied."],
-    ["Stock application integration", "gtk4-demo.png", "PARTIAL", "Stock gtk4-demo launched and captured with user theme overrides; GTK3 fixture also runs without an appearance provider. Stock application's own glyph/theme choices and content layout can differ. Nautilus, Control Center and Majoris Clock are unavailable here."],
-    ["Shell/Mutter/scaling", "split.png", "PARTIAL", "Shell source grammar/selectors pass against Trixie48.7. WSL Xvfb/Openbox is not a Majoris GNOME Shell/Mutter session; compositor shadows, fractional scaling, Shell states, maximized/restore and desktop-wide input require final VM validation."]
+    [
+      "Window controls",
+      "states-controls.png",
+      "PASS",
+      "32x32 plates, 16x16 exact glyphs and 4px corners. Neutral hover/pressed and red close states have no generic control shadows. Dedicated focus ring; tertiary backdrop glyphs. Native image-circle leak reset."
+    ],
+    [
+      "Simple headerbar",
+      "simple.png",
+      "PASS",
+      "48px including the divider; 32px content and 15px total vertical padding. Actual native fixture, not a geometry-only claim."
+    ],
+    [
+      "Dense headerbar",
+      "dense.png",
+      "PASS",
+      "48px including divider; generic hidden compound-entry stack now reproduces Files and remains48px after compact suffix-button fix. Real Files allocation probe confirms both panes48px and controls32x32/glyphs16x16."
+    ],
+    [
+      "Split headerbars",
+      "split.png",
+      "PASS",
+      "Both native headers are 48px; 212px sidebar, square internal pane join and coherent shared divider. Outer corners remain structural."
+    ],
+    [
+      "Buttons",
+      "states-buttons.png",
+      "PASS",
+      "Native state samples visibly distinguish neutral, p600/p700/p800 and danger states, with 4px corners and semantic shadows. GTK3 painted-background tests additionally verify palette without trusting computed color alone."
+    ],
+    [
+      "Flat/icon/split buttons",
+      "buttons.png",
+      "PASS",
+      "32px ordinary/icon plates; flat buttons remain unelevated. Real Adw.SplitButton demonstrates asymmetric joined corners."
+    ],
+    [
+      "Sidebar",
+      "overview.png",
+      "PASS",
+      "212px pane; selected p50/p700 row with a 2px left indicator inset 9px vertically. Native target is 34px plus 2px row gap."
+    ],
+    [
+      "Cards/boxed lists",
+      "preferences.png",
+      "PASS",
+      "Card elevation and 8px structure differ from unelevated boxed lists. Card heading/divider/body hierarchy now follows the reference."
+    ],
+    [
+      "Preferences",
+      "preferences.png",
+      "PARTIAL — native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: after supplied-font activation ActionRow54, SwitchRow50, ComboRow50, EntryRow54, PasswordEntryRow54, SpinRow69, expanded ExpanderRow127px. Leading16/trailing12 and vertical8 padding plus separators retained. Editable rows own floating-title and input layout; SpinRow expands its native editor and ExpanderRow includes child content. Theme does not reparent native controls."
+    ],
+    [
+      "Segmented toggles",
+      "selection.png",
+      "PASS",
+      "Native grouped toggles use a radius-6 surface2 container, 2px padding/gap, 28px children and selected white/control elevation."
+    ],
+    [
+      "Tabs",
+      "navigation.png",
+      "PASS",
+      "36px target, text emphasis and 2px inset active underline. GTK3 removes its orientation-specific stock underline and uses the label for exact 10px inset; unsupported weight650 translates to600."
+    ],
+    [
+      "Navigation",
+      "states-navigation.png",
+      "PARTIAL — native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: Container and 28px treatment are native. Label-only Gtk.StackSwitcher matches the reference gallery; real Adw.ViewSwitcher is also tested and adds toolkit-required page icons, so its content differs from the iconless HTML example."
+    ],
+    [
+      "Inputs",
+      "inputs.png",
+      "PASS",
+      "32px entries and native focus, realistic dropdown labels and >=150px minimum; nested rows reset so they do not stretch the header. GTK3 avoids double combobox borders."
+    ],
+    [
+      "Font/color/spin choosers",
+      "inputs.png",
+      "PARTIAL — native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: outer 32px/4px/bordered surfaced controls retain neutral hover/press and indigo focus. FACTORY BUG fixed: chooser now selects supplied Plus Jakarta Sans and colour swatch indigo rather than default Sans/white. Native font name/style/size preview and colour swatch remain GTK-owned."
+    ],
+    [
+      "Checkbox/radio/switch",
+      "states-selection.png",
+      "PASS",
+      "Native unchecked/checked/mixed/disabled and focus examples; selected p500. Switch allocations are 40x22 with a 16px bordered, shadowed thumb. Disabled indicator opacity no longer compounds with the parent."
+    ],
+    [
+      "Scale/progress/discrete level",
+      "ranges.png",
+      "PASS",
+      "Exact component trough colors, 8px progress, eight discrete level blocks with six filled, 2px gaps and radius2. Native range thumb remains circular."
+    ],
+    [
+      "Spinner",
+      "ranges.png",
+      "PASS",
+      "Real GtkSpinner uses a generated 20px vector with a 2px p200 ring and p600 top arc, rotating through native CSS at 800ms. Factory alignment prevents stretching the icon across a vertical card."
+    ],
+    [
+      "Popover/menu",
+      "menus-popup.png",
+      "PARTIAL — native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: Complete native popup surface: 205px plate, radius8, white .97, strong surface shadow, flat 32px Open/Rename/Duplicate rows and a text-danger Trash row. Toolkit arrow and keyboard accelerators remain native additions; the reference has no arrow."
+    ],
+    [
+      "Banner",
+      "feedback.png",
+      "PARTIAL — native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: Adw.Banner centers text and has no leading-icon slot. Exposed p50/p200/radius8/action style retained. THEME BUG fixed: surface styling lives inside revealer, so unrevealed banners allocate0px and do not leave an empty strip in Files/Clock."
+    ],
+    [
+      "Toast",
+      "feedback.png",
+      "PARTIAL — native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: Dark #222226 surface, radius8, surface shadow, p300 Undo and spacing verified. Adw.ToastWidget retains its close control and its native minimum/layout produces a wider surface than HTML's max-width360; GTK CSS has no max-width property."
+    ],
+    [
+      "Dialog",
+      "dialog.png",
+      "PARTIAL — native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: Real Adw.AlertDialog has radius8, dedicated dialog shadow, padded message and surface2 divided footer with Cancel/Discard. Libadwaita response layout distributes the buttons equally rather than using HTML's compact right-aligned actions."
+    ],
+    [
+      "Status page",
+      "status.png",
+      "PASS",
+      "Native 48px p50 tile, p600 glyph and reference title/description styling. Uses the available symbolic search glyph for the same empty-search meaning."
+    ],
+    [
+      "Dense data",
+      "data.png",
+      "PASS",
+      "Real Gtk.ColumnView, native selection model, exact reference sample data and three columns. Header uses text3/surface2 and 1.4:.8:.8 allocation; selected document uses p50/p800 separately from sidebar p700."
+    ],
+    [
+      "Tooltip",
+      "tooltip-popup.png",
+      "PASS",
+      "Actual pointer-triggered native tooltip has #222226 background, white text, 4px radius, 6/8 padding and 11px type. Explicit background/child resets prevent a stock white tooltip from masking the rule."
+    ],
+    [
+      "Scrollbar",
+      "scrolled.png",
+      "PASS",
+      "Real scroller with excess content and programmatic scrolling; quiet transparent track and 6px #B9BAC1 thumb. Native overlay fading remains toolkit behavior."
+    ],
+    [
+      "Overlay scrollbars GTK3",
+      "gtk3-scrolled.png",
+      "PASS",
+      "Real Gtk.ScrolledWindow with 30 extra rows, overlay mode and actual scrolling. Same quiet thumb palette and transparent trough."
+    ],
+    [
+      "GTK3",
+      "gtk3-native.png",
+      "PARTIAL — native constraint",
+      "NATIVE TOOLKIT CONSTRAINT: supplied font and native spinner render verified. GTK3 rejects line-height while GTK4 accepts it; both accept heading letter-spacing. Weight650 maps to600; notebook/chooser/subtitle APIs differ from libadwaita. Pixman warnings were caused by undersized state-test window allocations, fixed with600x400 harness window; stderr remains visible."
+    ],
+    [
+      "Typography",
+      "overview.png",
+      "PASS",
+      "Supplied variable normal/italic TTFs are shared by GTK and Chromium; fc-match aliases and native rendered-label Pango resolution pass. GTK4 uses 24px/700/-0.02em page headings, 1.45 card-description line height and 1.5 dialog-body line height. Body13, buttons13/600, sidebar13, cards14, descriptions11.5, menu12, preference13/600 and11.5, dialog16/12, tooltip11, toast12 retain reference values. Pango/browser rasterization differs; GTK3 line-height limitation is recorded under GTK3."
+    ],
+    [
+      "Stock application integration",
+      "gtk4-demo.png",
+      "PASS",
+      "Files and Majoris Clock launched and reviewed with supplied font/icon settings. Real Files and factory measured48px headers/32x32 controls/16x16 glyphs; hidden-banner and dense-header defects fixed generically. GTK4 demo/GTK3 fixtures captured. Full GNOME integration remains separately unverified."
+    ],
+    [
+      "Shell/Mutter/scaling",
+      "split.png",
+      "NOT VALIDATABLE UNDER WSL",
+      "FULL-GNOME VALIDATION REQUIRED: Xvfb/Openbox and WSLg do not run GNOME Shell/Mutter/GDM. Wayland decorations, maximize/restore under Mutter, Shell/Quick Settings/overview/dock and fractional scaling remain VM checklist items."
+    ],
+    [
+      "Selection",
+      "states-selection.png",
+      "PASS",
+      "Native checkbox/radio checked, mixed, disabled and focus samples inspected with supplied font."
+    ],
+    [
+      "Switch",
+      "states-selection.png",
+      "PASS",
+      "40x22 allocation,16px thumb,p500 checked surface retained."
+    ],
+    [
+      "Progress",
+      "ranges.png",
+      "PASS",
+      "8px p500 progress and neutral trough retained."
+    ],
+    [
+      "Level bar",
+      "ranges.png",
+      "PASS",
+      "Native discrete eight blocks,six success filled,two neutral empty,2px gap/radius and8px height."
+    ],
+    [
+      "GTK4",
+      "overview.png",
+      "PASS",
+      "Native parser, geometry, palette/state and factory tests pass with exact Pango typeface; category-specific constraints remain listed."
+    ],
+    [
+      "GNOME Shell",
+      "split.png",
+      "NOT VALIDATABLE UNDER WSL",
+      "FULL-GNOME VALIDATION REQUIRED: Shell static tests pass but this is not a GNOME Shell runtime session."
+    ],
+    [
+      "Settings integration",
+      "preferences.png",
+      "NOT VALIDATABLE UNDER WSL",
+      "FULL-GNOME VALIDATION REQUIRED: Control Center rejects non-GNOME session; with a GNOME marker it runs but presents no visible surface. Blank capture rejected; no visual acceptance claimed."
+    ]
   ]
 }

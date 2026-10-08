@@ -1,4 +1,4 @@
-param([ValidateSet('bootstrap','build','test','install','uninstall','factory','inspector')][string]$Action='build')
+param([ValidateSet('bootstrap','build','test','install','uninstall','factory','inspector','capture','reference')][string]$Action='build',[ValidateSet('light','dark','auto')][string]$Variant='light')
 $ErrorActionPreference='Stop'
 $repo=(Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $linuxPath=(& wsl -d debian -- wslpath -a $repo.Replace('\','/')).Trim()
@@ -16,8 +16,10 @@ $command=switch ($Action) {
   test {'./scripts/test.sh'}
   install {'./scripts/install-dev.sh'}
   uninstall {'./scripts/uninstall-dev.sh'}
-  factory {'./scripts/run-factory.sh'}
+  factory {'./scripts/run-factory.sh --'+$Variant.Replace('auto','system')}
   inspector {'./scripts/run-inspector.sh'}
+  capture {'./scripts/capture-visual-regressions.sh --'+$Variant.Replace('auto','both')}
+  reference {'./scripts/render-html-reference.sh --'+$Variant.Replace('auto','both')}
 }
 & wsl -d debian -- bash -lc ($sync+$command)
 exit $LASTEXITCODE

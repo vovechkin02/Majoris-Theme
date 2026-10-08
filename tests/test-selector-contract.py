@@ -15,3 +15,17 @@ for v in ('3','4'):
     for selector in ['button','entry']:
         assert '128ms' in css[selector]['transition'] and 'transform' not in css[selector]['transition']
 print('Explicit cascade reset, inset tab/sidebar indicator and stationary motion contracts passed; runtime images supplement source checks')
+for version in ('3','4'):
+    css=rules(version)
+    expect(css,'.title-1','font-size',html('.page-title','font-size'))
+    expect(css,'.title-1','letter-spacing',html('.page-title','letter-spacing'))
+expect(rules('4'),'.majoris-card-description','line-height',html('.card-head p','line-height'))
+expect(rules('4'),'dialog.alert .body','line-height',html('.dialog-body p','line-height'))
+expect(rules('4'),'banner','padding','0')
+expect(rules('4'),'banner','border','none')
+expect(rules('4'),'banner > revealer > widget','background-color','@primary_50')
+expect(rules('4'),'banner > revealer > widget','border','1px solid @primary_200')
+expect(rules('4'),'banner > revealer > widget','padding',html('.banner','padding'))
+expect(rules('4'),'headerbar entry button','min-height','20px')
+expect(rules('4'),'headerbar entry button','border','none')
+expect(rules('4'),'headerbar entry button','box-shadow','none')

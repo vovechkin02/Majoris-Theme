@@ -1,0 +1,39 @@
+/* GTK3's imported Adwaita has more-specific combined-state and child rules. */
+button { text-shadow: none; -gtk-icon-shadow: none; }
+button:backdrop, button:disabled, button:backdrop:disabled { background-color: @surface_secondary; color: @text; background-image: none; }
+button:hover, button:backdrop:hover { background-color: @hover; color: @text; }
+button:active, button:backdrop:active { background-color: @active; color: @text; }
+button.suggested-action, button.suggested-action:backdrop, button.suggested-action:disabled, button.suggested-action:backdrop:disabled { background-color: #6366F1; border-color: #6366F1; color: white; }
+button.suggested-action:hover, button.suggested-action:backdrop:hover { background-color: #7377F3; border-color: #7377F3; color: white; }
+button.suggested-action:active, button.suggested-action:backdrop:active { background-color: #4F46E5; border-color: #4F46E5; color: white; }
+button.destructive-action, button.destructive-action:backdrop, button.destructive-action:disabled, button.destructive-action:backdrop:disabled { background-color: #DC3C4D; border-color: #DC3C4D; color: white; }
+button.destructive-action:hover, button.destructive-action:backdrop:hover { background-color: #E34B5B; border-color: #E34B5B; color: white; }
+button.destructive-action:active, button.destructive-action:backdrop:active { background-color: #B92F3E; border-color: #B92F3E; color: white; }
+button.flat, button.flat:backdrop, button.flat:disabled { background: transparent; border-color: transparent; }
+button.flat:hover, button.flat:backdrop:hover { background-color: @hover; }
+button.flat:active, button.flat:backdrop:active { background-color: @active; }
+spinbutton:not(.vertical) entry, spinbutton:not(.vertical) entry:backdrop { background: transparent; color: @text; border-color: transparent; box-shadow: none; }
+spinbutton:not(.vertical), spinbutton:not(.vertical):backdrop { background-color: @surface_secondary; color: @text; border-color: @border; }
+spinbutton:not(.vertical) button, spinbutton:not(.vertical) button:backdrop { background: transparent; color: @text; border-color: @border_soft; box-shadow: none; }
+spinbutton:not(.vertical) button:hover { background-color: @hover; }
+spinbutton:not(.vertical) button:active { background-color: @active; }
+notebook > stack, notebook > stack:backdrop { background-color: @surface; color: @text; }
+notebook, notebook:backdrop, notebook > header, notebook > header:backdrop { border-color: @border_soft; }
+decoration, window.solid-csd decoration { background-color: @surface; border-color: @border_soft; }
+button.titlebutton, button.titlebutton:backdrop { background: transparent; color: #A9A9B0; box-shadow: none; }
+button.titlebutton:backdrop { color: #666670; }
+button.titlebutton:hover, button.titlebutton:backdrop:hover { background-color: @hover; color: @text; box-shadow: none; }
+button.titlebutton:active, button.titlebutton:backdrop:active { background-color: @active; color: @text; box-shadow: none; }
+button.titlebutton.close:hover, button.titlebutton.close:backdrop:hover { background-color: #DC3C4D; color: white; }
+button.titlebutton.close:active, button.titlebutton.close:backdrop:active { background-color: #B92F3E; color: white; }
+/* Preserve GTK3 fallback allocation while removing inherited light paints. */
+notebook > stack:not(:only-child), notebook > stack:not(:only-child):backdrop { background-color: @surface; color: @text; }
+window.solid-csd decoration, window.solid-csd decoration:backdrop { box-shadow: none; background-color: @surface; border-color: @border_soft; }
+button:hover, button:active, button:disabled, button:backdrop, button:backdrop:hover, button:backdrop:active, button:backdrop:disabled { border-color: @border; }
+button.flat:hover, button.flat:active, button.flat:disabled, button.flat:backdrop { border-color: transparent; }
+button.suggested-action:hover { border-color: #7377F3; }
+button.suggested-action:active { border-color: #4F46E5; }
+button.destructive-action:hover { border-color: #E34B5B; }
+button.destructive-action:active { border-color: #B92F3E; }
+button.titlebutton:hover, button.titlebutton:active, button.titlebutton:backdrop { border-color: transparent; }
+notebook.frame, notebook.frame:backdrop { border-color: @border_soft; }

@@ -1,0 +1,68 @@
+/* Dark-only semantic overrides; shared allocations remain in gtk-common.css.in. */
+.view, columnview, treeview, iconview { background-color: @surface; color: @text; }
+columnview row:selected, listview row:selected, gridview child:selected { background-color: ${.table-row.selected|background}; color: ${.table-row.selected|color}; }
+button, entry, spinbutton, combobox button.combo, dropdown > button, searchentry, passwordentry { background-color: @surface_secondary; color: @text; }
+button:hover, entry:hover, dropdown > button:hover { background-color: @hover; }
+button:active, button:checked { background-color: @active; }
+button.flat, menubutton.flat > button { background-color: transparent; }
+button.flat:hover, menubutton.flat > button:hover { background-color: @hover; }
+button.flat:active, menubutton.flat > button:active { background-color: @active; }
+button:focus-visible, entry:focus, entry:focus-within, searchentry:focus-within, passwordentry:focus-within, dropdown:focus-within { border-color: #818CF8; }
+button.suggested-action, banner button { background-color: #6366F1; border-color: #6366F1; color: white; }
+button.suggested-action:hover, banner button:hover { background-color: #7377F3; border-color: #7377F3; }
+button.suggested-action:active, banner button:active { background-color: #4F46E5; border-color: #4F46E5; }
+button.suggested-action:focus-visible { border-color: #818CF8; box-shadow: ${.btn.primary:focus-visible|box-shadow}; }
+button.destructive-action { background-color: #DC3C4D; border-color: #DC3C4D; color: white; }
+button.destructive-action:hover { background-color: #E34B5B; border-color: #E34B5B; }
+button.destructive-action:active { background-color: #B92F3E; border-color: #B92F3E; }
+button.destructive-action:focus-visible { border-color: #818CF8; }
+headerbar entry button { background: transparent; }
+headerbar entry button:hover { background-color: @hover; }
+headerbar entry button:active { background-color: @active; }
+windowcontrols > button, button.titlebutton { background-color: transparent; color: #A9A9B0; }
+windowcontrols > button:hover, button.titlebutton:hover { background-color: #303035; color: #F4F4F5; box-shadow: none; }
+windowcontrols > button:active, button.titlebutton:active { background-color: #38383D; color: #F4F4F5; box-shadow: none; }
+windowcontrols > button.close:hover, button.titlebutton.close:hover { background-color: #DC3C4D; color: white; }
+windowcontrols > button.close:active, button.titlebutton.close:active { background-color: #B92F3E; color: white; }
+windowcontrols > button:focus-visible, button.titlebutton:focus-visible { border-color: #818CF8; box-shadow: ${.window-control:focus-visible|box-shadow}; }
+windowcontrols > button:backdrop, button.titlebutton:backdrop { background: transparent; color: #666670; box-shadow: none; }
+headerbar:backdrop .title { color: #6F6F78; }
+.sidebar, .navigation-sidebar, .majoris-sidebar { background-color: ${.sidebar|background}; }
+.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { background-color: ${.nav.active|background}; color: ${.nav.active|color}; background-image: linear-gradient(to bottom, transparent 9px, #818CF8 9px, #818CF8 calc(100% - 9px), transparent calc(100% - 9px)); }
+.majoris-data-view row:selected, treeview.view:selected, iconview.view:selected, row:selected { background-color: ${.table-row.selected|background}; color: ${.table-row.selected|color}; }
+.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { color: ${.nav.active|color}; }
+.majoris-segmented, viewswitcher, stackswitcher { background-color: ${.toggle-group|background}; }
+.majoris-segmented button:checked, viewswitcher button:checked, stackswitcher button:checked { background-color: ${.toggle.active|background}; }
+check, radio { background-color: ${.checkbox|background}; border-color: ${.checkbox|border-color}; color: white; }
+check:checked, radio:checked { background-color: #6366F1; border-color: #6366F1; }
+check:indeterminate { background-color: #26262A; color: #818CF8; border-color: #4A4A50; }
+switch { background-color: ${.switch|background}; border-color: ${.switch|border-color}; }
+switch:checked { background-color: #6366F1; border-color: #6366F1; }
+switch slider { background-color: ${.switch:after|background}; border-color: ${.switch:after|border-color}; }
+switch:checked slider { background-color: white; }
+entry, entry text, text, searchentry, passwordentry { caret-color: ${.entry|caret-color}; }
+selection { background-color: ${.entry::selection|background}; color: @text; }
+scale slider { background-color: ${.thumb|background}; border-color: ${.thumb|border-color}; box-shadow: ${.thumb|box-shadow}; }
+scale highlight, progressbar progress { background-color: #6366F1; }
+levelbar block.filled { background-color: #22A06B; }
+notebook > header tab:checked { background-image: linear-gradient(to right, transparent 10%, #818CF8 10%, #818CF8 90%, transparent 90%); }
+notebook > header tab:checked label { border-bottom-color: #818CF8; }
+.boxed-list > row.expander .expander { background-color: ${.expander-body|background}; }
+.boxed-list > row.expander list.nested { background-color: ${.expander-body|background}; box-shadow: inset 0 1px 0 @border_soft; }
+popover > contents, popover.background, menu { border-color: #3B3B40; }
+popover.background { background: transparent; }
+button.model:hover, modelbutton:hover, menuitem:hover, button.majoris-menu-danger:hover { background-color: ${.menu-item:hover|background}; }
+button.model:active, modelbutton:active, menuitem:active, button.majoris-menu-danger:active { background-color: ${.menu-item:active|background}; }
+kbd, shortcut { background-color: ${kbd|background}; color: @text; border-color: ${kbd|border-color}; box-shadow: ${kbd|box-shadow}; }
+banner { color: ${.banner|color}; }
+banner > revealer > widget { background-color: ${.banner|background}; border-color: ${.banner|border-color}; }
+banner .heading { color: ${.banner|color}; }
+toast { background-color: ${.toast|background}; color: ${.toast|color}; border: ${.toast|border}; }
+toast button { color: ${.toast a|color}; background: transparent; }
+toast button:hover { background-color: @hover; }
+statuspage image.icon { background-color: ${.status .icon|background}; color: ${.status .icon|color}; }
+dialog.alert floating-sheet .background, .dialog, alertdialog .dialog { border-color: #3B3B40; }
+tooltip, tooltip.background, tooltip > box, tooltip label { background-color: ${.tooltip|background}; color: ${.tooltip|color}; }
+tooltip, tooltip.background { box-shadow: ${.tooltip|box-shadow}; }
+tooltip > box, tooltip label { background: transparent; }
+.majoris-state-block { border-color: @border_soft; background-image: linear-gradient(180deg,#242428,#202023); }

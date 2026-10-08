@@ -46,7 +46,9 @@ for version in ('3','4'):
         shared=shared.replace('transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)', 'transparent 26.470588%, @primary_500 26.470588%, @primary_500 73.529412%, transparent 73.529412%')
     base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
     output(directory/'gtk.css','/* Generated; edit design/templates and regenerate. */\n'+base+'@import url("colors.css");\n'+render(shared+specific))
-    output(directory/'gtk-dark.css','/* Dark design pending: deliberately uses the specified light palette. */\n@import url("gtk.css");\n')
 p=ROOT/'theme/Majoris/gnome-shell/gnome-shell.css'
 p.parent.mkdir(parents=True,exist_ok=True)
 output(p,'/* Generated from Majoris HTML tokens. */\n'+render((ROOT/'design/templates/shell.css.in').read_text()))
+
+from generate_dark import generate
+generate(output)

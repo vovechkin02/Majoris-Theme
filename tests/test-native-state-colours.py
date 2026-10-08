@@ -3,8 +3,12 @@
 GTK4 does not expose computed box-shadow/radius; their separate contracts
 and full-frame state screenshots are explicitly source/render checks.
 """
-import sys,gi
+import sys,gi,os,json
 from css_contract import ROOT,TOKENS
+variant=os.environ.get('MAJORIS_VARIANT','light')
+if variant=='dark':
+    TOKENS=json.loads((ROOT/'design/tokens-dark.json').read_text())
+    TOKENS['color'].update(surface='#FFFFFF',text_tertiary='#666670',primary_600='#6366F1',primary_700='#7377F3',primary_800='#4F46E5',danger='#DC3C4D',danger_pressed='#B92F3E')
 version=sys.argv[1];gi.require_version('Gtk',version+'.0')
 from gi.repository import Gtk,GLib
 if version=='4':
@@ -13,8 +17,10 @@ if version=='4':
 else:
     from gi.repository import Gdk
     Gtk.init([]);window=Gtk.Window()
+# Avoid minimum-size windows clipping shadow damage into negative rectangles.
+window.set_default_size(600,400)
 Gtk.Settings.get_default().set_property('gtk-enable-animations',False)
-provider=Gtk.CssProvider();provider.load_from_path(str(ROOT/f'theme/Majoris/gtk-{version}.0/gtk.css'))
+provider=Gtk.CssProvider();provider.load_from_path(str(ROOT/f'theme/Majoris/gtk-{version}.0'/('gtk-dark.css' if variant=='dark' else 'gtk.css')))
 if version=='4':Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(),provider,Gtk.STYLE_PROVIDER_PRIORITY_USER)
 else:Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),provider,Gtk.STYLE_PROVIDER_PRIORITY_USER)
 box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -40,6 +46,9 @@ for b in buttons:
     close=b.has_css_class('close') if version=='4' else b.get_style_context().has_class('close')
     for state,color in [(Gtk.StateFlags.NORMAL,'text_secondary'),(Gtk.StateFlags.PRELIGHT,'surface' if close else 'text'),(Gtk.StateFlags.ACTIVE,'surface' if close else 'text'),(Gtk.StateFlags.BACKDROP,'text_tertiary')]:
         b.set_state_flags(state,True);settle()
+        # X11 can deliver a late inactive-window state while settling. These
+        # probes test the explicit state, so reapply it after native events.
+        b.set_state_flags(state,True)
         actual=b.get_style_context().get_color() if version=='4' else b.get_style_context().get_color(state)
         assert rgb(actual)==expected(color),(version,close,state,rgb(actual),expected(color))
         if version=='3' and state in (Gtk.StateFlags.PRELIGHT,Gtk.StateFlags.ACTIVE):
@@ -48,7 +57,7 @@ for b in buttons:
             assert rgb(background)==expected(token),(token,rgb(background))
 if version=='3':
     import cairo
-    for style,palette in [('',['surface','hover','active']),('suggested-action',['primary_600','primary_700','primary_800'])]:
+    for style,palette in [('',['surface_secondary' if variant=='dark' else 'surface','hover','active']),('suggested-action',['primary_600','primary_700','primary_800'])]:
         b=Gtk.Button(label='Native background probe')
         if style:b.get_style_context().add_class(style)
         box.pack_start(b,False,False,0);b.show();settle()

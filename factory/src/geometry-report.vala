@@ -40,8 +40,11 @@ namespace MajorisThemeFactory {
             for(var c=widget.get_first_child();c!=null;c=c.get_next_sibling())tree(c,b,ref first);
         }
         public static void print (HeaderFixture simple, HeaderFixture dense, SplitFixture split,Window main) {
-            stdout.printf("{\"simple_headerbar\":%s,\"dense_headerbar\":%s,\"split_sidebar_headerbar\":%s,\"split_content_headerbar\":%s,\"simple_window_controls\":%s,\"dense_window_controls\":%s,",header(simple.bar),header(dense.bar),header(split.sidebar_bar),header(split.content_bar),keyed_controls(simple.bar),keyed_controls(dense.bar));
-            foreach(var key in new string[]{"normal_icon_button","flat_icon_button","entry","dropdown","switch","switch_off"}) stdout.printf("\"%s\":%s,",key,allocation(main.gallery.probes.lookup(key)));
+            var context=main.gallery.get_first_child().get_pango_context();
+            var font=context.load_font(context.get_font_description());
+            stdout.printf("{\"resolved_pango_font\":\"%s\",",font.describe().to_string());
+            stdout.printf("\"simple_headerbar\":%s,\"dense_headerbar\":%s,\"split_sidebar_headerbar\":%s,\"split_content_headerbar\":%s,\"simple_window_controls\":%s,\"dense_window_controls\":%s,",header(simple.bar),header(dense.bar),header(split.sidebar_bar),header(split.content_bar),keyed_controls(simple.bar),keyed_controls(dense.bar));
+            foreach(var key in new string[]{"normal_icon_button","flat_icon_button","entry","dropdown","switch","switch_off","hidden_banner"}) stdout.printf("\"%s\":%s,",key,allocation(main.gallery.probes.lookup(key)));
             var notebook=(Gtk.Notebook)main.gallery.probes.lookup("notebook"); var tab_label=notebook.get_tab_label(notebook.get_nth_page(0));
             stdout.printf("\"tab\":{\"css_node_exposed\":false,\"label\":%s},\"view_switcher_button\":%s,",allocation(tab_label),allocation(find_node(main.gallery.probes.lookup("view_switcher"),"button")));
             stdout.printf("\"windowcontrols_simple\":%s,\"windowcontrols_dense\":%s,",controls(simple.bar),controls(dense.bar));

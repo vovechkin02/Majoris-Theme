@@ -1,4 +1,16 @@
 namespace MajorisThemeFactory {
+    // Public GTK CSS-node API models a native compound entry containing a
+    // compact suffix button. A homogeneous stack measures its hidden page,
+    // as real application location/search toolbars do.
+    public class CompoundHeaderEntry : Gtk.Box {
+        static construct { set_css_name("entry"); }
+        public CompoundHeaderEntry() {
+            Object(orientation:Gtk.Orientation.HORIZONTAL,spacing:0);
+            append(new Gtk.Label("Search"));
+            var suffix=new Gtk.Button.from_icon_name("go-down-symbolic");
+            suffix.margin_top=5; suffix.margin_bottom=5; append(suffix);
+        }
+    }
     public void install_menu_actions (Gtk.ApplicationWindow window) {
         foreach (var name in new string[]{"open","rename","duplicate","trash"}) {
             var action=new SimpleAction(name,null); action.activate.connect(()=>{}); window.add_action(action);
@@ -14,6 +26,9 @@ namespace MajorisThemeFactory {
         var model = new Menu ();
         model.append ("Open", "win.open"); model.append ("Rename", "win.rename"); model.append ("Duplicate", "win.duplicate");
         var section = new Menu (); var item=new MenuItem("Move to Trash",null); item.set_attribute_value("custom",new Variant.string("trash")); section.append_item(item); model.append_section(null,section);
+        var appearance = new Menu ();
+        appearance.append("Light","app.scheme::light"); appearance.append("Dark","app.scheme::dark"); appearance.append("System","app.scheme::system");
+        model.append_submenu("Appearance",appearance);
         var popover=new Gtk.PopoverMenu.from_model(model);
         var trash=new Gtk.Button.with_label("Move to Trash"); trash.add_css_class("majoris-menu-danger"); trash.action_name="win.trash";
         popover.add_child(trash,"trash");
@@ -39,7 +54,10 @@ namespace MajorisThemeFactory {
                 bar.pack_start (icon_button ("go-next-symbolic", "Forward"));
                 location = new Gtk.Entry (); location.text = "/home/majoris/Documents";
                 location.valign = Gtk.Align.CENTER; location.hexpand = true;
-                bar.title_widget = location;
+                var location_stack=new Gtk.Stack(); location_stack.valign=Gtk.Align.CENTER;
+                location_stack.add_named(location,"location");
+                location_stack.add_named(new CompoundHeaderEntry(),"search");
+                location_stack.visible_child_name="location"; bar.title_widget = location_stack;
                 search = icon_button ("system-search-symbolic", "Search"); search.add_css_class("flat"); bar.pack_end (search);
                 var view_button=icon_button ("view-grid-symbolic", "View"); view_button.add_css_class("flat"); bar.pack_end(view_button);
                 dropdown = new Gtk.DropDown.from_strings ({"Name", "Modified"}); dropdown.valign = Gtk.Align.CENTER; bar.pack_end (dropdown);

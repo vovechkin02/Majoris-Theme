@@ -49,9 +49,9 @@ viewswitcher button box { min-height: 0; padding: 0; margin: 0; }
 viewswitcher button label { font-size: ${.view-switch button|font-size}; }
 splitbutton > button { border-radius: ${.split-main|border-radius}; }
 splitbutton > menubutton > button { min-width: ${control_content_size}; padding: 0; border-left: none; border-radius: ${.split-arrow|border-radius}; }
-banner { background-color: @primary_50; color: @primary_800; border: 1px solid @primary_200; border-radius: ${structure_radius}; padding: ${.banner|padding}; font-size: ${.banner|font-size}; }
+banner { background: transparent; color: @primary_800; border: none; padding: 0; font-size: ${.banner|font-size}; }
 banner > revealer > box { padding: 0; border-spacing: ${.banner|gap}; }
-banner > revealer > widget { min-height: 28px; padding: 0; background: transparent; border-spacing: ${.banner|gap}; }
+banner > revealer > widget { min-height: 28px; padding: ${.banner|padding}; background-color: @primary_50; border: 1px solid @primary_200; border-radius: ${structure_radius}; border-spacing: ${.banner|gap}; }
 banner .heading { font-weight: 400; color: @primary_800; }
 banner button { min-height: ${banner_button_content_height}; }
 toast { background-color: ${.toast|background}; color: @surface; border: none; border-radius: ${structure_radius}; box-shadow: ${pop_shadow}; padding: ${.toast|padding}; font-size: ${.toast|font-size}; }
@@ -88,3 +88,9 @@ columnview.majoris-data-view cell { padding: ${.table-row div|padding}; font-siz
 columnview.majoris-data-view header button { min-height: 0; padding: ${.table-head div|padding}; border: none; border-radius: 0; background: @surface_secondary; color: @text_tertiary; font-size: ${.table-head|font-size}; font-weight: ${.table-head|font-weight}; box-shadow: none; }
 
 columnview.majoris-data-view header button > box { color: @text_tertiary; font-size: ${.table-head|font-size}; font-weight: ${.table-head|font-weight}; }
+.majoris-card-description { line-height: ${.card-head p|line-height}; }
+dialog.alert .body { line-height: ${.dialog-body p|line-height}; }
+/* Entry suffix controls fit inside the 32px parent, including native margins. */
+headerbar entry button { min-height: 20px; min-width: 20px; padding: 0; border: none; background: transparent; box-shadow: none; }
+headerbar entry button:hover { background-color: @hover; box-shadow: none; }
+headerbar entry button:active { background-color: @active; box-shadow: none; }

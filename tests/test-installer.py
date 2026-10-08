@@ -7,6 +7,11 @@ with tempfile.TemporaryDirectory() as d:
     command=['python3',str(root/'tools/dev-install.py')]
     subprocess.run(command+['install'],env=env,check=True)
     subprocess.run(command+['install'],env=env,check=True)
+    subprocess.run(command+['install','--variant=dark'],env=env,check=True)
+    assert css.resolve().name=='gtk-dark.css'
+    assert (css.parent/'colors-dark.css').is_file() and (css.parent/'assets/spinner-dark.svg').is_file()
+    subprocess.run(command+['install','--variant=auto'],env=env,check=True)
+    assert css.resolve().name=='gtk.css'
     assert css.is_symlink()
     journal=Path(d)/'state/majoris-theme/install.json'
     records=json.loads(journal.read_text())

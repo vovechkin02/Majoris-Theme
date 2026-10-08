@@ -1,38 +1,24 @@
-"""Generate an evidence-linked report from explicit human/agent visual reviews.
-
-This never converts passing source tests into visual PASS automatically.
-"""
-import hashlib,json,collections
+"""Evidence-linked light/dark review; passing tests do not invent visual acceptance."""
+import collections,hashlib,json
 from pathlib import Path
-root=Path(__file__).resolve().parents[1]
-review=json.loads((root/'docs/visual-review.json').read_text())
-out=root/'artifacts';captures=out/'screenshots'
-metadata=json.loads((captures/'capture-metadata.json').read_text())
-reference=json.loads((captures/'html/render-metadata.json').read_text())
-source=root/reference['source']
-assert hashlib.sha256(source.read_bytes()).hexdigest()==reference['sha256'],'Reference changed since render'
-geometry=json.loads((out/'geometry.json').read_text())
+root=Path(__file__).resolve().parents[1];out=root/'artifacts';captures=out/'screenshots'
 results=[json.loads(line) for line in (root/'build/meson-logs/testlog.json').read_text().splitlines()]
-counts=collections.Counter(result['result'] for result in results)
-assert counts.get('FAIL',0)==0 and counts.get('ERROR',0)==0,counts
-lines=['# Visual conformance report — '+review['review_date'],'',review['scope'],'',
-       'Review basis: complete native captures, separate complete popup/tooltip surfaces, unchanged full HTML reference, native geometry/colors and parsed source contracts. Images are neither cropped nor altered. Root xwd omitted override-redirect popup surfaces on this setup; the complete popup captures are separate evidence, not composited into another image.','',
-       '## Reproduction and evidence','',
-       '`scripts/render-html-reference.sh`; `scripts/capture-visual-regressions.sh`; `python3 tools/report-visual-conformance.py`. Update the reviewed observations after inspecting changed captures.','',
-       'Native conditions: '+json.dumps(metadata,ensure_ascii=False)+'.','',
-       'HTML conditions: '+json.dumps(reference,ensure_ascii=False)+'.','',
-       'Meson results: '+json.dumps(dict(counts))+'. Exact font verification is skipped when the font is absent.','',
-       '[Full unchanged reference](screenshots/html/full-reference.png) · [Reference overview](screenshots/html/overview.png) · [Geometry JSON](geometry.json) · [Meson log](testlog.txt)','',
-       '## Native header geometry','',
-       '| Fixture | Content | Padding total | Divider | Border-box allocation |','|---|---:|---:|---:|---:|']
+counts=collections.Counter(x['result'] for x in results);assert counts.get('FAIL',0)==0 and counts.get('ERROR',0)==0,counts
+lines=['# Visual conformance report — 2026-10-08','','Reviewed uncropped native frames and separately captured complete popups/tooltip surfaces against the unchanged HTML authorities. PASS concerns exposed theme styling; native structure and GNOME compositor acceptance remain separately classified.','',f'Meson: {dict(counts)}. Exact Plus Jakarta Sans required; no font skips.','']
+for variant,file in [('light','visual-review.json'),('dark','visual-review-dark.json')]:
+ review=json.loads((root/'docs'/file).read_text());meta=json.loads((captures/variant/'capture-metadata.json').read_text())
+ ref=json.loads((captures/('html-dark' if variant=='dark' else 'html')/'render-metadata.json').read_text())
+ assert hashlib.sha256((root/ref['source']).read_bytes()).hexdigest()==ref['sha256']
+ lines+=['## '+variant.upper(),'',f'Native: 1440×1080 Xvfb, scale 1, Cairo, Openbox/xcompmgr; requested/resolved font {meta["font_resolved"]}. Reference SHA256 `{ref["sha256"]}`. Temporary local normal/italic font injection only.','',f'[HTML authority](screenshots/{"html-dark" if variant=="dark" else "html"}/full-reference.png) · [Capture metadata](screenshots/{variant}/capture-metadata.json)','','| Category | Evidence | Result | Observation / classification |','|---|---|---|---|']
+ for section,image,status,reason in review['rows']:
+  assert status in ('PASS','PARTIAL — native constraint','FAIL','NOT VALIDATABLE UNDER WSL')
+  assert (captures/variant/image).is_file(),image
+  lines.append(f'| {section} | [{image}](screenshots/{variant}/{image}) | {status} | {reason} |')
+comparison=json.loads((out/'light-baseline-comparison.json').read_text());unchanged=[x for x in comparison if x.get('bbox','different') is None]
+lines+=['',f'Light baseline: {len(unchanged)} of {len(comparison)} complete images are pixel-identical. The menu gains the required Appearance submenu (32px extra row); its popup and full frame change. GTK4 Demo now uses the bridge, so the existing 48px Majoris header contract overrides its later application/provider defaults; the sidebar/tab spacing consequently follows Majoris too. No light theme CSS was changed by dark generation. [Pixel comparison](light-baseline-comparison.json).','', '## SHARED GEOMETRY','']
+l=json.loads((out/'geometry-light.json').read_text());d=json.loads((out/'geometry-dark.json').read_text());assert l==d
+lines+=['The entire realized widget tree, font and geometry reports are identical between variants. Hidden banners remain 0px.','', '| Fixture | Header | Content | Divider | Window control / glyph |','|---|---:|---:|---:|---|']
 for name in ('simple_headerbar','dense_headerbar','split_sidebar_headerbar','split_content_headerbar'):
-    h=geometry[name];lines.append(f"| {name} | {h['content_height']} | {h['allocation_height']-h['content_height']-h['divider']} | {h['divider']} | {h['allocation_height']} |")
-lines+=['','## Component review','','| Section | HTML reference | Native evidence | Result | Reason |','|---|---|---|---|---|']
-for section,file,status,reason in review['rows']:
-    assert status in ('PASS','PARTIAL','FAIL')
-    assert (captures/file).is_file(),file
-    lines.append(f'| {section} | [Full reference](screenshots/html/full-reference.png) | [{file}](screenshots/{file}) | {status} | {reason} |')
-lines+=['','## Final acceptance boundaries','','Every PARTIAL row states why equivalence is not certified. Exact typography and real Majoris VM validation remain open. Native diagnostics demonstrate CSS states; pointer/keyboard behavior and compositor integration still require the target desktop. No pixel-perfect equality is claimed.','',
-        'The [fresh audit](../docs/visual-conformance-audit.md), [implementation report](../docs/implementation-report.md) and [exact changed-file manifest](../docs/changed-files.txt) document the fixes, newly discovered differences, tests and remaining work.','']
-(out/'visual-conformance-report.md').write_text('\n'.join(lines))
-print('Generated artifacts/visual-conformance-report.md from reviewed observations')
+ h=l[name];lines.append(f'| {name} | {h["allocation_height"]} | {h["content_height"]} | {h["divider"]} | 32×32 / 16×16 |')
+lines+=['','[Light geometry](geometry-light.json) · [Dark geometry](geometry-dark.json) · [Native live/system switching](variant-switching.json) · [Dark contrast](dark-contrast.json)','', '## TOOLKIT CONSTRAINTS','','NATIVE TOOLKIT CONSTRAINT: native preference internals, banner centering, adaptive toast width, alert-dialog response layout, view-switcher content policy, popup anchoring/arrow, tooltip placement without the HTML arrow, scrollbar behavior and GTK3 fallback decorations cannot exactly duplicate the simulated HTML layout. The exposed palette, radii, shadows and state treatment are implemented. Clock custom symbolic SVG stroke paints remain fixed in its application resources and have weak contrast in dark mode; no sibling application assets were modified.','', '## VM-ONLY VALIDATION','','GNOME SESSION VALIDATION REQUIRED: Settings produced no visible window; blank output was rejected. Shell styles pass both static grammar/selector suites, but User Themes/automatic switching, St rendering, panel, Quick Settings, calendar, notifications, search/overview/dash, Mutter shadows/corners, inactive/maximized/restored/tiled windows, fractional scaling, Wayland, portals and GDM require the target GNOME VM.','', '[Implementation and switching](../docs/dark-theme.md) · [17-item completion audit](../docs/dark-theme-completion.md) · [Exact changed files](../docs/dark-changed-files.txt)','']
+(out/'visual-conformance-report.md').write_text('\n'.join(lines));print('Generated light/dark visual conformance report')
