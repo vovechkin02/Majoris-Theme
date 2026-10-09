@@ -114,7 +114,7 @@ tooltip label { color: @surface; }
 spinner:checked { opacity: 1; animation: majoris-spin 800ms linear infinite; }
 .title-1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
 window.background, window.csd, window.solid-csd { border-radius: 8px; }
-window.csd { box-shadow: 0 20px 40px rgba(20,20,25,.18),0 6px 12px rgba(20,20,25,.08); }
+window.csd { border: 1px solid rgba(20,20,25,.12); border-color: rgba(20,20,25,.12); outline: none; box-shadow: 0 20px 40px rgba(20,20,25,.18),0 6px 12px rgba(20,20,25,.08); }
 stacksidebar.sidebar { padding: 0; }
 stacksidebar list.navigation-sidebar { border-right: none; }
 menubutton.flat > button, menubutton.flat > button:hover, menubutton.flat > button:active { border-color: transparent; background-image: none; box-shadow: none; }
@@ -209,3 +209,12 @@ dialog.alert .body { line-height: 1.5; }
 headerbar entry button { min-height: 20px; min-width: 20px; padding: 0; border: none; background: transparent; box-shadow: none; }
 headerbar entry button:hover { background-color: @hover; box-shadow: none; }
 headerbar entry button:active { background-color: @active; box-shadow: none; }
+
+/* GTK managed edge-to-edge states: no rounded gap or reserved inset. */
+window.csd.maximized,
+window.csd.fullscreen,
+window.csd.tiled,
+window.csd.tiled-left,
+window.csd.tiled-right,
+window.csd.tiled-top,
+window.csd.tiled-bottom { border-radius: 0; border-width: 0; box-shadow: none; }

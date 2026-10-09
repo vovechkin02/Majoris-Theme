@@ -1608,6 +1608,7 @@
     "danger_default": "#DC3C4D",
     "danger_hover": "#E34B5B",
     "danger_pressed": "#B92F3E",
-    "success": "#22A06B"
+    "success": "#22A06B",
+    "mixed_checkbox": "#4F46E5"
   }
 }

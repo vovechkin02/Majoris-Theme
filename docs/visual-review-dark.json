@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-10-08",
+  "review_date": "2026-10-09",
   "scope": "Dark native component review against unchanged supplied authority.",
   "rows": [
     [
@@ -24,7 +24,7 @@
       "Window controls",
       "states-controls.png",
       "PASS",
-      "32\u00d732 plates, exact 16\u00d716 glyphs, 4px corners, no generic shadow; neutral/red states, .36 focus halo, #666670 inactive."
+      "32\u00d732 plates, exact 16\u00d716 glyphs, 4px corners, no generic shadow; neutral/red states, .36 focus halo, #666670 inactive. Surgical audit: transparent reserved border and halo-only focus, with no extra inner focus edge."
     ],
     [
       "Sidebar",
@@ -157,6 +157,12 @@
       "split.png",
       "NOT VALIDATABLE UNDER WSL",
       "GNOME SESSION VALIDATION REQUIRED: both stylesheet variants and conventional dark alias pass static checks; Shell runtime and switching need the target GNOME VM."
+    ],
+    [
+      "Outer CSD edge",
+      "window-edge.png",
+      "PASS",
+      "Visible single 1px edge checked against reference alpha paints in native pixels; 8px CSS corners, unchanged window shadow contract. Actual maximized/fullscreen are square and have no border inset. Tiled classes are diagnostics; transparent corners and compositor shadow acceptance require the GNOME VM."
     ]
   ]
 }

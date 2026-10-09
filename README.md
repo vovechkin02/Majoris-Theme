@@ -57,3 +57,5 @@ The factory menu has Appearance → Light / Dark / System. GTK3 can also use `GT
 Windows helpers stay in Debian: `scripts/wsl.ps1 factory -Variant dark`, `factory -Variant auto`, `capture -Variant auto` and `reference -Variant auto`. Capture/reference auto means both explicit suites; results are in the synchronized Linux checkout. Native captures use `artifacts/screenshots/light/` and `dark/`; HTML uses `html/` and `html-dark/`.
 
 Both variants require the [GNOME VM checklist](docs/testing.md), including Light → Dark → Light without stale colours, Settings, inactive/maximized/restored/tiled windows, Mutter corners/shadows, scaling and the full Shell. WSL source/parser tests and Xvfb captures do not establish those GNOME session results.
+
+The [surgical conformance audit](docs/surgical-conformance.md) records the invariant palette, semantic dark actions, mixed-checkbox and CSD edge fixes, native regression evidence and remaining GNOME VM acceptance.

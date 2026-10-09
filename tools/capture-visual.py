@@ -11,6 +11,7 @@ variant=os.environ.get('MAJORIS_VARIANT','light')
 assert variant in ('light','dark')
 out=root/'artifacts/screenshots'/variant;out.mkdir(parents=True,exist_ok=True)
 pages=['overview','scrolled','buttons','selection','inputs','ranges','preferences','navigation','data','menus','tooltip','feedback','dialog','status','simple','dense','split','states-buttons','states-controls','states-inputs','states-selection','states-navigation']
+pages+=['window-edge','window-edge-maximized','window-edge-fullscreen','window-edge-tiled','window-edge-tiled-left','window-edge-tiled-right','window-edge-tiled-top','window-edge-tiled-bottom']
 if os.environ.get('MAJORIS_CAPTURE_PAGES'): pages=os.environ['MAJORIS_CAPTURE_PAGES'].split(',')
 with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
     config=Path(temporary)/'gtk-4.0';config.mkdir()

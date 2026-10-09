@@ -9,3 +9,6 @@ expect(css,'toast','background-color',html('.toast','background'))
 expect(css,'windowcontrols > button.close:hover','background-color','@danger')
 expect(css,'windowcontrols > button.close:active','background-color','@danger_pressed')
 print('Parsed CSS semantic colors agree with HTML; navigation and data selection remain distinct')
+
+import runpy
+runpy.run_path(str(ROOT/'tests/test-surgical-colour-contract.py'))

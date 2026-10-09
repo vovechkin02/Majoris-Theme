@@ -1,12 +1,12 @@
 {
-  "review_date": "2026-10-08",
+  "review_date": "2026-10-09",
   "scope": "Exact supplied-font completion review. PASS covers exposed Majoris styling; native structure and full GNOME validation are separately classified.",
   "rows": [
     [
       "Window controls",
       "states-controls.png",
       "PASS",
-      "32x32 plates, 16x16 exact glyphs and 4px corners. Neutral hover/pressed and red close states have no generic control shadows. Dedicated focus ring; tertiary backdrop glyphs. Native image-circle leak reset."
+      "32x32 plates, 16x16 exact glyphs and 4px corners. Neutral hover/pressed and red close states have no generic control shadows. Dedicated focus ring; tertiary backdrop glyphs. Native image-circle leak reset. Surgical audit: transparent reserved border and halo-only focus, with no extra inner focus edge."
     ],
     [
       "Simple headerbar",
@@ -223,6 +223,12 @@
       "preferences.png",
       "NOT VALIDATABLE UNDER WSL",
       "FULL-GNOME VALIDATION REQUIRED: Control Center rejects non-GNOME session; with a GNOME marker it runs but presents no visible surface. Blank capture rejected; no visual acceptance claimed."
+    ],
+    [
+      "Outer CSD edge",
+      "window-edge.png",
+      "PASS",
+      "Visible single 1px edge checked against reference alpha paints in native pixels; 8px CSS corners, unchanged window shadow contract. Actual maximized/fullscreen are square and have no border inset. Tiled classes are diagnostics; transparent corners and compositor shadow acceptance require the GNOME VM."
     ]
   ]
 }

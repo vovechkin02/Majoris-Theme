@@ -22,9 +22,13 @@
 @define-color text #F4F4F5;
 @define-color text_secondary #A9A9B0;
 @define-color text_tertiary #7F7F88;
-@define-color primary_600 #6366F1;
-@define-color primary_700 #7377F3;
-@define-color primary_800 #4F46E5;
+@define-color action_primary #6366F1;
+@define-color action_primary_hover #7377F3;
+@define-color action_primary_pressed #4F46E5;
+@define-color focus_color #818CF8;
+@define-color action_danger #DC3C4D;
+@define-color action_danger_hover #E34B5B;
+@define-color action_danger_pressed #B92F3E;
 @define-color danger #DC3C4D;
 @define-color danger_pressed #B92F3E;
 @define-color success #22A06B;

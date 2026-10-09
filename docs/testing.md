@@ -54,3 +54,16 @@ Real-app geometry can be inspected with the read-only optional probe: `cc -share
 Run `scripts/run-factory.sh --light`, `--dark`, and `--system`, or choose Appearance in its existing menu. `scripts/capture-visual-regressions.sh --both` saves both native suites with identical dimensions, content and fonts. `scripts/render-html-reference.sh --both` renders the two untouched authorities using a temporary local-font copy. The dark test contracts parse the effective override block and cover semantic palette, shadows, radii, stationary motion, spinner assets and tooltip inversion. Native tests cover actual GTK3 selection, GTK4 StyleManager force/default switching and full widget-tree geometry equality. Use `MAJORIS_REQUIRE_EXACT_FONT=1 meson test -C build --print-errorlogs` for final acceptance.
 
 Repeat every VM check above in both Light and Dark. Include normal, inactive, maximized, restored and tiled windows in Clock, Files, Settings and the factory; inspect sidebar/data selection, popovers, dialogs, tooltips, toast/banner, switches, entries and scrollbars. Inspect the top panel, Quick Settings, calendar, notifications, overview and dock in both Shell themes. Switch Light → Dark → Light without logout where supported, checking every visible and reopened transient for stale colours. The StyleManager/GSettings tests use a private memory backend and restore their previous values; production portal and session preference delivery remains a VM check. See [dark implementation](dark-theme.md) and [completion evidence](dark-theme-completion.md).
+
+Surgical conformance regressions additionally check invariant indigo primitives,
+independent dark semantic actions/focus, all six native checkbox states in both
+GTK versions/schemes, halo-only titlebar focus and seven managed CSD classes.
+The edge runtime fixture uses actual Openbox maximize/fullscreen states and
+checks the restore glyph, 48px header, 32px plates and 16px glyphs. Directional
+tiled classes are explicit diagnostic equivalents, requiring Mutter acceptance.
+`tools/verify-rendered-window-edges.py` validates untouched native pixel captures
+against exact edge alpha paints and rejects managed insets/corner seams.
+`tools/compare-final-fixes.py` compares both complete screenshot suites to the
+immutable `artifacts/baseline-final-fixes` baseline. No screenshots are cropped,
+recoloured or otherwise modified for acceptance. Symbolic and primary-reference
+audits are read-only and write evidence into artifacts.

@@ -34,3 +34,11 @@ test('variant geometry equality',find_program('dbus-run-session'),args:['--',fin
 test('native GTK4 live and system switching',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-variant-switching.py')],env:{'GSETTINGS_BACKEND':'memory','XDG_CURRENT_DESKTOP':'GNOME'})
 test('GTK3 native variant selection',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-gtk3-variant-selection.py')])
 test('Dark Shell static grammar and Trixie selectors',python,args:[files('tools/validate-shell.py')],env:{'MAJORIS_VARIANT':'dark'})
+
+test('window edge contract',python,args:[files('tests/test_window_edge_contract.py')])
+
+foreach version : ['3','4']
+  test('GTK'+version+' checkbox states',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-checkbox-states.py'),version])
+endforeach
+
+test('native window edge states',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 1440x1080x24',python.full_path(),files('tests/test-window-edge-runtime.py'),factory.full_path()],timeout:60)

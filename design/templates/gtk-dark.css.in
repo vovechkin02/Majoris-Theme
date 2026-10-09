@@ -7,24 +7,24 @@ button:active, button:checked { background-color: @active; }
 button.flat, menubutton.flat > button { background-color: transparent; }
 button.flat:hover, menubutton.flat > button:hover { background-color: @hover; }
 button.flat:active, menubutton.flat > button:active { background-color: @active; }
-button:focus-visible, entry:focus, entry:focus-within, searchentry:focus-within, passwordentry:focus-within, dropdown:focus-within { border-color: #818CF8; }
-button.suggested-action, banner button { background-color: #6366F1; border-color: #6366F1; color: white; }
-button.suggested-action:hover, banner button:hover { background-color: #7377F3; border-color: #7377F3; }
-button.suggested-action:active, banner button:active { background-color: #4F46E5; border-color: #4F46E5; }
-button.suggested-action:focus-visible { border-color: #818CF8; box-shadow: ${.btn.primary:focus-visible|box-shadow}; }
-button.destructive-action { background-color: #DC3C4D; border-color: #DC3C4D; color: white; }
-button.destructive-action:hover { background-color: #E34B5B; border-color: #E34B5B; }
-button.destructive-action:active { background-color: #B92F3E; border-color: #B92F3E; }
-button.destructive-action:focus-visible { border-color: #818CF8; }
+button:focus-visible, entry:focus, entry:focus-within, searchentry:focus-within, passwordentry:focus-within, dropdown:focus-within { border-color: @focus_color; }
+button.suggested-action, banner button { background-color: @action_primary; border-color: @action_primary; color: white; }
+button.suggested-action:hover, banner button:hover { background-color: @action_primary_hover; border-color: @action_primary_hover; }
+button.suggested-action:active, banner button:active { background-color: @action_primary_pressed; border-color: @action_primary_pressed; }
+button.suggested-action:focus-visible { border-color: @focus_color; box-shadow: ${.btn.primary:focus-visible|box-shadow}; }
+button.destructive-action { background-color: @action_danger; border-color: @action_danger; color: white; }
+button.destructive-action:hover { background-color: @action_danger_hover; border-color: @action_danger_hover; }
+button.destructive-action:active { background-color: @action_danger_pressed; border-color: @action_danger_pressed; }
+button.destructive-action:focus-visible { border-color: @focus_color; }
 headerbar entry button { background: transparent; }
 headerbar entry button:hover { background-color: @hover; }
 headerbar entry button:active { background-color: @active; }
 windowcontrols > button, button.titlebutton { background-color: transparent; color: #A9A9B0; }
 windowcontrols > button:hover, button.titlebutton:hover { background-color: #303035; color: #F4F4F5; box-shadow: none; }
 windowcontrols > button:active, button.titlebutton:active { background-color: #38383D; color: #F4F4F5; box-shadow: none; }
-windowcontrols > button.close:hover, button.titlebutton.close:hover { background-color: #DC3C4D; color: white; }
-windowcontrols > button.close:active, button.titlebutton.close:active { background-color: #B92F3E; color: white; }
-windowcontrols > button:focus-visible, button.titlebutton:focus-visible { border-color: #818CF8; box-shadow: ${.window-control:focus-visible|box-shadow}; }
+windowcontrols > button.close:hover, button.titlebutton.close:hover { background-color: @action_danger; color: white; }
+windowcontrols > button.close:active, button.titlebutton.close:active { background-color: @action_danger_pressed; color: white; }
+windowcontrols > button:focus-visible, button.titlebutton:focus-visible { border-color: transparent; box-shadow: ${.window-control:focus-visible|box-shadow}; }
 windowcontrols > button:backdrop, button.titlebutton:backdrop { background: transparent; color: #666670; box-shadow: none; }
 headerbar:backdrop .title { color: #6F6F78; }
 .sidebar, .navigation-sidebar, .majoris-sidebar { background-color: ${.sidebar|background}; }
@@ -35,7 +35,7 @@ headerbar:backdrop .title { color: #6F6F78; }
 .majoris-segmented button:checked, viewswitcher button:checked, stackswitcher button:checked { background-color: ${.toggle.active|background}; }
 check, radio { background-color: ${.checkbox|background}; border-color: ${.checkbox|border-color}; color: white; }
 check:checked, radio:checked { background-color: #6366F1; border-color: #6366F1; }
-check:indeterminate { background-color: #26262A; color: #818CF8; border-color: #4A4A50; }
+check:indeterminate { background-color: #26262A; color: @primary_600; border-color: #4A4A50; }
 switch { background-color: ${.switch|background}; border-color: ${.switch|border-color}; }
 switch:checked { background-color: #6366F1; border-color: #6366F1; }
 switch slider { background-color: ${.switch:after|background}; border-color: ${.switch:after|border-color}; }

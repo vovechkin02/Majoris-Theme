@@ -1,5 +1,5 @@
 window.background, window.csd, window.solid-csd { border-radius: ${window_radius}; }
-window.csd { box-shadow: ${window_shadow}; }
+window.csd { border: ${.window|border}; border-color: ${window_edge_color}; outline: none; box-shadow: ${window_shadow}; }
 stacksidebar.sidebar { padding: 0; }
 stacksidebar list.navigation-sidebar { border-right: none; }
 menubutton.flat > button, menubutton.flat > button:hover, menubutton.flat > button:active { border-color: transparent; background-image: none; box-shadow: none; }
@@ -94,3 +94,12 @@ dialog.alert .body { line-height: ${.dialog-body p|line-height}; }
 headerbar entry button { min-height: 20px; min-width: 20px; padding: 0; border: none; background: transparent; box-shadow: none; }
 headerbar entry button:hover { background-color: @hover; box-shadow: none; }
 headerbar entry button:active { background-color: @active; box-shadow: none; }
+
+/* GTK managed edge-to-edge states: no rounded gap or reserved inset. */
+window.csd.maximized,
+window.csd.fullscreen,
+window.csd.tiled,
+window.csd.tiled-left,
+window.csd.tiled-right,
+window.csd.tiled-top,
+window.csd.tiled-bottom { border-radius: 0; border-width: 0; box-shadow: none; }

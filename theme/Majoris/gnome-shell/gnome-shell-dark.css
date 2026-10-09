@@ -16,13 +16,13 @@ stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; 
 .calendar-today { background-color: #6366F1; color: #FFFFFF; }
 .message { background-color: #28282C; border-radius: 8px; }
 .search-entry { background-color: #FFFFFF; color: #F4F4F5; border: 1px solid #3B3B40; border-radius: 4px; padding: 8px 12px; }
-.search-entry:focus { border-color: #6366F1; box-shadow: 0 0 0 2px rgba(129,140,248,.34); }
+.search-entry:focus { border-color: #818CF8; box-shadow: 0 0 0 2px rgba(129,140,248,.34); }
 #overview { background-color: #18181B; }
 .workspace-thumbnail, .workspace-background { border-radius: 8px; }
 .dash-background { background-color: #28282C; border-radius: 8px; }
 .dash-label, .tooltip { background-color: #F4F4F5; color: #FFFFFF; border-radius: 4px; padding: 6px 8px; font-size: 11px; box-shadow: 0 12px 24px rgba(0,0,0,.52),0 4px 8px rgba(0,0,0,.30); }
 .app-well-app:focus, .app-well-app:hover { background-color: #303035; border-radius: 4px; }
-.modal-dialog-button:focus { border-color: #6366F1; }
+.modal-dialog-button:focus { border-color: #818CF8; }
 
 .dash-label, .tooltip { color: #18181B; background-color: #F4F4F5; box-shadow: 0 8px 16px rgba(0,0,0,.40); }
 .search-entry:focus { border-color: #818CF8; }

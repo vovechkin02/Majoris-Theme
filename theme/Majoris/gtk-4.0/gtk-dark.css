@@ -14,20 +14,20 @@ button, entry, spinbutton, combobox, dropdown > button {
 button:hover, entry:hover, dropdown > button:hover { background-color: @hover; box-shadow: 0 2px 4px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.045); }
 button:active, button:checked { background-color: @active; box-shadow: 0 1px 1px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.025); }
 button:disabled, entry:disabled, dropdown:disabled { opacity: .45; box-shadow: none; }
-button:focus-visible, entry:focus, entry:focus-within, dropdown:focus-within { outline: none; border-color: @primary_500; box-shadow: 0 0 0 2px rgba(129,140,248,.34), 0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035); }
-button.suggested-action { background-color: @primary_600; border-color: @primary_600; color: @surface; box-shadow: 0 1px 2px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.10); }
-button.suggested-action:hover { background-color: @primary_700; border-color: @primary_700; box-shadow: 0 2px 4px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,255,255,.12); }
-button.suggested-action:active { background-color: @primary_800; border-color: @primary_800; box-shadow: 0 1px 1px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.07); }
+button:focus-visible, entry:focus, entry:focus-within, dropdown:focus-within { outline: none; border-color: @focus_color; box-shadow: 0 0 0 2px rgba(129,140,248,.34), 0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035); }
+button.suggested-action { background-color: @action_primary; border-color: @action_primary; color: @surface; box-shadow: 0 1px 2px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.10); }
+button.suggested-action:hover { background-color: @action_primary_hover; border-color: @action_primary_hover; box-shadow: 0 2px 4px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,255,255,.12); }
+button.suggested-action:active { background-color: @action_primary_pressed; border-color: @action_primary_pressed; box-shadow: 0 1px 1px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.07); }
 button.suggested-action:focus-visible { box-shadow: 0 0 0 2px rgba(129,140,248,.38),0 1px 2px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.10); }
 button.destructive-action { background-color: @danger; border-color: @danger; color: @surface; box-shadow: 0 1px 2px rgba(20,20,25,.14),inset 0 1px 0 rgba(255,255,255,.10); }
 button.destructive-action:hover { background-color: mix(@danger, black, .05); box-shadow: 0 2px 4px rgba(20,20,25,.16),inset 0 1px 0 rgba(255,255,255,.10); }
-button.destructive-action:focus-visible { border-color: @primary_500; box-shadow: 0 0 0 2px rgba(129,140,248,.34),0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035); }
+button.destructive-action:focus-visible { border-color: @focus_color; box-shadow: 0 0 0 2px rgba(129,140,248,.34),0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035); }
 button.destructive-action:active { background-color: mix(@danger, black, .10); box-shadow: 0 1px 1px rgba(20,20,25,.10),inset 0 1px 0 rgba(255,255,255,.08); }
 button.flat, button.flat:hover, button.flat:active, button.flat:checked { border-color: transparent; box-shadow: none; background-image: none; }
 button.flat { background-color: transparent; }
 button.flat:hover { background-color: @hover; }
 button.flat:active { background-color: @active; }
-button.flat:focus-visible { outline: none; border-color: @primary_500; box-shadow: 0 0 0 2px rgba(129,140,248,.34); }
+button.flat:focus-visible { outline: none; border-color: @focus_color; box-shadow: 0 0 0 2px rgba(129,140,248,.34); }
 button:disabled, button.suggested-action:disabled, button.destructive-action:disabled, button.flat:disabled { box-shadow: none; }
 button.image-button { min-width: 30px; padding: 0; }
 entry, spinbutton { padding: 0 10px; font-weight: 400; }
@@ -45,7 +45,7 @@ check { border-radius: 4px; }
 radio { border-radius: 50%; }
 check:checked, radio:checked { background-color: @primary_500; border-color: @primary_500; }
 check:indeterminate { background-color: @surface; color: @primary_600; border-color: @border; }
-check:focus, radio:focus, switch:focus { outline: 2px solid rgba(129,140,248,.34); outline-offset: 2px; }
+check:focus, radio:focus, switch:focus { outline: 2px solid alpha(@focus_color,.34); outline-offset: 2px; }
 check:disabled, radio:disabled, switch:disabled { opacity: .45; }
 switch { min-width: 34px; min-height: 16px; padding: 2px; border: 1px solid @border; border-radius: 8px; background-color: @surface_secondary; background-image: none; box-shadow: inset 0 1px 2px rgba(0,0,0,.34); }
 switch:checked { background-color: @primary_500; border-color: @primary_500; }
@@ -115,7 +115,7 @@ tooltip label { color: @surface; }
 spinner:checked { opacity: 1; animation: majoris-spin 800ms linear infinite; }
 .title-1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
 window.background, window.csd, window.solid-csd { border-radius: 8px; }
-window.csd { box-shadow: 0 20px 40px rgba(0,0,0,.52),0 6px 12px rgba(0,0,0,.30); }
+window.csd { border: 1px solid rgba(20,20,25,.12); border-color: rgba(255,255,255,.07); outline: none; box-shadow: 0 20px 40px rgba(0,0,0,.52),0 6px 12px rgba(0,0,0,.30); }
 stacksidebar.sidebar { padding: 0; }
 stacksidebar list.navigation-sidebar { border-right: none; }
 menubutton.flat > button, menubutton.flat > button:hover, menubutton.flat > button:active { border-color: transparent; background-image: none; box-shadow: none; }
@@ -146,7 +146,7 @@ dropdown > button { min-width: 124px; }
 dropdown > button > box { padding: 0; min-height: 0; border-spacing: 18px; }
 dropdown > button row { min-height: 0; padding: 0; }
 searchentry, passwordentry { min-height: 30px; min-width: 138px; padding: 0 10px; border: 1px solid @border; border-radius: 4px; background: @surface; box-shadow: 0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035); }
-searchentry:focus-within, passwordentry:focus-within { border-color: @primary_500; box-shadow: 0 0 0 2px rgba(129,140,248,.34), 0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035); }
+searchentry:focus-within, passwordentry:focus-within { border-color: @focus_color; box-shadow: 0 0 0 2px rgba(129,140,248,.34), 0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035); }
 searchentry text, passwordentry text { min-height: 0; padding: 0; }
 popover.background { background-color: transparent; }
 popover > contents { border-radius: 8px; border: 1px solid @border_soft; background-color: rgba(40,40,44,.98); padding: 6px; box-shadow: 0 12px 24px rgba(0,0,0,.52),0 4px 8px rgba(0,0,0,.30); }
@@ -192,9 +192,9 @@ dialog.alert .body { font-size: 12px; color: @text_secondary; }
 dialog.alert .response-area { padding: 12px; border-top: 1px solid @border_soft; background-color: @surface_secondary; border-radius: 0 0 8px 8px; }
 .boxed-list > row .subtitle { opacity: 1; }
 spinbutton > text { min-height: 0; padding: 0 10px; }
-banner button { background-color: @primary_600; border-color: @primary_600; color: @surface; box-shadow: 0 1px 2px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.10); }
-banner button:hover { background-color: @primary_700; border-color: @primary_700; box-shadow: 0 2px 4px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,255,255,.12); }
-banner button:active { background-color: @primary_800; border-color: @primary_800; box-shadow: 0 1px 1px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.07); }
+banner button { background-color: @action_primary; border-color: @action_primary; color: @surface; box-shadow: 0 1px 2px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.10); }
+banner button:hover { background-color: @action_primary_hover; border-color: @action_primary_hover; box-shadow: 0 2px 4px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,255,255,.12); }
+banner button:active { background-color: @action_primary_pressed; border-color: @action_primary_pressed; box-shadow: 0 1px 1px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.07); }
 windowcontrols > button > image, windowcontrols > button:hover > image, windowcontrols > button:active > image, windowcontrols > button:backdrop > image { background: transparent; border: none; border-radius: 0; box-shadow: none; }
 popover.menu > contents { min-width: 191px; }
 headerbar.default-decoration windowcontrols > button { min-width: 30px; min-height: 30px; padding: 0; margin: 0; }
@@ -210,6 +210,15 @@ dialog.alert .body { line-height: 1.5; }
 headerbar entry button { min-height: 20px; min-width: 20px; padding: 0; border: none; background: transparent; box-shadow: none; }
 headerbar entry button:hover { background-color: @hover; box-shadow: none; }
 headerbar entry button:active { background-color: @active; box-shadow: none; }
+
+/* GTK managed edge-to-edge states: no rounded gap or reserved inset. */
+window.csd.maximized,
+window.csd.fullscreen,
+window.csd.tiled,
+window.csd.tiled-left,
+window.csd.tiled-right,
+window.csd.tiled-top,
+window.csd.tiled-bottom { border-radius: 0; border-width: 0; box-shadow: none; }
 /* Dark-only semantic overrides; shared allocations remain in gtk-common.css.in. */
 .view, columnview, treeview, iconview { background-color: @surface; color: @text; }
 columnview row:selected, listview row:selected, gridview child:selected { background-color: rgba(99,102,241,.16); color: #E0E7FF; }
@@ -219,24 +228,24 @@ button:active, button:checked { background-color: @active; }
 button.flat, menubutton.flat > button { background-color: transparent; }
 button.flat:hover, menubutton.flat > button:hover { background-color: @hover; }
 button.flat:active, menubutton.flat > button:active { background-color: @active; }
-button:focus-visible, entry:focus, entry:focus-within, searchentry:focus-within, passwordentry:focus-within, dropdown:focus-within { border-color: #818CF8; }
-button.suggested-action, banner button { background-color: #6366F1; border-color: #6366F1; color: white; }
-button.suggested-action:hover, banner button:hover { background-color: #7377F3; border-color: #7377F3; }
-button.suggested-action:active, banner button:active { background-color: #4F46E5; border-color: #4F46E5; }
-button.suggested-action:focus-visible { border-color: #818CF8; box-shadow: 0 0 0 2px rgba(129,140,248,.38),0 1px 2px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.10); }
-button.destructive-action { background-color: #DC3C4D; border-color: #DC3C4D; color: white; }
-button.destructive-action:hover { background-color: #E34B5B; border-color: #E34B5B; }
-button.destructive-action:active { background-color: #B92F3E; border-color: #B92F3E; }
-button.destructive-action:focus-visible { border-color: #818CF8; }
+button:focus-visible, entry:focus, entry:focus-within, searchentry:focus-within, passwordentry:focus-within, dropdown:focus-within { border-color: @focus_color; }
+button.suggested-action, banner button { background-color: @action_primary; border-color: @action_primary; color: white; }
+button.suggested-action:hover, banner button:hover { background-color: @action_primary_hover; border-color: @action_primary_hover; }
+button.suggested-action:active, banner button:active { background-color: @action_primary_pressed; border-color: @action_primary_pressed; }
+button.suggested-action:focus-visible { border-color: @focus_color; box-shadow: 0 0 0 2px rgba(129,140,248,.38),0 1px 2px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.10); }
+button.destructive-action { background-color: @action_danger; border-color: @action_danger; color: white; }
+button.destructive-action:hover { background-color: @action_danger_hover; border-color: @action_danger_hover; }
+button.destructive-action:active { background-color: @action_danger_pressed; border-color: @action_danger_pressed; }
+button.destructive-action:focus-visible { border-color: @focus_color; }
 headerbar entry button { background: transparent; }
 headerbar entry button:hover { background-color: @hover; }
 headerbar entry button:active { background-color: @active; }
 windowcontrols > button, button.titlebutton { background-color: transparent; color: #A9A9B0; }
 windowcontrols > button:hover, button.titlebutton:hover { background-color: #303035; color: #F4F4F5; box-shadow: none; }
 windowcontrols > button:active, button.titlebutton:active { background-color: #38383D; color: #F4F4F5; box-shadow: none; }
-windowcontrols > button.close:hover, button.titlebutton.close:hover { background-color: #DC3C4D; color: white; }
-windowcontrols > button.close:active, button.titlebutton.close:active { background-color: #B92F3E; color: white; }
-windowcontrols > button:focus-visible, button.titlebutton:focus-visible { border-color: #818CF8; box-shadow: 0 0 0 2px rgba(129,140,248,.36); }
+windowcontrols > button.close:hover, button.titlebutton.close:hover { background-color: @action_danger; color: white; }
+windowcontrols > button.close:active, button.titlebutton.close:active { background-color: @action_danger_pressed; color: white; }
+windowcontrols > button:focus-visible, button.titlebutton:focus-visible { border-color: transparent; box-shadow: 0 0 0 2px rgba(129,140,248,.36); }
 windowcontrols > button:backdrop, button.titlebutton:backdrop { background: transparent; color: #666670; box-shadow: none; }
 headerbar:backdrop .title { color: #6F6F78; }
 .sidebar, .navigation-sidebar, .majoris-sidebar { background-color: #1D1D20; }
@@ -247,7 +256,7 @@ headerbar:backdrop .title { color: #6F6F78; }
 .majoris-segmented button:checked, viewswitcher button:checked, stackswitcher button:checked { background-color: #35353A; }
 check, radio { background-color: #26262A; border-color: #4A4A50; color: white; }
 check:checked, radio:checked { background-color: #6366F1; border-color: #6366F1; }
-check:indeterminate { background-color: #26262A; color: #818CF8; border-color: #4A4A50; }
+check:indeterminate { background-color: #26262A; color: @primary_600; border-color: #4A4A50; }
 switch { background-color: #303035; border-color: #48484E; }
 switch:checked { background-color: #6366F1; border-color: #6366F1; }
 switch slider { background-color: #DADAE0; border-color: rgba(255,255,255,.08); }

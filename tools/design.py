@@ -45,6 +45,7 @@ def extract(variant='light'):
     if variant == 'dark':
         # Literal component overrides are semantic colours, not root palette steps.
         mapping={'primary_default':('.btn.primary','background'),'primary_hover':('.btn.primary:hover','background'),'primary_pressed':('.btn.primary:active','background'),'focus':('.btn:focus-visible','border-color'),'danger_default':('.btn.danger','background'),'danger_hover':('.btn.danger:hover','background'),'danger_pressed':('.btn.danger:active','background'),'success':('.level span.on','background')}
+        mapping['mixed_checkbox']=('.checkbox.mixed:after','color')
         result['semantic_color']={key:html_value(result,*pair).upper() for key,pair in mapping.items()}
     return result
 def html_value(tokens,selector,property):

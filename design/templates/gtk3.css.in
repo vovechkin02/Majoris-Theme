@@ -1,4 +1,4 @@
-decoration { border-radius: ${window_radius}; box-shadow: ${window_shadow}; border: 1px solid alpha(@text,.12); }
+decoration { border-radius: ${window_radius}; box-shadow: ${window_shadow}; border: ${.window|border}; border-color: ${window_edge_color}; }
 window.csd { border-radius: ${window_radius}; }
 headerbar { -GtkWidget-window-dragging: true; }
 button.titlebutton, button.titlebutton:hover, button.titlebutton:active, button.titlebutton:backdrop {
@@ -37,3 +37,19 @@ menu { min-width: 191px; }
 notebook > header.top > tabs > tab:checked, notebook > header.bottom > tabs > tab:checked, notebook > header.left > tabs > tab:checked, notebook > header.right > tabs > tab:checked { border: none; background-image: none; box-shadow: none; }
 combobox { min-height: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
 combobox button.combo { min-height: ${control_content_size}; min-width: ${dropdown_content_width}; padding: ${.select|padding}; border: 1px solid @border; border-radius: ${control_radius}; background-image: none; box-shadow: ${control_shadow}; }
+
+/* GTK managed edge-to-edge states: no rounded gap or reserved inset. */
+window.csd.maximized,
+window.csd.fullscreen,
+window.csd.tiled,
+window.csd.tiled-left,
+window.csd.tiled-right,
+window.csd.tiled-top,
+window.csd.tiled-bottom { border-radius: 0; border-width: 0; box-shadow: none; }
+window.csd.maximized decoration,
+window.csd.fullscreen decoration,
+window.csd.tiled decoration,
+window.csd.tiled-left decoration,
+window.csd.tiled-right decoration,
+window.csd.tiled-top decoration,
+window.csd.tiled-bottom decoration { border-radius: 0; border-width: 0; padding: 0; box-shadow: none; }

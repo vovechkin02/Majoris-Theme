@@ -8,7 +8,10 @@ from css_contract import ROOT,TOKENS
 variant=os.environ.get('MAJORIS_VARIANT','light')
 if variant=='dark':
     TOKENS=json.loads((ROOT/'design/tokens-dark.json').read_text())
-    TOKENS['color'].update(surface='#FFFFFF',text_tertiary='#666670',primary_600='#6366F1',primary_700='#7377F3',primary_800='#4F46E5',danger='#DC3C4D',danger_pressed='#B92F3E')
+# Expected component states do not mutate the extracted primitive palette.
+expected_colors=dict(TOKENS['color'])
+if variant=='dark':
+    expected_colors.update(action_foreground='#FFFFFF',text_tertiary='#666670',action_primary=TOKENS['semantic_color']['primary_default'],action_primary_hover=TOKENS['semantic_color']['primary_hover'],action_primary_pressed=TOKENS['semantic_color']['primary_pressed'],danger=TOKENS['semantic_color']['danger_default'],danger_pressed=TOKENS['semantic_color']['danger_pressed'])
 version=sys.argv[1];gi.require_version('Gtk',version+'.0')
 from gi.repository import Gtk,GLib
 if version=='4':
@@ -41,10 +44,10 @@ if version=='4':
 else:buttons=controls.get_children()
 assert len(buttons)==3
 def rgb(color):return tuple(round(v*255) for v in (color.red,color.green,color.blue))
-def expected(token):return tuple(bytes.fromhex(TOKENS['color'][token][1:]))
+def expected(token):return tuple(bytes.fromhex(expected_colors[token][1:]))
 for b in buttons:
     close=b.has_css_class('close') if version=='4' else b.get_style_context().has_class('close')
-    for state,color in [(Gtk.StateFlags.NORMAL,'text_secondary'),(Gtk.StateFlags.PRELIGHT,'surface' if close else 'text'),(Gtk.StateFlags.ACTIVE,'surface' if close else 'text'),(Gtk.StateFlags.BACKDROP,'text_tertiary')]:
+    for state,color in [(Gtk.StateFlags.NORMAL,'text_secondary'),(Gtk.StateFlags.PRELIGHT,('action_foreground' if variant=='dark' else 'surface') if close else 'text'),(Gtk.StateFlags.ACTIVE,('action_foreground' if variant=='dark' else 'surface') if close else 'text'),(Gtk.StateFlags.BACKDROP,'text_tertiary')]:
         b.set_state_flags(state,True);settle()
         # X11 can deliver a late inactive-window state while settling. These
         # probes test the explicit state, so reapply it after native events.
@@ -57,7 +60,7 @@ for b in buttons:
             assert rgb(background)==expected(token),(token,rgb(background))
 if version=='3':
     import cairo
-    for style,palette in [('',['surface_secondary' if variant=='dark' else 'surface','hover','active']),('suggested-action',['primary_600','primary_700','primary_800'])]:
+    for style,palette in [('',['surface_secondary' if variant=='dark' else 'surface','hover','active']),('suggested-action',['action_primary','action_primary_hover','action_primary_pressed'] if variant=='dark' else ['primary_600','primary_700','primary_800'])]:
         b=Gtk.Button(label='Native background probe')
         if style:b.get_style_context().add_class(style)
         box.pack_start(b,False,False,0);b.show();settle()

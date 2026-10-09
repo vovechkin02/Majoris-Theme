@@ -19,6 +19,8 @@ values['preference_content_height']=str(int(html_value(t,'.pref-row','min-height
 values['banner_button_content_height']=str(int(html_value(t,'.banner .btn','height')[:-2])-2)+'px'
 values['control_duration']=str(t['motion']['control_ms'])+'ms'
 values['surface_duration']=str(t['motion']['surface_ms'])+'ms'
+values['window_edge_color']=html_value(t,'.window','border').split('solid ',1)[1]
+
 def render(s):
     s=re.sub(r'\$\{([^|}]+)\|([^}]+)\}',lambda m:html_value(t,m[1],m[2]),s)
     return re.sub(r'\$\{(\w+)\}',lambda m:values[m[1]],s)

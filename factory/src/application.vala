@@ -39,6 +39,7 @@ namespace MajorisThemeFactory {
             } else if(page=="simple") new HeaderFixture(this,false).present();
             else if(page=="dense") new HeaderFixture(this,true).present();
             else if(page=="split") new SplitFixture(this).present();
+            else if(page.has_prefix("window-edge")) new WindowEdgeFixture(this,page=="window-edge"?"floating":page.substring(12)).present();
             else new Window (this,page).present ();
             if(Environment.get_variable("MAJORIS_TREE")=="1") Timeout.add(1500,()=>{foreach(var w in get_windows())GeometryReport.dump(w);quit();return Source.REMOVE;});
         }

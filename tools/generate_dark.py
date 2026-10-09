@@ -12,8 +12,10 @@ def generate(output):
     def render(s):
         s=re.sub(r'\$\{([^|}]+)\|([^}]+)\}',lambda m:html_value(t,m[1],m[2]),s)
         return re.sub(r'\$\{(\w+)\}',lambda m:values[m[1]],s)
+    values['window_edge_color']=html_value(t,'.window','border-color')
     colors='/* Generated from the effective dark reference cascade. */\n'+''.join('@define-color '+k+' '+v+';\n' for k,v in t['color'].items())
-    aliases={'primary_600':'primary_default','primary_700':'primary_hover','primary_800':'primary_pressed','danger':'danger_default','danger_pressed':'danger_pressed','success':'success'}
+    # Primitive indigo identities remain invariant; component states are separate.
+    aliases={'action_primary':'primary_default','action_primary_hover':'primary_hover','action_primary_pressed':'primary_pressed','focus_color':'focus','action_danger':'danger_default','action_danger_hover':'danger_hover','action_danger_pressed':'danger_pressed','danger':'danger_default','danger_pressed':'danger_pressed','success':'success'}
     colors+=''.join('@define-color '+name+' '+t['semantic_color'][key]+';\n' for name,key in aliases.items())
     for name in ('accent_fg_color','destructive_fg_color','theme_selected_fg_color'): colors+='@define-color '+name+' #FFFFFF;\n'
     for version in ('3','4'):
@@ -25,7 +27,17 @@ def generate(output):
         if version=='4': shared=re.sub(r'(button(?:\.[\w-]+)?):focus\b',r'\1:focus-visible',shared)
         else:
             shared=shared.replace('${.tab.active|font-weight}','600').replace('${.nav.active|font-weight}','600').replace('transparent 10px, @primary_500 10px','transparent 10%, @primary_500 10%').replace('calc(100% - 10px)','90%').replace('transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)','transparent 26.470588%, @primary_500 26.470588%, @primary_500 73.529412%, transparent 73.529412%')
-        css=render(shared+specific).replace('rgba(99,102,241,.24)','rgba(129,140,248,.34)').replace('alpha(@primary_500,.24)','rgba(129,140,248,.34)').replace('assets/spinner.svg','assets/spinner-dark.svg')
+        # Target only semantic action/focus declarations, never all palette uses.
+        lines=[]
+        for line in (shared+specific).splitlines(keepends=True):
+            selector=line.split('{',1)[0]
+            if 'button.suggested-action' in selector or selector.strip().startswith('banner button'):
+                for step,state in [('600',''),('700','_hover'),('800','_pressed')]:
+                    line=line.replace('@primary_'+step,'@action_primary'+state)
+            if ':focus' in selector and 'border-color:' in line:
+                line=line.replace('@primary_500','@focus_color')
+            lines.append(line)
+        css=render(''.join(lines)).replace('rgba(99,102,241,.24)','rgba(129,140,248,.34)').replace('alpha(@primary_500,.24)','alpha(@focus_color,.34)').replace('assets/spinner.svg','assets/spinner-dark.svg')
         extra=render((ROOT/'design/templates/gtk-dark.css.in').read_text())
         if version=='3': extra=extra.replace(':focus-visible',':focus').replace('calc(100% - 9px)','73.529412%').replace('transparent 9px, #818CF8 9px','transparent 26.470588%, #818CF8 26.470588%').replace('#818CF8 73.529412%, transparent 73.529412%','#818CF8 73.529412%, transparent 73.529412%')
         if version=='3':
@@ -34,7 +46,12 @@ def generate(output):
             extra+=render((ROOT/'design/templates/gtk3-dark.css.in').read_text())
         base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
         output(directory/'gtk-dark.css','/* Generated: shared geometry, effective dark cascade, native overrides. */\n'+base+'@import url("colors.css");\n@import url("colors-dark.css");\n'+css+extra)
-    shell=render((ROOT/'design/templates/shell.css.in').read_text()).replace('color: '+t['color']['surface']+';','color: #FFFFFF;').replace('rgba(99,102,241,.24)','rgba(129,140,248,.34)')
+    # Shell's literal CSS consumes semantic focus/danger values, not remapped palette steps.
+    shell_template=(ROOT/'design/templates/shell.css.in').read_text()
+    shell_template=''.join(line.replace('${primary_500}','${focus_color}') if ':focus {' in line else line for line in shell_template.splitlines(keepends=True))
+    values['focus_color']=t['semantic_color']['focus']
+    values['danger']=t['semantic_color']['danger_default']
+    shell=render(shell_template).replace('color: '+t['color']['surface']+';','color: #FFFFFF;').replace('rgba(99,102,241,.24)','rgba(129,140,248,.34)')
     shell+='\n.dash-label, .tooltip { color: #18181B; background-color: #F4F4F5; box-shadow: '+html_value(t,'.tooltip','box-shadow')+'; }\n.search-entry:focus { border-color: #818CF8; }\n'
     output(ROOT/'theme/Majoris/gnome-shell/gnome-shell-dark.css','/* Generated dark Shell variant. */\n'+shell)
     alias=ROOT/'theme/Majoris-Dark/gnome-shell/gnome-shell.css'
