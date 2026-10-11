@@ -51,3 +51,5 @@ foreach version : ['3','4']
 endforeach
 
 test('neutral auto install with native GTK4 bridge',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-auto-install-bridge.py')])
+
+test('Majoris Login source and resource contracts',python,args:[files('login/tests/test-contracts.py')])

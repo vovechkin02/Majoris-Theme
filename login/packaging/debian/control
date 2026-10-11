@@ -1,0 +1,16 @@
+Source: majoris-login-resources
+Section: gnome
+Priority: optional
+Maintainer: Majoris contributors <maintainers@majoris.invalid>
+Build-Depends: debhelper-compat (= 13), meson, libglib2.0-dev, python3, python3-tinycss2
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+
+Package: majoris-login-resources
+Architecture: all
+Depends: ${misc:Depends}, gdm3, gnome-shell (>= 48.7), dconf-cli, fontconfig
+Description: Majoris native GDM and lock-screen presentation resources
+ Prototype-derived St theme, precomposited wallpapers, symbolic assets and
+ Plus Jakarta Sans fonts. Full layout requires the separately rebuilt,
+ version-validated Majoris GNOME Shell packages. No authentication service
+ or browser is installed. Stock Shell ignores these private resources.

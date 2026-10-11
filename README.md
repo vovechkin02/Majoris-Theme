@@ -69,3 +69,5 @@ attachment, its LD_PRELOAD dispatcher, Shell extension activation, wallpaper and
 GNOME/Mutter lifecycle. The ISO builder can consume `theme/Majoris/` verbatim;
 no GTK/Shell CSS patching or distro-only dispatcher is needed in this repository.
 See the [exact VM regression checklist](docs/theme-state-vm-checklist.md).
+
+Majoris Login is a separate native GDM/lock module under [login](login/README.md), with an independent resource package and exact-version Debian Shell patches. Its [VM acceptance matrix](login/docs/vm-validation.md) must be completed before release; ordinary GTK application themes remain separate.

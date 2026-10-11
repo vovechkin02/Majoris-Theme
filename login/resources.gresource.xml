@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources><gresource prefix="/org/majoris/login">
+  <file>theme/login.css</file>
+  <file>assets/wallpapers/dark.png</file>
+  <file>assets/wallpapers/light.png</file>
+  <file>assets/icons/majoris-login-accessibility-symbolic.svg</file>
+  <file>assets/icons/majoris-login-arrow-right-symbolic.svg</file>
+  <file>assets/icons/majoris-login-check-symbolic.svg</file>
+  <file>assets/icons/majoris-login-chevron-left-symbolic.svg</file>
+  <file>assets/icons/majoris-login-eye-off-symbolic.svg</file>
+  <file>assets/icons/majoris-login-eye-symbolic.svg</file>
+  <file>assets/icons/majoris-login-keyboard-symbolic.svg</file>
+  <file>assets/icons/majoris-login-power-symbolic.svg</file>
+  <file>assets/icons/majoris-login-restart-symbolic.svg</file>
+  <file>assets/icons/majoris-login-shutdown-symbolic.svg</file>
+  <file>assets/icons/majoris-login-suspend-symbolic.svg</file>
+  <file>assets/icons/majoris-login-wifi-symbolic.svg</file>
+</gresource></gresources>

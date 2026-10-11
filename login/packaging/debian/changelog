@@ -1,0 +1,5 @@
+majoris-login-resources (0.1.0) trixie; urgency=medium
+
+  * Initial independent Majoris Login resource package.
+
+ -- Majoris contributors <maintainers@majoris.invalid>  Mon, 12 Oct 2026 10:00:00 +1100

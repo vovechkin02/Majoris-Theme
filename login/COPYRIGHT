@@ -1,0 +1,18 @@
+Majoris Login
+Copyright 2026 Majoris contributors.
+
+Original resources, styles, generators, packaging and documentation are licensed
+under the repository MIT licence (see ../LICENSE and packaging/debian/copyright).
+The supplied project-owner prototype is used as the visual specification.
+
+shell/majorisLogin.js, GNOME Shell presentation patches and native-actors.js are
+GPL-2.0-or-later. They integrate with GNOME Shell, copyright its contributors.
+The complete GPL-2 licence is available on Debian at
+/usr/share/common-licenses/GPL-2 and in the matching GNOME Shell source COPYING.
+
+Bundled Plus Jakarta Sans fonts retain their SIL Open Font License and original
+copyright notice in assets/fonts/OFL.txt. Symbolic SVG geometry is translated
+from the project-owner supplied prototype; native GNOME icons remain supplied
+by their normal system packages.
+
+Machine-readable copyright and full MIT grant: packaging/debian/copyright.

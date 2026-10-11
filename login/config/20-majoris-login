@@ -1,0 +1,9 @@
+# Does not change autologin, accounts, session defaults or administrator lockdown.
+[org/gnome/desktop/interface]
+font-name='Plus Jakarta Sans 11'
+
+[org/gnome/desktop/a11y]
+always-show-universal-access-status=true
+
+[org/majoris/login]
+appearance='dark'

@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+if [ "$1" = remove ] || [ "$1" = purge ]; then
+    if [ -f /var/lib/majoris-login/created-gdm-profile ] && [ -f /etc/dconf/profile/gdm ]; then
+        expected=$(printf '%s\n' 'user-db:user' 'system-db:gdm' 'file-db:/usr/share/gdm/greeter-dconf-defaults')
+        if [ "$(cat /etc/dconf/profile/gdm)" = "$expected" ]; then
+            rm /etc/dconf/profile/gdm
+        fi
+        rm /var/lib/majoris-login/created-gdm-profile
+    fi
+    command -v dconf >/dev/null && dconf update || true
+    command -v glib-compile-schemas >/dev/null && glib-compile-schemas /usr/share/glib-2.0/schemas || true
+    command -v fc-cache >/dev/null && fc-cache -f || true
+fi
+#DEBHELPER#

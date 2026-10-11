@@ -1,0 +1,24 @@
+{
+  "debian_source_version": "48.7-0+deb13u2",
+  "majoris_version": "48.7-0+deb13u2+majoris1",
+  "mutter_api": "16",
+  "source_url": "https://deb.debian.org/debian/pool/main/g/gnome-shell/",
+  "source_archives_sha256": {
+    "gnome-shell_48.7-0+deb13u2.debian.tar.xz": "7d8cf84547fdde0c4f1b969c9cf01990e9e7035fc559cc15e040bf187d9f7a29",
+    "gnome-shell_48.7-0+deb13u2.dsc": "7ba0fbe5b4f6d608adecbaa68330764bd892a717d9c847c0d5e428d92ca11557",
+    "gnome-shell_48.7.orig.tar.xz": "2dff328d5f7e29f8c897bc21caac7d2d443be3c63ae84d7623dec800f23493c3"
+  },
+  "source_sha256": {
+    "js/gdm/authPrompt.js": "8f59503b1e699b4e4e98931b20afd1fa4e60ac2f3489928afca92c23e662bbf2",
+    "js/gdm/loginDialog.js": "cd7ae9523997dc06afc4f453b6316acd8a2a170816c94faf2f9937817ffbc9ad",
+    "js/js-resources.gresource.xml": "ea8f22204eef7ba191d0991a5e7f9a12a3e47d02d7de77fb38b15d6452188704",
+    "js/ui/boxpointer.js": "3c95a97dc3aaf47ebb4679dbec3da627f48c935c5bf34b717e22f00807c1c1b3",
+    "js/ui/layout.js": "5dde9cc3b8295a43f67257059e3be833444dc63386a9185a3c1c81f71e8ef41c",
+    "js/ui/screenShield.js": "d049360fc41a55cad5fd4002fabe96d11d734f3fa3bd54a2560f8115465d1a1f",
+    "js/ui/sessionMode.js": "87bc95e0819c1c73dc3e6d8f36cd78487e8d3fbaf0a831451b1d6f111fad615f",
+    "js/ui/status/accessibility.js": "ce8abbc4b43c84b544038de7f30502f46e795b355ff9faeca6c2b74cebab637a",
+    "js/ui/status/keyboard.js": "cd263d0e122a234b50f6fd93572e4e3798fbc0317ff9e14496e5e594e40a4f0c",
+    "js/ui/unlockDialog.js": "d8fbd5583a2986743ff13a76d351f36da67fbb81875d5e1e0ec559e7996e6f43",
+    "js/ui/userWidget.js": "45747c2b488fda63d769a372e04cb9210cc65e9a582aac527a27bcedbc6d28eb"
+  }
+}

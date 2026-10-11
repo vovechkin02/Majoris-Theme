@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.majoris.login" path="/org/majoris/login/">
+    <key name="enabled" type="b"><default>true</default><summary>Enable Majoris login presentation</summary><description>Disable and restart the display manager from a console to use the stock interface. Authentication always remains native GDM/PAM.</description></key>
+    <key name="appearance" type="s"><choices><choice value="dark"/><choice value="light"/></choices><default>'dark'</default><summary>Login and lock appearance</summary></key>
+    <key name="logo" type="s"><default>''</default><summary>Optional approved system logo</summary><description>Absolute path readable by Debian-gdm. An empty value uses the Majoris wordmark without the prototype's placeholder mark.</description></key>
+  </schema>
+</schemalist>

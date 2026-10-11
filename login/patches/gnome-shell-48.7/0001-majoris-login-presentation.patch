@@ -1,0 +1,464 @@
+Description: Majoris native greeter/lock presentation hooks for Debian 48.7
+Author: Majoris contributors
+Forwarded: not-needed
+Last-Update: 2026-10-12
+
+--- a/js/gdm/authPrompt.js
++++ b/js/gdm/authPrompt.js
+@@ -1,3 +1,4 @@
++import * as MajorisLogin from './majorisLogin.js';
+ import Clutter from 'gi://Clutter';
+ import GLib from 'gi://GLib';
+ import Atk from 'gi://Atk';
+@@ -123,6 +124,7 @@
+         this._message.clutter_text.line_wrap = true;
+         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+         this.add_child(this._message);
++        MajorisLogin.decoratePrompt(this);
+     }
+ 
+     _createUserVerifier(gdmClient, params) {
+@@ -411,7 +413,7 @@
+         if (!canRetry)
+             this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
+ 
+-        if (wasQueryingService)
++        if (wasQueryingService && !this._majorisSubmit)
+             wiggle(this._entry);
+     }
+ 
+@@ -420,6 +422,9 @@
+         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
+         this.cancelButton.reactive = false;
+         this.cancelButton.can_focus = false;
++        MajorisLogin.syncSensitivity(this, false);
++        if (this._majorisSubmit)
++            this.clear();
+     }
+ 
+     _onReset() {
+@@ -501,6 +506,8 @@
+     }
+ 
+     clear() {
++        if (this._majorisSubmit)
++            this._passwordEntry.password_visible = false;
+         this._entry.text = '';
+         this._inactiveEntry.text = '';
+         this.stopSpinning();
+@@ -509,6 +516,8 @@
+     }
+ 
+     setQuestion(question) {
++        if (this._majorisQuestion)
++            this._majorisQuestion.text = question;
+         this._entry.hint_text = question;
+ 
+         this._authList.hide();
+@@ -589,10 +598,12 @@
+             this._message.opacity = 0;
+         }
+ 
+-        wiggle(this._message, wiggleParameters);
++        if (!this._majorisSubmit)
++            wiggle(this._message, wiggleParameters);
+     }
+ 
+     updateSensitivity(sensitive) {
++        MajorisLogin.syncSensitivity(this, sensitive);
+         let authWidget;
+ 
+         if (this._authList.visible)
+@@ -633,6 +644,11 @@
+ 
+         let userWidget = new UserWidget.UserWidget(user, Clutter.Orientation.VERTICAL);
+         this._userWell.set_child(userWidget);
++        if (this._majorisSubmit && !user) {
++            userWidget._label.text = _("Other User");
++            userWidget._label.opacity = 255;
++            userWidget._avatar.hide();
++        }
+ 
+         if (!user)
+             this._updateEntry(false);
+--- a/js/gdm/loginDialog.js
++++ b/js/gdm/loginDialog.js
+@@ -15,6 +15,7 @@
+  * along with this program; if not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++import * as MajorisLogin from './majorisLogin.js';
+ import AccountsService from 'gi://AccountsService';
+ import Atk from 'gi://Atk';
+ import Clutter from 'gi://Clutter';
+@@ -41,7 +42,7 @@
+ import * as Realmd from './realmd.js';
+ import * as UserWidget from '../ui/userWidget.js';
+ 
+-const _FADE_ANIMATION_TIME = 250;
++const _FADE_ANIMATION_TIME = 256;
+ const _SCROLL_ANIMATION_TIME = 500;
+ const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
+ const _CONFLICTING_SESSION_DIALOG_TIMEOUT = 60;
+@@ -375,6 +376,10 @@
+             return;
+ 
+         this._activeSessionId = sessionId;
++        if (MajorisLogin.enabled()) {
++            const [name] = Gdm.get_session_name_and_description(sessionId);
++            this._button.label = name;
++        }
+         this._updateOrnament();
+     }
+ 
+@@ -384,6 +389,9 @@
+ 
+     _populate() {
+         let ids = Gdm.get_session_ids();
++
++        if (MajorisLogin.enabled())
++            this._menu.actor.add_style_class_name("majoris-login-menu");
+ 
+         if (ids.length <= 1) {
+             this._button.hide();
+@@ -623,6 +631,7 @@
+         this._realmManager.connectObject('login-format-changed',
+             this._showRealmLoginHint.bind(this), this);
+ 
++        this._majoris = MajorisLogin.configureLogin(this, Main);
+         this._getGreeterSessionProxy();
+ 
+         // If the user list is enabled, it should take key focus; make sure the
+@@ -697,6 +706,10 @@
+ 
+     vfunc_allocate(dialogBox) {
+         this.set_allocation(dialogBox);
++        if (this._majoris) {
++            this._majoris.allocateLogin(this, dialogBox);
++            return;
++        }
+ 
+         let themeNode = this.get_theme_node();
+         dialogBox = themeNode.get_content_box(dialogBox);
+@@ -985,7 +998,8 @@
+     _onPrompted() {
+         const showSessionMenu = this._shouldShowSessionMenuButton();
+ 
+-        this._sessionMenuButton.updateSensitivity(showSessionMenu);
++        this._sessionMenuButton.updateSensitivity(showSessionMenu &&
++            (!this._majoris || this._authPrompt._entry.reactive));
+         this._sessionMenuButton.visible = showSessionMenu;
+         this._showPrompt();
+     }
+--- a/js/js-resources.gresource.xml
++++ b/js/js-resources.gresource.xml
+@@ -6,6 +6,7 @@
+     <file>gdm/batch.js</file>
+     <file>gdm/credentialManager.js</file>
+     <file>gdm/loginDialog.js</file>
++    <file>gdm/majorisLogin.js</file>
+     <file>gdm/oVirt.js</file>
+     <file>gdm/realmd.js</file>
+     <file>gdm/util.js</file>
+--- a/js/ui/boxpointer.js
++++ b/js/ui/boxpointer.js
+@@ -1,3 +1,4 @@
++import * as MajorisLogin from '../gdm/majorisLogin.js';
+ import Clutter from 'gi://Clutter';
+ import GObject from 'gi://GObject';
+ import St from 'gi://St';
+@@ -78,6 +79,8 @@
+     }
+ 
+     open(animate, onComplete) {
++        if (MajorisLogin.enabled() && (Main.sessionMode.isGreeter || Main.sessionMode.isLocked))
++            animate &= ~PopupAnimation.SLIDE;
+         let themeNode = this.get_theme_node();
+         let rise = themeNode.get_length('-arrow-rise');
+         let animationTime = animate & PopupAnimation.FULL ? POPUP_ANIMATION_TIME : 0;
+@@ -122,6 +125,8 @@
+     }
+ 
+     close(animate, onComplete) {
++        if (MajorisLogin.enabled() && (Main.sessionMode.isGreeter || Main.sessionMode.isLocked))
++            animate &= ~PopupAnimation.SLIDE;
+         if (!this.visible)
+             return;
+ 
+--- a/js/ui/layout.js
++++ b/js/ui/layout.js
+@@ -1,3 +1,4 @@
++import * as MajorisLogin from '../gdm/majorisLogin.js';
+ import Clutter from 'gi://Clutter';
+ import Gio from 'gi://Gio';
+ import GLib from 'gi://GLib';
+@@ -558,7 +559,11 @@
+         if (!this.primaryMonitor)
+             return;
+ 
+-        this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
++        const login = MajorisLogin.enabled() && (Main.sessionMode.isGreeter || Main.sessionMode.isLocked);
++        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
++        this.panelBox.set_position(this.primaryMonitor.x, login
++            ? this.primaryMonitor.y + this.primaryMonitor.height - this.panelBox.height - 32 * scale
++            : this.primaryMonitor.y);
+         this.panelBox.set_size(this.primaryMonitor.width, -1);
+ 
+         this.keyboardIndex = this.primaryIndex;
+@@ -779,6 +784,10 @@
+     }
+ 
+     async _startupAnimationGreeter() {
++        if (MajorisLogin.enabled()) {
++            this.panelBox.translation_y = 0;
++            return;
++        }
+         await new Promise(resolve => {
+             this.panelBox.ease({
+                 translation_y: 0,
+--- a/js/ui/screenShield.js
++++ b/js/ui/screenShield.js
+@@ -1,3 +1,4 @@
++import * as MajorisLogin from '../gdm/majorisLogin.js';
+ import AccountsService from 'gi://AccountsService';
+ import Clutter from 'gi://Clutter';
+ import Gio from 'gi://Gio';
+@@ -405,8 +406,9 @@
+         const duration = animate ? delta / velocity : 0;
+ 
+         this._lockDialogGroup.ease({
+-            translation_y: -height,
+-            duration,
++            translation_y: MajorisLogin.enabled() ? 0 : -height,
++            opacity: MajorisLogin.enabled() ? 0 : 255,
++            duration: MajorisLogin.enabled() ? MajorisLogin.duration(256) : duration,
+             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+             onComplete: () => this._hideLockScreenComplete(),
+         });
+@@ -464,11 +466,13 @@
+         let fadeToBlack = params.fadeToBlack;
+ 
+         if (params.animateLockScreen) {
+-            this._lockDialogGroup.translation_y = -global.screen_height;
++            this._lockDialogGroup.translation_y = MajorisLogin.enabled() ? 0 : -global.screen_height;
++            this._lockDialogGroup.opacity = MajorisLogin.enabled() ? 0 : 255;
+             this._lockDialogGroup.remove_all_transitions();
+             this._lockDialogGroup.ease({
+                 translation_y: 0,
+-                duration: Overview.ANIMATION_TIME,
++                opacity: 255,
++                duration: MajorisLogin.enabled() ? MajorisLogin.duration(256) : Overview.ANIMATION_TIME,
+                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                 onComplete: () => {
+                     this._lockScreenShown({fadeToBlack, animateFade: true});
+@@ -476,6 +480,7 @@
+             });
+         } else {
+             this._lockDialogGroup.translation_y = 0;
++            this._lockDialogGroup.opacity = 255;
+             this._lockScreenShown({fadeToBlack, animateFade: false});
+         }
+ 
+@@ -565,8 +570,9 @@
+         this._shortLightbox.lightOff();
+ 
+         this._lockDialogGroup.ease({
+-            translation_y: -global.screen_height,
+-            duration: Overview.ANIMATION_TIME,
++            translation_y: MajorisLogin.enabled() ? 0 : -global.screen_height,
++            opacity: MajorisLogin.enabled() ? 0 : 255,
++            duration: MajorisLogin.enabled() ? MajorisLogin.duration(256) : Overview.ANIMATION_TIME,
+             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+             onComplete: () => this._completeDeactivate(),
+         });
+--- a/js/ui/sessionMode.js
++++ b/js/ui/sessionMode.js
+@@ -1,3 +1,4 @@
++import * as MajorisLogin from '../gdm/majorisLogin.js';
+ import GLib from 'gi://GLib';
+ import * as Signals from '../misc/signals.js';
+ 
+@@ -59,7 +60,9 @@
+         panel: {
+             left: [],
+             center: ['dateMenu'],
+-            right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
++            right: MajorisLogin.enabled()
++                ? ['dwellClick', 'keyboard', 'quickSettings', 'a11y']
++                : ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
+         },
+         panelStyle: 'login-screen',
+     },
+@@ -71,7 +74,9 @@
+         panel: {
+             left: [],
+             center: [],
+-            right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
++            right: MajorisLogin.enabled()
++                ? ['dwellClick', 'keyboard', 'quickSettings', 'a11y']
++                : ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
+         },
+         panelStyle: 'unlock-screen',
+     },
+--- a/js/ui/status/accessibility.js
++++ b/js/ui/status/accessibility.js
+@@ -1,3 +1,4 @@
++import * as MajorisLogin from '../../gdm/majorisLogin.js';
+ import Gio from 'gi://Gio';
+ import GLib from 'gi://GLib';
+ import GObject from 'gi://GObject';
+@@ -43,6 +44,12 @@
+ 
+         let highContrast = this._buildItem(_('High Contrast'), A11Y_INTERFACE_SCHEMA, KEY_HIGH_CONTRAST);
+         this.menu.addMenuItem(highContrast);
++        if (MajorisLogin.enabled()) {
++            const motion = new Gio.Settings({schema_id: DESKTOP_INTERFACE_SCHEMA});
++            const item = new PopupMenu.PopupSwitchMenuItem(_('Reduce Motion'), !motion.get_boolean('enable-animations'));
++            motion.bind('enable-animations', item, 'state', Gio.SettingsBindFlags.INVERT_BOOLEAN);
++            this.menu.addMenuItem(item);
++        }
+ 
+         const magnifier = this._buildItem(_('Zoom'),
+             APPLICATIONS_SCHEMA, 'screen-magnifier-enabled');
+--- a/js/ui/status/keyboard.js
++++ b/js/ui/status/keyboard.js
+@@ -1,3 +1,4 @@
++import * as MajorisLogin from '../../gdm/majorisLogin.js';
+ import Clutter from 'gi://Clutter';
+ import Gio from 'gi://Gio';
+ import GLib from 'gi://GLib';
+@@ -965,7 +966,8 @@
+             this._indicatorLabels[oldSource.index].hide();
+         }
+ 
+-        if (!newSource || (nVisibleSources < 2 && !newSource.properties)) {
++        const majoris = MajorisLogin.enabled() && (Main.sessionMode.isGreeter || Main.sessionMode.isLocked);
++        if (!newSource || (!majoris && nVisibleSources < 2 && !newSource.properties)) {
+             // This source index might be invalid if we weren't able
+             // to build a menu item for it, so we hide ourselves since
+             // we can't fix it here. *shrug*
+--- a/js/ui/unlockDialog.js
++++ b/js/ui/unlockDialog.js
+@@ -1,3 +1,4 @@
++import * as MajorisLogin from '../gdm/majorisLogin.js';
+ import AccountsService from 'gi://AccountsService';
+ import Atk from 'gi://Atk';
+ import Clutter from 'gi://Clutter';
+@@ -24,7 +25,7 @@
+ // The timeout before showing the unlock hint (in seconds)
+ const HINT_TIMEOUT = 4;
+ 
+-const CROSSFADE_TIME = 300;
++const CROSSFADE_TIME = 256;
+ const FADE_OUT_TRANSLATION = 200;
+ const FADE_OUT_SCALE = 0.3;
+ 
+@@ -343,7 +344,7 @@
+         this._hint = new St.Label({
+             style_class: 'unlock-dialog-clock-hint',
+             x_align: Clutter.ActorAlign.CENTER,
+-            opacity: 0,
++            opacity: MajorisLogin.enabled() ? 255 : 0,
+         });
+ 
+         this.add_child(this._time);
+@@ -388,7 +389,7 @@
+ 
+     _updateHint() {
+         this._hint.text = this._seat.touch_mode
+-            ? _('Swipe up to unlock')
++            ? (MajorisLogin.enabled() ? _('Tap or swipe to sign in') : _('Swipe up to unlock'))
+             : _('Click or press a key to unlock');
+     }
+ 
+@@ -447,7 +448,9 @@
+         this._notifications.allocate(actorBox);
+ 
+         // Authentication Box
+-        let stackY = Math.min(
++        let stackY = MajorisLogin.enabled()
++            ? Math.max(80, (height - stackHeight) / 2)
++            : Math.min(
+             thirdOfHeight,
+             height - stackHeight - maxNotificationsHeight);
+ 
+@@ -609,6 +612,7 @@
+             this);
+ 
+         this._updateUserSwitchVisibility();
++        this._majoris = MajorisLogin.createChrome(this, {lock: true}, Main);
+ 
+         // Main Box
+         let mainBox = new St.Widget();
+@@ -650,6 +654,12 @@
+         return Clutter.EVENT_PROPAGATE;
+     }
+ 
++    vfunc_allocate(allocation) {
++        super.vfunc_allocate(allocation);
++        if (this._majoris)
++            this._majoris.allocate(...allocation.get_size());
++    }
++
+     vfunc_captured_event(event) {
+         if (Main.keyboard.maybeHandleEvent(event))
+             return Clutter.EVENT_STOP;
+@@ -668,6 +678,13 @@
+             effect: new Shell.BlurEffect({name: 'blur'}),
+         });
+ 
++        if (MajorisLogin.enabled()) {
++            widget.remove_effect_by_name("blur");
++            MajorisLogin.wallpaper(widget);
++            this._backgroundGroup.add_child(widget);
++            return;
++        }
++
+         let bgManager = new Background.BackgroundManager({
+             container: widget,
+             monitorIndex,
+@@ -768,6 +785,16 @@
+     }
+ 
+     _setTransitionProgress(progress) {
++        if (this._majoris) {
++            this._promptBox.visible = progress > 0;
++            this._clock.visible = progress < 1;
++            this._promptBox.opacity = 255 * progress;
++            this._clock.opacity = 255 * (1 - progress);
++            this._otherUserButton.opacity = 255 * progress;
++            this._otherUserButton.reactive = progress > 0;
++            this._otherUserButton.can_focus = progress > 0;
++            return;
++        }
+         this._promptBox.visible = progress > 0;
+         this._clock.visible = progress < 1;
+ 
+--- a/js/ui/userWidget.js
++++ b/js/ui/userWidget.js
+@@ -1,12 +1,14 @@
+ //
+ // A widget showing the user avatar and name
+ 
++import * as MajorisLogin from '../gdm/majorisLogin.js';
+ import Clutter from 'gi://Clutter';
+ import GLib from 'gi://GLib';
+ import GObject from 'gi://GObject';
+ import St from 'gi://St';
+ 
+ import * as Params from '../misc/params.js';
++import * as Main from './main.js';
+ 
+ const AVATAR_ICON_SIZE = 64;
+ 
+@@ -88,6 +90,10 @@
+                 background-size: cover;`;
+         } else {
+             this.style = null;
++            if (MajorisLogin.enabled() && (Main.sessionMode.isGreeter || Main.sessionMode.isLocked)) {
++                this.child = MajorisLogin.avatarFallback(this._user);
++                return;
++            }
+             this.child = new St.Icon({
+                 icon_name: 'avatar-default-symbolic',
+                 icon_size: this._iconSize,

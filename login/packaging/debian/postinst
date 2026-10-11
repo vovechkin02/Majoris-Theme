@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+if [ "$1" = configure ]; then
+    # Debian supplies the greeter profile. Preserve an administrator's profile.
+    if [ ! -e /etc/dconf/profile/gdm ]; then
+        mkdir -p /etc/dconf/profile
+        printf '%s\n' 'user-db:user' 'system-db:gdm' 'file-db:/usr/share/gdm/greeter-dconf-defaults' > /etc/dconf/profile/gdm
+        mkdir -p /var/lib/majoris-login
+        touch /var/lib/majoris-login/created-gdm-profile
+    fi
+    dconf update
+    glib-compile-schemas /usr/share/glib-2.0/schemas
+    fc-cache -f
+fi
+#DEBHELPER#
