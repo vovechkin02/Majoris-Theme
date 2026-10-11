@@ -19,6 +19,7 @@ values['preference_content_height']=str(int(html_value(t,'.pref-row','min-height
 values['banner_button_content_height']=str(int(html_value(t,'.banner .btn','height')[:-2])-2)+'px'
 values['control_duration']=str(t['motion']['control_ms'])+'ms'
 values['surface_duration']=str(t['motion']['surface_ms'])+'ms'
+values.update(shell_panel_surface=t['color']['surface'],shell_popup_surface=t['color']['surface'],shell_control_surface=t['color']['surface_secondary'],shell_search_surface=t['color']['surface'],shell_disabled_foreground=t['color']['text_tertiary'],shell_selected_foreground='#FFFFFF',shell_focus_color=t['color']['primary_500'],shell_tooltip_background=html_value(t,'.tooltip','background'),shell_tooltip_foreground=t['color']['surface'],shell_tooltip_shadow=t['shadow']['pop'])
 values['window_edge_color']=html_value(t,'.window','border').split('solid ',1)[1]
 
 def render(s):
@@ -34,6 +35,8 @@ for version in ('3','4'):
     output(directory/'assets/spinner.svg','<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="none" stroke="'+t['color']['primary_200']+'" stroke-width="2"/><path d="M3.63604 3.63604 A9 9 0 0 1 16.36396 3.63604" fill="none" stroke="'+t['color']['primary_600']+'" stroke-width="2"/></svg>\n')
     output(directory/'colors.css',colors)
     shared=(ROOT/'design/templates/gtk-common.css.in').read_text()
+    shared,desktop=shared.split('/* Desktop Icons NG:',1)
+    desktop='/* Desktop Icons NG:'+desktop
     specific=(ROOT/f'design/templates/gtk{version}.css.in').read_text()
     if version=='4':
         # GTK4 distinguishes keyboard-visible button focus; entries keep focus
@@ -47,7 +50,7 @@ for version in ('3','4'):
         shared=shared.replace('transparent 10px, @primary_500 10px','transparent 10%, @primary_500 10%').replace('calc(100% - 10px)','90%')
         shared=shared.replace('transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)', 'transparent 26.470588%, @primary_500 26.470588%, @primary_500 73.529412%, transparent 73.529412%')
     base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
-    output(directory/'gtk.css','/* Generated; edit design/templates and regenerate. */\n'+base+'@import url("colors.css");\n'+render(shared+specific))
+    output(directory/'gtk.css','/* Generated; edit design/templates and regenerate. */\n'+base+'@import url("colors.css");\n'+render(shared+specific+desktop))
 p=ROOT/'theme/Majoris/gnome-shell/gnome-shell.css'
 p.parent.mkdir(parents=True,exist_ok=True)
 output(p,'/* Generated from Majoris HTML tokens. */\n'+render((ROOT/'design/templates/shell.css.in').read_text()))

@@ -18,7 +18,13 @@ for version in ['3','4']:
   for prop in before.get(selector,{}).keys()|after.get(selector,{}).keys():
    a=before.get(selector,{}).get(prop);b=after.get(selector,{}).get(prop)
    if a==b:continue
-   assert selector=='decoration' or selector.startswith('window.csd'),(version,selector,prop,a,b,'Unrelated light styling changed')
+   desktop=['window.desktopwindow','window.desktopwindow:backdrop','window.desktopwindow.background','window.desktopwindow.background:backdrop','.desktopwindow','.desktopwindow:backdrop']
+   if selector in desktop:
+    # Later theme-state backport: an exact desktop-only compatibility exception.
+    expected={'background-color':'transparent','background-image':'none','border-color':'transparent','border-width':'0','border-radius':'0','box-shadow':'none'}
+    assert a is None and prop in expected and b==expected[prop],(selector,prop,a,b)
+   else:
+    assert selector=='decoration' or selector.startswith('window.csd'),(version,selector,prop,a,b,'Unrelated light styling changed')
    changes.append({'version':version,'selector':selector,'property':prop,'before':a,'after':b})
 (ROOT/'artifacts/surgical-light-scope.json').write_text(json.dumps(changes,indent=2)+'\n')
-print('Every changed light declaration is restricted to CSD/decoration edges and managed states')
+print('Every changed light declaration is restricted to CSD/decoration edges, managed states and the exact desktop-only compatibility exception')

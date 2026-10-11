@@ -42,3 +42,12 @@ foreach version : ['3','4']
 endforeach
 
 test('native window edge states',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 1440x1080x24',python.full_path(),files('tests/test-window-edge-runtime.py'),factory.full_path()],timeout:60)
+
+foreach name : ['desktop-window-contract', 'shell-variant-contract']
+  test(name,python,args:[files('tests/test-'+name+'.py')])
+endforeach
+foreach version : ['3','4']
+  test('GTK'+version+' native desktop transparency',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-desktop-window-native.py'),version])
+endforeach
+
+test('neutral auto install with native GTK4 bridge',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-auto-install-bridge.py')])

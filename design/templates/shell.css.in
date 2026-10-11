@@ -1,24 +1,161 @@
 stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; font-size: 13px; color: ${text}; }
-#panel { background-color: ${surface}; color: ${text}; height: 32px; }
+#panel { background-color: ${shell_panel_surface}; color: ${text}; height: 32px; }
 .panel-button { border-radius: ${control_radius}; padding: 0 8px; transition-duration: ${control_duration}; }
 .panel-button:hover, .popup-menu-item:hover, .quick-toggle:hover { background-color: ${hover}; }
 .panel-button:active, .popup-menu-item:active { background-color: ${active}; }
-.popup-menu-content, .quick-settings, .calendar, .message-list, .notification-banner, .modal-dialog, .osd-window { background-color: ${surface}; color: ${text}; border: 1px solid ${border_soft}; border-radius: ${structure_radius}; padding: 8px; box-shadow: ${pop_shadow}; }
+.popup-menu-content, .quick-settings, .calendar, .message-list, .notification-banner, .modal-dialog, .osd-window { background-color: ${shell_popup_surface}; color: ${text}; border: 1px solid ${border_soft}; border-radius: ${structure_radius}; padding: 8px; box-shadow: ${pop_shadow}; }
 .popup-menu-content, .modal-dialog { transition-duration: ${surface_duration}; }
 .popup-menu-item { border-radius: ${control_radius}; padding: 6px 10px; }
-.popup-menu-item:checked, .quick-toggle:checked { background-color: ${primary_500}; color: ${surface}; }
+
 .popup-separator-menu-item .popup-separator-menu-item-separator { background-color: ${border_soft}; height: 1px; }
-.quick-toggle, .quick-menu-toggle, .modal-dialog-button { border-radius: ${control_radius}; background-color: ${surface_secondary}; padding: 8px 12px; }
+.quick-toggle, .quick-menu-toggle, .modal-dialog-button { border-radius: ${control_radius}; background-color: ${shell_control_surface}; padding: 8px 12px; }
 .quick-slider .slider, .slider { -barlevel-height: 4px; -barlevel-background-color: ${border}; -barlevel-active-background-color: ${primary_500}; -barlevel-overdrive-color: ${danger}; -slider-handle-radius: 8px; }
 .calendar-day { border-radius: ${control_radius}; }
 .calendar-day:hover { background-color: ${hover}; }
-.calendar-today { background-color: ${primary_500}; color: ${surface}; }
 .message { background-color: ${surface_secondary}; border-radius: ${structure_radius}; }
-.search-entry { background-color: ${surface}; color: ${text}; border: 1px solid ${border}; border-radius: ${control_radius}; padding: 8px 12px; }
-.search-entry:focus { border-color: ${primary_500}; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
+.search-entry { background-color: ${shell_search_surface}; color: ${text}; border: 1px solid ${border}; border-radius: ${control_radius}; padding: 8px 12px; }
+.search-entry:focus { border-color: ${shell_focus_color}; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
 #overview { background-color: ${background}; }
 .workspace-thumbnail, .workspace-background { border-radius: ${structure_radius}; }
 .dash-background { background-color: ${surface_secondary}; border-radius: ${structure_radius}; }
-.dash-label, .tooltip { background-color: ${.tooltip|background}; color: ${surface}; border-radius: ${control_radius}; padding: ${.tooltip|padding}; font-size: ${.tooltip|font-size}; box-shadow: ${pop_shadow}; }
+.dash-label, .tooltip { background-color: ${shell_tooltip_background}; color: ${shell_tooltip_foreground}; border-radius: ${control_radius}; padding: ${.tooltip|padding}; font-size: ${.tooltip|font-size}; box-shadow: ${shell_tooltip_shadow}; }
 .app-well-app:focus, .app-well-app:hover { background-color: ${hover}; border-radius: ${control_radius}; }
-.modal-dialog-button:focus { border-color: ${primary_500}; }
+.modal-dialog-button:focus { border-color: ${shell_focus_color}; }
+
+/* Shell assigns child foregrounds directly: each variant owns the full subtree. */
+#panel .panel-button,
+#panel .panel-button .system-status-icon,
+#panel .panel-button .clock,
+#panel .panel-button .clock-display,
+#panel .panel-button .panel-status-menu-box,
+#panel .panel-button StLabel,
+#panel .panel-button StIcon,
+#panel .panel-button .system-status-icon StIcon { color: ${text}; }
+.popup-menu-item,
+.quick-settings,
+.quick-toggle,
+.quick-menu-toggle,
+.quick-slider,
+.quick-settings .icon-button,
+.quick-settings-system-item .icon-button,
+.quick-settings-system-item .power-item,
+.calendar,
+.calendar-day,
+.message-list,
+.message,
+.notification-banner,
+.modal-dialog,
+.modal-dialog-button { color: ${text}; }
+.popup-menu-item StLabel,
+.popup-menu-item StIcon,
+.quick-settings StLabel,
+.quick-settings StIcon,
+.quick-toggle StLabel,
+.quick-toggle StIcon,
+.quick-menu-toggle StLabel,
+.quick-menu-toggle StIcon,
+.quick-slider StLabel,
+.quick-slider StIcon,
+.quick-settings .icon-button StLabel,
+.quick-settings .icon-button StIcon,
+.quick-settings-system-item .icon-button StLabel,
+.quick-settings-system-item .icon-button StIcon,
+.quick-settings-system-item .power-item StLabel,
+.quick-settings-system-item .power-item StIcon,
+.calendar StLabel,
+.calendar StIcon,
+.calendar-day StLabel,
+.calendar-day StIcon,
+.message-list StLabel,
+.message-list StIcon,
+.message StLabel,
+.message StIcon,
+.notification-banner StLabel,
+.notification-banner StIcon,
+.modal-dialog StLabel,
+.modal-dialog StIcon,
+.modal-dialog-button StLabel,
+.modal-dialog-button StIcon,
+.quick-toggle .quick-toggle-label,
+.quick-toggle .quick-toggle-icon,
+.quick-toggle .quick-toggle-arrow,
+.quick-menu-toggle .quick-toggle-arrow,
+.quick-menu-toggle .quick-toggle-arrow-button { color: ${text}; }
+.quick-settings .icon-button,
+.quick-settings-system-item .icon-button { background-color: ${shell_control_surface}; color: ${text}; border-radius: ${control_radius}; }
+.quick-settings .icon-button:hover,
+.quick-settings-system-item .icon-button:hover { background-color: ${hover}; color: ${text}; }
+.quick-settings .icon-button:active,
+.quick-settings-system-item .icon-button:active { background-color: ${active}; color: ${text}; }
+.popup-menu-item:checked,
+.quick-toggle:checked,
+.quick-menu-toggle:checked,
+.calendar-today,
+.calendar-day:selected { background-color: ${primary_500}; color: ${shell_selected_foreground}; }
+.popup-menu-item:checked *,
+.popup-menu-item:checked StLabel,
+.popup-menu-item:checked StIcon,
+.popup-menu-item:checked .quick-toggle-label,
+.popup-menu-item:checked .quick-toggle-icon,
+.popup-menu-item:checked .quick-toggle-arrow,
+.popup-menu-item:checked .quick-toggle-arrow-button,
+.quick-toggle:checked *,
+.quick-toggle:checked StLabel,
+.quick-toggle:checked StIcon,
+.quick-toggle:checked .quick-toggle-label,
+.quick-toggle:checked .quick-toggle-icon,
+.quick-toggle:checked .quick-toggle-arrow,
+.quick-toggle:checked .quick-toggle-arrow-button,
+.quick-menu-toggle:checked *,
+.quick-menu-toggle:checked StLabel,
+.quick-menu-toggle:checked StIcon,
+.quick-menu-toggle:checked .quick-toggle-label,
+.quick-menu-toggle:checked .quick-toggle-icon,
+.quick-menu-toggle:checked .quick-toggle-arrow,
+.quick-menu-toggle:checked .quick-toggle-arrow-button,
+.calendar-today *,
+.calendar-today StLabel,
+.calendar-today StIcon,
+.calendar-today .quick-toggle-label,
+.calendar-today .quick-toggle-icon,
+.calendar-today .quick-toggle-arrow,
+.calendar-today .quick-toggle-arrow-button,
+.calendar-day:selected *,
+.calendar-day:selected StLabel,
+.calendar-day:selected StIcon,
+.calendar-day:selected .quick-toggle-label,
+.calendar-day:selected .quick-toggle-icon,
+.calendar-day:selected .quick-toggle-arrow,
+.calendar-day:selected .quick-toggle-arrow-button { color: ${shell_selected_foreground}; }
+.quick-toggle:insensitive,
+.quick-menu-toggle:insensitive,
+.quick-settings .icon-button:insensitive,
+.quick-settings-system-item .icon-button:insensitive { background-color: ${shell_control_surface}; color: ${shell_disabled_foreground}; }
+.quick-toggle:insensitive *,
+.quick-toggle:insensitive StLabel,
+.quick-toggle:insensitive StIcon,
+.quick-toggle:insensitive .quick-toggle-label,
+.quick-toggle:insensitive .quick-toggle-icon,
+.quick-toggle:insensitive .quick-toggle-arrow,
+.quick-toggle:insensitive .quick-toggle-arrow-button,
+.quick-menu-toggle:insensitive *,
+.quick-menu-toggle:insensitive StLabel,
+.quick-menu-toggle:insensitive StIcon,
+.quick-menu-toggle:insensitive .quick-toggle-label,
+.quick-menu-toggle:insensitive .quick-toggle-icon,
+.quick-menu-toggle:insensitive .quick-toggle-arrow,
+.quick-menu-toggle:insensitive .quick-toggle-arrow-button,
+.quick-settings .icon-button:insensitive *,
+.quick-settings .icon-button:insensitive StLabel,
+.quick-settings .icon-button:insensitive StIcon,
+.quick-settings .icon-button:insensitive .quick-toggle-label,
+.quick-settings .icon-button:insensitive .quick-toggle-icon,
+.quick-settings .icon-button:insensitive .quick-toggle-arrow,
+.quick-settings .icon-button:insensitive .quick-toggle-arrow-button,
+.quick-settings-system-item .icon-button:insensitive *,
+.quick-settings-system-item .icon-button:insensitive StLabel,
+.quick-settings-system-item .icon-button:insensitive StIcon,
+.quick-settings-system-item .icon-button:insensitive .quick-toggle-label,
+.quick-settings-system-item .icon-button:insensitive .quick-toggle-icon,
+.quick-settings-system-item .icon-button:insensitive .quick-toggle-arrow,
+.quick-settings-system-item .icon-button:insensitive .quick-toggle-arrow-button { color: ${shell_disabled_foreground}; }

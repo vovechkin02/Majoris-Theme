@@ -41,7 +41,7 @@ GTK4 4.18/libadwaita 1.7 does not select the user `gtk-dark.css` merely because 
 
 The factory accepts `--light`, `--dark`, `--system`; its existing menu contains Appearance → Light / Dark / System. Each selects FORCE_LIGHT, FORCE_DARK or DEFAULT. The same realized widgets switch live. Majoris applications should choose DEFAULT and consume the theme instead of hardcoding dark backgrounds, text or titlebars. Explicit application preferences take precedence over system appearance.
 
-Development installation accepts `--variant=light|dark|auto`. Light/dark select a fixed GTK4 user CSS entrypoint; auto installs the light fallback and both palettes/assets, with the live bridge supplying scheme selection. The journal preserves original files across mode changes and refuses to overwrite later user edits. Installation changes no global GNOME appearance preference.
+Development installation accepts `--variant=light|dark|auto`. Light/dark select a fixed GTK4 user CSS entrypoint; auto links a neutral, comment-only `integration/gtk4-auto.css` and both palettes/assets. It imports neither variant: the factory or GTK4 wrapper must attach the live bridge to supply the active scheme. The journal preserves original files across mode changes and refuses to overwrite later user edits. Installation changes no global GNOME appearance preference.
 
 System tests use an isolated in-memory GSettings backend, exercise prefer-dark/default repeatedly, and restore the original value in `finally`. No persistent WSL preference is changed. Portal/session delivery still requires the actual GNOME environment.
 
@@ -58,3 +58,20 @@ Artifacts are kept in `artifacts/baseline-light/`, `screenshots/light/`, `screen
 Native constraints include libadwaita's centered banner message, adaptive toast width, alert-dialog response structure, preference row internals, view-switcher content policy, popover anchoring/arrow, tooltip placement/no HTML arrow and overlay scrollbar behavior. Clock's application-specific SVG strokes remain fixed `#2e3436` in its existing resources; the dark capture exposes their weak contrast. This application asset limitation is recorded as NATIVE TOOLKIT CONSTRAINT (fixed SVG paint cannot be changed by theme text colours). No Clock code or resources were modified.
 
 Settings starts under the WSL GNOME marker but presents no visible surface; a blank capture is rejected and recorded as GNOME SESSION VALIDATION REQUIRED. Files and the existing Clock build have actual captures. The theme should be validated in the target VM before desktop acceptance.
+
+
+## Theme-state backport ownership
+
+The theme owns GTK3/GTK4 light and dark CSS, the DING `desktopwindow` normal and
+backdrop transparency exception, both reusable GTK bridges, Shell light/dark
+assets and variant regressions. The OS/session owns global process attachment,
+any session LD_PRELOAD dispatcher, extension activation, wallpaper selection and
+the full GNOME/Mutter lifecycle. No session dispatcher or desktop extension is
+shipped by this repository.
+
+Shell now has explicit descendant colours and separate panel, transient, search,
+control, disabled and selected semantic values. The dark panel is #202023;
+transients are rgba(40,40,44,.98); search/controls are #28282C. Checked children
+stay #FFFFFF in both variants. This avoids a former broad foreground substitution
+that also matched `background-color` and made dark surfaces white. See
+[the VM regression checklist](theme-state-vm-checklist.md).

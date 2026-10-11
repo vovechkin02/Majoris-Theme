@@ -114,6 +114,7 @@ tooltip label { color: @surface; }
 @keyframes majoris-spin { to { -gtk-icon-transform: rotate(360deg); } }
 spinner:checked { opacity: 1; animation: majoris-spin 800ms linear infinite; }
 .title-1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+
 decoration { border-radius: 8px; box-shadow: 0 20px 40px rgba(20,20,25,.18),0 6px 12px rgba(20,20,25,.08); border: 1px solid rgba(20,20,25,.12); border-color: rgba(20,20,25,.12); }
 window.csd { border-radius: 8px; }
 headerbar { -GtkWidget-window-dragging: true; }
@@ -169,3 +170,17 @@ window.csd.tiled-left decoration,
 window.csd.tiled-right decoration,
 window.csd.tiled-top decoration,
 window.csd.tiled-bottom decoration { border-radius: 0; border-width: 0; padding: 0; box-shadow: none; }
+/* Desktop Icons NG: desktopwindow compatibility, emitted after native overrides. */
+window.desktopwindow,
+window.desktopwindow:backdrop,
+window.desktopwindow.background,
+window.desktopwindow.background:backdrop,
+.desktopwindow,
+.desktopwindow:backdrop {
+    background-color: transparent;
+    background-image: none;
+    border-color: transparent;
+    border-width: 0;
+    border-radius: 0;
+    box-shadow: none;
+}

@@ -2,8 +2,10 @@
 import re,subprocess,os
 from pathlib import Path
 import tinycss2
+from shell_contract import validate
 root=Path(__file__).resolve().parents[1]
 css=(root/('theme/Majoris/gnome-shell/gnome-shell-dark.css' if os.environ.get('MAJORIS_VARIANT')=='dark' else 'theme/Majoris/gnome-shell/gnome-shell.css')).read_text()
+validate(css,os.environ.get('MAJORIS_VARIANT','light'))
 rules=tinycss2.parse_stylesheet(css,skip_whitespace=True,skip_comments=True)
 for rule in rules:
     assert rule.type=='qualified-rule',str(rule)

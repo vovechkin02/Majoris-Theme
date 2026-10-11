@@ -26,7 +26,7 @@ meson test -C build --print-errorlogs
 ./build/factory/majoris-theme-factory --geometry-report
 ```
 
-GTK3 uses user-local theme selection (`GTK_THEME=Majoris`). GTK4/libadwaita uses user CSS plus the reusable StyleManager bridge for live and system switching. The minimal icon overlay inherits Adwaita and hicolor. The factory selects it and right-side window controls in its process. See [GTK3](docs/gtk3.md), [GTK4](docs/gtk4-libadwaita.md), [mapping](design/gtk-mapping.md) and [testing](docs/testing.md).
+GTK3 uses user-local theme selection (`GTK_THEME=Majoris`). GTK4/libadwaita uses fixed user CSS in explicit modes and the reusable StyleManager bridge for live/system switching. Auto installation uses neutral CSS and requires the factory or wrapper bridge. The minimal icon overlay inherits Adwaita and hicolor. The factory selects it and right-side window controls in its process. See [GTK3](docs/gtk3.md), [GTK4](docs/gtk4-libadwaita.md), [mapping](design/gtk-mapping.md) and [testing](docs/testing.md).
 
 Plus Jakarta Sans is required. The supplied variable normal/italic fonts were installed and verified in Debian WSL; generic sans-serif and system-ui also resolve to Plus Jakarta Sans. Fonts remain external assets; see [fonts](fonts/README.md). The [dark HTML](design/reference/majoris-widget-factory-dark.html) is preserved verbatim, and its effective override cascade generates `design/tokens-dark.json`. See [dark implementation and switching](docs/dark-theme.md).
 
@@ -52,10 +52,20 @@ Light, dark and system appearance use the same native geometry. Applications sho
 ./scripts/capture-visual-regressions.sh --both
 ```
 
-The factory menu has Appearance → Light / Dark / System. GTK3 can also use `GTK_THEME=Majoris:dark`. The development installer supports `--variant=light|dark|auto`, preserves prior files and installs both palettes/assets simultaneously. A fixed dark install selects dark user CSS; automatic GTK4 behaviour requires the bridge (factory links it, other GTK4 apps use the wrapper). A fixed GTK_THEME setting prevents automatic GTK3 selection; the auto wrapper clears it and follows GNOME settings through native GtkSettings.
+The factory menu has Appearance → Light / Dark / System. GTK3 can also use `GTK_THEME=Majoris:dark`. The development installer supports `--variant=light|dark|auto`, preserves prior files and installs both palettes/assets simultaneously. Light/dark installs select fixed user CSS; auto installs a neutral comment-only entrypoint that imports neither variant; automatic GTK4 behaviour requires the bridge (factory links it, other GTK4 apps use the wrapper). A fixed GTK_THEME setting prevents automatic GTK3 selection; the auto wrapper clears it and follows GNOME settings through native GtkSettings.
 
 Windows helpers stay in Debian: `scripts/wsl.ps1 factory -Variant dark`, `factory -Variant auto`, `capture -Variant auto` and `reference -Variant auto`. Capture/reference auto means both explicit suites; results are in the synchronized Linux checkout. Native captures use `artifacts/screenshots/light/` and `dark/`; HTML uses `html/` and `html-dark/`.
 
 Both variants require the [GNOME VM checklist](docs/testing.md), including Light → Dark → Light without stale colours, Settings, inactive/maximized/restored/tiled windows, Mutter corners/shadows, scaling and the full Shell. WSL source/parser tests and Xvfb captures do not establish those GNOME session results.
 
 The [surgical conformance audit](docs/surgical-conformance.md) records the invariant palette, semantic dark actions, mixed-checkbox and CSD edge fixes, native regression evidence and remaining GNOME VM acceptance.
+
+
+The [theme-state backport](docs/theme-state-backport.md) supplies DING desktop
+transparency in active/backdrop states and complete light/dark Shell descendants,
+Quick Settings states and semantic surfaces. Majoris-Theme owns those assets,
+GTK3/GTK4 bridges and variant tests. Majoris OS/session owns automatic global
+attachment, its LD_PRELOAD dispatcher, Shell extension activation, wallpaper and
+GNOME/Mutter lifecycle. The ISO builder can consume `theme/Majoris/` verbatim;
+no GTK/Shell CSS patching or distro-only dispatcher is needed in this repository.
+See the [exact VM regression checklist](docs/theme-state-vm-checklist.md).

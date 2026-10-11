@@ -1,6 +1,6 @@
 # Testing
 
-Run `meson setup build`, `meson compile -C build`, then `meson test -C build --print-errorlogs` in Debian Trixie. The Windows helper is `scripts/wsl.ps1 test`. The 18 tests include full HTML declaration/pseudo-element extraction and generated CSS/SVG drift; parsed semantic shadow/radius/color/state contracts; strong font aliases; reversible installer restoration, conflicts and asset migration; native GTK3/GTK4 parsers and titlebar colors; GTK3 painted button backgrounds; and native simple/dense/split geometry. Source contracts explicitly do not claim computed GTK appearance.
+Run `meson setup build`, `meson compile -C build`, then `meson test -C build --print-errorlogs` in Debian Trixie. The Windows helper is `scripts/wsl.ps1 test`. The full Meson suite includes full HTML declaration/pseudo-element extraction and generated CSS/SVG drift; parsed semantic shadow/radius/color/state contracts; strong font aliases; reversible installer restoration, conflicts and asset migration; native GTK3/GTK4 parsers and titlebar colors; GTK3 painted button backgrounds; and native simple/dense/split geometry. Source contracts explicitly do not claim computed GTK appearance.
 
 Generate after template changes with `python3 tools/generate-theme.py`, preserving the reference. Synchronize generated CSS and assets back to the Windows checkout before using its helper again. Capture refuses generated-theme drift rather than silently inspecting an older stylesheet.
 
@@ -67,3 +67,34 @@ against exact edge alpha paints and rejects managed insets/corner seams.
 immutable `artifacts/baseline-final-fixes` baseline. No screenshots are cropped,
 recoloured or otherwise modified for acceptance. Symbolic and primary-reference
 audits are read-only and write evidence into artifacts.
+
+
+## Theme-state backport validation
+
+The baseline clean build, tests, current captures and geometry are preserved in
+`artifacts/pre-theme-state-backport/`. Parsed desktop contracts cover all four
+GTK entrypoints and both normal/backdrop states. Native GTK style-render probes
+require zero background/frame alpha for a real `desktopwindow` class and opaque
+backgrounds before/after removing that class. These prove native style rendering;
+wallpaper, Home/Trash and DING extension lifecycle remain VM checks.
+
+Shell selector/property tests check exact surfaces and descendant colours,
+checked white children, insensitive text/icons, icon-button surfaces and search.
+Both source round trips must independently own every colour-sensitive selector.
+Negative regressions reject the specific white-surface/foreground bugs, while
+legitimate selected white foregrounds remain accepted. The existing Shell
+validator also enforces this contract; it does not run a GNOME Shell session.
+
+Installer tests cover fixed light/dark and neutral auto CSS, repeat installation,
+mode transitions, asset migration, conflict protection, original files/symlinks
+and uninstall. A real neutral install also runs both switching cycles through
+the existing GTK4 bridge. Existing GTK3 selection and GTK4 system/force switching
+regressions remain enabled. No global user preferences are changed by tests.
+
+Run the clean Meson suite with `MAJORIS_REQUIRE_EXACT_FONT=1`, generation `--check`,
+and `scripts/capture-visual-regressions.sh --both`. The application captures and
+geometry must match the preserved baseline. [Exact GNOME VM scenarios](theme-state-vm-checklist.md)
+cover active/backdrop desktop transparency, readable Shell descendants and both
+live switching directions without logout. Global process attachment, dispatcher,
+Shell activation, wallpaper and lifecycle belong to the distro/session; this
+repository supplies theme assets, bridges and regressions.

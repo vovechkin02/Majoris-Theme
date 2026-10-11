@@ -23,6 +23,8 @@ def generate(output):
         output(directory/'colors-dark.css',colors)
         output(directory/'assets/spinner-dark.svg','<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="none" stroke="'+html_value(t,'.spinner','border-color')+'" stroke-width="2"/><path d="M3.63604 3.63604 A9 9 0 0 1 16.36396 3.63604" fill="none" stroke="'+html_value(t,'.spinner','border-top-color')+'" stroke-width="2"/></svg>\n')
         shared=(ROOT/'design/templates/gtk-common.css.in').read_text()
+        shared,desktop=shared.split('/* Desktop Icons NG:',1)
+        desktop='/* Desktop Icons NG:'+desktop
         specific=(ROOT/f'design/templates/gtk{version}.css.in').read_text()
         if version=='4': shared=re.sub(r'(button(?:\.[\w-]+)?):focus\b',r'\1:focus-visible',shared)
         else:
@@ -45,14 +47,11 @@ def generate(output):
             extra=extra.replace('popover.background { background: transparent; }','')
             extra+=render((ROOT/'design/templates/gtk3-dark.css.in').read_text())
         base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
-        output(directory/'gtk-dark.css','/* Generated: shared geometry, effective dark cascade, native overrides. */\n'+base+'@import url("colors.css");\n@import url("colors-dark.css");\n'+css+extra)
-    # Shell's literal CSS consumes semantic focus/danger values, not remapped palette steps.
-    shell_template=(ROOT/'design/templates/shell.css.in').read_text()
-    shell_template=''.join(line.replace('${primary_500}','${focus_color}') if ':focus {' in line else line for line in shell_template.splitlines(keepends=True))
-    values['focus_color']=t['semantic_color']['focus']
+        output(directory/'gtk-dark.css','/* Generated: shared geometry, effective dark cascade, native overrides. */\n'+base+'@import url("colors.css");\n@import url("colors-dark.css");\n'+css+extra+render(desktop))
+    # Explicit Shell roles avoid substring replacements matching background-color.
+    values.update(shell_panel_surface=t['color']['surface'],shell_popup_surface='rgba(40,40,44,.98)',shell_control_surface=t['color']['surface_secondary'],shell_search_surface=t['color']['surface_secondary'],shell_disabled_foreground=t['color']['text_tertiary'],shell_selected_foreground='#FFFFFF',shell_focus_color=t['semantic_color']['focus'],shell_tooltip_background=html_value(t,'.tooltip','background'),shell_tooltip_foreground=html_value(t,'.tooltip','color'),shell_tooltip_shadow=html_value(t,'.tooltip','box-shadow'))
     values['danger']=t['semantic_color']['danger_default']
-    shell=render(shell_template).replace('color: '+t['color']['surface']+';','color: #FFFFFF;').replace('rgba(99,102,241,.24)','rgba(129,140,248,.34)')
-    shell+='\n.dash-label, .tooltip { color: #18181B; background-color: #F4F4F5; box-shadow: '+html_value(t,'.tooltip','box-shadow')+'; }\n.search-entry:focus { border-color: #818CF8; }\n'
+    shell=render((ROOT/'design/templates/shell.css.in').read_text()).replace('rgba(99,102,241,.24)','rgba(129,140,248,.34)')
     output(ROOT/'theme/Majoris/gnome-shell/gnome-shell-dark.css','/* Generated dark Shell variant. */\n'+shell)
     alias=ROOT/'theme/Majoris-Dark/gnome-shell/gnome-shell.css'
     alias.parent.mkdir(parents=True,exist_ok=True)
