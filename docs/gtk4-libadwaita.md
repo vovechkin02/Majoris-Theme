@@ -41,3 +41,61 @@ This theme provides CSS and the GTK3/GTK4 bridges. The OS/session provides globa
 attachment/dispatcher policy, Shell extension activation, wallpaper and Mutter
 lifecycle. No session-wide LD_PRELOAD or `/etc/environment` policy is installed
 here. See [VM validation](theme-state-vm-checklist.md).
+
+## Shared layout contract
+
+Use opt-in classes on ordinary GTK containers. A `.card` owns the surface,
+1px border, 8px radius and elevation. Its optional `majoris-card-header` owns
+its existing header inset and bottom divider. `majoris-card-body` owns 16px
+padding; `majoris-card-footer` owns 12px vertical / 16px horizontal padding
+and a top `@border_soft` divider. Only append a footer when there is content.
+Body and footer add no independent surface, radius or shadow. Body-only cards
+are supported. Never also set 16px margins on the body container.
+
+```vala
+var card = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+card.add_css_class ("card");
+var body = new Gtk.Box (Gtk.Orientation.VERTICAL, 8);
+body.add_css_class ("majoris-card-body");
+body.append (new Gtk.Button.with_label ("Start"));
+card.append (body);
+var footer = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
+footer.add_css_class ("majoris-card-footer");
+footer.append (new Gtk.Button.with_label ("Cancel"));
+card.append (footer);
+var page = new Gtk.Box (Gtk.Orientation.VERTICAL, 16);
+page.add_css_class ("majoris-page-content");
+page.append (card);
+var clamp = new Adw.Clamp ();
+clamp.child = page;
+var scroll = new Gtk.ScrolledWindow ();
+scroll.child = clamp;
+```
+
+The inner page owns 24px gutters. Add `majoris-compact` to that same container
+for 16px gutters; remove it to restore desktop spacing. An application's
+`Adw.Breakpoint.apply` / `unapply` handlers (or equivalent allocation logic)
+should toggle the class at its chosen available-width threshold. The factory
+uses available page width below 650px and also changes its gallery to one
+column. Do not add scroll padding or duplicate page margins. Edge-to-edge
+content can omit the class. These classes never globally pad boxes or pages.
+
+Native composition owns spacing: 16px between sections/cards, 8px between form
+rows and icon/text pairs, 4px between compact adjacent controls. Use Box.spacing
+or Grid.row_spacing/column_spacing; CSS padding defines component boundaries.
+
+Prefer a genuine Adw.PreferencesGroup for preferences, including its native
+heading, description and internal boxed list. A Gtk.ListBox with `boxed-list`
+is appropriate for an explicitly composed group. Keep native ActionRow,
+SwitchRow, ComboRow, EntryRow, PasswordEntryRow, SpinRow and ExpanderRow widgets.
+Centre suffix controls with `valign = Gtk.Align.CENTER`. Do not add another
+`card` class to a boxed list: it already owns a border and surface. Within a
+larger card, place the group/list in the padded body as an intentionally inset
+group; its separate list border is intentional, with no extra list shadow.
+Use the list/group alone when a single flush boundary is wanted. Expanded
+content uses native rows; do not wrap each nested row in another padded body.
+
+Clock integration: use these page/card classes, native spacing values and
+ordinary `image-button` / `flat` buttons with 16px symbolic icons. Keep generic
+controls theme-owned. Specialized content such as progress rings and a World
+Clock map may use custom drawing. No Clock-specific theme CSS is required.

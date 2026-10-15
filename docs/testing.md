@@ -98,3 +98,71 @@ cover active/backdrop desktop transparency, readable Shell descendants and both
 live switching directions without logout. Global process attachment, dispatcher,
 Shell activation, wallpaper and lifecycle belong to the distro/session; this
 repository supplies theme assets, bridges and regressions.
+
+## Shared layout regression workflow
+
+`layout-contract` checks token-derived body/page padding, footer padding and
+semantic divider, all GTK3/GTK4 light/dark selectors, geometry parity and the
+absence of broad container padding. `native shared layout` loads the generated
+theme through the existing GTK4 bridge. It checks actual insets, header/body
+alignment, footer height including its divider, group/list row padding, last-row
+divider removal, suffix centring, 32px buttons with 16px artwork and stable
+light → dark → light allocations at 360, 390, 650, 900 and 1200px.
+
+```bash
+meson setup build --prefix=/usr
+meson compile -C build
+MAJORIS_REQUIRE_EXACT_FONT=1 meson test -C build --print-errorlogs
+python3 tools/generate-theme.py --check
+./scripts/run-factory.sh --light
+./scripts/run-factory.sh --dark
+./scripts/run-factory.sh --system
+./scripts/render-html-reference.sh --both
+./scripts/capture-visual-regressions.sh --both
+```
+
+The factory `--page=layout` demonstrates desktop/compact page containers inside
+ScrolledWindow and Clamp, 16px card gaps, optional headers/footers, body-only
+cards, inset native preference groups and flat icon actions. Scroll each inner
+example to inspect the footer and final group. Full-frame `layout-middle.png`
+and `layout-bottom.png` captures also expose these parts for visual review. The preferences page compares
+a boxed ListBox with a genuine PreferencesGroup, including subtitle, switch,
+button and icon suffixes and an expanded row. Native container semantics are
+preserved; an inset group owns a separate list boundary without extra shadow.
+
+Capture includes `layout-360`, `layout-390`, `layout-650`, `layout-900` and
+`layout-1200` in both schemes. These use `MAJORIS_CONTENT_WIDTH` to hide factory
+navigation, disable horizontal Stack homogeneity and set actual page/window
+width. At narrow widths the factory hides auxiliary titlebar actions while
+retaining the menu and exact window controls. The capture asserts actual window
+width and writes `layout-WIDTH-geometry.json`. This fixture option does not
+change theme headerbar geometry or application breakpoints. For a focused rerun:
+
+```bash
+MAJORIS_CAPTURE_PAGES=layout,layout-360,layout-390,layout-650,layout-900,layout-1200,preferences ./scripts/capture-visual-regressions.sh --both
+```
+
+Expected differences: new demonstrations and preference comparison; centred
+Configure suffix; compact page gutters and a single gallery column below 650px
+available page width. The old section body's inset remains 16px. Final boxed
+rows omit the 1px divider, so their minimum allocation can be one pixel shorter
+than other rows with identical content insets. No reference/baseline is replaced.
+
+Validation on Debian Trixie / GTK 4.18.6 / libadwaita 1.7.6: build and all 40
+Meson tests passed with exact Plus Jakarta Sans, including both parsers,
+headerbar geometry, variant geometry, explicit/system switching and installer
+bridge tests. Both HTML renders and full native capture workflows completed;
+changed layout captures were refreshed after responsive fixes. Evidence is in
+`artifacts/layout-suite.log`, `artifacts/layout-native.json`,
+`artifacts/layout-captures.log` and `artifacts/screenshots/`. Required tools and
+Google Fonts' normal/italic Plus Jakarta Sans were installed only in the WSL
+test environment, with the repository's font aliases. No project dependency was
+introduced. Existing generated palettes, glyphs and HTML references are unchanged.
+
+Remaining Majoris GNOME VM acceptance: actual pointer hover/press and keyboard
+focus/disabled states on preference rows and flat actions; backdrop readability;
+Mutter headerbar allocation/window controls; fractional scaling; system scheme
+changes through the real desktop portal; scrolling every card variant; and
+representative Clock/Files/Settings/Terminal adoption. Xvfb allocation, capture
+and bridge tests do not establish these session-level results. Follow the
+existing VM checklist; do not accept or overwrite baselines automatically.

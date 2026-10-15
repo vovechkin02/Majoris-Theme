@@ -21,7 +21,7 @@ namespace MajorisThemeFactory {
         Gtk.Box section (string title, string id) {
             var card = new Gtk.Box (Gtk.Orientation.VERTICAL, 0); card.add_css_class ("card");
             var head=new Gtk.Box(Gtk.Orientation.VERTICAL,3); head.add_css_class("majoris-card-header");
-            var label = new Gtk.Label(title); label.xalign=0; label.add_css_class("heading"); head.append(label); card.append(head);
+            var label = new Gtk.Label(title); label.xalign=0; label.wrap=true; label.add_css_class("heading"); head.append(label); card.append(head);
             string description="";
             switch(id) {
                 case "buttons":description="General control gallery using the verified state treatments.";break;
@@ -34,14 +34,30 @@ namespace MajorisThemeFactory {
                 case "menus":description="Transient surfaces receive stronger elevation. Menu rows themselves remain flat.";break;
                 case "feedback":description="Transient feedback remains compact; informational surfaces use soft colour rather than giant cards.";break;
             }
-            var subtitle=new Gtk.Label(description);subtitle.xalign=0;subtitle.wrap=true;subtitle.add_css_class("majoris-card-description");head.append(subtitle);
-            var inner = new Gtk.Box (Gtk.Orientation.VERTICAL,12); inner.margin_top=16; inner.margin_bottom=16; inner.margin_start=16; inner.margin_end=16;
+            var subtitle=new Gtk.Label(description);subtitle.xalign=0;subtitle.wrap=true;subtitle.add_css_class("majoris-card-description");if(description!="") head.append(subtitle);
+            var inner = new Gtk.Box (Gtk.Orientation.VERTICAL,12); inner.add_css_class("majoris-card-body");
             card.append(inner);
             card.hexpand=true; card.valign=Gtk.Align.START;
             if(filter != "overview") { if(filter == id) gallery.attach(card,0,0,2,1); }
             else if(section_count<4) gallery.attach(card,section_count%2,section_count/2,1,1);
             else gallery.attach(card,0,section_count-2,2,1);
             section_count++; return inner;
+        }
+        Gtk.Box layout_card(string title,bool header,bool footer) {
+            var card=new Gtk.Box(Gtk.Orientation.VERTICAL,0); card.add_css_class("card");
+            if(header) {
+                var head=new Gtk.Box(Gtk.Orientation.VERTICAL,0); head.add_css_class("majoris-card-header");
+                var label=new Gtk.Label(title); label.xalign=0; label.wrap=true; label.add_css_class("heading"); head.append(label); card.append(head);
+            }
+            var body=new Gtk.Box(Gtk.Orientation.VERTICAL,8); body.add_css_class("majoris-card-body");
+            var label=new Gtk.Label(header?"One padding owner; native control spacing is 8px.":title); label.wrap=true; label.xalign=0; body.append(label);
+            var actions=row(); var action=icon_button("go-next-symbolic","Expand"); action.add_css_class("flat"); actions.append(action);
+            actions.append(new Gtk.Button.with_label("Action")); body.append(actions); card.append(body);
+            if(footer) {
+                var foot=new Gtk.Box(Gtk.Orientation.HORIZONTAL,4); foot.add_css_class("majoris-card-footer");
+                foot.append(new Gtk.Button.with_label("Cancel")); var save=new Gtk.Button.with_label("Save"); save.add_css_class("suggested-action"); foot.append(save); card.append(foot);
+            }
+            return card;
         }
         ControlFlow row () { return new ControlFlow(); }
         public void show_toast () {
@@ -56,9 +72,29 @@ namespace MajorisThemeFactory {
         }
         public FactoryPage (Gtk.Window window, string selected = "overview") {
             Object (orientation: Gtk.Orientation.VERTICAL, spacing: 16);
-            owner=window; filter=selected; margin_start=24; margin_end=24; margin_top=24; margin_bottom=24;
-            var title=new Gtk.Label("GTK & libadwaita Controls"); title.xalign=0; title.add_css_class("title-1"); append(title);
-            var description=new Gtk.Label("Majoris control gallery with revised titlebar controls and verified interaction states."); description.xalign=0; var description_box=new Gtk.Box(Gtk.Orientation.VERTICAL,0); description_box.append(description); append(description_box);
+            owner=window; filter=selected; add_css_class("majoris-page-content");
+            // Native layout selects compact gutters and a single gallery column.
+            bool compact=false;
+            add_tick_callback((widget,clock)=>{
+                bool next=get_width()<650;
+                if(next!=compact) {
+                    compact=next;
+                    if(compact) add_css_class("majoris-compact"); else remove_css_class("majoris-compact");
+                    if(filter=="overview") {
+                        int index=0;
+                        for(var child=gallery.get_first_child();child!=null;child=child.get_next_sibling()) {
+                            var layout=(Gtk.GridLayoutChild)gallery.get_layout_manager().get_layout_child(child);
+                            layout.column=compact?0:(index<4?index%2:0);
+                            layout.row=compact?index:(index<4?index/2:index-2);
+                            layout.column_span=compact?1:(index<4?1:2);
+                            index++;
+                        }
+                    }
+                }
+                return Source.CONTINUE;
+            });
+            var title=new Gtk.Label("GTK & libadwaita Controls"); title.xalign=0; title.wrap=true; title.add_css_class("title-1"); append(title);
+            var description=new Gtk.Label("Majoris control gallery with revised titlebar controls and verified interaction states."); description.xalign=0; description.wrap=true; var description_box=new Gtk.Box(Gtk.Orientation.VERTICAL,0); description_box.append(description); append(description_box);
             var hidden_banner=new Adw.Banner("Hidden banner must not leave a surface");
             hidden_banner.revealed=false; description_box.append(hidden_banner); probes.insert("hidden_banner",hidden_banner);
             gallery=new Gtk.Grid(); gallery.column_spacing=16; gallery.row_spacing=16; gallery.column_homogeneous=true; append(gallery);
@@ -93,7 +129,33 @@ namespace MajorisThemeFactory {
             var er=new Adw.EntryRow(); er.title="Entry row"; list.append(er);
             var pr=new Adw.PasswordEntryRow(); pr.title="Password row"; list.append(pr);
             var sr=new Adw.SpinRow.with_range(0,100,1); sr.title="Spin row"; list.append(sr);
-            var exp=new Adw.ExpanderRow(); exp.title="Expander row"; var nested=new Adw.ActionRow(); nested.title="Expanded detail"; exp.add_row(nested); list.append(exp); exp.expanded=true; var buttonrow=new Adw.ActionRow(); buttonrow.title="Button Row"; buttonrow.subtitle="A direct action inside preferences"; buttonrow.add_suffix(new Gtk.Button.with_label("Configure")); list.append(buttonrow);
+            var exp=new Adw.ExpanderRow(); exp.title="Expander row"; var nested=new Adw.ActionRow(); nested.title="Expanded detail"; exp.add_row(nested); list.append(exp); exp.expanded=true; var buttonrow=new Adw.ActionRow(); buttonrow.title="Button Row"; buttonrow.subtitle="A direct action inside preferences"; var suffix_button=new Gtk.Button.with_label("Configure"); suffix_button.valign=Gtk.Align.CENTER; buttonrow.add_suffix(suffix_button); list.append(buttonrow);
+            var group=new Adw.PreferencesGroup(); group.title="Native PreferencesGroup";
+            var plain=new Adw.ActionRow(); plain.title="Normal action"; group.add(plain);
+            var toggled=new Adw.ActionRow(); toggled.title="Switch suffix"; toggled.subtitle="Centred native suffix";
+            var suffix_switch=new Gtk.Switch(); suffix_switch.valign=Gtk.Align.CENTER; toggled.add_suffix(suffix_switch); group.add(toggled);
+            var configured=new Adw.ActionRow(); configured.title="Button suffix";
+            var configure=new Gtk.Button.with_label("Configure"); configure.valign=Gtk.Align.CENTER; configured.add_suffix(configure); group.add(configured);
+            rows.append(group);
+            var layouts=section("Shared Layout Components","layout");
+            foreach(bool compact_demo in new bool[]{false,true}) {
+                var demo_scroll=new Gtk.ScrolledWindow(); demo_scroll.hscrollbar_policy=Gtk.PolicyType.NEVER;
+                demo_scroll.min_content_height=260; demo_scroll.max_content_height=360; demo_scroll.propagate_natural_height=true;
+                var clamp=new Adw.Clamp();
+                var content=new Gtk.Box(Gtk.Orientation.VERTICAL,16); content.add_css_class("majoris-page-content");
+                if(compact_demo) content.add_css_class("majoris-compact");
+                content.append(new Gtk.Label(compact_demo?"Compact gutters: 16px":"Desktop gutters: 24px"));
+                content.append(layout_card("Header and body",true,false));
+                content.append(layout_card("Header, body and footer",true,true));
+                content.append(layout_card("Body only",false,false));
+                var preference_card=new Gtk.Box(Gtk.Orientation.VERTICAL,0); preference_card.add_css_class("card");
+                var preference_body=new Gtk.Box(Gtk.Orientation.VERTICAL,8); preference_body.add_css_class("majoris-card-body");
+                var preference_group=new Adw.PreferencesGroup();
+                var preference=new Adw.ActionRow(); preference.title="Preferences in a card"; preference.subtitle="Inset group retains its own list boundary";
+                preference.add_suffix(icon_button("go-next-symbolic","Open preferences")); preference_group.add(preference);
+                preference_body.append(preference_group); preference_card.append(preference_body); content.append(preference_card);
+                clamp.child=content; demo_scroll.child=clamp; layouts.append(demo_scroll);
+            }
             var nav=section("Navigation","navigation"); var ns=new Gtk.Stack(); ns.add_titled(new Gtk.Label("List content"),"list","List"); ns.add_titled(new Gtk.Label("Grid content"),"grid","Grid"); ns.add_titled(new Gtk.Label("Columns content"),"columns","Columns"); var switcher=new Gtk.StackSwitcher(); switcher.stack=ns; switcher.halign=Gtk.Align.START; nav.append(switcher); probes.insert("view_switcher",switcher); nav.append(ns);
             var notebook=new Gtk.Notebook(); notebook.append_page(new Gtk.Label("Native GTK tab"),new Gtk.Label("Tab one")); notebook.append_page(new Gtk.Label("Second tab"),new Gtk.Label("Tab two")); nav.append(notebook); probes.insert("notebook",notebook);
             var data_card=section("Lists, Tables & Selection","data");

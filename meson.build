@@ -11,7 +11,7 @@ install_subdir('theme/Majoris', install_dir: get_option('datadir') / 'themes')
 install_subdir('theme/Majoris-Dark', install_dir: get_option('datadir') / 'themes')
 install_subdir('icons/Majoris', install_dir: get_option('datadir') / 'icons')
 install_data('fonts/fontconfig/65-majoris-fonts.conf', install_dir: get_option('datadir') / 'fontconfig/conf.avail')
-foreach name : ['design-tokens', 'css-selectors', 'theme-tree', 'installer', 'shadow-contract', 'radius-contract', 'colour-contract', 'selector-contract', 'fontconfig', 'factory-coverage']
+foreach name : ['design-tokens', 'css-selectors', 'theme-tree', 'installer', 'shadow-contract', 'radius-contract', 'colour-contract', 'selector-contract', 'fontconfig', 'factory-coverage', 'layout-contract']
   test(name, python, args: [files('tests/test-' + name + '.py')])
 endforeach
 test('exact font runtime mapping',python,args:[files('tests/test-fontconfig.py'),'--runtime'])
@@ -53,3 +53,5 @@ endforeach
 test('neutral auto install with native GTK4 bridge',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-auto-install-bridge.py')])
 
 test('Majoris Login source and resource contracts',python,args:[files('login/tests/test-contracts.py')])
+
+test('native shared layout',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-layout-native.py')],timeout:30)

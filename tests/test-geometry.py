@@ -23,7 +23,8 @@ with tempfile.TemporaryDirectory(prefix='majoris-geometry-') as directory:
     for row_type in ('AdwActionRow','AdwSwitchRow','AdwComboRow','AdwEntryRow','AdwPasswordEntryRow','AdwSpinRow','AdwExpanderRow'):
         rows=[w for w in report['widget_tree'] if w['type']==row_type]
         assert rows,row_type
-        assert all(w['height']>=50 for w in rows),(row_type,rows)
+        # Last boxed row omits its 1px divider; content minimum stays unchanged.
+        assert all(w['height']>=px('.pref-row','min-height')-1 for w in rows),(row_type,rows)
     assert 'Theme parser error' not in result.stderr and 'CRITICAL' not in result.stderr,result.stderr
     for scenario in ('simple_headerbar','dense_headerbar','split_sidebar_headerbar','split_content_headerbar'):
         h=report[scenario]

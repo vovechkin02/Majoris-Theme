@@ -10,7 +10,8 @@ atexit.register(compositor.terminate);time.sleep(.5)
 variant=os.environ.get('MAJORIS_VARIANT','light')
 assert variant in ('light','dark')
 out=root/'artifacts/screenshots'/variant;out.mkdir(parents=True,exist_ok=True)
-pages=['overview','scrolled','buttons','selection','inputs','ranges','preferences','navigation','data','menus','tooltip','feedback','dialog','status','simple','dense','split','states-buttons','states-controls','states-inputs','states-selection','states-navigation']
+pages=['layout','overview','scrolled','buttons','selection','inputs','ranges','preferences','navigation','data','menus','tooltip','feedback','dialog','status','simple','dense','split','states-buttons','states-controls','states-inputs','states-selection','states-navigation']
+pages+=['layout-'+str(width) for width in (360,390,650,900,1200)]
 pages+=['window-edge','window-edge-maximized','window-edge-fullscreen','window-edge-tiled','window-edge-tiled-left','window-edge-tiled-right','window-edge-tiled-top','window-edge-tiled-bottom']
 if os.environ.get('MAJORIS_CAPTURE_PAGES'): pages=os.environ['MAJORIS_CAPTURE_PAGES'].split(',')
 with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
@@ -24,10 +25,21 @@ with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
     for page in pages:
         subprocess.run(['xdotool','mousemove','1410','1050'],check=True)
         with (out/f'{page}.log').open('w') as log:
-            process=subprocess.Popen([sys.argv[1],'--page='+page,'--'+variant],env=env,stdout=log,stderr=log)
+            capture_env=dict(env)
+            capture_page=page
+            if page.startswith('layout-'):
+                capture_env['MAJORIS_CONTENT_WIDTH']=page.split('-')[1]
+                capture_page='layout'
+            process=subprocess.Popen([sys.argv[1],'--page='+capture_page,'--'+variant],env=capture_env,stdout=log,stderr=log)
             try:
                 time.sleep(2.0)
                 assert process.poll() is None,f'{page} did not stay running; see log'
+                if page.startswith('layout-'):
+                    wid=subprocess.check_output(['xdotool','search','--name','^Majoris Widget Factory$'],text=True).splitlines()[0]
+                    geometry=subprocess.check_output(['xdotool','getwindowgeometry','--shell',wid],text=True)
+                    values=dict(line.split('=',1) for line in geometry.splitlines() if '=' in line)
+                    assert int(values['WIDTH'])==int(capture_env['MAJORIS_CONTENT_WIDTH']), (page,values)
+                    (out/(page+'-geometry.json')).write_text(json.dumps(values,indent=2)+'\n')
                 if page=='tooltip':
                     window_id=subprocess.check_output(['xdotool','search','--name','^Majoris Widget Factory$'],text=True).splitlines()[0]
                     subprocess.run(['xdotool','mousemove','--window',window_id,'23','23'],check=True);time.sleep(1.2)
@@ -41,6 +53,17 @@ with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
                     subprocess.run(['magick',str(out/(page+'-popup.xwd')),str(out/(page+'-popup.png'))],check=True)
                 subprocess.run(['xwd','-silent','-screen','-root','-out',str(out/(page+'.xwd'))],check=True)
                 subprocess.run(['magick',str(out/(page+'.xwd')),str(out/(page+'.png'))],check=True)
+                if page=='layout':
+                    # Preserve extra full-frame views of the scrollable card variants.
+                    wid=subprocess.check_output(['xdotool','search','--name','^Majoris Widget Factory$'],text=True).splitlines()[0]
+                    for stage in ('middle','bottom'):
+                        for y in ('400','760'):
+                            subprocess.run(['xdotool','mousemove','--window',wid,'700',y,'click','--repeat','4','--delay','80','5'],check=True)
+                        time.sleep(.3)
+                        name=page+'-'+stage
+                        subprocess.run(['xwd','-silent','-screen','-root','-out',str(out/(name+'.xwd'))],check=True)
+                        subprocess.run(['magick',str(out/(name+'.xwd')),str(out/(name+'.png'))],check=True)
+
             finally:
                 process.terminate()
                 try:process.wait(timeout=5)

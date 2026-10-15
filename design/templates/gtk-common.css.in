@@ -99,6 +99,11 @@ scrollbar slider:active { background-color: @text; }
 dialog { border-radius: ${structure_radius}; background-color: @surface; }
 selection { background-color: @primary_200; color: @text; }
 .majoris-card-header { padding: ${.card-head|padding}; border-bottom: 1px solid @border_soft; }
+/* Opt-in layout boundaries: never also add margins to these containers. */
+.majoris-card-body { padding: ${.card-body|padding}; }
+.majoris-card-footer { padding: 12px ${.card-body|padding}; border-top: 1px solid @border_soft; }
+.majoris-page-content { padding: ${.content|padding}; }
+.majoris-page-content.majoris-compact { padding: ${.card-body|padding}; }
 .majoris-card-header .heading { font-size: ${.card-head h3|font-size}; }
 treeview.view:selected, iconview.view:selected { background-color: @primary_50; color: @primary_800; }
 checkbutton:disabled, radiobutton:disabled { opacity: .45; }

@@ -102,6 +102,11 @@ scrollbar slider:active { background-color: @text; }
 dialog { border-radius: 8px; background-color: @surface; }
 selection { background-color: @primary_200; color: @text; }
 .majoris-card-header { padding: 14px 16px 10px; border-bottom: 1px solid @border_soft; }
+/* Opt-in layout boundaries: never also add margins to these containers. */
+.majoris-card-body { padding: 16px; }
+.majoris-card-footer { padding: 12px 16px; border-top: 1px solid @border_soft; }
+.majoris-page-content { padding: 24px; }
+.majoris-page-content.majoris-compact { padding: 16px; }
 .majoris-card-header .heading { font-size: 14px; }
 treeview.view:selected, iconview.view:selected { background-color: @primary_50; color: @primary_800; }
 checkbutton:disabled, radiobutton:disabled { opacity: .45; }

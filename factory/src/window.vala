@@ -8,8 +8,8 @@ namespace MajorisThemeFactory {
             Object (application: app, title: "Majoris Widget Factory", default_width: 1280, default_height: 960);
             var view = new Adw.ToolbarView ();
             var bar = new Adw.HeaderBar ();
-            bar.pack_start (icon_button ("go-previous-symbolic", "Back"));
-            bar.pack_start (icon_button ("go-next-symbolic", "Forward"));
+            var back_button=icon_button ("go-previous-symbolic", "Back"); bar.pack_start(back_button);
+            var forward_button=icon_button ("go-next-symbolic", "Forward"); bar.pack_start(forward_button);
             main_menu=menu_button(); bar.pack_end(main_menu);
             var view_button=icon_button("view-grid-symbolic","View"); view_button.add_css_class("flat"); bar.pack_end(view_button);
             var search_button=icon_button("system-search-symbolic","Search"); search_button.add_css_class("flat"); bar.pack_end(search_button);
@@ -31,6 +31,14 @@ namespace MajorisThemeFactory {
             var status = new Adw.StatusPage (); status.title = "No files found"; status.description = "Try a different search or clear the current filters."; status.icon_name = "system-search-symbolic";
             stack.add_titled (status,"status","Status");
             sidebar = new Gtk.StackSidebar (); sidebar.stack = stack; sidebar.add_css_class ("navigation-sidebar"); sidebar.set_size_request (212,-1);
+            // Optional capture viewport: isolate available page width from navigation.
+            var capture_width=Environment.get_variable("MAJORIS_CONTENT_WIDTH");
+            if(capture_width!=null) {
+                sidebar.visible=false;
+                stack.hhomogeneous=false;
+                if(int.parse(capture_width)<650) { back_button.visible=false; forward_button.visible=false; search_button.visible=false; view_button.visible=false; }
+                set_default_size(int.parse(capture_width),960);
+            }
             var split = new Gtk.Box (Gtk.Orientation.HORIZONTAL,0); split.append (sidebar); split.append (stack);
             var overlay = new Adw.ToastOverlay (); overlay.child = split; gallery.toast_overlay = overlay;
             view.content = overlay; content = view; install_menu_actions(this);

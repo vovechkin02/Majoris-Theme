@@ -30,3 +30,14 @@ selection fallbacks are overridden by the explicit dark component cascade.
 Spinner assets keep their intentional fixed ring/arc paints. The verifier checks
 both stored HTML extractions, generated primitive definitions and independent
 semantic states, including a negative regression for corrupt dark p700.
+
+## Shared layout boundaries
+
+The approved geometry is reusable through opt-in card header/body/footer and
+page content classes. Card bodies use the HTML 16px inset; page content uses
+its 24px inset. Compact pages use 16px, and footers add a 12px/16px convention
+with a semantic top divider. The card remains the sole surface/elevation owner.
+Native layout owns 16px section gaps, 8px row/icon gaps and 4px compact gaps.
+Applications must not duplicate wrapper padding with margins. Specialized
+Clock drawings may be custom; generic controls remain native and theme-owned.
+See [Vala composition and adaptive usage](../docs/gtk4-libadwaita.md#shared-layout-contract).
