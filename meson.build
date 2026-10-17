@@ -8,6 +8,8 @@ install_data('scripts/with-majoris-gtk4.sh',rename:'majoris-gtk4',install_dir:ge
 install_data('scripts/with-majoris-gtk3.sh',rename:'majoris-gtk3',install_dir:get_option('bindir'),install_mode:'rwxr-xr-x')
 subdir('factory')
 install_subdir('theme/Majoris', install_dir: get_option('datadir') / 'themes')
+install_data('theme/Majoris/gtksourceview-5/styles/majoris-light.xml', 'theme/Majoris/gtksourceview-5/styles/majoris-dark.xml', install_dir: get_option('datadir') / 'gtksourceview-5/styles')
+install_data('design/sourceview/majoris-light.xml.in', 'design/sourceview/majoris-dark.xml.in', 'design/editor-tokens.json', install_dir: get_option('datadir') / 'majoris-theme/design/sourceview')
 install_subdir('theme/Majoris-Dark', install_dir: get_option('datadir') / 'themes')
 install_subdir('icons/Majoris', install_dir: get_option('datadir') / 'icons')
 install_data('fonts/fontconfig/65-majoris-fonts.conf', install_dir: get_option('datadir') / 'fontconfig/conf.avail')
@@ -55,3 +57,9 @@ test('neutral auto install with native GTK4 bridge',find_program('dbus-run-sessi
 test('Majoris Login source and resource contracts',python,args:[files('login/tests/test-contracts.py')])
 
 test('native shared layout',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-layout-native.py')],timeout:30)
+
+test('editor component contracts',python,args:[files('tests/test-editor-contract.py')])
+test('SourceView schemes and reversible discovery',python,args:[files('tests/test-sourceview.py')])
+test('native editor components',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-editor-native.py')],timeout:30)
+test('editor staged packaging',python,args:[files('tests/test-editor-package.py')],timeout:30)
+test('native editor components at 200 percent',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-editor-native.py')],env:{'GDK_SCALE':'2'},timeout:30)

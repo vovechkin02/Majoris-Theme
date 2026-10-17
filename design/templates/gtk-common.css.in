@@ -97,7 +97,7 @@ scrollbar slider { min-width: ${.scroll-thumb|width}; min-height: 6px; margin: 0
 scrollbar slider:hover { background-color: @text_secondary; }
 scrollbar slider:active { background-color: @text; }
 dialog { border-radius: ${structure_radius}; background-color: @surface; }
-selection { background-color: @primary_200; color: @text; }
+:not(.sourceview) > text > selection, entry selection, searchentry selection, passwordentry selection, spinbutton selection, label selection, textview:not(.sourceview) selection { background-color: @primary_200; color: @text; }
 .majoris-card-header { padding: ${.card-head|padding}; border-bottom: 1px solid @border_soft; }
 /* Opt-in layout boundaries: never also add margins to these containers. */
 .majoris-card-body { padding: ${.card-body|padding}; }

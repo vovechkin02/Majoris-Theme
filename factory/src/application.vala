@@ -36,7 +36,8 @@ namespace MajorisThemeFactory {
                     GeometryReport.print (simple, dense,split,main);
                     simple.close (); dense.close (); split.close(); main.close(); quit (); return Source.REMOVE;
                 });
-            } else if(page=="simple") new HeaderFixture(this,false).present();
+            } else if(page.has_prefix("editor")) new EditorFixture(this,page).present();
+            else if(page=="simple") new HeaderFixture(this,false).present();
             else if(page=="dense") new HeaderFixture(this,true).present();
             else if(page=="split") new SplitFixture(this).present();
             else if(page.has_prefix("window-edge")) new WindowEdgeFixture(this,page=="window-edge"?"floating":page.substring(12)).present();

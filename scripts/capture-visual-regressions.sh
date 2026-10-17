@@ -9,4 +9,6 @@ case "$mode" in
 esac
 python3 tools/generate-theme.py --check
 meson compile -C build
-exec dbus-run-session -- xvfb-run -a -s '-screen 0 1440x1080x24' python3 tools/capture-visual.py "$PWD/build/factory/majoris-theme-factory"
+screen='-screen 0 1440x1080x24'
+if [[ "${MAJORIS_CAPTURE_SCALE:-1}" == 2 ]]; then screen='-screen 0 2880x2160x24'; fi
+exec dbus-run-session -- xvfb-run -a -s "$screen" python3 tools/capture-visual.py "$PWD/build/factory/majoris-theme-factory"

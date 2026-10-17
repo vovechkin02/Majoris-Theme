@@ -101,7 +101,7 @@ scrollbar slider { min-width: 6px; min-height: 6px; margin: 0; border: none; bor
 scrollbar slider:hover { background-color: @text_secondary; }
 scrollbar slider:active { background-color: @text; }
 dialog { border-radius: 8px; background-color: @surface; }
-selection { background-color: @primary_200; color: @text; }
+:not(.sourceview) > text > selection, entry selection, searchentry selection, passwordentry selection, spinbutton selection, label selection, textview:not(.sourceview) selection { background-color: @primary_200; color: @text; }
 .majoris-card-header { padding: 14px 16px 10px; border-bottom: 1px solid @border_soft; }
 /* Opt-in layout boundaries: never also add margins to these containers. */
 .majoris-card-body { padding: 16px; }
@@ -219,7 +219,7 @@ switch:checked { background-color: #6366F1; border-color: #6366F1; }
 switch slider { background-color: #DADAE0; border-color: rgba(255,255,255,.08); }
 switch:checked slider { background-color: white; }
 entry, entry text, text, searchentry, passwordentry { caret-color: #A5B4FC; }
-selection { background-color: rgba(99,102,241,.42); color: @text; }
+:not(.sourceview) > text > selection, entry selection, searchentry selection, passwordentry selection, spinbutton selection, label selection, textview:not(.sourceview) selection { background-color: rgba(99,102,241,.42); color: @text; }
 scale slider { background-color: #F4F4F5; border-color: #818CF8; box-shadow: 0 1px 3px rgba(0,0,0,.42); }
 scale highlight, progressbar progress { background-color: #6366F1; }
 levelbar block.filled { background-color: #22A06B; }

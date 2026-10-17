@@ -1,0 +1,20 @@
+{
+  "geometry": {
+    "document_tab_content": "37px",
+    "editor_toolbar_content": "39px",
+    "editor_status_content": "33px",
+    "editor_control_content": "26px"
+  },
+  "light": {
+    "editor_indicator": "@primary_500",
+    "editor_focus": "@primary_500",
+    "editor_toggle_bg": "@primary_50",
+    "editor_toggle_fg": "@primary_700"
+  },
+  "dark": {
+    "editor_indicator": "@focus_color",
+    "editor_focus": "@focus_color",
+    "editor_toggle_bg": "alpha(@primary_500,.16)",
+    "editor_toggle_fg": "@primary_200"
+  }
+}

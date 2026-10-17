@@ -7,6 +7,8 @@ def output(path,content):
         assert path.read_text()==content,'Generated theme drift: '+str(path.relative_to(ROOT))
     else: path.write_text(content)
 values={**t['color'], **{k+'_radius':str(v)+'px' for k,v in t['radius'].items()}, **{k+'_motion':v for k,v in t['motion_css'].items()}, **{k+'_shadow':v for k,v in t['shadow'].items()}, **{k:str(v)+'px' for k,v in t['window'].items()}}
+from generate_editor import editor_values, generate_schemes
+values.update(editor_values('light'))
 values['control_content_size']=str(t['window']['window_control_size']-2)+'px'
 values['header_padding']=html_value(t,'.headerbar','padding')
 # HTML border-box height includes its divider; GTK min-height excludes padding/border.
@@ -38,6 +40,7 @@ for version in ('3','4'):
     shared,desktop=shared.split('/* Desktop Icons NG:',1)
     desktop='/* Desktop Icons NG:'+desktop
     specific=(ROOT/f'design/templates/gtk{version}.css.in').read_text()
+    if version=='4': specific+=(ROOT/'design/templates/gtk4-editor.css.in').read_text()
     if version=='4':
         # GTK4 distinguishes keyboard-visible button focus; entries keep focus
         # styling because the reference intentionally uses entry:focus.
@@ -57,3 +60,5 @@ output(p,'/* Generated from Majoris HTML tokens. */\n'+render((ROOT/'design/temp
 
 from generate_dark import generate
 generate(output)
+
+generate_schemes(output)

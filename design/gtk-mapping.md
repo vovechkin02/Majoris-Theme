@@ -30,3 +30,15 @@ Use zero spacing on the card shell and native 8px body / 16px page spacing.
 Do not duplicate insets with widget margins or scroll padding. Keep preference
 groups and boxed lists native, using an inset body when enclosing a group in
 a larger card. See [Vala examples and group ownership](../docs/gtk4-libadwaita.md#shared-layout-contract).
+
+## Native document/editor mapping
+
+| Opt-in class | Toolkit structure | Native states |
+|---|---|---|
+| `majoris-document-tabs` | Adw.TabBar → tabbox → tabboxchild → tab | selected, hover, active, focus-visible, backdrop; native attention indicator |
+| `majoris-editor-toolbar` | Horizontal Box with direct/grouped buttons and MenuButtons | hover, active, checked, focus-visible, disabled, backdrop |
+| `majoris-statusbar` | Horizontal Box with labels and grouped native selectors | hover, active, checked, focus-visible, disabled, backdrop |
+
+GtkNotebook remains independent. SourceView uses discoverable XML schemes
+`majoris-light` / `majoris-dark`, not generic syntax CSS. GTK4-specific rules
+never enter GTK3 outputs. [Geometry, Vala and ownership details](../docs/editor-components.md).

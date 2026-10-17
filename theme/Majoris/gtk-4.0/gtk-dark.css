@@ -100,7 +100,7 @@ scrollbar slider { min-width: 6px; min-height: 6px; margin: 0; border: none; bor
 scrollbar slider:hover { background-color: @text_secondary; }
 scrollbar slider:active { background-color: @text; }
 dialog { border-radius: 8px; background-color: @surface; }
-selection { background-color: @primary_200; color: @text; }
+:not(.sourceview) > text > selection, entry selection, searchentry selection, passwordentry selection, spinbutton selection, label selection, textview:not(.sourceview) selection { background-color: @primary_200; color: @text; }
 .majoris-card-header { padding: 14px 16px 10px; border-bottom: 1px solid @border_soft; }
 /* Opt-in layout boundaries: never also add margins to these containers. */
 .majoris-card-body { padding: 16px; }
@@ -268,7 +268,7 @@ switch:checked { background-color: #6366F1; border-color: #6366F1; }
 switch slider { background-color: #DADAE0; border-color: rgba(255,255,255,.08); }
 switch:checked slider { background-color: white; }
 entry, entry text, text, searchentry, passwordentry { caret-color: #A5B4FC; }
-selection { background-color: rgba(99,102,241,.42); color: @text; }
+:not(.sourceview) > text > selection, entry selection, searchentry selection, passwordentry selection, spinbutton selection, label selection, textview:not(.sourceview) selection { background-color: rgba(99,102,241,.42); color: @text; }
 scale slider { background-color: #F4F4F5; border-color: #818CF8; box-shadow: 0 1px 3px rgba(0,0,0,.42); }
 scale highlight, progressbar progress { background-color: #6366F1; }
 levelbar block.filled { background-color: #22A06B; }
@@ -293,6 +293,95 @@ tooltip, tooltip.background, tooltip > box, tooltip label { background-color: #F
 tooltip, tooltip.background { box-shadow: 0 8px 16px rgba(0,0,0,.40); }
 tooltip > box, tooltip label { background: transparent; }
 .majoris-state-block { border-color: @border_soft; background-image: linear-gradient(180deg,#242428,#202023); }
+/* Supplemental editor components; libadwaita 1.7 native nodes, GTK4 only. */
+tabbar.majoris-document-tabs { background: @surface; color: @text_secondary; border: none; border-bottom: 1px solid @border_soft; padding: 0; min-height: 37px; }
+tabbar.majoris-document-tabs > revealer > .box { background: @surface; color: @text_secondary; padding: 0 6px; border: none; box-shadow: none; }
+tabbar.majoris-document-tabs .box:backdrop { background: @surface; }
+tabbar.majoris-document-tabs .box:backdrop > scrolledwindow { filter: none; }
+tabbar.majoris-document-tabs tabbox { min-height: 37px; padding: 0; }
+tabbar.majoris-document-tabs tabbox > tabboxchild { border-radius: 4px 4px 0 0; outline: none; transition: none; }
+tabbar.majoris-document-tabs tab { min-height: 37px; padding: 0 10px; margin: 0; border: none; border-radius: 4px 4px 0 0; background: transparent; color: @text_secondary; box-shadow: none; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1); }
+tabbar.majoris-document-tabs tab:selected { background-color: transparent; background-image: linear-gradient(to right, transparent 10px, @focus_color 10px, @focus_color calc(100% - 10px), transparent calc(100% - 10px)); background-size: 100% 2px; background-position: bottom; background-repeat: no-repeat; color: @text; }
+tabbar.majoris-document-tabs tab:hover, tabbar.majoris-document-tabs tab:selected:hover { background-color: @hover; }
+tabbar.majoris-document-tabs tab:active, tabbar.majoris-document-tabs tab:selected:active { background-color: @active; }
+tabbar.majoris-document-tabs tab:backdrop { color: @text_secondary; }
+tabbar.majoris-document-tabs tab:selected:backdrop { color: @text; }
+tabbar.majoris-document-tabs tab:focus-visible, tabbar.majoris-document-tabs tabbox > tabboxchild:focus-within:focus-visible { outline: 2px solid @focus_color; outline-offset: -2px; }
+tabbar.majoris-document-tabs tab .tab-title { font-size: 12px; font-weight: 400; }
+tabbar.majoris-document-tabs tab:selected .tab-title { font-weight: 700; }
+tabbar.majoris-document-tabs tab > image { -gtk-icon-size: 16px; }
+tabbar.majoris-document-tabs tab button { min-width: 20px; min-height: 20px; padding: 0; margin: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; }
+tabbar.majoris-document-tabs tab button:hover { background: @hover; color: @text; box-shadow: none; }
+tabbar.majoris-document-tabs tab button:active { background: @active; box-shadow: none; }
+tabbar.majoris-document-tabs tab button:focus-visible { border-color: @focus_color; box-shadow: inset 0 0 0 1px @focus_color; }
+tabbar.majoris-document-tabs tab button image { -gtk-icon-size: 16px; }
+tabbar.majoris-document-tabs tab indicator { background: @focus_color; transform: none; min-height: 2px; }
+tabbar.majoris-document-tabs tabbox > separator { min-width: 1px; margin: 8px 0; background: @border_soft; }
+tabbar.majoris-document-tabs tabbox > revealer > indicator { background: @focus_color; }
+.majoris-editor-toolbar { min-height: 39px; padding: 0 8px; border: none; border-bottom: 1px solid @border_soft; background: @surface; color: @text_secondary; }
+.majoris-statusbar { min-height: 33px; padding: 0 8px; border: none; border-top: 1px solid @border_soft; background: @surface_secondary; color: @text_secondary; font-size: 11px; }
+/* Direct groups only: do not style buttons in descendant popovers. */
+.majoris-editor-toolbar > button, .majoris-editor-toolbar > menubutton > button,
+.majoris-editor-toolbar > box > button, .majoris-editor-toolbar > box > menubutton > button,
+.majoris-statusbar > button, .majoris-statusbar > menubutton > button,
+.majoris-statusbar > box > button, .majoris-statusbar > box > menubutton > button {
+ min-height: 26px; min-width: 26px; padding: 0 6px; margin: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-weight: 400; outline: none;
+}
+.majoris-editor-toolbar > button.image-button, .majoris-editor-toolbar > box > button.image-button,
+.majoris-editor-toolbar > menubutton > button.image-button, .majoris-editor-toolbar > box > menubutton > button.image-button { padding: 0; }
+.majoris-editor-toolbar > button:hover,
+.majoris-editor-toolbar > menubutton > button:hover,
+.majoris-editor-toolbar > box > button:hover,
+.majoris-editor-toolbar > box > menubutton > button:hover,
+.majoris-statusbar > button:hover,
+.majoris-statusbar > menubutton > button:hover,
+.majoris-statusbar > box > button:hover,
+.majoris-statusbar > box > menubutton > button:hover { background-color: @hover; box-shadow: none; }
+.majoris-editor-toolbar > button:active,
+.majoris-editor-toolbar > menubutton > button:active,
+.majoris-editor-toolbar > box > button:active,
+.majoris-editor-toolbar > box > menubutton > button:active,
+.majoris-statusbar > button:active,
+.majoris-statusbar > menubutton > button:active,
+.majoris-statusbar > box > button:active,
+.majoris-statusbar > box > menubutton > button:active { background-color: @active; box-shadow: none; }
+.majoris-editor-toolbar > button:checked,
+.majoris-editor-toolbar > menubutton > button:checked,
+.majoris-editor-toolbar > box > button:checked,
+.majoris-editor-toolbar > box > menubutton > button:checked,
+.majoris-statusbar > button:checked,
+.majoris-statusbar > menubutton > button:checked,
+.majoris-statusbar > box > button:checked,
+.majoris-statusbar > box > menubutton > button:checked { background-color: alpha(@primary_500,.16); color: @primary_200; box-shadow: none; }
+.majoris-editor-toolbar > button:focus-visible,
+.majoris-editor-toolbar > menubutton > button:focus-visible,
+.majoris-editor-toolbar > box > button:focus-visible,
+.majoris-editor-toolbar > box > menubutton > button:focus-visible,
+.majoris-statusbar > button:focus-visible,
+.majoris-statusbar > menubutton > button:focus-visible,
+.majoris-statusbar > box > button:focus-visible,
+.majoris-statusbar > box > menubutton > button:focus-visible { border-color: @focus_color; box-shadow: inset 0 0 0 1px @focus_color; }
+.majoris-editor-toolbar > button:disabled,
+.majoris-editor-toolbar > menubutton > button:disabled,
+.majoris-editor-toolbar > box > button:disabled,
+.majoris-editor-toolbar > box > menubutton > button:disabled,
+.majoris-statusbar > button:disabled,
+.majoris-statusbar > menubutton > button:disabled,
+.majoris-statusbar > box > button:disabled,
+.majoris-statusbar > box > menubutton > button:disabled { opacity: .5; box-shadow: none; }
+.majoris-editor-toolbar > button:backdrop,
+.majoris-editor-toolbar > menubutton > button:backdrop,
+.majoris-editor-toolbar > box > button:backdrop,
+.majoris-editor-toolbar > box > menubutton > button:backdrop,
+.majoris-statusbar > button:backdrop,
+.majoris-statusbar > menubutton > button:backdrop,
+.majoris-statusbar > box > button:backdrop,
+.majoris-statusbar > box > menubutton > button:backdrop { color: @text_secondary; box-shadow: none; }
+.majoris-editor-toolbar > separator, .majoris-editor-toolbar > box > separator { min-height: 20px; min-width: 1px; margin: 0 4px; background: @border_soft; }
+.majoris-statusbar > separator, .majoris-statusbar > box > separator { min-height: 14px; min-width: 1px; margin: 0 3px; background: @border_soft; }
+.majoris-editor-toolbar > button image, .majoris-editor-toolbar > box > button image { -gtk-icon-size: 16px; }
+/* Honour GTK's explicit monospace opt-in; schemes contain colours, never fonts. */
+textview.monospace, textview.monospace text { font-family: monospace; }
 /* Desktop Icons NG: desktopwindow compatibility, emitted after native overrides. */
 window.desktopwindow,
 window.desktopwindow:backdrop,

@@ -1,5 +1,6 @@
 """Generate the dark variant from the effective dark HTML cascade."""
 import json,re
+from generate_editor import editor_values
 from design import ROOT,extract,html_value
 
 def generate(output):
@@ -12,6 +13,7 @@ def generate(output):
     def render(s):
         s=re.sub(r'\$\{([^|}]+)\|([^}]+)\}',lambda m:html_value(t,m[1],m[2]),s)
         return re.sub(r'\$\{(\w+)\}',lambda m:values[m[1]],s)
+    values.update(editor_values('dark'))
     values['window_edge_color']=html_value(t,'.window','border-color')
     colors='/* Generated from the effective dark reference cascade. */\n'+''.join('@define-color '+k+' '+v+';\n' for k,v in t['color'].items())
     # Primitive indigo identities remain invariant; component states are separate.
@@ -46,6 +48,7 @@ def generate(output):
             extra=re.sub(r'notebook > header tab:checked \{ background-image:.*?\}\n', '', extra)
             extra=extra.replace('popover.background { background: transparent; }','')
             extra+=render((ROOT/'design/templates/gtk3-dark.css.in').read_text())
+        if version=='4': extra+=render((ROOT/'design/templates/gtk4-editor.css.in').read_text())
         base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
         output(directory/'gtk-dark.css','/* Generated: shared geometry, effective dark cascade, native overrides. */\n'+base+'@import url("colors.css");\n@import url("colors-dark.css");\n'+css+extra+render(desktop))
     # Explicit Shell roles avoid substring replacements matching background-color.

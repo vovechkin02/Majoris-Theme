@@ -41,3 +41,13 @@ Native layout owns 16px section gaps, 8px row/icon gaps and 4px compact gaps.
 Applications must not duplicate wrapper padding with margins. Specialized
 Clock drawings may be custom; generic controls remain native and theme-owned.
 See [Vala composition and adaptive usage](../docs/gtk4-libadwaita.md#shared-layout-contract).
+
+## Document/editor extension layer
+
+The supplemental editor-v1 showcase defines flat native document tabs (38px),
+editor toolbars (40px) and statusbars (34px), with 28px actions. Existing
+primitives remain unchanged. `design/editor-tokens.json` owns component geometry
+and light/dark semantic references; `gtk4-editor.css.in` owns opt-in native
+selectors. SourceView XML templates own their independently tuned syntax
+palette, deriving main surfaces from the approved tokens. Scheme comments are
+tuned for 4.5:1 contrast. See [native components](../docs/editor-components.md).

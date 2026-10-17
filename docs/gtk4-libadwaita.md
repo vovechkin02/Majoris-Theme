@@ -99,3 +99,12 @@ Clock integration: use these page/card classes, native spacing values and
 ordinary `image-button` / `flat` buttons with 16px symbolic icons. Keep generic
 controls theme-owned. Specialized content such as progress rings and a World
 Clock map may use custom drawing. No Clock-specific theme CSS is required.
+
+## Document tabs and editors
+
+Use `majoris-document-tabs` on Adw.TabBar, `majoris-editor-toolbar` on an editor
+action Box and `majoris-statusbar` on the status Box. SourceView applications
+request `majoris-light` / `majoris-dark` from StyleSchemeManager and explicitly
+update automatic scheme selection when StyleManager.dark changes. Behaviour,
+user font preferences and third-party scheme selection remain application-owned.
+[Complete Vala examples, installation and accessibility](editor-components.md).

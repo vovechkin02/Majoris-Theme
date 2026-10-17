@@ -41,7 +41,7 @@ switch:checked { background-color: #6366F1; border-color: #6366F1; }
 switch slider { background-color: ${.switch:after|background}; border-color: ${.switch:after|border-color}; }
 switch:checked slider { background-color: white; }
 entry, entry text, text, searchentry, passwordentry { caret-color: ${.entry|caret-color}; }
-selection { background-color: ${.entry::selection|background}; color: @text; }
+:not(.sourceview) > text > selection, entry selection, searchentry selection, passwordentry selection, spinbutton selection, label selection, textview:not(.sourceview) selection { background-color: ${.entry::selection|background}; color: @text; }
 scale slider { background-color: ${.thumb|background}; border-color: ${.thumb|border-color}; box-shadow: ${.thumb|box-shadow}; }
 scale highlight, progressbar progress { background-color: #6366F1; }
 levelbar block.filled { background-color: #22A06B; }

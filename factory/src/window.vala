@@ -26,6 +26,7 @@ namespace MajorisThemeFactory {
                 button.clicked.connect (() => new HeaderFixture (app,dense).present ()); headers.append (button);
             }
             stack.add_titled (headers,"headerbars","Headerbars");
+            var editor_launch=new Gtk.Button.with_label("Open native editor components"); editor_launch.clicked.connect(()=>new EditorFixture(app).present()); headers.append(editor_launch);
             var states=new VisualStates(this); var state_scroll=new Gtk.ScrolledWindow(); state_scroll.child=states; stack.add_titled(state_scroll,"states","Visual States");
             var sb=new Gtk.Button.with_label("Open split/sidebar window"); sb.clicked.connect(()=>new SplitFixture(app).present()); headers.append(sb);
             var status = new Adw.StatusPage (); status.title = "No files found"; status.description = "Try a different search or clear the current filters."; status.icon_name = "system-search-symbolic";

@@ -71,3 +71,15 @@ no GTK/Shell CSS patching or distro-only dispatcher is needed in this repository
 See the [exact VM regression checklist](docs/theme-state-vm-checklist.md).
 
 Majoris Login is a separate native GDM/lock module under [login](login/README.md), with an independent resource package and exact-version Debian Shell patches. Its [VM acceptance matrix](login/docs/vm-validation.md) must be completed before release; ordinary GTK application themes remain separate.
+
+## Native editor components
+
+The factory now includes an integrated native document editor fixture:
+`./scripts/run-factory.sh --page=editor --light` (or `--dark`), also available
+from its Headerbars page. `editor-focus`, `editor-states` and `editor-overflow`
+provide diagnostics. New reusable classes are `majoris-document-tabs`,
+`majoris-editor-toolbar` and `majoris-statusbar`. GtkSourceView 5.16 development
+headers and introspection bindings are included in the Debian bootstrap list;
+no experimental toolkit is required. Both Majoris SourceView schemes install
+with the theme. [Integration guide](docs/editor-components.md) ·
+[Validation report](docs/editor-implementation-report.md).

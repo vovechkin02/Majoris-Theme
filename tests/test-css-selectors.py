@@ -10,5 +10,7 @@ for file,selectors in required.items():
     heads=[s.strip() for block in re.findall(r'([^{}]+)\{[^{}]*\}',css) for s in block.split(',')]
     for selector in selectors: assert any(selector==s or s.startswith(selector+':') or s.startswith(selector+' ') for s in heads),(file,selector)
     assert css.count('{')==css.count('}') and r'\n' not in css
-    assert not re.search(r'(?:^|[;{])\s*(?:transform|translate)\s*:',css)
+    # Resetting libadwaita's attention-indicator translation is stationary.
+    transforms=re.findall(r'(?:^|[;{])\s*(?:transform|translate)\s*:\s*([^;]+);',css)
+    assert all(value.strip()=='none' for value in transforms),transforms
 print('Selector coverage and stationary interaction checks passed; geometry test exercises native controls')

@@ -24,6 +24,9 @@ if sys.argv[1]=='install':
            (config/'gtk-4.0/colors-dark.css',root/'theme/Majoris/gtk-4.0/colors-dark.css'),(config/'gtk-4.0/colors.css',root/'theme/Majoris/gtk-4.0/colors.css'),(config/'gtk-4.0/gtk.css',gtk4_entry),(config/'gtk-4.0/gtk-dark.css',root/'theme/Majoris/gtk-4.0/gtk-dark.css'),
            (config/'gtk-4.0/assets',root/'theme/Majoris/gtk-4.0/assets'),
            (config/'fontconfig/conf.d/65-majoris-fonts.conf',root/'fonts/fontconfig/65-majoris-fonts.conf')]
+    for variant_name in ('light','dark'):
+        filename='majoris-'+variant_name+'.xml'
+        pairs.append((data/'gtksourceview-5/styles'/filename,root/'theme/Majoris/gtksourceview-5/styles'/filename))
     if (root/'fonts/PlusJakartaSans').is_dir(): pairs.append((data/'fonts/PlusJakartaSans',root/'fonts/PlusJakartaSans'))
     desired={str(path):str(target) for path,target in pairs}
     for record in previous:

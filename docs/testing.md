@@ -166,3 +166,78 @@ changes through the real desktop portal; scrolling every card variant; and
 representative Clock/Files/Settings/Terminal adoption. Xvfb allocation, capture
 and bridge tests do not establish these session-level results. Follow the
 existing VM checklist; do not accept or overwrite baselines automatically.
+
+## Editor component validation
+
+The supplemental showcase is preserved in `design/reference/editor-v1/`.
+Run `python3 tools/generate-theme.py` and `--check` after changing
+`gtk4-editor.css.in`, `editor-tokens.json` or SourceView XML templates. All
+GTK4 editor CSS and both distributable XML schemes are generated. The original
+HTML factories and primitive token JSON are unchanged.
+
+The Debian bootstrap now lists stable `libgtksourceview-5-dev` and
+`gir1.2-gtksource-5` dependencies. They were already installed for this task;
+no system package modification or distribution upgrade was performed.
+
+New Meson tests cover opt-in selectors and GTK3 isolation, every editor/syntax
+role and 4.5:1 foreground contrast, installed Relax NG XML validation through
+libxml2, actual standard XDG discovery, repeated development installation,
+rollback conflicts and restoration, staged `/usr` packaging/discovery, native
+38/40/34px bars and 28px controls, six interaction state flags without geometry
+changes, light → dark → light, explicit monospace, third-party scheme ownership,
+pinning/reordering/closing and narrow overflow. The native suite runs at both
+GDK_SCALE=1 and 2. Existing 48px headerbar, exact window glyph, Notebook,
+button, palette, installer and system/explicit appearance regressions remain.
+
+```bash
+meson setup build --prefix=/usr --reconfigure
+meson compile -C build
+MAJORIS_REQUIRE_EXACT_FONT=1 meson test -C build --print-errorlogs
+python3 tools/generate-theme.py --check
+DESTDIR=/tmp/majoris-theme-stage meson install -C build
+./scripts/run-factory.sh --page=editor --light
+./scripts/run-factory.sh --page=editor --dark
+./scripts/run-factory.sh --page=editor --system
+python3 tools/render-editor-reference.py
+./scripts/capture-visual-regressions.sh --both
+MAJORIS_CAPTURE_SCALE=2 MAJORIS_CAPTURE_PAGES=editor,editor-overflow ./scripts/capture-visual-regressions.sh --both
+```
+
+The staged-package test uses its own temporary DESTDIR rather than modifying
+`/usr`. Development install tests isolate XDG config/data/state; both schemes
+are installed simultaneously and no user's existing scheme is destroyed.
+Factory launch smoke checks can use `MAJORIS_TREE=1` to dump the realized tree
+and exit automatically. `--page=editor-source` focuses the editor to expose active selection;
+`--page=editor-focus`, `editor-states` and
+`editor-overflow` provide focused, held-state and overflowing tab diagnostics.
+Formatting and status menus are genuine native controls. The editor fixture
+is accessible from the existing factory Headerbars page.
+
+Capture adds editor composites (tabs, toolbar, syntax/selection/gutter and
+statusbar together) in both modes, focus/state and long-name overflow fixtures.
+It preserves full-frame root screenshots without crops or pixel manipulation.
+At 200% the framebuffer is 2880×2160; captures are stored in `light-2x` and
+`dark-2x`. The capture environment now supplies the actual Majoris icon overlay
+in an isolated XDG directory, preserving user fonts and Adwaita fallback icons.
+This corrects missing symbols in earlier captures without changing icon assets.
+
+The supplemental HTML renderer uses temporary copies with local fonts and
+hides unrelated sections/introduction to expose each review section; target
+markup/styles and preserved references stay unchanged. It verifies appearance
+and font readiness and saves source/font hashes. These reference captures are
+visual comparisons, not GTK rendering or automatic acceptance.
+
+Native evidence: `artifacts/editor-suite.log`, `editor-native.json`,
+`editor-native-2x.json`, `editor-factory-switching.json`,
+`editor-factory-switching-2x.json`, `editor-captures.log`, `editor-2x-captures.log`,
+`editor-full-captures.log`, `editor-baseline-nodes.txt` and screenshot directories.
+The native baseline records libadwaita's unthemed tab strip at 53px under the
+existing generic control styles; the opt-in component measures 38px. Source
+scheme selection and native operations are exercised without an app CSS provider.
+See [visual observations and deliberate differences](editor-implementation-report.md).
+
+Remaining GNOME/Mutter acceptance: actual pointer drag/drop and cross-window
+transfer, keyboard traversal/close and screen-reader behavior, real window
+activation/backdrop, Wayland, fractional scaling, increased accessibility fonts
+and real system/portal-driven appearance changes. Xvfb 100%/200% screenshots
+and held native state flags do not establish those session/input results.
