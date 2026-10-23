@@ -40,7 +40,7 @@ for version in ('3','4'):
     shared,desktop=shared.split('/* Desktop Icons NG:',1)
     desktop='/* Desktop Icons NG:'+desktop
     specific=(ROOT/f'design/templates/gtk{version}.css.in').read_text()
-    if version=='4': specific+=(ROOT/'design/templates/gtk4-editor.css.in').read_text()
+    if version=='4': specific+=(ROOT/'design/templates/gtk4-editor.css.in').read_text()+(ROOT/'design/templates/gtk4-location.css.in').read_text()
     if version=='4':
         # GTK4 distinguishes keyboard-visible button focus; entries keep focus
         # styling because the reference intentionally uses entry:focus.

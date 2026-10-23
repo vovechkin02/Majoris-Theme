@@ -108,3 +108,37 @@ request `majoris-light` / `majoris-dark` from StyleSchemeManager and explicitly
 update automatic scheme selection when StyleManager.dark changes. Behaviour,
 user font preferences and third-party scheme selection remain application-owned.
 [Complete Vala examples, installation and accessibility](editor-components.md).
+
+
+## GTK4 location bar
+
+Use `majoris-location-bar` on a horizontal container, `majoris-location-crumb`
+on its native breadcrumb buttons and `majoris-location-current` on the current
+folder button. Separators use `majoris-location-separator`. Switch a Gtk.Stack
+to an expanding Gtk.Entry with `majoris-location-entry`, adding
+`majoris-location-editing` to the outer container while editing.
+`majoris-high-contrast` on that container opts into stronger borders and text.
+The 9px container and 7px crumbs deliberately differ from ordinary 4px controls.
+The pill has no raised shadow. Semantic surfaces, text, hover, pressed and focus
+colours follow the existing light/dark theme and StyleManager bridge.
+
+Keep Back, Forward, Up, Home and Copy outside the pill as ordinary 32px icon
+buttons, without `flat`, breadcrumb or editor-toolbar classes. Reuse
+`majoris-document-tabs` on Adw.TabBar. No extra appearance CssProvider is needed.
+
+The theme cannot add navigation behaviour to Majoris Files. Application code
+must build crumbs, validate paths, manage history, select the full path on
+Ctrl+L / Alt+D or empty-space activation, confirm on Enter and cancel on Escape,
+focus loss or outside clicks. Use a labelled, keyboard-accessible empty target
+separate from crumb handlers; reserve at least 48px. Constrain the breadcrumb
+viewport, ellipsize labels and scroll long paths. The factory's absolute paths
+are simulated; it performs no filesystem operations and accepts syntactically
+valid absolute paths rather than checking whether folders exist.
+
+Open the native demonstration from Headerbars or run
+`./scripts/run-factory.sh --light --page=location` (also `--dark`).
+`--page=location-editing` starts editing for capture; `MAJORIS_CONTENT_WIDTH=480`
+exercises narrow layouts. The fixture includes labelled held hover, pressed,
+focus, disabled, long-path, contrast, editing and backdrop states. Held flags
+are CSS diagnostics; verify real pointer, Tab and screen-reader interaction too.
+Use the application scheme menu for Light → Dark → Light.

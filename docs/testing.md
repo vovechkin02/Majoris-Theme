@@ -241,3 +241,26 @@ transfer, keyboard traversal/close and screen-reader behavior, real window
 activation/backdrop, Wayland, fractional scaling, increased accessibility fonts
 and real system/portal-driven appearance changes. Xvfb 100%/200% screenshots
 and held native state flags do not establish those session/input results.
+
+
+## Location component verification
+
+Run `python3 tools/generate-theme.py --check` and `./scripts/test.sh`.
+The `location component contract` verifies opt-in selectors, scheme palettes,
+9px/7px exceptions, focus colours, normal control geometry and GTK3 isolation.
+`native location interactions` compiles the actual factory component and uses
+X11 input via xdotool: Ctrl+L, Alt+D, selection, invalid/valid Enter, Escape,
+outside cancellation, breadcrumb activation, empty-space click, history,
+Up/Home, narrow layout and Light → Dark → Light foreground checks.
+Existing contracts cover exact window-control SVGs and unchanged components.
+
+Run `./scripts/run-factory.sh --light --page=location` and repeat with `--dark`.
+Use `--page=location-editing` for an editing capture and
+`MAJORIS_CONTENT_WIDTH=480` for narrow windows. Scroll the diagnostic section
+for high contrast, editing and backdrop. Held hover/pressed/focus flags are
+visual diagnostics, not proof of real input or accessibility.
+Capture with the existing `tools/capture-visual.py` using
+`MAJORIS_CAPTURE_PAGES=location,location-editing` and `MAJORIS_VARIANT=light` or
+`dark` under dbus-run-session / Xvfb. See [verification evidence](location-implementation-report.md).
+Real GNOME/Mutter, Wayland, fractional scaling, portal-driven desktop switching
+and screen-reader acceptance require the target desktop.

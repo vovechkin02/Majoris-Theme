@@ -63,3 +63,10 @@ test('SourceView schemes and reversible discovery',python,args:[files('tests/tes
 test('native editor components',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-editor-native.py')],timeout:30)
 test('editor staged packaging',python,args:[files('tests/test-editor-package.py')],timeout:30)
 test('native editor components at 200 percent',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-editor-native.py')],env:{'GDK_SCALE':'2'},timeout:30)
+
+location_test = executable('location-native-test', 'tests/location-native.vala', 'factory/src/location-bar.vala',
+  link_with: theme_bridge, dependencies: [dependency('gtk4'), dependency('libadwaita-1')])
+test('location component contract', python, args: [files('tests/test-location-contract.py')])
+test('native location interactions', find_program('dbus-run-session'),
+  args: ['--', find_program('xvfb-run').full_path(), '-a', location_test.full_path()],
+  env: {'MAJORIS_THEME_ROOT': meson.project_source_root() / 'theme/Majoris', 'GTK_A11Y': 'none', 'GDK_BACKEND': 'x11'}, timeout: 30)

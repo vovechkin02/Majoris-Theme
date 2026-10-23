@@ -1,0 +1,18 @@
+/* Opt-in location component. Deliberate 9px/7px radius exceptions. */
+.majoris-location-bar { min-width: 0; padding: 2px; border: 1px solid @border_soft; border-radius: 9px; background: @surface_secondary; color: @text; box-shadow: none; transition: border-color ${control_motion}, background-color ${control_motion}; }
+.majoris-location-bar.majoris-location-editing { border-color: ${editor_focus}; outline: 2px solid alpha(${editor_focus},.24); outline-offset: 0; }
+.majoris-location-bar button.majoris-location-crumb { min-width: 0; min-height: 24px; padding: 0 6px; margin: 0; border: 1px solid transparent; border-radius: 7px; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; font-weight: 400; transition: background-color ${control_motion}, color ${control_motion}; }
+.majoris-location-bar button.majoris-location-crumb:hover { background: @hover; color: @text; box-shadow: none; }
+.majoris-location-bar button.majoris-location-crumb:active { background: @active; color: @text; box-shadow: none; }
+.majoris-location-bar button.majoris-location-crumb:focus-visible { outline: 2px solid ${editor_focus}; outline-offset: -2px; box-shadow: none; }
+.majoris-location-bar button.majoris-location-current { color: @text; font-weight: 700; }
+.majoris-location-separator { color: @text_secondary; padding: 0 2px; }
+.majoris-location-bar entry.majoris-location-entry, .majoris-location-bar entry.majoris-location-entry:focus-within { min-width: 0; min-height: 24px; padding: 0 6px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: @text; outline: none; box-shadow: none; }
+.majoris-location-bar button.majoris-location-crumb:disabled { color: @text_tertiary; opacity: .45; box-shadow: none; }
+.majoris-location-bar:backdrop { background: @surface_secondary; border-color: @border_soft; }
+.majoris-location-bar button.majoris-location-crumb:backdrop { color: @text_secondary; box-shadow: none; }
+.majoris-location-bar.majoris-high-contrast { background: @surface; border-color: @text; }
+.majoris-location-bar.majoris-high-contrast button.majoris-location-crumb, .majoris-location-bar.majoris-high-contrast .majoris-location-separator { color: @text; }
+.majoris-location-bar.majoris-high-contrast.majoris-location-editing { border-color: ${editor_focus}; outline-width: 3px; }
+
+.majoris-location-bar:disabled { color: @text_tertiary; border-color: @border_soft; }

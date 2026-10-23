@@ -42,3 +42,19 @@ a larger card. See [Vala examples and group ownership](../docs/gtk4-libadwaita.m
 GtkNotebook remains independent. SourceView uses discoverable XML schemes
 `majoris-light` / `majoris-dark`, not generic syntax CSS. GTK4-specific rules
 never enter GTK3 outputs. [Geometry, Vala and ownership details](../docs/editor-components.md).
+
+
+## GTK4 location bar
+
+| Class | Native widget / role |
+|---|---|
+| `majoris-location-bar` | Horizontal container; 9px radius, tinted surface, no raised shadow |
+| `majoris-location-crumb` | Flat native breadcrumb button; 7px radius |
+| `majoris-location-current` | Current crumb; stronger weight |
+| `majoris-location-separator` | Path separator label |
+| `majoris-location-entry` | Expanding full-path Gtk.Entry |
+| `majoris-location-editing` | Container editing state; unified focus outline |
+| `majoris-high-contrast` | Optional container contrast treatment |
+
+These GTK4-only rules preserve standard toolbar buttons and reuse
+`majoris-document-tabs`. [Application interaction and ownership](../docs/gtk4-libadwaita.md#gtk4-location-bar).

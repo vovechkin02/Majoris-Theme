@@ -75,3 +75,18 @@ transients are rgba(40,40,44,.98); search/controls are #28282C. Checked children
 stay #FFFFFF in both variants. This avoids a former broad foreground substitution
 that also matched `background-color` and made dark surfaces white. See
 [the VM regression checklist](theme-state-vm-checklist.md).
+
+
+## GTK4 location bar
+
+The opt-in location pill uses the same semantic tokens in both generated
+entrypoints: secondary surface #F2F2F4 / #28282C, soft border #E5E5E9 / #313136,
+primary text #1C1C1F / #F4F4F5 and focus #6366F1 / #818CF8. Hover and pressed
+states use the existing theme tokens. High contrast uses the primary text border
+and surface token. Surrounding dark toolbar controls retain #28282C, #3B3B40
+borders and existing shadows. No global control rules or stylesheet imports change.
+
+The source is `design/templates/gtk4-location.css.in`, included after existing
+GTK4 overrides by both generators. The factory uses the existing StyleManager
+bridge; no separate appearance provider or cached per-widget colours.
+[Application integration](gtk4-libadwaita.md#gtk4-location-bar).

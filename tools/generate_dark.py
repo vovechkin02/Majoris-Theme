@@ -48,7 +48,7 @@ def generate(output):
             extra=re.sub(r'notebook > header tab:checked \{ background-image:.*?\}\n', '', extra)
             extra=extra.replace('popover.background { background: transparent; }','')
             extra+=render((ROOT/'design/templates/gtk3-dark.css.in').read_text())
-        if version=='4': extra+=render((ROOT/'design/templates/gtk4-editor.css.in').read_text())
+        if version=='4': extra+=render((ROOT/'design/templates/gtk4-editor.css.in').read_text()+(ROOT/'design/templates/gtk4-location.css.in').read_text())
         base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
         output(directory/'gtk-dark.css','/* Generated: shared geometry, effective dark cascade, native overrides. */\n'+base+'@import url("colors.css");\n@import url("colors-dark.css");\n'+css+extra+render(desktop))
     # Explicit Shell roles avoid substring replacements matching background-color.

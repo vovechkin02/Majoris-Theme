@@ -12,7 +12,7 @@ assert variant in ('light','dark')
 scale=os.environ.get('MAJORIS_CAPTURE_SCALE','1')
 assert scale in ('1','2')
 out=root/'artifacts/screenshots'/(variant+('-2x' if scale=='2' else ''));out.mkdir(parents=True,exist_ok=True)
-pages=['editor','editor-source','editor-focus','editor-states','editor-overflow','layout','overview','scrolled','buttons','selection','inputs','ranges','preferences','navigation','data','menus','tooltip','feedback','dialog','status','simple','dense','split','states-buttons','states-controls','states-inputs','states-selection','states-navigation']
+pages=['location','location-editing','location-narrow','editor','editor-source','editor-focus','editor-states','editor-overflow','layout','overview','scrolled','buttons','selection','inputs','ranges','preferences','navigation','data','menus','tooltip','feedback','dialog','status','simple','dense','split','states-buttons','states-controls','states-inputs','states-selection','states-navigation']
 pages+=['layout-'+str(width) for width in (360,390,650,900,1200)]
 pages+=['window-edge','window-edge-maximized','window-edge-fullscreen','window-edge-tiled','window-edge-tiled-left','window-edge-tiled-right','window-edge-tiled-top','window-edge-tiled-bottom']
 if os.environ.get('MAJORIS_CAPTURE_PAGES'): pages=os.environ['MAJORIS_CAPTURE_PAGES'].split(',')
@@ -33,6 +33,9 @@ with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
         with (out/f'{page}.log').open('w') as log:
             capture_env=dict(env)
             capture_page=page
+            if page=='location-narrow':
+                capture_env['MAJORIS_CONTENT_WIDTH']='480'
+                capture_page='location'
             if page=='editor-overflow': capture_env['MAJORIS_CONTENT_WIDTH']='650'
             if page.startswith('layout-'):
                 capture_env['MAJORIS_CONTENT_WIDTH']=page.split('-')[1]
@@ -60,6 +63,14 @@ with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
                     subprocess.run(['magick',str(out/(page+'-popup.xwd')),str(out/(page+'-popup.png'))],check=True)
                 subprocess.run(['xwd','-silent','-screen','-root','-out',str(out/(page+'.xwd'))],check=True)
                 subprocess.run(['magick',str(out/(page+'.xwd')),str(out/(page+'.png'))],check=True)
+                if page.startswith('location'):
+                    wid=subprocess.check_output(['xdotool','search','--name','^Majoris Files Components$'],text=True).splitlines()[0]
+                    geometry=subprocess.check_output(['xdotool','getwindowgeometry','--shell',wid],text=True)
+                    values=dict(line.split('=',1) for line in geometry.splitlines() if '=' in line)
+                    subprocess.run(['xdotool','mousemove','--window',wid,str(int(values['WIDTH'])-100),str(int(values['HEIGHT'])-40),'click','--repeat','8','5'],check=True)
+                    time.sleep(.4)
+                    subprocess.run(['xwd','-silent','-screen','-root','-out',str(out/(page+'-states.xwd'))],check=True)
+                    subprocess.run(['magick',str(out/(page+'-states.xwd')),str(out/(page+'-states.png'))],check=True)
                 if page=='layout':
                     # Preserve extra full-frame views of the scrollable card variants.
                     wid=subprocess.check_output(['xdotool','search','--name','^Majoris Widget Factory$'],text=True).splitlines()[0]
