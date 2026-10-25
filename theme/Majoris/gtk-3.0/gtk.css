@@ -120,6 +120,17 @@ tooltip label { color: @surface; }
 spinner:checked { opacity: 1; animation: majoris-spin 800ms linear infinite; }
 .title-1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
 
+/* Public native menu-row contract. Height is a minimum; Pango can grow it. */
+.majoris-menu-row { min-height: 24px; padding: 4px 8px; border: none; border-radius: 4px; background: transparent; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms, color 128ms; }
+.majoris-menu-row:hover { background: #ECECEF; box-shadow: none; }
+.majoris-menu-row:active { background: #E2E2E6; box-shadow: none; }
+.majoris-menu-row:disabled { color: @text_tertiary; background: transparent; }
+.majoris-menu-row:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+.majoris-menu-row.majoris-menu-danger { color: #DC3C4D; }
+.majoris-menu-shortcut { margin-left: 16px; }
+.majoris-menu-shortcut > label + label { margin-left: 4px; }
+label.majoris-menu-keycap { min-height: 15px; padding: 2px 6px; border: 1px solid #D8D8DD; border-bottom-width: 2px; border-radius: 4px; background: #FFFFFF; color: #626269; font-size: 12px; font-weight: 600; }
+
 decoration { border-radius: 8px; box-shadow: 0 20px 40px rgba(20,20,25,.18),0 6px 12px rgba(20,20,25,.08); border: 1px solid rgba(20,20,25,.12); border-color: rgba(20,20,25,.12); }
 window.csd { border-radius: 8px; }
 headerbar { -GtkWidget-window-dragging: true; }
@@ -202,6 +213,15 @@ menuitem:selected:active { background-color: #E2E2E6; }
 menuitem:disabled, menuitem:disabled:selected { background: transparent; color: @text_tertiary; }
 menuitem.majoris-menu-danger:selected { color: #DC3C4D; }
 menuitem check:checked, menuitem radio:checked { color: @primary_500; background: transparent; border-color: transparent; }
+
+/* v2 context-menu geometry. GtkAccelLabel itself paints the accelerator; see integration/menu_rows.py. */
+menu { padding: 4px; }
+menu separator { min-height: 1px; padding: 0; border: none; margin: 2px 8px; background: @border_soft; box-shadow: none; }
+menu accelerator { font-size: 12px; font-weight: 600; }
+
+menuitem.majoris-menu-row > box { min-height: 24px; }
+
+menuitem.majoris-menu-row label.majoris-menu-keycap { color: #626269; }
 /* Desktop Icons NG: desktopwindow compatibility, emitted after native overrides. */
 window.desktopwindow,
 window.desktopwindow:backdrop,

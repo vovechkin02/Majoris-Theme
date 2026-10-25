@@ -121,6 +121,17 @@ tooltip label { color: @surface; }
 spinner:checked { opacity: 1; animation: majoris-spin 800ms linear infinite; }
 .title-1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
 
+/* Public native menu-row contract. Height is a minimum; Pango can grow it. */
+.majoris-menu-row { min-height: 24px; padding: 4px 8px; border: none; border-radius: 4px; background: transparent; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms, color 128ms; }
+.majoris-menu-row:hover { background: #38383D; box-shadow: none; }
+.majoris-menu-row:active { background: #424247; box-shadow: none; }
+.majoris-menu-row:disabled { color: @text_tertiary; background: transparent; }
+.majoris-menu-row:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+.majoris-menu-row.majoris-menu-danger { color: #F06B79; }
+.majoris-menu-shortcut { margin-left: 16px; }
+.majoris-menu-shortcut > label + label { margin-left: 4px; }
+label.majoris-menu-keycap { min-height: 15px; padding: 2px 6px; border: 1px solid #43434A; border-bottom-width: 2px; border-radius: 4px; background: #2A2A2F; color: #C7C8D0; font-size: 12px; font-weight: 600; }
+
 decoration { border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,.52),0 6px 12px rgba(0,0,0,.30); border: 1px solid rgba(20,20,25,.12); border-color: rgba(255,255,255,.07); }
 window.csd { border-radius: 8px; }
 headerbar { -GtkWidget-window-dragging: true; }
@@ -203,6 +214,15 @@ menuitem:selected:active { background-color: #424247; }
 menuitem:disabled, menuitem:disabled:selected { background: transparent; color: @text_tertiary; }
 menuitem.majoris-menu-danger:selected { color: #F06B79; }
 menuitem check:checked, menuitem radio:checked { color: @primary_500; background: transparent; border-color: transparent; }
+
+/* v2 context-menu geometry. GtkAccelLabel itself paints the accelerator; see integration/menu_rows.py. */
+menu { padding: 4px; }
+menu separator { min-height: 1px; padding: 0; border: none; margin: 2px 8px; background: @border_soft; box-shadow: none; }
+menu accelerator { font-size: 12px; font-weight: 600; }
+
+menuitem.majoris-menu-row > box { min-height: 24px; }
+
+menuitem.majoris-menu-row label.majoris-menu-keycap { color: #C7C8D0; }
 /* Dark-only semantic overrides; shared allocations remain in gtk-common.css.in. */
 .view, columnview, treeview, iconview { background-color: @surface; color: @text; }
 columnview row:selected, listview row:selected, gridview child:selected { background-color: rgba(99,102,241,.16); color: #E0E7FF; }
@@ -272,6 +292,8 @@ tooltip > box, tooltip label { background: transparent; }
 .majoris-state-block { border-color: @border_soft; background-image: linear-gradient(180deg,#242428,#202023); }
 
 menuitem:focus, modelbutton:focus, button.model:focus, button.majoris-menu-danger:focus, dropdown popover row:focus { outline-color: #818CF8; }
+
+.majoris-menu-row:focus, .majoris-menu-row:focus { outline-color: #818CF8; }
 /* GTK3's imported Adwaita has more-specific combined-state and child rules. */
 button { text-shadow: none; -gtk-icon-shadow: none; }
 button:backdrop, button:disabled, button:backdrop:disabled { background-color: @surface_secondary; color: @text; background-image: none; }

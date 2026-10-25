@@ -172,4 +172,11 @@ stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; 
 .popup-menu-item.destructive-action { color: #F06B79; }
 .popup-separator-menu-item .popup-separator-menu-item-separator { height: 1px; margin: 4px 8px; background-color: #3B3B40; }
 
-.popup-menu-item .popup-menu-accel { font-size: 12px; font-weight: 400; color: #A9A9B0; margin-left: 16px; }
+.popup-menu-item .popup-menu-accel { font-size: 12px; font-weight: 400; color: #C7C8D0; margin-left: 16px; }
+
+/* Popup menus only: Quick Settings, calendar and login surfaces retain their rules. */
+.popup-menu-content { padding: 4px; }
+.popup-separator-menu-item .popup-separator-menu-item-separator { height: 1px; margin: 2px 8px; background-color: #313136; box-shadow: none; }
+.popup-menu-item .popup-menu-accel { min-height: 15px; padding: 2px 6px; border: 1px solid #43434A; border-bottom-width: 2px; border-radius: 4px; background-color: #2A2A2F; color: #C7C8D0; font-size: 12px; font-weight: 600; }
+
+.quick-settings.popup-menu-content { padding: 8px; }

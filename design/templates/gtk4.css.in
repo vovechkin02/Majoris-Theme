@@ -33,13 +33,13 @@ searchentry, passwordentry { min-height: ${control_content_size}; min-width: ${e
 searchentry:focus-within, passwordentry:focus-within { border-color: @primary_500; box-shadow: 0 0 0 2px rgba(99,102,241,.24), ${control_shadow}; }
 searchentry text, passwordentry text { min-height: 0; padding: 0; }
 popover.background { background-color: transparent; }
-popover > contents { border-radius: ${structure_radius}; border: 1px solid @border_soft; background-color: ${.popover|background}; padding: ${.popover|padding}; box-shadow: ${pop_shadow}; }
+popover > contents { border-radius: ${structure_radius}; border: 1px solid @border_soft; background-color: ${.popover|background}; padding: 8px; box-shadow: ${pop_shadow}; }
 button.model, modelbutton, button.majoris-menu-danger { min-height: 24px; padding: ${.menu-item|padding}; border: none; border-radius: ${control_radius}; box-shadow: none; background-color: transparent; background-image: none; font-size: ${.menu-item|font-size}; font-weight: 500; }
 button.model:hover, modelbutton:hover, button.majoris-menu-danger:hover { background-color: @hover; box-shadow: none; }
 button.model:active, modelbutton:active, button.majoris-menu-danger:active { background-color: @active; box-shadow: none; }
 button.majoris-menu-danger, button.majoris-menu-danger:hover, button.majoris-menu-danger:active { color: @danger; border-color: transparent; }
 button.majoris-menu-danger:focus { box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
-popover separator { min-height: ${.separator|height}; margin: ${.separator|margin}; background-color: @border_soft; }
+popover separator { min-height: ${.separator|height}; margin: 4px 8px; background-color: @border_soft; }
 .boxed-list > row > box { min-height: 0; padding: 0; }
 .boxed-list > row .title, .boxed-list > row .subtitle { min-height: 0; padding: 0; margin: 0; }
 .boxed-list > row .subtitle { margin-top: ${.pref-desc|margin-top}; }
@@ -125,3 +125,14 @@ dropdown popover row:selected { background-color: ${.menu-item:hover|background}
 /* The chooser's view must not paint a second surface inside the menu. */
 dropdown popover listview.view, dropdown popover listview { background: transparent; color: ${.menu-item|color}; }
 popover.menu > arrow, dropdown popover > arrow { background-color: ${.popover|background}; border-color: ${menu_border}; }
+
+/* v2 applies to menus, not chooser or ordinary popover contents. */
+popover.menu > contents { padding: ${.popover|padding}; }
+popover.menu separator { min-height: 1px; padding: 0; border: none; margin: ${.separator|margin}; background: @border_soft; box-shadow: none; }
+/* GTK4's standard accelerator is a single capsule; custom rows can split keys. */
+popover.menu accelerator { min-height: 15px; padding: 2px 6px; margin-left: 16px; border: 1px solid ${.menu-item kbd|border-color}; border-bottom-width: 2px; border-radius: 4px; background: ${.menu-item kbd|background}; color: ${.menu-item kbd|color}; font-size: 12px; font-weight: 600; }
+/* Libadwaita otherwise adds another 6px inside GtkMenuSectionBox. The contents
+ * node is the sole menu padding owner; ordinary/chooser popovers are unaffected. */
+popover.menu stack > box, popover.menu stack > box box { padding: 0; }
+/* GtkDropDown also tags its popup as .menu; keep its existing outer inset. */
+dropdown popover.menu > contents { padding: 8px; }

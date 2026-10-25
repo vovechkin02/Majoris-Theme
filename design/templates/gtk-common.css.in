@@ -117,6 +117,17 @@ tooltip label { color: @surface; }
 spinner:checked { opacity: 1; animation: majoris-spin 800ms linear infinite; }
 .title-1 { font-size: ${.page-title|font-size}; font-weight: 700; letter-spacing: ${.page-title|letter-spacing}; }
 
+/* Public native menu-row contract. Height is a minimum; Pango can grow it. */
+.majoris-menu-row { min-height: 24px; padding: 4px 8px; border: none; border-radius: 4px; background: transparent; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms, color 128ms; }
+.majoris-menu-row:hover { background: ${.menu-item:hover|background}; box-shadow: none; }
+.majoris-menu-row:active { background: ${.menu-item:active|background}; box-shadow: none; }
+.majoris-menu-row:disabled { color: @text_tertiary; background: transparent; }
+.majoris-menu-row:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+.majoris-menu-row.majoris-menu-danger { color: ${.menu-item.destructive|color}; }
+.majoris-menu-shortcut { margin-left: 16px; }
+.majoris-menu-shortcut > label + label { margin-left: 4px; }
+label.majoris-menu-keycap { min-height: 15px; padding: 2px 6px; border: 1px solid ${.menu-item kbd|border-color}; border-bottom-width: 2px; border-radius: 4px; background: ${.menu-item kbd|background}; color: ${.menu-item kbd|color}; font-size: 12px; font-weight: 600; }
+
 /* Desktop Icons NG: desktopwindow compatibility, emitted after native overrides. */
 window.desktopwindow,
 window.desktopwindow:backdrop,

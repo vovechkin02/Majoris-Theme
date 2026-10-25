@@ -172,3 +172,10 @@ stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; 
 .popup-separator-menu-item .popup-separator-menu-item-separator { height: 1px; margin: 4px 8px; background-color: ${menu_border}; }
 
 .popup-menu-item .popup-menu-accel { font-size: 12px; font-weight: 400; color: ${.menu-item kbd|color}; margin-left: 16px; }
+
+/* Popup menus only: Quick Settings, calendar and login surfaces retain their rules. */
+.popup-menu-content { padding: ${.popover|padding}; }
+.popup-separator-menu-item .popup-separator-menu-item-separator { height: 1px; margin: ${.separator|margin}; background-color: ${border_soft}; box-shadow: none; }
+.popup-menu-item .popup-menu-accel { min-height: 15px; padding: 2px 6px; border: 1px solid ${.menu-item kbd|border-color}; border-bottom-width: 2px; border-radius: 4px; background-color: ${.menu-item kbd|background}; color: ${.menu-item kbd|color}; font-size: 12px; font-weight: 600; }
+
+.quick-settings.popup-menu-content { padding: 8px; }

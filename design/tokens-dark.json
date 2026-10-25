@@ -1251,7 +1251,7 @@
     },
     ".popover-wrap": {
       "position": "relative",
-      "height": "420px",
+      "height": "620px",
       "border": "1px dashed var(--border)",
       "border-radius": "8px",
       "background": "linear-gradient(#1D1D20,#1A1A1D)",
@@ -1268,7 +1268,7 @@
       "border-radius": "8px",
       "background": "#28282C",
       "box-shadow": "0 8px 16px rgba(0,0,0,.42),0 2px 4px rgba(0,0,0,.24)",
-      "padding": "8px",
+      "padding": "4px",
       "border-color": "#3B3B40"
     },
     ".menu-item": {
@@ -1297,8 +1297,8 @@
     },
     ".separator": {
       "height": "1px",
-      "background": "#3B3B40",
-      "margin": "4px 8px"
+      "background": "var(--border-soft)",
+      "margin": "2px 8px"
     },
     ".toast": {
       "display": "flex",
@@ -1590,11 +1590,28 @@
     ".search::selection": {
       "background": "rgba(99,102,241,.42)"
     },
+    ".menu-shortcut": {
+      "display": "inline-flex",
+      "gap": "4px",
+      "margin-left": "16px",
+      "flex-shrink": "0"
+    },
     ".menu-item kbd": {
+      "display": "inline-flex",
+      "align-items": "center",
+      "justify-content": "center",
+      "min-height": "22px",
+      "padding": "2px 6px",
+      "border": "1px solid #43434A",
+      "border-bottom-width": "2px",
+      "border-color": "#43434A",
+      "border-radius": "4px",
+      "background": "#2A2A2F",
+      "color": "#C7C8D0",
       "font-size": "12px",
-      "font-weight": "400",
-      "color": "#A9A9B0",
-      "margin-left": "16px"
+      "font-weight": "600",
+      "line-height": "1.2",
+      "white-space": "nowrap"
     },
     ".menu-item:focus-visible": {
       "outline": "2px solid #818CF8",

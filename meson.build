@@ -82,3 +82,5 @@ foreach menu_version : ['3', '4']
 endforeach
 
 test('menu source contract', python, args: [files('tests/test-menu-contract.py')])
+
+install_data('factory/src/menu-row.vala', 'integration/menu_rows.py', install_dir: get_option('datadir') / 'majoris-theme/integration')

@@ -13,7 +13,7 @@ button.titlebutton.close:hover { background-color: @danger; color: @surface; box
 button.titlebutton.close:active { background-color: @danger_pressed; color: @surface; box-shadow: none; }
 button.titlebutton:focus { border-color: ${.window-control.is-focus|border-color}; outline: none; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
 button.titlebutton:backdrop { color: @text_tertiary; }
-popover.background, menu { background-color: ${.popover|background}; border: 1px solid @border_soft; border-radius: ${structure_radius}; padding: ${.popover|padding}; box-shadow: ${pop_shadow}; }
+popover.background, menu { background-color: ${.popover|background}; border: 1px solid @border_soft; border-radius: ${structure_radius}; padding: 8px; box-shadow: ${pop_shadow}; }
 menuitem { min-height: 24px; border: none; border-radius: ${control_radius}; padding: ${.menu-item|padding}; box-shadow: none; font-size: ${.menu-item|font-size}; }
 menuitem:hover { background-color: @hover; box-shadow: none; }
 menuitem:active { background-color: @active; box-shadow: none; }
@@ -80,3 +80,12 @@ menuitem:selected:active { background-color: ${.menu-item:active|background}; }
 menuitem:disabled, menuitem:disabled:selected { background: transparent; color: @text_tertiary; }
 menuitem.majoris-menu-danger:selected { color: ${.menu-item.destructive|color}; }
 menuitem check:checked, menuitem radio:checked { color: @primary_500; background: transparent; border-color: transparent; }
+
+/* v2 context-menu geometry. GtkAccelLabel itself paints the accelerator; see integration/menu_rows.py. */
+menu { padding: ${.popover|padding}; }
+menu separator { min-height: 1px; padding: 0; border: none; margin: ${.separator|margin}; background: @border_soft; box-shadow: none; }
+menu accelerator { font-size: 12px; font-weight: 600; }
+
+menuitem.majoris-menu-row > box { min-height: 24px; }
+
+menuitem.majoris-menu-row label.majoris-menu-keycap { color: ${.menu-item kbd|color}; }

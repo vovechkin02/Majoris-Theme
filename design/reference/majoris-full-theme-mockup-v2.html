@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Majoris Full Theme Mockup — Light + Dark</title>
+  <style>
+    :root{
+      --p50:#EEF2FF; --p100:#E0E7FF; --p200:#C7D2FE; --p300:#A5B4FC; --p400:#818CF8; --p500:#6366F1; --p600:#4F46E5; --p700:#4338CA; --p800:#3730A3;
+      --success:#22A06B; --warning:#D97706; --danger:#DC3C4D; --danger-press:#B92F3E;
+      --radius-control:4px; --radius-struct:8px;
+      --shadow-window:0 20px 40px rgba(20,20,25,.18),0 6px 12px rgba(20,20,25,.08);
+      --shadow-card:0 4px 8px rgba(20,20,25,.08),0 1px 2px rgba(20,20,25,.05);
+      --shadow-pop:0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08);
+      --shadow-control:0 1px 2px rgba(20,20,25,.10);
+      --shadow-control-hover:0 2px 4px rgba(20,20,25,.12);
+      --shadow-control-active:0 1px 1px rgba(20,20,25,.08);
+      --motion-fast:128ms cubic-bezier(.2,0,0,1);
+      --motion-surface:256ms cubic-bezier(.2,.8,.2,1);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family:"Plus Jakarta Sans","Noto Sans","Cantarell",system-ui,sans-serif;
+      background:linear-gradient(180deg,#eef1f7,#e8ebf2);
+      color:#1C1C1F;
+      padding:24px;
+    }
+    .page{max-width:1800px;margin:0 auto}
+    .intro{margin-bottom:22px}
+    .intro h1{margin:0 0 8px;font-size:30px;letter-spacing:-.03em}
+    .intro p{margin:0;color:#575A64;font-size:14px;line-height:1.6;max-width:1200px}
+    .tokens{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .token{height:28px;display:inline-flex;align-items:center;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.88);border:1px solid #d9dce6;font-size:12px;font-weight:600;color:#5b6070;box-shadow:0 1px 2px rgba(20,20,25,.04)}
+    .themes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+    .theme{
+      --bg:#F7F7F8; --surface:#FFFFFF; --surface2:#F2F2F4; --surface3:#F7F8FB; --hover:#ECECEF; --active:#E2E2E6;
+      --border:#D8D8DD; --border-soft:#E5E5E9; --text:#1C1C1F; --text2:#626269; --text3:#8A8A92; --text4:#9aa0b1;
+      --menu-bg:rgba(255,255,255,.98); --menu-hover:#F1F2F8; --key-bg:#FFFFFF; --key-border:#D8D8DD; --key-text:#626269;
+      --headerbar-bg:rgba(255,255,255,.92); --sidebar-bg:#F2F2F4; --window-bg:#F7F7F8; --login-overlay:linear-gradient(180deg,#edf0ff,#e8ebf5 52%,#e2e6f0);
+      --login-card:rgba(255,255,255,.76); --login-card-border:rgba(255,255,255,.9); --login-chip:rgba(246,247,255,.92); --login-chip-hover:rgba(58,69,128,.095);
+      --focus-ring:0 0 0 2px rgba(99,102,241,.24), var(--shadow-control);
+    }
+    .theme.dark{
+      --bg:#18181B; --surface:#202023; --surface2:#28282C; --surface3:#1d1d20; --hover:#303035; --active:#38383D;
+      --border:#3B3B40; --border-soft:#313136; --text:#F4F4F5; --text2:#A9A9B0; --text3:#7F7F88; --text4:#757c8f;
+      --menu-bg:rgba(36,36,40,.98); --menu-hover:#313138; --key-bg:#2A2A2F; --key-border:#43434A; --key-text:#C7C8D0;
+      --headerbar-bg:rgba(32,32,35,.94); --sidebar-bg:#1D1D20; --window-bg:#18181B; --login-overlay:linear-gradient(180deg,#0f1016,#14151d 52%,#161722);
+      --login-card:rgba(27,29,38,.82); --login-card-border:rgba(255,255,255,.06); --login-chip:rgba(40,42,51,.92); --login-chip-hover:rgba(99,102,241,.16);
+      --shadow-window:0 20px 40px rgba(0,0,0,.52),0 6px 12px rgba(0,0,0,.30);
+      --shadow-card:0 4px 8px rgba(0,0,0,.24),0 1px 2px rgba(0,0,0,.20);
+      --shadow-pop:0 12px 24px rgba(0,0,0,.52),0 4px 8px rgba(0,0,0,.30);
+      --shadow-control:0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035);
+      --shadow-control-hover:0 2px 4px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.045);
+      --shadow-control-active:0 1px 1px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.025);
+      --focus-ring:0 0 0 2px rgba(99,102,241,.26), var(--shadow-control);
+    }
+
+    .theme-panel{background:var(--surface3); border:1px solid var(--border-soft); border-radius:16px; box-shadow:0 12px 28px rgba(20,20,25,.08); overflow:hidden}
+    .theme-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border-soft);background:var(--surface)}
+    .theme-title{font-size:15px;font-weight:700;color:var(--text)}
+    .theme-caption{font-size:12px;color:var(--text2)}
+    .theme-body{padding:16px;display:grid;gap:16px;background:var(--surface3)}
+
+    .window{background:var(--window-bg); border:1px solid rgba(20,20,25,.12); border-radius:8px; overflow:hidden; box-shadow:var(--shadow-window)}
+    .headerbar{height:48px; padding:8px; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:8px; background:var(--headerbar-bg); border-bottom:1px solid var(--border-soft)}
+    .toolbar{display:flex;gap:4px;align-items:center}
+    .title{justify-self:center;font-size:14px;font-weight:700;color:var(--text)}
+    .shell{display:grid;grid-template-columns:220px 1fr;min-height:920px}
+    .sidebar{background:var(--sidebar-bg);border-right:1px solid var(--border-soft);padding:12px 8px}
+    .side-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:8px 8px 6px}
+    .nav{height:34px;display:flex;align-items:center;gap:8px;padding:0 8px;border-radius:4px;font-size:13px;margin-bottom:2px;color:var(--text2);position:relative}
+    .nav:hover{background:var(--hover)}
+    .nav.active{background:rgba(99,102,241,.12);color:var(--p700);font-weight:650}
+    .dark .nav.active{background:rgba(99,102,241,.16);color:#C7D2FE}
+    .nav.active:before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:2px;border-radius:2px;background:var(--p500)}
+    .content{padding:24px;overflow:hidden;background:var(--bg)}
+    .page-title{margin:0 0 4px;font-size:24px;letter-spacing:-.02em;color:var(--text)}
+    .page-sub{margin:0 0 20px;color:var(--text2);font-size:13px}
+    .gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .card{background:var(--surface);border:1px solid var(--border-soft);border-radius:8px;box-shadow:var(--shadow-card);overflow:hidden}
+    .card.wide{grid-column:1/-1}
+    .card-head{padding:14px 16px 10px;border-bottom:1px solid var(--border-soft)}
+    .card-head h3{margin:0 0 4px;font-size:14px;color:var(--text)}
+    .card-head p{margin:0;color:var(--text2);font-size:11.5px;line-height:1.45}
+    .card-body{padding:16px}
+    .group{margin-bottom:16px}
+    .group:last-child{margin-bottom:0}
+    .group-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:8px}
+    .row-flex{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .stack{display:grid;gap:8px}
+    .note{font-size:11.5px;color:var(--text2);line-height:1.55;margin-top:10px}
+
+    .btn,.icon-btn,.entry,.search,.select,.spin,.font-button,.color-button,.split-main,.split-arrow,.state-select{
+      border:1px solid var(--border); background:var(--surface); color:var(--text); box-shadow:var(--shadow-control); font:inherit;
+    }
+    .btn,.select,.font-button,.color-button,.split-main,.state-select{height:32px;border-radius:4px;padding:0 12px;font-size:13px}
+    .btn,.icon-btn,.entry,.search,.select,.font-button,.color-button,.split-main,.split-arrow,.toggle,.tab,.state-select,.window-control,.login-button,.login-text-action,.sys-chip,.quick-item{transition:background-color var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast), color var(--motion-fast), opacity var(--motion-fast)}
+    .btn{font-weight:600;cursor:pointer}
+    .btn:hover,.icon-btn:hover,.select:hover,.font-button:hover,.color-button:hover,.split-main:hover,.split-arrow:hover,.state-select:hover{background:var(--hover);box-shadow:var(--shadow-control-hover)}
+    .btn:active,.icon-btn:active,.select:active,.font-button:active,.color-button:active,.split-main:active,.split-arrow:active,.state-select:active{background:var(--active);box-shadow:var(--shadow-control-active)}
+    .btn.primary{background:var(--p600);border-color:var(--p600);color:#fff;box-shadow:0 1px 2px rgba(20,20,25,.14),inset 0 1px 0 rgba(255,255,255,.10)}
+    .btn.primary:hover{background:var(--p700);border-color:var(--p700)}
+    .btn.primary:active{background:var(--p800);border-color:var(--p800)}
+    .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
+    .btn.flat,.icon-btn.flat{background:transparent;border-color:transparent;box-shadow:none}
+    .btn.flat:hover,.icon-btn.flat:hover{background:var(--hover)}
+    .icon-btn{width:32px;height:32px;border-radius:4px;display:grid;place-items:center;padding:0;cursor:pointer;font-size:15px}
+
+    .window-controls{display:flex;gap:2px;margin-left:6px}
+    .window-control{width:32px;height:32px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--text2);display:grid;place-items:center;padding:0;box-shadow:none}
+    .window-control:hover{background:var(--hover);color:var(--text)}
+    .window-control:active{background:var(--active);color:var(--text)}
+    .window-control.close:hover{background:var(--danger);color:#fff}
+    .window-control.close:active{background:var(--danger-press);color:#fff}
+    .window-control svg{display:block;width:16px;height:16px;flex:none}
+
+    .split{display:flex}
+    .split-main{border-radius:4px 0 0 4px;font-weight:600}
+    .split-arrow{height:32px;width:32px;border-left:0;border-radius:0 4px 4px 0;padding:0;display:grid;place-items:center}
+
+    .toggle-group{display:inline-flex;padding:2px;border:1px solid var(--border);background:var(--surface2);border-radius:6px;gap:2px}
+    .toggle{height:28px;padding:0 10px;border:0;background:transparent;border-radius:4px;font:inherit;font-size:12px;color:var(--text2)}
+    .toggle:hover{background:rgba(255,255,255,.55);color:var(--text)}
+    .dark .toggle:hover{background:rgba(255,255,255,.06)}
+    .toggle.active{background:var(--surface);color:var(--text);font-weight:600;box-shadow:var(--shadow-control)}
+
+    .checkline{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text)}
+    .checkbox,.radio{width:18px;height:18px;border:1px solid var(--border);background:var(--surface);display:grid;place-items:center;box-shadow:inset 0 1px 1px rgba(20,20,25,.04)}
+    .checkbox{border-radius:4px}.radio{border-radius:50%}
+    .checkbox.checked,.radio.checked{background:var(--p500);border-color:var(--p500);color:white}
+    .checkbox.checked:after{content:"✓";font-size:12px;font-weight:800}.radio.checked:after{content:"";width:6px;height:6px;background:#fff;border-radius:50%}
+    .checkbox.mixed:after{content:"−";font-size:14px;font-weight:800;color:var(--p600)}
+
+    .switch{width:40px;height:22px;padding:2px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;box-shadow:inset 0 1px 2px rgba(20,20,25,.05)}
+    .switch:after{content:"";width:16px;height:16px;border-radius:4px;background:white;border:1px solid rgba(0,0,0,.08);box-shadow:0 1px 2px rgba(20,20,25,.18)}
+    .switch.on{justify-content:flex-end;background:var(--p500);border-color:var(--p500)}
+
+    .entry,.search{height:32px;border-radius:4px;padding:0 10px;font-size:13px;outline:none;min-width:160px}
+    .input-wrap{position:relative;display:inline-flex;align-items:center}
+    .glass{position:absolute;left:10px;color:var(--text3);font-size:12px;z-index:1}
+    .search{padding-left:30px}
+    .password{position:relative;display:inline-flex}
+    .password .entry{padding-right:34px}
+    .eye{position:absolute;right:8px;top:7px;font-size:12px;color:var(--text3)}
+
+    .select,.state-select{display:inline-flex;align-items:center;justify-content:space-between;gap:18px;min-width:150px;cursor:pointer}
+    .spin{height:32px;display:inline-flex;padding:0;overflow:hidden;border-radius:4px}
+    .spin span{display:flex;align-items:center;padding:0 10px;min-width:54px;font-size:13px}
+    .spin button{width:28px;border:0;border-left:1px solid var(--border-soft);background:transparent;color:var(--text)}
+    .color-button,.font-button{display:flex;align-items:center;gap:8px;cursor:pointer}
+    .color-dot{width:16px;height:16px;border-radius:4px;background:var(--p500);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+
+    .slider-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+    .track{height:4px;background:color-mix(in srgb, var(--border) 70%, transparent);border-radius:4px;flex:1;position:relative}
+    .slider{height:18px;display:flex;align-items:center}
+    .fill{position:absolute;left:0;top:0;bottom:0;width:62%;background:var(--p500);border-radius:4px}
+    .thumb{position:absolute;left:62%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border-radius:50%;background:white;border:2px solid var(--p500);box-shadow:var(--shadow-control)}
+    .progress{height:8px;background:color-mix(in srgb, var(--border) 45%, transparent);border-radius:4px;overflow:hidden}
+    .progress > span{display:block;width:68%;height:100%;background:var(--p500)}
+    .level{height:8px;display:flex;gap:2px}.level span{flex:1;border-radius:2px;background:color-mix(in srgb, var(--border) 50%, transparent)}.level span.on{background:var(--success)}
+    .spinner{width:20px;height:20px;border:2px solid var(--p200);border-top-color:var(--p600);border-radius:50%;animation:spin 800ms linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .listbox{border:1px solid var(--border-soft);border-radius:8px;background:var(--surface);overflow:hidden}
+    .pref-row{min-height:50px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:8px 12px 8px 16px;border-bottom:1px solid var(--border-soft)}
+    .pref-row:last-child{border-bottom:0}
+    .pref-title{font-size:13px;font-weight:600;color:var(--text)}
+    .pref-desc{font-size:11.5px;color:var(--text2);margin-top:2px}
+    .chev{color:var(--text3)}
+
+    .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border-soft);padding:0 6px;background:var(--surface)}
+    .tab{height:36px;padding:0 12px;border:0;background:transparent;font:inherit;font-size:12px;color:var(--text2);position:relative}
+    .tab:hover{background:rgba(0,0,0,.03);color:var(--text)}
+    .dark .tab:hover{background:rgba(255,255,255,.04)}
+    .tab.active{color:var(--text);font-weight:650}
+    .tab.active:after{content:"";height:2px;background:var(--p500);position:absolute;left:10px;right:10px;bottom:-1px;border-radius:2px}
+    .view-switch{display:inline-flex;border:1px solid var(--border);background:var(--surface2);border-radius:6px;padding:2px}
+    .view-switch button{height:28px;border:0;background:transparent;border-radius:4px;padding:0 12px;font:inherit;font-size:12px;color:var(--text2)}
+    .view-switch button.active{background:var(--surface);box-shadow:var(--shadow-control);font-weight:600;color:var(--text)}
+
+    .table{border:1px solid var(--border-soft);border-radius:8px;overflow:hidden}
+    .table-head,.table-row{display:grid;grid-template-columns:1.4fr .8fr .8fr}
+    .table-head{background:var(--surface2);font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase}
+    .table-head div,.table-row div{padding:9px 12px;border-right:1px solid var(--border-soft)}
+    .table-head div:last-child,.table-row div:last-child{border-right:0}
+    .table-row{font-size:12px;border-top:1px solid var(--border-soft);background:var(--surface);color:var(--text)}
+    .table-row.selected{background:rgba(99,102,241,.10);color:var(--text)}
+
+    .popover-wrap{position:relative;height:320px;border:1px dashed var(--border);border-radius:8px;background:linear-gradient(180deg, color-mix(in srgb, var(--surface) 70%, transparent), color-mix(in srgb, var(--surface2) 85%, transparent));padding:12px;overflow:hidden}
+    .popover{position:absolute;left:22px;top:44px;width:250px;border:1px solid var(--border-soft);border-radius:8px;background:var(--menu-bg);box-shadow:var(--shadow-pop);padding:4px}
+    .popover:before{content:"";position:absolute;top:-8px;left:88px;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid var(--menu-bg)}
+    .menu-item{min-height:32px;border-radius:4px;padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:14px;line-height:1.25;color:var(--text)}
+    .menu-item:hover{background:var(--menu-hover)}
+    .menu-item:active{background:var(--active)}
+    .menu-item.destructive .label{color:var(--danger)}
+    .menu-item .shortcut{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;margin-left:16px}
+    .kbd{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:2px 6px;border-radius:4px;border:1px solid var(--key-border);border-bottom-width:2px;background:var(--key-bg);color:var(--key-text);font-size:12px;font-weight:600;line-height:1.2;white-space:nowrap}
+    .separator{height:1px;background:var(--border-soft);margin:2px 8px}
+
+    .toast{display:flex;align-items:center;gap:10px;background:#222226;color:#fff;border-radius:8px;box-shadow:var(--shadow-pop);padding:10px 12px;font-size:12px;max-width:360px}
+    .toast .grow{flex:1}.toast a{color:var(--p300);font-weight:700;text-decoration:none}
+    .dialog-demo{border:1px dashed var(--border);border-radius:8px;background:color-mix(in srgb, var(--surface) 25%, transparent);padding:26px;display:grid;place-items:center}
+    .dialog{width:360px;background:var(--surface);border:1px solid var(--border-soft);border-radius:8px;box-shadow:0 18px 36px rgba(20,20,25,.20),0 6px 12px rgba(20,20,25,.10);overflow:hidden}
+    .dark .dialog{box-shadow:0 18px 36px rgba(0,0,0,.45),0 6px 12px rgba(0,0,0,.28)}
+    .dialog-body{padding:20px;text-align:center}
+    .dialog-body h4{margin:0 0 6px;font-size:16px;color:var(--text)} .dialog-body p{margin:0;color:var(--text2);font-size:12px;line-height:1.5}
+    .dialog-actions{display:flex;justify-content:flex-end;gap:8px;padding:12px;border-top:1px solid var(--border-soft);background:var(--surface2)}
+    .status{display:grid;place-items:center;text-align:center;padding:26px;color:var(--text2)}
+    .status .icon{width:48px;height:48px;border-radius:8px;background:var(--p50);color:var(--p600);display:grid;place-items:center;font-size:24px;margin-bottom:10px}
+    .status h4{margin:0 0 4px;color:var(--text);font-size:15px}.status p{margin:0;font-size:12px;max-width:320px}
+    .tooltip-demo{display:flex;align-items:center;gap:14px;min-height:72px}
+    .tooltip{background:#222226;color:white;border-radius:4px;padding:6px 8px;font-size:11px;box-shadow:var(--shadow-pop);position:relative}
+    .tooltip:before{content:"";position:absolute;left:-5px;top:50%;transform:translateY(-50%);border-width:5px 5px 5px 0;border-style:solid;border-color:transparent #222226 transparent transparent}
+    .scroll-demo{height:115px;border:1px solid var(--border-soft);border-radius:8px;background:var(--surface);position:relative;overflow:hidden;padding:12px 22px 12px 12px}
+    .scroll-content{font-size:12px;color:var(--text2);line-height:1.65}
+    .scrollbar{position:absolute;right:6px;top:6px;bottom:6px;width:6px}.scroll-thumb{position:absolute;top:10px;width:6px;height:44px;border-radius:4px;background:#B9BAC1}
+    .dark .scroll-thumb{background:#7a7b84}
+
+    .login-scene{background:var(--login-overlay);border:1px solid var(--border-soft);border-radius:12px;padding:24px;min-height:620px;position:relative;overflow:hidden;box-shadow:var(--shadow-card)}
+    .login-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+    .brand{display:flex;align-items:center;gap:12px;font-size:21px;font-weight:700;color:var(--text)}
+    .brand-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(180deg,#969af9,#6669de);display:grid;place-items:center;color:white;font-size:12px;font-weight:700}
+    .login-date{font-size:13px;color:var(--text2)}
+    .login-caption{font-size:11px;color:var(--text2);margin-top:4px}
+    .lock-center{display:grid;place-items:center;min-height:180px;text-align:center;margin-top:24px}
+    .lock-time{font-size:96px;line-height:.96;font-weight:500;color:var(--text);letter-spacing:-.045em}
+    .lock-date{font-size:25px;color:var(--text2);margin-top:8px}
+    .lock-hint{display:inline-flex;align-items:center;margin-top:30px;padding:12px 18px;border-radius:8px;background:var(--login-card);border:1px solid var(--login-card-border);font-size:12px;color:var(--text2)}
+    .auth-card{width:350px;margin:26px auto 0;padding:36px 40px 28px;border-radius:8px;border:1px solid var(--login-card-border);background:var(--login-card);box-shadow:0 24px 72px rgba(60,70,112,.12);backdrop-filter:blur(18px)}
+    .dark .auth-card{box-shadow:0 24px 72px rgba(0,0,0,.38)}
+    .user-widget{display:grid;justify-items:center;gap:14px;margin-bottom:14px}
+    .avatar{width:72px;height:72px;border-radius:999px;border:2px solid rgba(255,255,255,.55);background:linear-gradient(180deg,#969af9,#6669de);display:grid;place-items:center;color:white;font-size:23px;font-weight:700}
+    .user-name{font-size:25px;font-weight:700;color:var(--text)}
+    .question{font-size:12px;font-weight:600;color:var(--text)}
+    .intro-copy{font-size:13px;color:var(--text2);padding-bottom:8px;text-align:center}
+    .login-entry{height:46px;min-height:46px;padding:0 14px;border:1px solid color-mix(in srgb, var(--text2) 28%, transparent);border-radius:8px;background:var(--login-chip);color:var(--text);display:flex;align-items:center;justify-content:space-between}
+    .login-entry + .login-entry{margin-top:10px}
+    .login-message{height:26px;min-height:26px;font-size:11px;color:var(--text2);display:flex;align-items:center;margin-top:8px}
+    .login-message.warning{color:#a32939}
+    .login-button{height:46px;border-radius:8px;border:1px solid transparent;background:var(--p500);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;margin-top:8px}
+    .login-button:hover{background:#7578FA}
+    .login-button:active{background:#5558DA}
+    .login-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:22px}
+    .login-text-action{background:transparent;color:var(--text2);border-radius:8px;padding:6px 3px;font-size:12px;font-weight:600}
+    .login-text-action:hover{background:var(--login-chip-hover);color:var(--text)}
+    .login-system{position:absolute;left:24px;right:24px;bottom:20px;display:flex;justify-content:space-between;align-items:center}
+    .sys-group{display:flex;gap:8px;align-items:center}
+    .sys-chip{height:32px;padding:0 10px;border-radius:8px;background:var(--login-chip);border:1px solid transparent;display:inline-flex;align-items:center;gap:8px;color:var(--text2);font-size:12px;font-weight:600}
+    .sys-chip:hover{background:var(--login-chip-hover);color:var(--text)}
+
+    .quick-menu{border:1px solid var(--login-card-border);border-radius:8px;background:color-mix(in srgb, var(--menu-bg) 97%, transparent);padding:8px;box-shadow:var(--shadow-pop)}
+    .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .quick-item{min-height:54px;border-radius:8px;background:var(--login-chip);padding:10px;display:grid;align-content:center;gap:3px;color:var(--text);font-size:12px}
+    .quick-item:hover{background:var(--login-chip-hover)}
+    .quick-item.active{background:var(--p500);color:#fff}
+
+    .pill-row{display:flex;gap:8px;flex-wrap:wrap}
+    .meta{font-size:11px;color:var(--text3)}
+    .spacer{height:8px}
+
+    @media (max-width:1400px){.themes{grid-template-columns:1fr}}
+    @media (max-width:960px){.gallery{grid-template-columns:1fr}.shell{grid-template-columns:1fr}.sidebar{display:none}.lock-time{font-size:72px}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="intro">
+      <h1>Majoris Full Theme Mockup — Light + Dark</h1>
+      <p>This consolidated mockup is based on the latest Majoris Theme package, the existing widget-factory references, and the proposed menu refinements. It shows both light and dark in one document, includes the existing login/greeter elements, and applies the proposed <strong>4px menu outer padding</strong> plus the intended <strong>kbd-style accelerator treatment</strong> and <strong>2px separator vertical margins</strong> with safer line-height and no clipped shortcut text.</p>
+      <div class="tokens">
+        <div class="token">Plus Jakarta Sans</div>
+        <div class="token">8px structural radius</div>
+        <div class="token">4px control radius</div>
+        <div class="token">14px menu body text</div>
+        <div class="token">4px menu outer padding</div>
+        <div class="token">kbd shortcut capsules</div>
+        <div class="token">Light + Dark in one file</div>
+        <div class="token">Login elements included</div>
+      </div>
+    </div>
+
+    <div class="themes">
+      <!-- LIGHT -->
+      <section class="theme light">
+        <div class="theme-panel">
+          <div class="theme-header">
+            <div>
+              <div class="theme-title">Light Theme</div>
+              <div class="theme-caption">GTK/libadwaita controls, menus and login surfaces</div>
+            </div>
+            <div class="pill-row">
+              <div class="token">Majoris</div>
+              <div class="token">Light</div>
+            </div>
+          </div>
+          <div class="theme-body">
+            <section class="window">
+              <div class="headerbar">
+                <div class="toolbar">
+                  <button class="icon-btn">←</button>
+                  <button class="icon-btn">→</button>
+                </div>
+                <div class="title">Majoris Widget Factory</div>
+                <div style="display:flex;align-items:center">
+                  <div class="toolbar">
+                    <button class="icon-btn flat">⌕</button>
+                    <button class="icon-btn flat">☰</button>
+                    <button class="icon-btn flat">⋮</button>
+                  </div>
+                  <div class="window-controls">
+                    <button class="window-control" aria-label="Minimise"><svg viewBox="0 0 16 16"><rect x="0" y="12" width="16" height="2" rx="1" fill="currentColor"/></svg></button>
+                    <button class="window-control" aria-label="Maximise"><svg viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M2 0H14Q16 0 16 2V14Q16 16 14 16H2Q0 16 0 14V2Q0 0 2 0ZM2 3Q2 2 3 2H13Q14 2 14 3V13Q14 14 13 14H3Q2 14 2 13Z"/></svg></button>
+                    <button class="window-control close" aria-label="Close"><svg viewBox="0 0 16 16"><path fill="currentColor" d="M3.41 2 8 6.59 12.59 2 14 3.41 9.41 8 14 12.59 12.59 14 8 9.41 3.41 14 2 12.59 6.59 8 2 3.41 3.41 2Z"/></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div class="shell">
+                <aside class="sidebar">
+                  <div class="side-label">Navigation</div>
+                  <div class="nav active">◉ Overview</div>
+                  <div class="nav">⊞ Controls</div>
+                  <div class="nav">⌨ Menus</div>
+                  <div class="nav">✎ Inputs</div>
+                  <div class="nav">☰ Lists</div>
+                  <div class="nav">☁ Dialogs</div>
+                  <div class="nav">⚙ Login</div>
+                </aside>
+                <main class="content">
+                  <h2 class="page-title">Theme Surface Preview</h2>
+                  <p class="page-sub">All primary controls in one reference window.</p>
+                  <div class="gallery">
+                    <section class="card">
+                      <div class="card-head"><h3>Buttons & window controls</h3><p>Primary, secondary, danger, flat, icon and segmented states.</p></div>
+                      <div class="card-body stack">
+                        <div class="group">
+                          <div class="group-title">Buttons</div>
+                          <div class="row-flex">
+                            <button class="btn">Default</button>
+                            <button class="btn primary">Primary</button>
+                            <button class="btn danger">Danger</button>
+                            <button class="btn flat">Flat</button>
+                            <button class="icon-btn">✦</button>
+                            <div class="split"><button class="split-main">Split Button</button><button class="split-arrow">▾</button></div>
+                          </div>
+                        </div>
+                        <div class="group">
+                          <div class="group-title">Toggle group</div>
+                          <div class="toggle-group">
+                            <button class="toggle active">Day</button>
+                            <button class="toggle">Week</button>
+                            <button class="toggle">Month</button>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Inputs & selectors</h3><p>Entry, search, password, dropdown, spin, font and colour controls.</p></div>
+                      <div class="card-body stack">
+                        <div class="row-flex">
+                          <input class="entry" value="Regular entry" />
+                          <div class="input-wrap"><span class="glass">⌕</span><input class="search" value="Search the system" /></div>
+                        </div>
+                        <div class="row-flex">
+                          <div class="password"><input class="entry" value="password" /><span class="eye">◉</span></div>
+                          <div class="select"><span>Dropdown</span><span>▾</span></div>
+                        </div>
+                        <div class="row-flex">
+                          <div class="spin"><span>42</span><button>▴</button><button>▾</button></div>
+                          <div class="font-button"><span>🗛</span><span>Plus Jakarta Sans</span></div>
+                          <div class="color-button"><span class="color-dot"></span><span>Indigo</span></div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Selection controls</h3><p>Checkboxes, radios and switches.</p></div>
+                      <div class="card-body stack">
+                        <div class="checkline"><span class="checkbox checked"></span><span>Checked checkbox</span></div>
+                        <div class="checkline"><span class="checkbox mixed"></span><span>Mixed checkbox</span></div>
+                        <div class="checkline"><span class="radio checked"></span><span>Selected radio option</span></div>
+                        <div class="checkline"><span class="switch on"></span><span>Enabled switch</span></div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Sliders & indicators</h3><p>Continuous values, progress and activity.</p></div>
+                      <div class="card-body stack">
+                        <div class="slider-row"><span class="meta">Volume</span><div class="slider"><div class="track"><span class="fill"></span><span class="thumb"></span></div></div><span class="meta">62%</span></div>
+                        <div class="progress"><span></span></div>
+                        <div class="level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+                        <div class="row-flex"><div class="spinner"></div><span class="meta">Background task</span></div>
+                      </div>
+                    </section>
+
+                    <section class="card wide">
+                      <div class="card-head"><h3>Lists, rows & navigation</h3><p>Preference rows, tabs, view switch and data presentation.</p></div>
+                      <div class="card-body stack">
+                        <div class="tabs"><button class="tab active">General</button><button class="tab">Appearance</button><button class="tab">Advanced</button></div>
+                        <div class="row-flex" style="justify-content:space-between">
+                          <div class="view-switch"><button class="active">List</button><button>Grid</button></div>
+                          <div class="meta">Navigation and table example</div>
+                        </div>
+                        <div class="listbox">
+                          <div class="pref-row"><div><div class="pref-title">Desktop notifications</div><div class="pref-desc">Show banners and notification history.</div></div><div class="switch on"></div></div>
+                          <div class="pref-row"><div><div class="pref-title">Accent colour</div><div class="pref-desc">Applied across controls and active states.</div></div><div class="chev">›</div></div>
+                          <div class="pref-row"><div><div class="pref-title">Date & time</div><div class="pref-desc">Timezone, clock format and calendar integrations.</div></div><div class="chev">›</div></div>
+                        </div>
+                        <div class="table">
+                          <div class="table-head"><div>Name</div><div>Modified</div><div>Type</div></div>
+                          <div class="table-row selected"><div>Projects</div><div>Today</div><div>Folder</div></div>
+                          <div class="table-row"><div>Report.pdf</div><div>Yesterday</div><div>PDF</div></div>
+                          <div class="table-row"><div>Screenshot.png</div><div>2 days ago</div><div>Image</div></div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Context menu</h3><p>Uses the proposed tighter menu inset, 14px body text and keycap accelerators.</p></div>
+                      <div class="card-body">
+                        <div class="popover-wrap">
+                          <div class="popover">
+                            <div class="menu-item"><span class="label">Favorite</span></div>
+                            <div class="menu-item"><span class="label">Tags…</span></div>
+                            <div class="separator"></div>
+                            <div class="menu-item destructive"><span class="label">Move to Trash</span><span class="shortcut"><span class="kbd">Delete</span></span></div>
+                            <div class="menu-item"><span class="label">Properties</span><span class="shortcut"><span class="kbd">Alt</span><span class="kbd">Return</span></span></div>
+                            <div class="menu-item"><span class="label">Open Preview</span><span class="shortcut"><span class="kbd">Space</span></span></div>
+                            <div class="menu-item"><span class="label">Rename…</span><span class="shortcut"><span class="kbd">F2</span></span></div>
+                            <div class="menu-item"><span class="label">Open With…</span></div>
+                          </div>
+                        </div>
+                        <div class="note">Outer menu padding is 4px. Menu rows have a 32px minimum height and 4px vertical / 8px horizontal item padding. Separators are 1px tall with 2px vertical and 8px horizontal margins. Shortcut labels use bordered keycaps with unclipped text.</div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Dialogs, toast & tooltip</h3><p>Common transient surfaces.</p></div>
+                      <div class="card-body stack">
+                        <div class="dialog-demo">
+                          <div class="dialog">
+                            <div class="dialog-body"><h4>Delete selected items?</h4><p>This action will move 12 items to the Trash.</p></div>
+                            <div class="dialog-actions"><button class="btn flat">Cancel</button><button class="btn danger">Move to Trash</button></div>
+                          </div>
+                        </div>
+                        <div class="toast"><span>✔</span><div class="grow">File moved to Trash</div><a href="#">Undo</a></div>
+                        <div class="tooltip-demo"><button class="icon-btn">ⓘ</button><div class="tooltip">More information</div></div>
+                      </div>
+                    </section>
+
+                    <section class="card wide">
+                      <div class="card-head"><h3>Empty state & scrollbar</h3><p>Secondary surfaces and supporting states.</p></div>
+                      <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="status"><div class="icon">✦</div><h4>No recent files</h4><p>Items you open will appear here for quick access.</p></div>
+                        <div class="scroll-demo"><div class="scroll-content">This scrolling region demonstrates content tone, spacing and the scrollbar thumb treatment inside the theme. It should feel present but not dominant. The thumb remains rounded and subtle, while the surrounding container matches the structural 8px radius language used across the theme.</div><div class="scrollbar"><div class="scroll-thumb"></div></div></div>
+                      </div>
+                    </section>
+                  </div>
+                </main>
+              </div>
+            </section>
+
+            <section class="login-scene">
+              <div class="login-topbar">
+                <div>
+                  <div class="brand"><span class="brand-mark">M</span><span>majoris</span></div>
+                  <div class="login-caption">Your space. Your way.</div>
+                </div>
+                <div class="login-date">Saturday, 25 October &nbsp; 3:02 PM</div>
+              </div>
+              <div class="lock-center">
+                <div>
+                  <div class="lock-time">3:02</div>
+                  <div class="lock-date">Saturday, 25 October</div>
+                  <div class="lock-hint">Press Enter or click to unlock</div>
+                </div>
+              </div>
+              <div class="auth-card">
+                <div class="user-widget">
+                  <div class="avatar">VO</div>
+                  <div class="user-name">Vlad Ovechkin</div>
+                  <div class="question">Password</div>
+                  <div class="intro-copy">Sign in to continue</div>
+                </div>
+                <div class="login-entry"><span>Enter password</span><span style="color:var(--text3)">◉</span></div>
+                <div class="login-message">Use your account password to sign in.</div>
+                <div class="login-button">Sign In <span>→</span></div>
+                <div class="login-footer">
+                  <div class="login-text-action">Switch Account</div>
+                  <div class="login-text-action">Accessibility</div>
+                </div>
+              </div>
+              <div class="login-system">
+                <div class="sys-group">
+                  <div class="sys-chip">⌨ Keyboard</div>
+                  <div class="sys-chip">◐ Accessibility</div>
+                </div>
+                <div class="sys-group">
+                  <div class="sys-chip">◔ Wi‑Fi</div>
+                  <div class="sys-chip">⏻ Power</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h3>Login quick settings menu</h3><p>Supplementary login-menu styling already present in the theme.</p></div>
+              <div class="card-body">
+                <div class="quick-menu">
+                  <div class="quick-grid">
+                    <div class="quick-item active"><strong>Wi‑Fi</strong><span>Connected</span></div>
+                    <div class="quick-item"><strong>Bluetooth</strong><span>Off</span></div>
+                    <div class="quick-item"><strong>Night Light</strong><span>Disabled</span></div>
+                    <div class="quick-item"><strong>Dark Style</strong><span>Available</span></div>
+                    <div class="quick-item"><strong>Accessibility</strong><span>Options</span></div>
+                    <div class="quick-item"><strong>Power</strong><span>Restart…</span></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- DARK -->
+      <section class="theme dark">
+        <div class="theme-panel">
+          <div class="theme-header">
+            <div>
+              <div class="theme-title">Dark Theme</div>
+              <div class="theme-caption">Parallel dark rendering of the same surfaces and controls</div>
+            </div>
+            <div class="pill-row">
+              <div class="token">Majoris</div>
+              <div class="token">Dark</div>
+            </div>
+          </div>
+          <div class="theme-body">
+            <section class="window">
+              <div class="headerbar">
+                <div class="toolbar">
+                  <button class="icon-btn">←</button>
+                  <button class="icon-btn">→</button>
+                </div>
+                <div class="title">Majoris Widget Factory</div>
+                <div style="display:flex;align-items:center">
+                  <div class="toolbar">
+                    <button class="icon-btn flat">⌕</button>
+                    <button class="icon-btn flat">☰</button>
+                    <button class="icon-btn flat">⋮</button>
+                  </div>
+                  <div class="window-controls">
+                    <button class="window-control" aria-label="Minimise"><svg viewBox="0 0 16 16"><rect x="0" y="12" width="16" height="2" rx="1" fill="currentColor"/></svg></button>
+                    <button class="window-control" aria-label="Maximise"><svg viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M2 0H14Q16 0 16 2V14Q16 16 14 16H2Q0 16 0 14V2Q0 0 2 0ZM2 3Q2 2 3 2H13Q14 2 14 3V13Q14 14 13 14H3Q2 14 2 13Z"/></svg></button>
+                    <button class="window-control close" aria-label="Close"><svg viewBox="0 0 16 16"><path fill="currentColor" d="M3.41 2 8 6.59 12.59 2 14 3.41 9.41 8 14 12.59 12.59 14 8 9.41 3.41 14 2 12.59 6.59 8 2 3.41 3.41 2Z"/></svg></button>
+                  </div>
+                </div>
+              </div>
+              <div class="shell">
+                <aside class="sidebar">
+                  <div class="side-label">Navigation</div>
+                  <div class="nav active">◉ Overview</div>
+                  <div class="nav">⊞ Controls</div>
+                  <div class="nav">⌨ Menus</div>
+                  <div class="nav">✎ Inputs</div>
+                  <div class="nav">☰ Lists</div>
+                  <div class="nav">☁ Dialogs</div>
+                  <div class="nav">⚙ Login</div>
+                </aside>
+                <main class="content">
+                  <h2 class="page-title">Theme Surface Preview</h2>
+                  <p class="page-sub">All primary controls in one reference window.</p>
+                  <div class="gallery">
+                    <section class="card">
+                      <div class="card-head"><h3>Buttons & window controls</h3><p>Primary, secondary, danger, flat, icon and segmented states.</p></div>
+                      <div class="card-body stack">
+                        <div class="group">
+                          <div class="group-title">Buttons</div>
+                          <div class="row-flex">
+                            <button class="btn">Default</button>
+                            <button class="btn primary">Primary</button>
+                            <button class="btn danger">Danger</button>
+                            <button class="btn flat">Flat</button>
+                            <button class="icon-btn">✦</button>
+                            <div class="split"><button class="split-main">Split Button</button><button class="split-arrow">▾</button></div>
+                          </div>
+                        </div>
+                        <div class="group">
+                          <div class="group-title">Toggle group</div>
+                          <div class="toggle-group">
+                            <button class="toggle active">Day</button>
+                            <button class="toggle">Week</button>
+                            <button class="toggle">Month</button>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Inputs & selectors</h3><p>Entry, search, password, dropdown, spin, font and colour controls.</p></div>
+                      <div class="card-body stack">
+                        <div class="row-flex">
+                          <input class="entry" value="Regular entry" />
+                          <div class="input-wrap"><span class="glass">⌕</span><input class="search" value="Search the system" /></div>
+                        </div>
+                        <div class="row-flex">
+                          <div class="password"><input class="entry" value="password" /><span class="eye">◉</span></div>
+                          <div class="select"><span>Dropdown</span><span>▾</span></div>
+                        </div>
+                        <div class="row-flex">
+                          <div class="spin"><span>42</span><button>▴</button><button>▾</button></div>
+                          <div class="font-button"><span>🗛</span><span>Plus Jakarta Sans</span></div>
+                          <div class="color-button"><span class="color-dot"></span><span>Indigo</span></div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Selection controls</h3><p>Checkboxes, radios and switches.</p></div>
+                      <div class="card-body stack">
+                        <div class="checkline"><span class="checkbox checked"></span><span>Checked checkbox</span></div>
+                        <div class="checkline"><span class="checkbox mixed"></span><span>Mixed checkbox</span></div>
+                        <div class="checkline"><span class="radio checked"></span><span>Selected radio option</span></div>
+                        <div class="checkline"><span class="switch on"></span><span>Enabled switch</span></div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Sliders & indicators</h3><p>Continuous values, progress and activity.</p></div>
+                      <div class="card-body stack">
+                        <div class="slider-row"><span class="meta">Volume</span><div class="slider"><div class="track"><span class="fill"></span><span class="thumb"></span></div></div><span class="meta">62%</span></div>
+                        <div class="progress"><span></span></div>
+                        <div class="level"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+                        <div class="row-flex"><div class="spinner"></div><span class="meta">Background task</span></div>
+                      </div>
+                    </section>
+
+                    <section class="card wide">
+                      <div class="card-head"><h3>Lists, rows & navigation</h3><p>Preference rows, tabs, view switch and data presentation.</p></div>
+                      <div class="card-body stack">
+                        <div class="tabs"><button class="tab active">General</button><button class="tab">Appearance</button><button class="tab">Advanced</button></div>
+                        <div class="row-flex" style="justify-content:space-between">
+                          <div class="view-switch"><button class="active">List</button><button>Grid</button></div>
+                          <div class="meta">Navigation and table example</div>
+                        </div>
+                        <div class="listbox">
+                          <div class="pref-row"><div><div class="pref-title">Desktop notifications</div><div class="pref-desc">Show banners and notification history.</div></div><div class="switch on"></div></div>
+                          <div class="pref-row"><div><div class="pref-title">Accent colour</div><div class="pref-desc">Applied across controls and active states.</div></div><div class="chev">›</div></div>
+                          <div class="pref-row"><div><div class="pref-title">Date & time</div><div class="pref-desc">Timezone, clock format and calendar integrations.</div></div><div class="chev">›</div></div>
+                        </div>
+                        <div class="table">
+                          <div class="table-head"><div>Name</div><div>Modified</div><div>Type</div></div>
+                          <div class="table-row selected"><div>Projects</div><div>Today</div><div>Folder</div></div>
+                          <div class="table-row"><div>Report.pdf</div><div>Yesterday</div><div>PDF</div></div>
+                          <div class="table-row"><div>Screenshot.png</div><div>2 days ago</div><div>Image</div></div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Context menu</h3><p>Uses the proposed tighter menu inset, 14px body text and keycap accelerators.</p></div>
+                      <div class="card-body">
+                        <div class="popover-wrap">
+                          <div class="popover">
+                            <div class="menu-item"><span class="label">Favorite</span></div>
+                            <div class="menu-item"><span class="label">Tags…</span></div>
+                            <div class="separator"></div>
+                            <div class="menu-item destructive"><span class="label">Move to Trash</span><span class="shortcut"><span class="kbd">Delete</span></span></div>
+                            <div class="menu-item"><span class="label">Properties</span><span class="shortcut"><span class="kbd">Alt</span><span class="kbd">Return</span></span></div>
+                            <div class="menu-item"><span class="label">Open Preview</span><span class="shortcut"><span class="kbd">Space</span></span></div>
+                            <div class="menu-item"><span class="label">Rename…</span><span class="shortcut"><span class="kbd">F2</span></span></div>
+                            <div class="menu-item"><span class="label">Open With…</span></div>
+                          </div>
+                        </div>
+                        <div class="note">The shortcut keycaps intentionally read as separate keys rather than plain accelerator text. Separators now use a compact 2px vertical margin and 8px horizontal inset.</div>
+                      </div>
+                    </section>
+
+                    <section class="card">
+                      <div class="card-head"><h3>Dialogs, toast & tooltip</h3><p>Common transient surfaces.</p></div>
+                      <div class="card-body stack">
+                        <div class="dialog-demo">
+                          <div class="dialog">
+                            <div class="dialog-body"><h4>Delete selected items?</h4><p>This action will move 12 items to the Trash.</p></div>
+                            <div class="dialog-actions"><button class="btn flat">Cancel</button><button class="btn danger">Move to Trash</button></div>
+                          </div>
+                        </div>
+                        <div class="toast"><span>✔</span><div class="grow">File moved to Trash</div><a href="#">Undo</a></div>
+                        <div class="tooltip-demo"><button class="icon-btn">ⓘ</button><div class="tooltip">More information</div></div>
+                      </div>
+                    </section>
+
+                    <section class="card wide">
+                      <div class="card-head"><h3>Empty state & scrollbar</h3><p>Secondary surfaces and supporting states.</p></div>
+                      <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <div class="status"><div class="icon">✦</div><h4>No recent files</h4><p>Items you open will appear here for quick access.</p></div>
+                        <div class="scroll-demo"><div class="scroll-content">This scrolling region demonstrates content tone, spacing and the scrollbar thumb treatment inside the theme. It should feel present but not dominant. The thumb remains rounded and subtle, while the surrounding container matches the structural 8px radius language used across the theme.</div><div class="scrollbar"><div class="scroll-thumb"></div></div></div>
+                      </div>
+                    </section>
+                  </div>
+                </main>
+              </div>
+            </section>
+
+            <section class="login-scene">
+              <div class="login-topbar">
+                <div>
+                  <div class="brand"><span class="brand-mark">M</span><span>majoris</span></div>
+                  <div class="login-caption">Your space. Your way.</div>
+                </div>
+                <div class="login-date">Saturday, 25 October &nbsp; 3:02 PM</div>
+              </div>
+              <div class="lock-center">
+                <div>
+                  <div class="lock-time">3:02</div>
+                  <div class="lock-date">Saturday, 25 October</div>
+                  <div class="lock-hint">Press Enter or click to unlock</div>
+                </div>
+              </div>
+              <div class="auth-card">
+                <div class="user-widget">
+                  <div class="avatar">VO</div>
+                  <div class="user-name">Vlad Ovechkin</div>
+                  <div class="question">Password</div>
+                  <div class="intro-copy">Sign in to continue</div>
+                </div>
+                <div class="login-entry"><span>Enter password</span><span style="color:var(--text3)">◉</span></div>
+                <div class="login-message warning">Incorrect password. Try again.</div>
+                <div class="login-button">Sign In <span>→</span></div>
+                <div class="login-footer">
+                  <div class="login-text-action">Switch Account</div>
+                  <div class="login-text-action">Accessibility</div>
+                </div>
+              </div>
+              <div class="login-system">
+                <div class="sys-group">
+                  <div class="sys-chip">⌨ Keyboard</div>
+                  <div class="sys-chip">◐ Accessibility</div>
+                </div>
+                <div class="sys-group">
+                  <div class="sys-chip">◔ Wi‑Fi</div>
+                  <div class="sys-chip">⏻ Power</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="card">
+              <div class="card-head"><h3>Login quick settings menu</h3><p>Supplementary login-menu styling already present in the theme.</p></div>
+              <div class="card-body">
+                <div class="quick-menu">
+                  <div class="quick-grid">
+                    <div class="quick-item active"><strong>Wi‑Fi</strong><span>Connected</span></div>
+                    <div class="quick-item"><strong>Bluetooth</strong><span>Off</span></div>
+                    <div class="quick-item"><strong>Night Light</strong><span>Disabled</span></div>
+                    <div class="quick-item"><strong>Dark Style</strong><span>Available</span></div>
+                    <div class="quick-item"><strong>Accessibility</strong><span>Options</span></div>
+                    <div class="quick-item"><strong>Power</strong><span>Restart…</span></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

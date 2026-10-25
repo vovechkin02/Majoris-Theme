@@ -1,3 +1,84 @@
+# Context-menu v2 implementation
+
+The latest implementation follows the supplied v2 mockup for **4px outer padding**,
+**2px/8px separator margins** and **12px/600 bordered keycaps**. Native menu rows
+retain a 32px minimum with natural growth. Existing menu surface/state palettes,
+window controls, dropdowns, ordinary popovers and login remain unchanged.
+
+The exact per-toolkit mapping and application adoption API are documented in
+[menu-row-integration.md](menu-row-integration.md). The target mockup is retained
+unmodified in `design/reference/majoris-full-theme-mockup-v2.html`.
+
+## Changes
+
+- Both canonical widget-factory references and extracted token JSON files: approved
+  geometry, split shortcut groups and separate light/dark keycap palettes.
+- `design/templates/gtk-common.css.in`: reusable native row/keycap classes.
+- `gtk3.css.in`: compact menus/separators, 600-weight native accelerator fallback,
+  and custom-row child requisitions. Ordinary popover padding remains 8px.
+- `gtk4.css.in`: menu-only compact geometry, native combined accelerator capsules.
+  Ordinary popovers and chooser content retain previous geometry. The menu contents node owns the 4px inset; libadwaita's extra 6px section-box padding is removed and realised edge allocations are asserted.
+- `gtk-dark.css.in`: indigo keyboard focus for reusable dark rows.
+- `shell.css.in`: compact popup menus, boxed accelerator labels and explicit
+  preservation of Quick Settings padding. Login styles are unchanged.
+- Generated light/dark GTK3/GTK4 and Shell CSS, including the dark Shell alias.
+- `factory/src/menu-row.vala`, `integration/menu_rows.py`: reusable native keycap
+  rows, accessible names/shortcuts, action-enabled state and dismissal.
+- Factory action registrations, menu models and gallery: real keycap actions,
+  shortcut-free menu, checked/radio items, leading icons and native submenus.
+- Meson source/installation rules: build and expose reusable integration sources.
+- `tests/test-menu-contract.py` and `test-menu-native.py`: source geometry and
+  realised Pango allocations, native navigation, activation and accelerator tests.
+
+## Evidence and limits
+
+Before/after native screenshots are indexed in `artifacts/menu-v2/README.md`.
+The matrix covers GTK3/GTK4, light/dark and 100%/200%. It includes F2, Delete,
+Alt+Return, Space, Ctrl+C, Ctrl+V, punctuation and descending glyphs. Measurements
+record ink/logical bounds, label allocations, actual layout origins, baselines,
+ascent/descent and fonts. A larger-font fixture checks that keycaps can grow.
+
+The previously reported shortcut clipping was not reproduced in the original
+fixture. The new tests demonstrate full glyph containment rather than attributing
+the issue to an unproven line-height cause. GTK3 layout origins use shared GdkWindow
+coordinates, so tests convert them to local label coordinates before checking clips.
+
+An independently opened GTK3 submenu initially retained the keyboard grab between
+test scenarios. Explicitly dismissing it restored delivery of real F2 events. This
+was a fixture lifecycle defect, not a theme shortcut-clipping diagnosis.
+
+Standard third-party GTK3 menus cannot gain separate key widgets through CSS;
+standard GTK4 accelerators receive a combined capsule. Exact individual capsules
+require the documented component. Shell labels have the same combined-label limit.
+Live GNOME Shell/Wayland/Mutter and screen-reader checks remain VM validation tasks.
+Raw Xvfb root captures can omit ARGB popups; direct native popup captures are supplied
+alongside surrounding-window views and X11 inventories, with no image composites.
+
+## Final v2 validation
+
+All **56 Meson tests passed**. The native menu matrix passed for both toolkits,
+both variants and both scales, including real arrow/Enter/Escape/F2 input,
+disabled actions and enlarged shortcut text. `tools/report-menu-v2.py` confirms
+identical light/dark keycap allocations and ink/logical geometry in all four
+pairs. Token verification, generation consistency and `git diff --check` passed.
+The existing factory capture command completed for both themes at scales 1 and 2.
+
+```bash
+python3 tools/extract-design-tokens.py
+python3 tools/generate-theme.py
+python3 tools/verify-design-tokens.py
+python3 tools/generate-theme.py --check
+meson compile -C build
+meson test -C build --print-errorlogs
+python3 tools/report-menu-v2.py
+MAJORIS_CAPTURE_PAGES=menus scripts/capture-visual-regressions.sh --both
+MAJORIS_CAPTURE_PAGES=menus MAJORIS_CAPTURE_SCALE=2 scripts/capture-visual-regressions.sh --both
+```
+
+## Previous implementation measurements
+
+The following notes describe the pre-v2 baseline and are retained for provenance.
+
 # Menu and typography finalisation
 
 The canonical light/dark HTML references, extracted tokens, GTK3/GTK4 templates,

@@ -119,6 +119,17 @@ tooltip label { color: @surface; }
 spinner:checked { opacity: 1; animation: majoris-spin 800ms linear infinite; }
 .title-1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
 
+/* Public native menu-row contract. Height is a minimum; Pango can grow it. */
+.majoris-menu-row { min-height: 24px; padding: 4px 8px; border: none; border-radius: 4px; background: transparent; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms, color 128ms; }
+.majoris-menu-row:hover { background: #ECECEF; box-shadow: none; }
+.majoris-menu-row:active { background: #E2E2E6; box-shadow: none; }
+.majoris-menu-row:disabled { color: @text_tertiary; background: transparent; }
+.majoris-menu-row:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+.majoris-menu-row.majoris-menu-danger { color: #DC3C4D; }
+.majoris-menu-shortcut { margin-left: 16px; }
+.majoris-menu-shortcut > label + label { margin-left: 4px; }
+label.majoris-menu-keycap { min-height: 15px; padding: 2px 6px; border: 1px solid #D8D8DD; border-bottom-width: 2px; border-radius: 4px; background: #FFFFFF; color: #626269; font-size: 12px; font-weight: 600; }
+
 window.background, window.csd, window.solid-csd { border-radius: 8px; }
 window.csd { border: 1px solid rgba(20,20,25,.12); border-color: rgba(20,20,25,.12); outline: none; box-shadow: 0 20px 40px rgba(20,20,25,.18),0 6px 12px rgba(20,20,25,.08); }
 stacksidebar.sidebar { padding: 0; }
@@ -246,6 +257,17 @@ dropdown popover row:selected { background-color: #ECECEF; color: #1C1C1F; }
 /* The chooser's view must not paint a second surface inside the menu. */
 dropdown popover listview.view, dropdown popover listview { background: transparent; color: #1C1C1F; }
 popover.menu > arrow, dropdown popover > arrow { background-color: #FFFFFF; border-color: #E5E5E9; }
+
+/* v2 applies to menus, not chooser or ordinary popover contents. */
+popover.menu > contents { padding: 4px; }
+popover.menu separator { min-height: 1px; padding: 0; border: none; margin: 2px 8px; background: @border_soft; box-shadow: none; }
+/* GTK4's standard accelerator is a single capsule; custom rows can split keys. */
+popover.menu accelerator { min-height: 15px; padding: 2px 6px; margin-left: 16px; border: 1px solid #D8D8DD; border-bottom-width: 2px; border-radius: 4px; background: #FFFFFF; color: #626269; font-size: 12px; font-weight: 600; }
+/* Libadwaita otherwise adds another 6px inside GtkMenuSectionBox. The contents
+ * node is the sole menu padding owner; ordinary/chooser popovers are unaffected. */
+popover.menu stack > box, popover.menu stack > box box { padding: 0; }
+/* GtkDropDown also tags its popup as .menu; keep its existing outer inset. */
+dropdown popover.menu > contents { padding: 8px; }
 /* Supplemental editor components; libadwaita 1.7 native nodes, GTK4 only. */
 tabbar.majoris-document-tabs { background: @surface; color: @text_secondary; border: none; border-bottom: 1px solid @border_soft; padding: 0; min-height: 37px; }
 tabbar.majoris-document-tabs > revealer > .box { background: @surface; color: @text_secondary; padding: 0 6px; border: none; box-shadow: none; }
