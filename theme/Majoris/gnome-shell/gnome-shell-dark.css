@@ -1,5 +1,5 @@
 /* Generated dark Shell variant. */
-stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; font-size: 13px; color: #F4F4F5; }
+stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; font-size: 14px; font-weight: 500; color: #F4F4F5; }
 #panel { background-color: #202023; color: #F4F4F5; height: 32px; }
 .panel-button { border-radius: 4px; padding: 0 8px; transition-duration: 128ms; }
 .panel-button:hover, .popup-menu-item:hover, .quick-toggle:hover { background-color: #303035; }
@@ -160,3 +160,16 @@ stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; 
 .quick-settings-system-item .icon-button:insensitive .quick-toggle-icon,
 .quick-settings-system-item .icon-button:insensitive .quick-toggle-arrow,
 .quick-settings-system-item .icon-button:insensitive .quick-toggle-arrow-button { color: #7F7F88; }
+
+.popup-menu-content { background-color: #28282C; border-color: #313136; border-radius: 8px; padding: 8px; min-width: 192px; box-shadow: 0 8px 16px rgba(0,0,0,.42),0 2px 4px rgba(0,0,0,.24); }
+.popup-menu-item { min-height: 24px; padding: 4px 8px; border-radius: 4px; font-size: 14px; font-weight: 500; box-shadow: none; transition-duration: 128ms; }
+.popup-menu-item:hover { background-color: #38383D; }
+.popup-menu-item:active { background-color: #424247; }
+.popup-menu-item:focus { box-shadow: inset 0 0 0 2px #818CF8; }
+.popup-menu-item:insensitive { color: #7F7F88; background-color: transparent; }
+.popup-menu-item .popup-menu-icon { icon-size: 16px; margin-right: 8px; }
+.popup-menu-item .popup-menu-ornament { color: #818CF8; }
+.popup-menu-item.destructive-action { color: #F06B79; }
+.popup-separator-menu-item .popup-separator-menu-item-separator { height: 1px; margin: 4px 8px; background-color: #3B3B40; }
+
+.popup-menu-item .popup-menu-accel { font-size: 12px; font-weight: 400; color: #A9A9B0; margin-left: 16px; }

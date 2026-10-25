@@ -31,7 +31,7 @@ def validate(css,variant):
  expect('#panel','background-color',surface);expect('#panel','color',text)
  for child in ['', ' .system-status-icon',' .clock',' .clock-display',' .panel-status-menu-box',' StLabel',' StIcon',' .system-status-icon StIcon']:expect('#panel .panel-button'+child,'color',text)
  for selector in ['.popup-menu-content','.quick-settings','.calendar','.message-list','.notification-banner','.modal-dialog','.osd-window']:
-  expect(selector,'background-color',popup);expect(selector,'color',text)
+  expect(selector,'background-color',('#28282C' if dark else '#FFFFFF') if selector=='.popup-menu-content' else popup);expect(selector,'color',text)
  containers=['.popup-menu-item','.quick-settings','.quick-toggle','.quick-menu-toggle','.quick-slider','.quick-settings .icon-button','.quick-settings-system-item .icon-button','.quick-settings-system-item .power-item','.calendar','.calendar-day','.message-list','.message','.notification-banner','.modal-dialog','.modal-dialog-button']
  for selector in containers:
   for child in ['', ' StLabel',' StIcon']:expect(selector+child,'color',text)

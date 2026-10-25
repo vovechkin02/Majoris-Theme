@@ -25,6 +25,7 @@ namespace MajorisThemeFactory {
             Gtk.Settings.get_default ().gtk_decoration_layout = ":minimize,maximize,close";
             Gtk.Settings.get_default ().gtk_icon_theme_name = "Majoris";
             if(Environment.get_variable("MAJORIS_CAPTURE")=="1") Gtk.Settings.get_default().gtk_enable_animations=false;
+            set_accels_for_action("win.cut",{"<Control>x"}); set_accels_for_action("win.copy",{"<Control>c"}); set_accels_for_action("win.paste",{"<Control>v"}); set_accels_for_action("win.properties",{"<Alt>Return"}); set_accels_for_action("win.trash",{"Delete"});
             set_accels_for_action ("win.new", {"<Control>n"});
             set_accels_for_action ("win.open", {"Return"}); set_accels_for_action("win.rename",{"F2"});
             if (report) {

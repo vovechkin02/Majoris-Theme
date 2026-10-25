@@ -22,6 +22,7 @@ values['banner_button_content_height']=str(int(html_value(t,'.banner .btn','heig
 values['control_duration']=str(t['motion']['control_ms'])+'ms'
 values['surface_duration']=str(t['motion']['surface_ms'])+'ms'
 values.update(shell_panel_surface=t['color']['surface'],shell_popup_surface=t['color']['surface'],shell_control_surface=t['color']['surface_secondary'],shell_search_surface=t['color']['surface'],shell_disabled_foreground=t['color']['text_tertiary'],shell_selected_foreground='#FFFFFF',shell_focus_color=t['color']['primary_500'],shell_tooltip_background=html_value(t,'.tooltip','background'),shell_tooltip_foreground=t['color']['surface'],shell_tooltip_shadow=t['shadow']['pop'])
+values['menu_border']='#E5E5E9'
 values['window_edge_color']=html_value(t,'.window','border').split('solid ',1)[1]
 
 def render(s):

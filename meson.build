@@ -70,3 +70,15 @@ test('location component contract', python, args: [files('tests/test-location-co
 test('native location interactions', find_program('dbus-run-session'),
   args: ['--', find_program('xvfb-run').full_path(), '-a', location_test.full_path()],
   env: {'MAJORIS_THEME_ROOT': meson.project_source_root() / 'theme/Majoris', 'GTK_A11Y': 'none', 'GDK_BACKEND': 'x11'}, timeout: 30)
+
+foreach menu_version : ['3', '4']
+  foreach menu_scale : ['1', '2']
+    foreach menu_variant : ['light', 'dark']
+      test('native menu GTK' + menu_version + ' ' + menu_variant + ' scale ' + menu_scale,
+        find_program('dbus-run-session'), args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-menu-native.py'), menu_version],
+        env: {'GDK_SCALE': menu_scale, 'MAJORIS_VARIANT': menu_variant, 'GDK_BACKEND': 'x11', 'GTK_A11Y': 'none'}, timeout: 30)
+    endforeach
+  endforeach
+endforeach
+
+test('menu source contract', python, args: [files('tests/test-menu-contract.py')])

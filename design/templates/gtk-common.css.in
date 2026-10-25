@@ -1,6 +1,6 @@
 /* All appearance rules live in the theme, never in the factory. */
 * { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; }
-window { font-size: ${.btn|font-size}; }
+window { font-size: 14px; }
 window, .background { background-color: @background; color: @text; }
 button, entry, spinbutton, combobox, dropdown > button {
   min-height: ${control_content_size}; padding: ${.btn|padding}; border: 1px solid @border;
@@ -27,7 +27,7 @@ button.flat:active { background-color: @active; }
 button.flat:focus { outline: none; border-color: @primary_500; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
 button:disabled, button.suggested-action:disabled, button.destructive-action:disabled, button.flat:disabled { box-shadow: none; }
 button.image-button { min-width: ${control_content_size}; padding: 0; }
-entry, spinbutton { padding: ${.entry|padding}; font-weight: 400; }
+entry, spinbutton { padding: ${.entry|padding}; font-weight: 500; }
 entry { min-width: ${entry_content_width}; }
 spinbutton { padding: 0; }
 spinbutton button { min-height: ${control_content_size}; min-width: 27px; padding: 0; border: none; border-left: 1px solid @border_soft; border-radius: 0; background-color: transparent; box-shadow: none; }
@@ -66,7 +66,7 @@ notebook > header tab:hover { background-color: ${.tab:hover|background}; }
 notebook > header tab:active { background-color: ${.tab:active|background}; }
 notebook > header tab:checked { color: @text; font-weight: ${.tab.active|font-weight}; border: none; background-image: linear-gradient(to right, transparent 10px, @primary_500 10px, @primary_500 calc(100% - 10px), transparent calc(100% - 10px)); background-size: 100% 2px; background-repeat: no-repeat; background-position: bottom; box-shadow: none; }
 .majoris-segmented, viewswitcher, stackswitcher { background-color: @surface_secondary; border: 1px solid @border; border-radius: ${.toggle-group|border-radius}; padding: ${.toggle-group|padding}; }
-.majoris-segmented button, viewswitcher button, stackswitcher button { min-height: ${.toggle|height}; padding: ${.toggle|padding}; margin: 0; border: none; border-radius: ${control_radius}; background: transparent; color: @text_secondary; box-shadow: none; font-size: ${.toggle|font-size}; font-weight: 400; }
+.majoris-segmented button, viewswitcher button, stackswitcher button { min-height: ${.toggle|height}; padding: ${.toggle|padding}; margin: 0; border: none; border-radius: ${control_radius}; background: transparent; color: @text_secondary; box-shadow: none; font-size: ${.toggle|font-size}; font-weight: 500; }
 .majoris-segmented button { margin-right: ${.toggle-group|gap}; }
 .majoris-segmented button:last-child { margin-right: 0; }
 .majoris-segmented button:hover, viewswitcher button:hover, stackswitcher button:hover { background-color: ${.toggle:hover|background}; box-shadow: none; }
@@ -131,3 +131,9 @@ window.desktopwindow.background:backdrop,
     border-radius: 0;
     box-shadow: none;
 }
+
+/* Scoped UI typography: document and monospace widgets retain their fonts. */
+entry, spinbutton, checkbutton, dropdown, combobox, .sidebar row, .navigation-sidebar row, .majoris-sidebar row { font-size: 14px; font-weight: 500; }
+.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { font-weight: 600; }
+.title-2 { font-size: 16px; font-weight: 600; }
+.majoris-display-heading { font-size: 32px; font-weight: 700; }

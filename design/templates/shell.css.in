@@ -1,4 +1,4 @@
-stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; font-size: 13px; color: ${text}; }
+stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; font-size: 14px; font-weight: 500; color: ${text}; }
 #panel { background-color: ${shell_panel_surface}; color: ${text}; height: 32px; }
 .panel-button { border-radius: ${control_radius}; padding: 0 8px; transition-duration: ${control_duration}; }
 .panel-button:hover, .popup-menu-item:hover, .quick-toggle:hover { background-color: ${hover}; }
@@ -159,3 +159,16 @@ stage { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; 
 .quick-settings-system-item .icon-button:insensitive .quick-toggle-icon,
 .quick-settings-system-item .icon-button:insensitive .quick-toggle-arrow,
 .quick-settings-system-item .icon-button:insensitive .quick-toggle-arrow-button { color: ${shell_disabled_foreground}; }
+
+.popup-menu-content { background-color: ${.popover|background}; border-color: ${border_soft}; border-radius: 8px; padding: 8px; min-width: 192px; box-shadow: ${.popover|box-shadow}; }
+.popup-menu-item { min-height: 24px; padding: 4px 8px; border-radius: 4px; font-size: 14px; font-weight: 500; box-shadow: none; transition-duration: 128ms; }
+.popup-menu-item:hover { background-color: ${.menu-item:hover|background}; }
+.popup-menu-item:active { background-color: ${.menu-item:active|background}; }
+.popup-menu-item:focus { box-shadow: inset 0 0 0 2px ${shell_focus_color}; }
+.popup-menu-item:insensitive { color: ${shell_disabled_foreground}; background-color: transparent; }
+.popup-menu-item .popup-menu-icon { icon-size: 16px; margin-right: 8px; }
+.popup-menu-item .popup-menu-ornament { color: ${shell_focus_color}; }
+.popup-menu-item.destructive-action { color: ${.menu-item.destructive|color}; }
+.popup-separator-menu-item .popup-separator-menu-item-separator { height: 1px; margin: 4px 8px; background-color: ${menu_border}; }
+
+.popup-menu-item .popup-menu-accel { font-size: 12px; font-weight: 400; color: ${.menu-item kbd|color}; margin-left: 16px; }

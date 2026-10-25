@@ -28,7 +28,7 @@ meson test -C build --print-errorlogs
 
 GTK3 uses user-local theme selection (`GTK_THEME=Majoris`). GTK4/libadwaita uses fixed user CSS in explicit modes and the reusable StyleManager bridge for live/system switching. Auto installation uses neutral CSS and requires the factory or wrapper bridge. The minimal icon overlay inherits Adwaita and hicolor. The factory selects it and right-side window controls in its process. See [GTK3](docs/gtk3.md), [GTK4](docs/gtk4-libadwaita.md), [mapping](design/gtk-mapping.md) and [testing](docs/testing.md).
 
-Plus Jakarta Sans is required. The supplied variable normal/italic fonts were installed and verified in Debian WSL; generic sans-serif and system-ui also resolve to Plus Jakarta Sans. Fonts remain external assets; see [fonts](fonts/README.md). The [dark HTML](design/reference/majoris-widget-factory-dark.html) is preserved verbatim, and its effective override cascade generates `design/tokens-dark.json`. See [dark implementation and switching](docs/dark-theme.md).
+Plus Jakarta Sans is required. The supplied variable normal/italic fonts were installed and verified in Debian WSL; generic sans-serif and system-ui also resolve to Plus Jakarta Sans. Fonts remain external assets; see [fonts](fonts/README.md). The [dark HTML](design/reference/majoris-widget-factory-dark.html) is a canonical design source, and its effective override cascade generates `design/tokens-dark.json`. See [dark implementation and switching](docs/dark-theme.md).
 
 Development installation requires no root. Previous files are journaled and backed up; later edits are protected. Restore with `./scripts/uninstall-dev.sh` or `.\scripts\wsl.ps1 uninstall`. The installer changes files, not global gsettings preferences. Desktop integration selects the GTK3 theme and icon overlay.
 
@@ -83,3 +83,5 @@ headers and introspection bindings are included in the Debian bootstrap list;
 no experimental toolkit is required. Both Majoris SourceView schemes install
 with the theme. [Integration guide](docs/editor-components.md) ·
 [Validation report](docs/editor-implementation-report.md).
+
+Menu and interface typography follow the [finalisation report](docs/menu-finalisation.md), with native Pango/allocation tests and review captures at both display scales.

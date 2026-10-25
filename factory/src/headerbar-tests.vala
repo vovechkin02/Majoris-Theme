@@ -12,9 +12,12 @@ namespace MajorisThemeFactory {
         }
     }
     public void install_menu_actions (Gtk.ApplicationWindow window) {
-        foreach (var name in new string[]{"open","rename","duplicate","trash"}) {
+        foreach (var name in new string[]{"open","rename","duplicate","trash","cut","copy","paste","properties","folder","find","format","preferences"}) {
             var action=new SimpleAction(name,null); action.activate.connect(()=>{}); window.add_action(action);
         }
+        var disabled=new SimpleAction("unavailable",null); disabled.set_enabled(false); window.add_action(disabled);
+        var hidden=new SimpleAction.stateful("hidden",null,new Variant.boolean(true));
+        hidden.activate.connect(()=>hidden.set_state(new Variant.boolean(!hidden.get_state().get_boolean()))); window.add_action(hidden);
     }
     public Gtk.Button icon_button (string icon, string tooltip) {
         var b = new Gtk.Button.from_icon_name (icon);
@@ -24,8 +27,11 @@ namespace MajorisThemeFactory {
     }
     public Gtk.MenuButton menu_button () {
         var model = new Menu ();
-        model.append ("Open", "win.open"); model.append ("Rename", "win.rename"); model.append ("Duplicate", "win.duplicate");
+        var open_item=new MenuItem("Open","win.open"); open_item.set_icon(new ThemedIcon("document-open-symbolic")); model.append_item(open_item); model.append ("Rename", "win.rename"); model.append ("Duplicate", "win.duplicate");
         var section = new Menu (); var item=new MenuItem("Move to Trash",null); item.set_attribute_value("custom",new Variant.string("trash")); section.append_item(item); model.append_section(null,section);
+        var edit=new Menu(); edit.append("Cut","win.cut"); edit.append("Copy","win.copy"); edit.append("Paste","win.paste"); model.append_section(null,edit);
+        var more=new Menu(); more.append("New Folder…","win.folder"); more.append("File","win.open"); more.append("Find","win.find"); more.append("Format","win.format"); more.append("Move to Folder with a longer descriptive name","win.folder"); more.append("Preferences","win.preferences"); more.append("Unavailable action","win.unavailable"); more.append("Show Hidden Files","win.hidden"); more.append("Properties","win.properties"); model.append_section(null,more);
+        var open_with=new Menu(); open_with.append("Text Editor","win.open"); open_with.append("Other Application…","win.open"); model.append_submenu("Open With",open_with);
         var appearance = new Menu ();
         appearance.append("Light","app.scheme::light"); appearance.append("Dark","app.scheme::dark"); appearance.append("System","app.scheme::system");
         model.append_submenu("Appearance",appearance);

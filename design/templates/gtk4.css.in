@@ -34,7 +34,7 @@ searchentry:focus-within, passwordentry:focus-within { border-color: @primary_50
 searchentry text, passwordentry text { min-height: 0; padding: 0; }
 popover.background { background-color: transparent; }
 popover > contents { border-radius: ${structure_radius}; border: 1px solid @border_soft; background-color: ${.popover|background}; padding: ${.popover|padding}; box-shadow: ${pop_shadow}; }
-button.model, modelbutton, button.majoris-menu-danger { min-height: ${.menu-item|height}; padding: ${.menu-item|padding}; border: none; border-radius: ${control_radius}; box-shadow: none; background-color: transparent; background-image: none; font-size: ${.menu-item|font-size}; font-weight: 400; }
+button.model, modelbutton, button.majoris-menu-danger { min-height: 24px; padding: ${.menu-item|padding}; border: none; border-radius: ${control_radius}; box-shadow: none; background-color: transparent; background-image: none; font-size: ${.menu-item|font-size}; font-weight: 500; }
 button.model:hover, modelbutton:hover, button.majoris-menu-danger:hover { background-color: @hover; box-shadow: none; }
 button.model:active, modelbutton:active, button.majoris-menu-danger:active { background-color: @active; box-shadow: none; }
 button.majoris-menu-danger, button.majoris-menu-danger:hover, button.majoris-menu-danger:active { color: @danger; border-color: transparent; }
@@ -52,7 +52,7 @@ splitbutton > menubutton > button { min-width: ${control_content_size}; padding:
 banner { background: transparent; color: @primary_800; border: none; padding: 0; font-size: ${.banner|font-size}; }
 banner > revealer > box { padding: 0; border-spacing: ${.banner|gap}; }
 banner > revealer > widget { min-height: 28px; padding: ${.banner|padding}; background-color: @primary_50; border: 1px solid @primary_200; border-radius: ${structure_radius}; border-spacing: ${.banner|gap}; }
-banner .heading { font-weight: 400; color: @primary_800; }
+banner .heading { font-weight: 500; color: @primary_800; }
 banner button { min-height: ${banner_button_content_height}; }
 toast { background-color: ${.toast|background}; color: @surface; border: none; border-radius: ${structure_radius}; box-shadow: ${pop_shadow}; padding: ${.toast|padding}; font-size: ${.toast|font-size}; }
 toast > box { padding: 0; border-spacing: ${.toast|gap}; }
@@ -80,7 +80,7 @@ banner button { background-color: @primary_600; border-color: @primary_600; colo
 banner button:hover { background-color: @primary_700; border-color: @primary_700; box-shadow: ${.btn.primary:hover|box-shadow}; }
 banner button:active { background-color: @primary_800; border-color: @primary_800; box-shadow: ${.btn.primary:active|box-shadow}; }
 windowcontrols > button > image, windowcontrols > button:hover > image, windowcontrols > button:active > image, windowcontrols > button:backdrop > image { background: transparent; border: none; border-radius: 0; box-shadow: none; }
-popover.menu > contents { min-width: 191px; }
+popover.menu > contents { min-width: 192px; }
 headerbar.default-decoration windowcontrols > button { min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0; }
 headerbar.default-decoration windowcontrols > button > image { min-width: ${window_control_glyph}; min-height: ${window_control_glyph}; padding: 0; margin: 0; background: transparent; border-radius: 0; box-shadow: none; }
 columnview.majoris-data-view row { min-height: 0; padding: 0; }
@@ -103,3 +103,25 @@ window.csd.tiled-left,
 window.csd.tiled-right,
 window.csd.tiled-top,
 window.csd.tiled-bottom { border-radius: 0; border-width: 0; box-shadow: none; }
+
+/* Native menu contract; text children keep Pango natural measurement. */
+popover.menu > contents, dropdown popover > contents { background-color: ${.popover|background}; color: ${.menu-item|color}; border: 1px solid ${menu_border}; border-radius: 8px; padding: 8px; min-width: 192px; box-shadow: ${.popover|box-shadow}; }
+modelbutton, button.model, button.majoris-menu-danger, dropdown popover row { min-height: 24px; padding: 4px 8px; border: none; border-radius: 4px; font-size: 14px; font-weight: 500; background: transparent; box-shadow: none; transition: background-color 128ms, color 128ms; }
+modelbutton:hover, button.model:hover, button.majoris-menu-danger:hover, dropdown popover row:hover { background-color: ${.menu-item:hover|background}; box-shadow: none; }
+modelbutton:active, button.model:active, button.majoris-menu-danger:active, dropdown popover row:active { background-color: ${.menu-item:active|background}; box-shadow: none; }
+modelbutton:disabled, button.model:disabled, button.majoris-menu-danger:disabled, dropdown popover row:disabled { color: @text_tertiary; background: transparent; box-shadow: none; }
+modelbutton:focus-visible, button.model:focus-visible, button.majoris-menu-danger:focus-visible, dropdown popover row:focus-visible { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+popover.menu separator { min-height: 1px; margin: 4px 8px; background-color: ${menu_border}; }
+popover.menu accelerator { font-size: 12px; font-weight: 400; color: @text_secondary; margin-left: 16px; }
+popover.menu image { margin-right: 8px; }
+popover.menu check, popover.menu radio { color: @primary_500; }
+
+button.majoris-menu-danger, button.majoris-menu-danger:hover, button.majoris-menu-danger:active { color: ${.menu-item.destructive|color}; }
+
+popover.menu check, popover.menu radio { background: transparent; border-color: transparent; box-shadow: none; margin-right: 8px; }
+popover.menu check:checked { color: @primary_500; -gtk-icon-source: -gtk-icontheme("object-select-symbolic"); }
+
+dropdown popover row:selected { background-color: ${.menu-item:hover|background}; color: ${.menu-item|color}; }
+/* The chooser's view must not paint a second surface inside the menu. */
+dropdown popover listview.view, dropdown popover listview { background: transparent; color: ${.menu-item|color}; }
+popover.menu > arrow, dropdown popover > arrow { background-color: ${.popover|background}; border-color: ${menu_border}; }

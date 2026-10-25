@@ -66,3 +66,5 @@ tooltip, tooltip.background, tooltip > box, tooltip label { background-color: ${
 tooltip, tooltip.background { box-shadow: ${.tooltip|box-shadow}; }
 tooltip > box, tooltip label { background: transparent; }
 .majoris-state-block { border-color: @border_soft; background-image: linear-gradient(180deg,#242428,#202023); }
+
+menuitem:focus, modelbutton:focus-visible, button.model:focus-visible, button.majoris-menu-danger:focus-visible, dropdown popover row:focus-visible { outline-color: #818CF8; }

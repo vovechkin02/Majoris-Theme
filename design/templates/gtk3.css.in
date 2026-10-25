@@ -14,11 +14,11 @@ button.titlebutton.close:active { background-color: @danger_pressed; color: @sur
 button.titlebutton:focus { border-color: ${.window-control.is-focus|border-color}; outline: none; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
 button.titlebutton:backdrop { color: @text_tertiary; }
 popover.background, menu { background-color: ${.popover|background}; border: 1px solid @border_soft; border-radius: ${structure_radius}; padding: ${.popover|padding}; box-shadow: ${pop_shadow}; }
-menuitem { min-height: ${.menu-item|height}; border: none; border-radius: ${control_radius}; padding: ${.menu-item|padding}; box-shadow: none; font-size: ${.menu-item|font-size}; }
+menuitem { min-height: 24px; border: none; border-radius: ${control_radius}; padding: ${.menu-item|padding}; box-shadow: none; font-size: ${.menu-item|font-size}; }
 menuitem:hover { background-color: @hover; box-shadow: none; }
 menuitem:active { background-color: @active; box-shadow: none; }
 menuitem.destructive, menuitem.majoris-menu-danger { color: @danger; }
-menu separator { min-height: 1px; margin: 5px; background-color: @border_soft; }
+menu separator { min-height: 1px; margin: 4px 8px; background-color: ${menu_border}; }
 viewswitcher button, stackswitcher button { min-width: 0; }
 notebook > header tab:checked { background-image: none; }
 notebook > header tab:checked label { min-height: 34px; padding: 0 2px; margin: 0 -2px; border-bottom: 2px solid @primary_500; }
@@ -33,7 +33,7 @@ spinner { background-color: transparent; }
 progressbar.horizontal trough, progressbar.horizontal progress { min-height: ${.progress|height}; background-image: none; border: none; }
 notebook > header > tabs > tab:checked { border: none; box-shadow: none; background-image: none; }
 button:hover, button:active { background-image: none; }
-menu { min-width: 191px; }
+menu { min-width: 192px; }
 notebook > header.top > tabs > tab:checked, notebook > header.bottom > tabs > tab:checked, notebook > header.left > tabs > tab:checked, notebook > header.right > tabs > tab:checked { border: none; background-image: none; box-shadow: none; }
 combobox { min-height: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
 combobox button.combo { min-height: ${control_content_size}; min-width: ${dropdown_content_width}; padding: ${.select|padding}; border: 1px solid @border; border-radius: ${control_radius}; background-image: none; box-shadow: ${control_shadow}; }
@@ -53,3 +53,30 @@ window.csd.tiled-left decoration,
 window.csd.tiled-right decoration,
 window.csd.tiled-top decoration,
 window.csd.tiled-bottom decoration { border-radius: 0; border-width: 0; padding: 0; box-shadow: none; }
+
+/* Native menu contract; text children keep Pango natural measurement. */
+menu { background-color: ${.popover|background}; color: ${.menu-item|color}; border: 1px solid ${menu_border}; border-radius: 8px; padding: 8px; min-width: 192px; box-shadow: ${.popover|box-shadow}; }
+menuitem { min-height: 24px; padding: 4px 8px; border: none; border-radius: 4px; font-size: 14px; font-weight: 500; background: transparent; box-shadow: none; transition: background-color 128ms, color 128ms; }
+menuitem:hover { background-color: ${.menu-item:hover|background}; box-shadow: none; }
+menuitem:active { background-color: ${.menu-item:active|background}; box-shadow: none; }
+menuitem:disabled { color: @text_tertiary; background: transparent; box-shadow: none; }
+menuitem:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+menu separator { min-height: 1px; margin: 4px 8px; background-color: ${menu_border}; }
+menu accelerator { font-size: 12px; font-weight: 400; color: @text_secondary; margin-left: 16px; }
+menu image { margin-right: 8px; }
+menu check, menu radio { color: @primary_500; }
+
+menuitem.destructive, menuitem.majoris-menu-danger { color: ${.menu-item.destructive|color}; }
+
+menu check, menu radio { background: transparent; border-color: transparent; box-shadow: none; margin-right: 8px; }
+menu check:checked { color: @primary_500; -gtk-icon-source: -gtk-icontheme("object-select-symbolic"); }
+
+/* GtkMenuItem measures its child requisition, ignoring its own CSS minimum. */
+menuitem > label { min-height: 24px; }
+
+/* GtkMenu uses SELECTED for its active pointer/keyboard row. */
+menuitem:selected { background-color: ${.menu-item:hover|background}; color: ${.menu-item|color}; box-shadow: none; }
+menuitem:selected:active { background-color: ${.menu-item:active|background}; }
+menuitem:disabled, menuitem:disabled:selected { background: transparent; color: @text_tertiary; }
+menuitem.majoris-menu-danger:selected { color: ${.menu-item.destructive|color}; }
+menuitem check:checked, menuitem radio:checked { color: @primary_500; background: transparent; border-color: transparent; }

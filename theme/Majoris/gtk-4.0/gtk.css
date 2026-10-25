@@ -2,7 +2,7 @@
 @import url("colors.css");
 /* All appearance rules live in the theme, never in the factory. */
 * { font-family: "Plus Jakarta Sans", "Noto Sans", "Cantarell", sans-serif; }
-window { font-size: 13px; }
+window { font-size: 14px; }
 window, .background { background-color: @background; color: @text; }
 button, entry, spinbutton, combobox, dropdown > button {
   min-height: 30px; padding: 0 12px; border: 1px solid @border;
@@ -29,7 +29,7 @@ button.flat:active { background-color: @active; }
 button.flat:focus-visible { outline: none; border-color: @primary_500; box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
 button:disabled, button.suggested-action:disabled, button.destructive-action:disabled, button.flat:disabled { box-shadow: none; }
 button.image-button { min-width: 30px; padding: 0; }
-entry, spinbutton { padding: 0 10px; font-weight: 400; }
+entry, spinbutton { padding: 0 10px; font-weight: 500; }
 entry { min-width: 138px; }
 spinbutton { padding: 0; }
 spinbutton button { min-height: 30px; min-width: 27px; padding: 0; border: none; border-left: 1px solid @border_soft; border-radius: 0; background-color: transparent; box-shadow: none; }
@@ -63,12 +63,12 @@ levelbar block.empty { background-color: #E4E5E9; }
 spinner { min-width: 20px; min-height: 20px; color: @primary_600; background: none; -gtk-icon-source: url("assets/spinner.svg"); }
 notebook > header { background: @surface; border: none; border-bottom: 1px solid @border_soft; padding: 0 6px; }
 notebook > header tabs { margin: 0; padding: 0; }
-notebook > header tab { min-height: 36px; padding: 0 12px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 12px; }
+notebook > header tab { min-height: 36px; padding: 0 12px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; }
 notebook > header tab:hover { background-color: rgba(0,0,0,.02); }
 notebook > header tab:active { background-color: rgba(0,0,0,.035); }
-notebook > header tab:checked { color: @text; font-weight: 650; border: none; background-image: linear-gradient(to right, transparent 10px, @primary_500 10px, @primary_500 calc(100% - 10px), transparent calc(100% - 10px)); background-size: 100% 2px; background-repeat: no-repeat; background-position: bottom; box-shadow: none; }
+notebook > header tab:checked { color: @text; font-weight: 600; border: none; background-image: linear-gradient(to right, transparent 10px, @primary_500 10px, @primary_500 calc(100% - 10px), transparent calc(100% - 10px)); background-size: 100% 2px; background-repeat: no-repeat; background-position: bottom; box-shadow: none; }
 .majoris-segmented, viewswitcher, stackswitcher { background-color: @surface_secondary; border: 1px solid @border; border-radius: 6px; padding: 2px; }
-.majoris-segmented button, viewswitcher button, stackswitcher button { min-height: 28px; padding: 0 10px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 12px; font-weight: 400; }
+.majoris-segmented button, viewswitcher button, stackswitcher button { min-height: 28px; padding: 0 10px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; }
 .majoris-segmented button { margin-right: 2px; }
 .majoris-segmented button:last-child { margin-right: 0; }
 .majoris-segmented button:hover, viewswitcher button:hover, stackswitcher button:hover { background-color: rgba(255,255,255,.55); box-shadow: none; }
@@ -79,7 +79,7 @@ row:hover { background-color: @hover; }
 row:selected { background-color: @primary_50; color: @primary_800; }
 .sidebar, .navigation-sidebar, .majoris-sidebar { background-color: @surface_secondary; padding: 12px 8px; border-right: 1px solid @border_soft; }
 .sidebar row, .navigation-sidebar row, .majoris-sidebar row { min-height: 34px; padding: 0 8px; margin-bottom: 2px; border: none; border-radius: 4px; }
-.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { background-color: @primary_50; color: @primary_700; font-weight: 650; background-image: linear-gradient(to bottom, transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)); background-size: 2px 100%; background-position: left; background-repeat: no-repeat; }
+.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { background-color: @primary_50; color: @primary_700; font-weight: 600; background-image: linear-gradient(to bottom, transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)); background-size: 2px 100%; background-position: left; background-repeat: no-repeat; }
 .majoris-data-view row { padding: 9px 12px; font-size: 12px; border-top: 1px solid @border_soft; }
 .majoris-data-view row:selected { background-color: @primary_50; color: @primary_800; }
 .boxed-list.majoris-data-view > row { min-height: 0; padding: 9px 12px; }
@@ -89,9 +89,9 @@ row:selected { background-color: @primary_50; color: @primary_800; }
 .card, .boxed-list, popover, dialog { transition: background-color 256ms cubic-bezier(.2,.8,.2,1), box-shadow 256ms cubic-bezier(.2,.8,.2,1); }
 .boxed-list > row { min-height: 33px; padding: 8px 12px 8px 16px; border-bottom: 1px solid @border_soft; border-radius: 0; }
 .boxed-list > row:last-child { border-bottom: none; }
-.boxed-list > row label { font-size: 13px; }
-.boxed-list > row .title { font-weight: 600; }
-.boxed-list > row .subtitle { font-size: 11.5px; color: @text_secondary; font-weight: 400; }
+.boxed-list > row label { font-size: 14px; }
+.boxed-list > row .title { font-weight: 500; }
+.boxed-list > row .subtitle { font-size: 12px; color: @text_secondary; font-weight: 400; }
 tooltip { border-radius: 4px; border: none; background-color: #222226; color: @surface; padding: 6px 8px; box-shadow: 0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08); font-size: 11px; }
 tooltip label { font-size: 11px; }
 scrollbar, scrollbar trough { background: transparent; border: none; }
@@ -106,7 +106,7 @@ dialog { border-radius: 8px; background-color: @surface; }
 .majoris-card-footer { padding: 12px 16px; border-top: 1px solid @border_soft; }
 .majoris-page-content { padding: 24px; }
 .majoris-page-content.majoris-compact { padding: 16px; }
-.majoris-card-header .heading { font-size: 14px; }
+.majoris-card-header .heading { font-size: 16px; }
 treeview.view:selected, iconview.view:selected { background-color: @primary_50; color: @primary_800; }
 checkbutton:disabled, radiobutton:disabled { opacity: .45; }
 checkbutton:disabled check, radiobutton:disabled radio { opacity: 1; }
@@ -154,26 +154,26 @@ searchentry, passwordentry { min-height: 30px; min-width: 138px; padding: 0 10px
 searchentry:focus-within, passwordentry:focus-within { border-color: @primary_500; box-shadow: 0 0 0 2px rgba(99,102,241,.24), 0 1px 2px rgba(20,20,25,.10); }
 searchentry text, passwordentry text { min-height: 0; padding: 0; }
 popover.background { background-color: transparent; }
-popover > contents { border-radius: 8px; border: 1px solid @border_soft; background-color: rgba(255,255,255,.97); padding: 6px; box-shadow: 0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08); }
-button.model, modelbutton, button.majoris-menu-danger { min-height: 32px; padding: 0 10px; border: none; border-radius: 4px; box-shadow: none; background-color: transparent; background-image: none; font-size: 12px; font-weight: 400; }
+popover > contents { border-radius: 8px; border: 1px solid @border_soft; background-color: #FFFFFF; padding: 8px; box-shadow: 0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08); }
+button.model, modelbutton, button.majoris-menu-danger { min-height: 24px; padding: 4px 8px; border: none; border-radius: 4px; box-shadow: none; background-color: transparent; background-image: none; font-size: 14px; font-weight: 500; }
 button.model:hover, modelbutton:hover, button.majoris-menu-danger:hover { background-color: @hover; box-shadow: none; }
 button.model:active, modelbutton:active, button.majoris-menu-danger:active { background-color: @active; box-shadow: none; }
 button.majoris-menu-danger, button.majoris-menu-danger:hover, button.majoris-menu-danger:active { color: @danger; border-color: transparent; }
 button.majoris-menu-danger:focus { box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
-popover separator { min-height: 1px; margin: 5px; background-color: @border_soft; }
+popover separator { min-height: 1px; margin: 4px 8px; background-color: @border_soft; }
 .boxed-list > row > box { min-height: 0; padding: 0; }
 .boxed-list > row .title, .boxed-list > row .subtitle { min-height: 0; padding: 0; margin: 0; }
 .boxed-list > row .subtitle { margin-top: 2px; }
 .boxed-list > row.expander .expander { background-color: @surface_secondary; box-shadow: none; }
 viewswitcher button { min-width: 0; padding: 0 12px; }
 viewswitcher button box { min-height: 0; padding: 0; margin: 0; }
-viewswitcher button label { font-size: 12px; }
+viewswitcher button label { font-size: 14px; }
 splitbutton > button { border-radius: 4px 0 0 4px; }
 splitbutton > menubutton > button { min-width: 30px; padding: 0; border-left: none; border-radius: 0 4px 4px 0; }
 banner { background: transparent; color: @primary_800; border: none; padding: 0; font-size: 12px; }
 banner > revealer > box { padding: 0; border-spacing: 12px; }
 banner > revealer > widget { min-height: 28px; padding: 12px 14px; background-color: @primary_50; border: 1px solid @primary_200; border-radius: 8px; border-spacing: 12px; }
-banner .heading { font-weight: 400; color: @primary_800; }
+banner .heading { font-weight: 500; color: @primary_800; }
 banner button { min-height: 26px; }
 toast { background-color: #222226; color: @surface; border: none; border-radius: 8px; box-shadow: 0 12px 24px rgba(20,20,25,.14),0 4px 8px rgba(20,20,25,.08); padding: 10px 12px; font-size: 12px; }
 toast > box { padding: 0; border-spacing: 10px; }
@@ -201,7 +201,7 @@ banner button { background-color: @primary_600; border-color: @primary_600; colo
 banner button:hover { background-color: @primary_700; border-color: @primary_700; box-shadow: 0 2px 4px rgba(20,20,25,.16),inset 0 1px 0 rgba(255,255,255,.10); }
 banner button:active { background-color: @primary_800; border-color: @primary_800; box-shadow: 0 1px 1px rgba(20,20,25,.10),inset 0 1px 0 rgba(255,255,255,.08); }
 windowcontrols > button > image, windowcontrols > button:hover > image, windowcontrols > button:active > image, windowcontrols > button:backdrop > image { background: transparent; border: none; border-radius: 0; box-shadow: none; }
-popover.menu > contents { min-width: 191px; }
+popover.menu > contents { min-width: 192px; }
 headerbar.default-decoration windowcontrols > button { min-width: 30px; min-height: 30px; padding: 0; margin: 0; }
 headerbar.default-decoration windowcontrols > button > image { min-width: 16px; min-height: 16px; padding: 0; margin: 0; background: transparent; border-radius: 0; box-shadow: none; }
 columnview.majoris-data-view row { min-height: 0; padding: 0; }
@@ -224,6 +224,28 @@ window.csd.tiled-left,
 window.csd.tiled-right,
 window.csd.tiled-top,
 window.csd.tiled-bottom { border-radius: 0; border-width: 0; box-shadow: none; }
+
+/* Native menu contract; text children keep Pango natural measurement. */
+popover.menu > contents, dropdown popover > contents { background-color: #FFFFFF; color: #1C1C1F; border: 1px solid #E5E5E9; border-radius: 8px; padding: 8px; min-width: 192px; box-shadow: 0 8px 16px rgba(20,20,25,.14),0 2px 4px rgba(20,20,25,.10); }
+modelbutton, button.model, button.majoris-menu-danger, dropdown popover row { min-height: 24px; padding: 4px 8px; border: none; border-radius: 4px; font-size: 14px; font-weight: 500; background: transparent; box-shadow: none; transition: background-color 128ms, color 128ms; }
+modelbutton:hover, button.model:hover, button.majoris-menu-danger:hover, dropdown popover row:hover { background-color: #ECECEF; box-shadow: none; }
+modelbutton:active, button.model:active, button.majoris-menu-danger:active, dropdown popover row:active { background-color: #E2E2E6; box-shadow: none; }
+modelbutton:disabled, button.model:disabled, button.majoris-menu-danger:disabled, dropdown popover row:disabled { color: @text_tertiary; background: transparent; box-shadow: none; }
+modelbutton:focus-visible, button.model:focus-visible, button.majoris-menu-danger:focus-visible, dropdown popover row:focus-visible { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+popover.menu separator { min-height: 1px; margin: 4px 8px; background-color: #E5E5E9; }
+popover.menu accelerator { font-size: 12px; font-weight: 400; color: @text_secondary; margin-left: 16px; }
+popover.menu image { margin-right: 8px; }
+popover.menu check, popover.menu radio { color: @primary_500; }
+
+button.majoris-menu-danger, button.majoris-menu-danger:hover, button.majoris-menu-danger:active { color: #DC3C4D; }
+
+popover.menu check, popover.menu radio { background: transparent; border-color: transparent; box-shadow: none; margin-right: 8px; }
+popover.menu check:checked { color: @primary_500; -gtk-icon-source: -gtk-icontheme("object-select-symbolic"); }
+
+dropdown popover row:selected { background-color: #ECECEF; color: #1C1C1F; }
+/* The chooser's view must not paint a second surface inside the menu. */
+dropdown popover listview.view, dropdown popover listview { background: transparent; color: #1C1C1F; }
+popover.menu > arrow, dropdown popover > arrow { background-color: #FFFFFF; border-color: #E5E5E9; }
 /* Supplemental editor components; libadwaita 1.7 native nodes, GTK4 only. */
 tabbar.majoris-document-tabs { background: @surface; color: @text_secondary; border: none; border-bottom: 1px solid @border_soft; padding: 0; min-height: 37px; }
 tabbar.majoris-document-tabs > revealer > .box { background: @surface; color: @text_secondary; padding: 0 6px; border: none; box-shadow: none; }
@@ -345,3 +367,9 @@ window.desktopwindow.background:backdrop,
     border-radius: 0;
     box-shadow: none;
 }
+
+/* Scoped UI typography: document and monospace widgets retain their fonts. */
+entry, spinbutton, checkbutton, dropdown, combobox, .sidebar row, .navigation-sidebar row, .majoris-sidebar row { font-size: 14px; font-weight: 500; }
+.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { font-weight: 600; }
+.title-2 { font-size: 16px; font-weight: 600; }
+.majoris-display-heading { font-size: 32px; font-weight: 700; }

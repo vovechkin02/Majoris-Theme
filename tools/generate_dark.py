@@ -14,6 +14,7 @@ def generate(output):
         s=re.sub(r'\$\{([^|}]+)\|([^}]+)\}',lambda m:html_value(t,m[1],m[2]),s)
         return re.sub(r'\$\{(\w+)\}',lambda m:values[m[1]],s)
     values.update(editor_values('dark'))
+    values['menu_border']='#3B3B40'
     values['window_edge_color']=html_value(t,'.window','border-color')
     colors='/* Generated from the effective dark reference cascade. */\n'+''.join('@define-color '+k+' '+v+';\n' for k,v in t['color'].items())
     # Primitive indigo identities remain invariant; component states are separate.
