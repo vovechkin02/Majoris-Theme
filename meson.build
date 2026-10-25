@@ -84,3 +84,19 @@ endforeach
 test('menu source contract', python, args: [files('tests/test-menu-contract.py')])
 
 install_data('factory/src/menu-row.vala', 'integration/menu_rows.py', install_dir: get_option('datadir') / 'majoris-theme/integration')
+
+foreach tab_version : ['3', '4']
+  foreach tab_scale : ['1', '2']
+    foreach tab_variant : ['light', 'dark']
+      test('tab system GTK' + tab_version + ' ' + tab_variant + ' scale ' + tab_scale,
+        find_program('dbus-run-session'), args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-tabs-native.py'), tab_version],
+        env: {'GDK_SCALE': tab_scale, 'MAJORIS_VARIANT': tab_variant, 'GDK_BACKEND': 'x11', 'GTK_A11Y': 'none'}, timeout: 45)
+    endforeach
+  endforeach
+endforeach
+
+foreach tab_variant : ['light', 'dark']
+  test('tab system 125 percent text ' + tab_variant,
+    find_program('dbus-run-session'), args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-tabs-native.py'), '4'],
+    env: {'GDK_DPI_SCALE': '1.25', 'MAJORIS_TAB_TEXT_SCALE': '1.25', 'MAJORIS_VARIANT': tab_variant, 'GDK_BACKEND': 'x11', 'GTK_A11Y': 'none'}, timeout: 45)
+endforeach

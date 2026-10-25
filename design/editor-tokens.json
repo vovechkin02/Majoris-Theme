@@ -1,9 +1,15 @@
 {
   "geometry": {
-    "document_tab_content": "37px",
+    "document_tab_content": "39px",
     "editor_toolbar_content": "39px",
     "editor_status_content": "33px",
-    "editor_control_content": "26px"
+    "editor_control_content": "26px",
+    "document_tab_body": "35px",
+    "document_tab_close_content": "16px",
+    "document_tab_title_size": "14px",
+    "document_tab_title_weight": "500",
+    "document_tab_selected_weight": "600",
+    "document_tab_close_padding": "3px"
   },
   "light": {
     "editor_indicator": "@primary_500",

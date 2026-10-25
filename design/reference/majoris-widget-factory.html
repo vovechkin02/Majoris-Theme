@@ -149,7 +149,7 @@ kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px soli
 .split-main{border-radius:4px 0 0 4px;font-weight:600}
 .split-arrow{height:32px;width:32px;border-left:0;border-radius:0 4px 4px 0;padding:0;display:grid;place-items:center}
 
-.toggle-group{display:inline-flex;padding:2px;border:1px solid var(--border);background:var(--surface2);border-radius:6px;gap:2px}
+.toggle-group{display:inline-flex;padding:2px;border:1px solid var(--border);background:var(--surface2);border-radius:8px;gap:2px}
 .toggle{height:28px;padding:0 10px;border:0;background:transparent;border-radius:4px;font:inherit;font-size:12px;color:var(--text2)}
 .toggle:hover{background:rgba(255,255,255,.55);color:var(--text)}
 .toggle:active{background:rgba(255,255,255,.75)}
@@ -219,7 +219,7 @@ kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px soli
 .tab:active{background:rgba(0,0,0,.035)}
 .tab.active{color:var(--text);font-weight:650}
 .tab.active:after{content:"";height:2px;background:var(--p500);position:absolute;left:10px;right:10px;bottom:-1px;border-radius:2px}
-.view-switch{display:inline-flex;border:1px solid var(--border);background:var(--surface2);border-radius:6px;padding:2px}
+.view-switch{display:inline-flex;border:1px solid var(--border);background:var(--surface2);border-radius:8px;padding:2px}
 .view-switch button{height:28px;border:0;background:transparent;border-radius:4px;padding:0 12px;font:inherit;font-size:12px;transition:background-color var(--motion-control), box-shadow var(--motion-control), color var(--motion-control)}
 .view-switch button:hover{background:rgba(255,255,255,.55)}
 .view-switch button.active{background:white;box-shadow:var(--shadow-control);font-weight:600}
@@ -316,7 +316,20 @@ kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px soli
 .menu-item.destructive{color:#DC3C4D}
 .menu-icon{width:16px;height:16px;margin-right:8px;display:inline-block;color:#6366F1}
 </style>
-</head>
+<style>
+/* Document tabs: independent from notebook and segmented navigation. */
+.document-tabs{min-height:40px;border-bottom:1px solid var(--border-soft);display:flex;align-items:stretch;background:var(--surface);overflow-x:auto}
+.document-tab{min-height:39px;display:flex;align-items:center;gap:8px;padding:2px 8px;border:0;border-radius:4px 4px 0 0;position:relative;color:var(--text2);font-size:14px;font-weight:500;white-space:nowrap;background:transparent}
+.document-tab.selected{color:var(--text);font-weight:600;background-image:linear-gradient(to right,transparent 8px,#6366F1 8px,#6366F1 calc(100% - 8px),transparent calc(100% - 8px));background-size:100% 2px;background-position:bottom;background-repeat:no-repeat}
+.document-tab:hover,.document-tab.is-hover{background-color:var(--hover)}
+.document-tab:active{background-color:var(--active)}
+.document-tab.is-focus{outline:2px solid #6366F1;outline-offset:-2px}
+.document-tab.inactive{font-weight:500}
+.document-tab-close{width:24px;height:24px;padding:0;border:1px solid transparent;border-radius:4px;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--text2)}
+.document-tab-close:hover,.document-tab-close.is-hover{background:var(--hover)}
+.document-tab-close svg{width:16px;height:16px}
+.document-tab-separator{width:1px;margin:8px 0;background:var(--border-soft);flex-shrink:0}
+</style></head>
 <body>
 <div class="page">
 <div class="intro">
@@ -752,7 +765,21 @@ kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px soli
 </div>
 </section>
 </div>
-</main>
+<section class="card wide"><div class="card-head"><h3>Native document tab contract</h3><p>40px strip; 14px Medium / SemiBold; 24px close controls.</p></div><div class="document-tabs">
+<div class="document-tab pinned"><span aria-label="Pinned">☆</span></div><div class="document-tab-separator"></div>
+<div class="document-tab selected is-focus">Favorites<button class="document-tab-close" aria-label="Close Favorites"><svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg></button></div>
+<div class="document-tab is-hover">Documents<button class="document-tab-close is-hover" aria-label="Close Documents"><svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg></button></div>
+<div class="document-tab inactive">Majoris-Theme-Implementation-Notes.txt<button class="document-tab-close" aria-label="Close notes"><svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
+<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+</svg></button></div>
+<div class="document-tab">Project Requirements.md</div></div></section></main>
 </div>
 </section>
 </div>

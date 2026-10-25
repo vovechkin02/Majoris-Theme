@@ -7,7 +7,7 @@ specifies the additions. No Notepad, Shell, GDM or icon asset was changed.
 
 | Class | Native widget | Theme-owned presentation |
 |---|---|---|
-| `majoris-document-tabs` | `Adw.TabBar` | 38px strip including divider, flat surface, neutral hover/press, selected text and 2px underline, compact close controls and visible focus |
+| `majoris-document-tabs` | `Adw.TabBar` | 40px strip including divider, flat surface, neutral hover/press, selected text and 2px underline, compact close controls and visible focus |
 | `majoris-editor-toolbar` | Horizontal `Gtk.Box`, optionally inside a horizontally scrolling container | 40px including bottom divider, 28px actions, flat states, 4px radii, restrained checked tint |
 | `majoris-statusbar` | Horizontal `Gtk.Box` | 34px including top divider, secondary surface, 28px flat selectors and quiet text |
 
@@ -128,7 +128,7 @@ Native TabBar widths negotiate with titles, icons and available space; the
 HTML's approximate 220px maximum is not a GTK CSS max-width. Use expand_tabs=false
 for the demonstrated compact policy. Pinned tabs are icon-only. Native attention
 may add an indicator and native underline; it is not a fake dirty pseudo-class.
-Close buttons are 22px including their transparent border, retain libadwaita's
+Close buttons are 24px including their transparent border, with a 16px image allocation, retain libadwaita's
 reserved allocation/fade and keyboard-close semantics. They never receive the
 window-close destructive colour. Detached drag previews live outside TabBar's
 CSS ancestry, so they retain libadwaita's native drag-preview treatment instead
@@ -143,3 +143,10 @@ warnings still have readable foregrounds and supported underlines.
 See [testing](testing.md#editor-component-validation) and the
 [implementation report](editor-implementation-report.md) for native evidence,
 visual comparisons, scaling results and outstanding session checks.
+
+
+The final tab typography is 14px Medium (500), selected SemiBold (600), and
+Medium in inactive windows. Document tabs use 2px/8px padding and an 8px underline
+inset. Text-only segmented controls retain 28px children inside an 8px outer
+radius and 2px padding. See [tab finalisation](tab-finalisation.md) for measured
+geometry, clipping evidence and application adoption diagnostics.

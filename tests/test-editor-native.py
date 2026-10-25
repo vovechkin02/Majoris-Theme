@@ -46,7 +46,7 @@ try:
   buffer.set_style_scheme(schemes.get_scheme('majoris-'+variant));settle()
   found=[x for x in nodes(bar) if x.get_css_name()=='tab']
   assert found and any(x.get_state_flags() & Gtk.StateFlags.SELECTED for x in found)
-  assert [bar.get_allocated_height(),toolbar.get_allocated_height(),button.get_allocated_height(),status.get_allocated_height(),status_menu.get_first_child().get_allocated_height()]==[38,40,28,34,28],geometry()
+  assert [bar.get_allocated_height(),toolbar.get_allocated_height(),button.get_allocated_height(),status.get_allocated_height(),status_menu.get_first_child().get_allocated_height()]==[40,40,28,34,28],geometry()
   initial=geometry()
   for flag in (Gtk.StateFlags.PRELIGHT,Gtk.StateFlags.ACTIVE,Gtk.StateFlags.FOCUSED|Gtk.StateFlags.FOCUS_VISIBLE,Gtk.StateFlags.INSENSITIVE,Gtk.StateFlags.SELECTED,Gtk.StateFlags.BACKDROP):
    held=[(x,x.get_state_flags()) for x in (found[0],button,status_menu.get_first_child())]
@@ -73,7 +73,7 @@ try:
  for i in range(20):
   extra=tabs.append(Gtk.Label(label='Overflow'));extra.set_title('Long filename %d with spaces.vala'%i)
  w.set_default_size(390,600);settle();assert bar.get_is_overflowing()
- assert bar.get_allocated_height()==38
+ assert bar.get_allocated_height()==40
 finally:w.destroy()
 (root/('artifacts/editor-native-2x.json' if os.environ.get('GDK_SCALE')=='2' else 'artifacts/editor-native.json')).write_text(json.dumps(results,indent=2)+'\n')
 print('Native editor geometry, state stability, switching, pin/reorder/close and overflow passed')
@@ -85,6 +85,6 @@ switches=[json.loads(line) for line in probe.stdout.splitlines() if line.startsw
 assert [item['mode'] for item in switches]==['light','dark','light'],switches
 for item in switches:
  assert set(item['schemes'])=={'majoris-'+item['mode']},item
- assert (item['tab_height'],item['toolbar_height'],item['status_height'])==(38,40,34),item
+ assert (item['tab_height'],item['toolbar_height'],item['status_height'])==(40,40,34),item
 (root/('artifacts/editor-factory-switching-2x.json' if os.environ.get('GDK_SCALE')=='2' else 'artifacts/editor-factory-switching.json')).write_text(json.dumps(switches,indent=2)+'\n')
 print('Actual factory app.scheme light/dark/light action updates every SourceView buffer')

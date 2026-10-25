@@ -1,3 +1,7 @@
+> Current tab specification: the [tab finalisation report](tab-finalisation.md)
+> supersedes the original 38px strip / 22px close measurements below. The native
+> strip is now 40px, close controls 24px with 16px artwork, and titles 14px/500/600.
+
 # Editor implementation report — 17 October 2026
 
 Implemented the three reusable GTK4 classes, independently generated light/dark

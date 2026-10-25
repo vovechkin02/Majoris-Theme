@@ -8,7 +8,7 @@ for version in ('3','4'):
     if version=='3':
         assert not any('majoris-document-tabs' in s or 'majoris-editor-toolbar' in s or 'majoris-statusbar' in s for s in css)
         continue
-    expect(css,'tabbar.majoris-document-tabs','min-height','37px')
+    expect(css,'tabbar.majoris-document-tabs','min-height','39px')
     expect(css,'.majoris-editor-toolbar','min-height','39px')
     expect(css,'.majoris-statusbar','min-height','33px')
     expect(css,'tabbar.majoris-document-tabs tab:selected','background-size','100% 2px')
@@ -42,3 +42,20 @@ for variant in ('light','dark'):
  assert resolve(styles['current-line']['background'])!=resolve(styles['text']['background'])
  assert resolve(styles['selection']['background'])!=resolve(styles['text']['background'])
 print('Opt-in editor CSS, GTK3 isolation, stable primitives and source contrast contracts passed')
+# Final document-tab contract, paired with native allocation tests.
+editor_tokens=json.loads((ROOT/'design/editor-tokens.json').read_text())['geometry']
+from css_contract import html
+assert int(editor_tokens['document_tab_content'][:-2])+1==int(html('.document-tabs','min-height')[:-2])==40
+assert int(editor_tokens['document_tab_body'][:-2])+4==int(html('.document-tab','min-height')[:-2])==39
+assert int(editor_tokens['document_tab_close_content'][:-2])+2*int(editor_tokens['document_tab_close_padding'][:-2])+2==int(html('.document-tab-close','width')[:-2])==24
+for variant in ('light','dark'):
+ css=rules('4',variant)
+ expect(css,'tabbar.majoris-document-tabs tab','padding','2px 8px')
+ expect(css,'tabbar.majoris-document-tabs tab .tab-title','font-size','14px')
+ expect(css,'tabbar.majoris-document-tabs tab .tab-title','font-weight','500')
+ expect(css,'tabbar.majoris-document-tabs tab:selected .tab-title','font-weight','600')
+ expect(css,'tabbar.majoris-document-tabs tab button','min-width','16px')
+ expect(css,'tabbar.majoris-document-tabs tab button','padding','3px')
+ assert 'transparent 8px' in css['tabbar.majoris-document-tabs tab:selected']['background-image']
+ expect(css,'tabbar.majoris-document-tabs tabbox > separator','margin','8px 0')
+print('40px document strip, typography, close allocation and canonical reference geometry agree')

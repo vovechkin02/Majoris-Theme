@@ -65,11 +65,11 @@ levelbar block.empty { background-color: #38383D; }
 spinner { min-width: 20px; min-height: 20px; color: @primary_600; background: none; -gtk-icon-source: url("assets/spinner-dark.svg"); }
 notebook > header { background: @surface; border: none; border-bottom: 1px solid @border_soft; padding: 0 6px; }
 notebook > header tabs { margin: 0; padding: 0; }
-notebook > header tab { min-height: 36px; padding: 0 12px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; }
+notebook > header tab { min-height: 36px; padding: 0 12px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; }
 notebook > header tab:hover { background-color: rgba(255,255,255,.035); }
 notebook > header tab:active { background-color: rgba(255,255,255,.06); }
 notebook > header tab:checked { color: @text; font-weight: 600; border: none; background-image: linear-gradient(to right, transparent 10%, @primary_500 10%, @primary_500 90%, transparent 90%); background-size: 100% 2px; background-repeat: no-repeat; background-position: bottom; box-shadow: none; }
-.majoris-segmented, viewswitcher, stackswitcher { background-color: @surface_secondary; border: 1px solid @border; border-radius: 6px; padding: 2px; }
+.majoris-segmented, viewswitcher, stackswitcher { background-color: @surface_secondary; border: 1px solid @border; border-radius: 8px; padding: 2px; }
 .majoris-segmented button, viewswitcher button, stackswitcher button { min-height: 28px; padding: 0 10px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; }
 .majoris-segmented button { margin-right: 2px; }
 .majoris-segmented button:last-child { margin-right: 0; }
@@ -294,6 +294,8 @@ tooltip > box, tooltip label { background: transparent; }
 menuitem:focus, modelbutton:focus, button.model:focus, button.majoris-menu-danger:focus, dropdown popover row:focus { outline-color: #818CF8; }
 
 .majoris-menu-row:focus, .majoris-menu-row:focus { outline-color: #818CF8; }
+
+notebook > header tab:focus { outline-color: @focus_color; }
 /* GTK3's imported Adwaita has more-specific combined-state and child rules. */
 button { text-shadow: none; -gtk-icon-shadow: none; }
 button:backdrop, button:disabled, button:backdrop:disabled { background-color: @surface_secondary; color: @text; background-image: none; }
@@ -353,3 +355,5 @@ entry, spinbutton, checkbutton, dropdown, combobox, .sidebar row, .navigation-si
 .sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { font-weight: 600; }
 .title-2 { font-size: 16px; font-weight: 600; }
 .majoris-display-heading { font-size: 32px; font-weight: 700; }
+
+notebook > header tab:focus { outline: 2px solid @primary_500; outline-offset: -2px; }

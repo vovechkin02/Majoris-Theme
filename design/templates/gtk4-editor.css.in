@@ -5,21 +5,21 @@ tabbar.majoris-document-tabs .box:backdrop { background: @surface; }
 tabbar.majoris-document-tabs .box:backdrop > scrolledwindow { filter: none; }
 tabbar.majoris-document-tabs tabbox { min-height: ${document_tab_content}; padding: 0; }
 tabbar.majoris-document-tabs tabbox > tabboxchild { border-radius: 4px 4px 0 0; outline: none; transition: none; }
-tabbar.majoris-document-tabs tab { min-height: ${document_tab_content}; padding: 0 10px; margin: 0; border: none; border-radius: 4px 4px 0 0; background: transparent; color: @text_secondary; box-shadow: none; transition: background-color ${control_motion}, color ${control_motion}; }
-tabbar.majoris-document-tabs tab:selected { background-color: transparent; background-image: linear-gradient(to right, transparent 10px, ${editor_indicator} 10px, ${editor_indicator} calc(100% - 10px), transparent calc(100% - 10px)); background-size: 100% 2px; background-position: bottom; background-repeat: no-repeat; color: @text; }
+tabbar.majoris-document-tabs tab { min-height: ${document_tab_body}; padding: 2px 8px; margin: 0; border: none; border-radius: 4px 4px 0 0; background: transparent; color: @text_secondary; box-shadow: none; transition: background-color ${control_motion}, color ${control_motion}; }
+tabbar.majoris-document-tabs tab:selected { background-color: transparent; background-image: linear-gradient(to right, transparent 8px, ${editor_indicator} 8px, ${editor_indicator} calc(100% - 8px), transparent calc(100% - 8px)); background-size: 100% 2px; background-position: bottom; background-repeat: no-repeat; color: @text; }
 tabbar.majoris-document-tabs tab:hover, tabbar.majoris-document-tabs tab:selected:hover { background-color: @hover; }
 tabbar.majoris-document-tabs tab:active, tabbar.majoris-document-tabs tab:selected:active { background-color: @active; }
 tabbar.majoris-document-tabs tab:backdrop { color: @text_secondary; }
 tabbar.majoris-document-tabs tab:selected:backdrop { color: @text; }
 tabbar.majoris-document-tabs tab:focus-visible, tabbar.majoris-document-tabs tabbox > tabboxchild:focus-within:focus-visible { outline: 2px solid ${editor_focus}; outline-offset: -2px; }
-tabbar.majoris-document-tabs tab .tab-title { font-size: 12px; font-weight: 400; }
-tabbar.majoris-document-tabs tab:selected .tab-title { font-weight: 700; }
+tabbar.majoris-document-tabs tab .tab-title { font-size: ${document_tab_title_size}; font-weight: ${document_tab_title_weight}; }
+tabbar.majoris-document-tabs tab:selected .tab-title { font-weight: ${document_tab_selected_weight}; }
 tabbar.majoris-document-tabs tab > image { -gtk-icon-size: 16px; }
-tabbar.majoris-document-tabs tab button { min-width: 20px; min-height: 20px; padding: 0; margin: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; }
+tabbar.majoris-document-tabs tab button { min-width: ${document_tab_close_content}; min-height: ${document_tab_close_content}; padding: ${document_tab_close_padding}; margin: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; }
 tabbar.majoris-document-tabs tab button:hover { background: @hover; color: @text; box-shadow: none; }
 tabbar.majoris-document-tabs tab button:active { background: @active; box-shadow: none; }
 tabbar.majoris-document-tabs tab button:focus-visible { border-color: ${editor_focus}; box-shadow: inset 0 0 0 1px ${editor_focus}; }
-tabbar.majoris-document-tabs tab button image { -gtk-icon-size: 16px; }
+tabbar.majoris-document-tabs tab button image { -gtk-icon-size: 16px; min-width: 16px; min-height: 16px; padding: 0; margin: 0; }
 tabbar.majoris-document-tabs tab indicator { background: ${editor_indicator}; transform: none; min-height: 2px; }
 tabbar.majoris-document-tabs tabbox > separator { min-width: 1px; margin: 8px 0; background: @border_soft; }
 tabbar.majoris-document-tabs tabbox > revealer > indicator { background: ${editor_indicator}; }
@@ -87,3 +87,7 @@ tabbar.majoris-document-tabs tabbox > revealer > indicator { background: ${edito
 .majoris-editor-toolbar > button image, .majoris-editor-toolbar > box > button image { -gtk-icon-size: 16px; }
 /* Honour GTK's explicit monospace opt-in; schemes contain colours, never fonts. */
 textview.monospace, textview.monospace text { font-family: monospace; }
+
+tabbar.majoris-document-tabs tab:backdrop .tab-title, tabbar.majoris-document-tabs tab:selected:backdrop .tab-title { font-weight: 500; }
+
+window:backdrop tabbar.majoris-document-tabs tab .tab-title { font-weight: 500; }

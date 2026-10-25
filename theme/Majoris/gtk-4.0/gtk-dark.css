@@ -64,11 +64,11 @@ levelbar block.empty { background-color: #38383D; }
 spinner { min-width: 20px; min-height: 20px; color: @primary_600; background: none; -gtk-icon-source: url("assets/spinner-dark.svg"); }
 notebook > header { background: @surface; border: none; border-bottom: 1px solid @border_soft; padding: 0 6px; }
 notebook > header tabs { margin: 0; padding: 0; }
-notebook > header tab { min-height: 36px; padding: 0 12px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; }
+notebook > header tab { min-height: 36px; padding: 0 12px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; }
 notebook > header tab:hover { background-color: rgba(255,255,255,.035); }
 notebook > header tab:active { background-color: rgba(255,255,255,.06); }
 notebook > header tab:checked { color: @text; font-weight: 600; border: none; background-image: linear-gradient(to right, transparent 10px, @primary_500 10px, @primary_500 calc(100% - 10px), transparent calc(100% - 10px)); background-size: 100% 2px; background-repeat: no-repeat; background-position: bottom; box-shadow: none; }
-.majoris-segmented, viewswitcher, stackswitcher { background-color: @surface_secondary; border: 1px solid @border; border-radius: 6px; padding: 2px; }
+.majoris-segmented, viewswitcher, stackswitcher { background-color: @surface_secondary; border: 1px solid @border; border-radius: 8px; padding: 2px; }
 .majoris-segmented button, viewswitcher button, stackswitcher button { min-height: 28px; padding: 0 10px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; }
 .majoris-segmented button { margin-right: 2px; }
 .majoris-segmented button:last-child { margin-right: 0; }
@@ -341,28 +341,30 @@ tooltip > box, tooltip label { background: transparent; }
 menuitem:focus, modelbutton:focus-visible, button.model:focus-visible, button.majoris-menu-danger:focus-visible, dropdown popover row:focus-visible { outline-color: #818CF8; }
 
 .majoris-menu-row:focus, .majoris-menu-row:focus-visible { outline-color: #818CF8; }
+
+notebook > header tab:focus { outline-color: @focus_color; }
 /* Supplemental editor components; libadwaita 1.7 native nodes, GTK4 only. */
-tabbar.majoris-document-tabs { background: @surface; color: @text_secondary; border: none; border-bottom: 1px solid @border_soft; padding: 0; min-height: 37px; }
+tabbar.majoris-document-tabs { background: @surface; color: @text_secondary; border: none; border-bottom: 1px solid @border_soft; padding: 0; min-height: 39px; }
 tabbar.majoris-document-tabs > revealer > .box { background: @surface; color: @text_secondary; padding: 0 6px; border: none; box-shadow: none; }
 tabbar.majoris-document-tabs .box:backdrop { background: @surface; }
 tabbar.majoris-document-tabs .box:backdrop > scrolledwindow { filter: none; }
-tabbar.majoris-document-tabs tabbox { min-height: 37px; padding: 0; }
+tabbar.majoris-document-tabs tabbox { min-height: 39px; padding: 0; }
 tabbar.majoris-document-tabs tabbox > tabboxchild { border-radius: 4px 4px 0 0; outline: none; transition: none; }
-tabbar.majoris-document-tabs tab { min-height: 37px; padding: 0 10px; margin: 0; border: none; border-radius: 4px 4px 0 0; background: transparent; color: @text_secondary; box-shadow: none; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1); }
-tabbar.majoris-document-tabs tab:selected { background-color: transparent; background-image: linear-gradient(to right, transparent 10px, @focus_color 10px, @focus_color calc(100% - 10px), transparent calc(100% - 10px)); background-size: 100% 2px; background-position: bottom; background-repeat: no-repeat; color: @text; }
+tabbar.majoris-document-tabs tab { min-height: 35px; padding: 2px 8px; margin: 0; border: none; border-radius: 4px 4px 0 0; background: transparent; color: @text_secondary; box-shadow: none; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1); }
+tabbar.majoris-document-tabs tab:selected { background-color: transparent; background-image: linear-gradient(to right, transparent 8px, @focus_color 8px, @focus_color calc(100% - 8px), transparent calc(100% - 8px)); background-size: 100% 2px; background-position: bottom; background-repeat: no-repeat; color: @text; }
 tabbar.majoris-document-tabs tab:hover, tabbar.majoris-document-tabs tab:selected:hover { background-color: @hover; }
 tabbar.majoris-document-tabs tab:active, tabbar.majoris-document-tabs tab:selected:active { background-color: @active; }
 tabbar.majoris-document-tabs tab:backdrop { color: @text_secondary; }
 tabbar.majoris-document-tabs tab:selected:backdrop { color: @text; }
 tabbar.majoris-document-tabs tab:focus-visible, tabbar.majoris-document-tabs tabbox > tabboxchild:focus-within:focus-visible { outline: 2px solid @focus_color; outline-offset: -2px; }
-tabbar.majoris-document-tabs tab .tab-title { font-size: 12px; font-weight: 400; }
-tabbar.majoris-document-tabs tab:selected .tab-title { font-weight: 700; }
+tabbar.majoris-document-tabs tab .tab-title { font-size: 14px; font-weight: 500; }
+tabbar.majoris-document-tabs tab:selected .tab-title { font-weight: 600; }
 tabbar.majoris-document-tabs tab > image { -gtk-icon-size: 16px; }
-tabbar.majoris-document-tabs tab button { min-width: 20px; min-height: 20px; padding: 0; margin: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; }
+tabbar.majoris-document-tabs tab button { min-width: 16px; min-height: 16px; padding: 3px; margin: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; }
 tabbar.majoris-document-tabs tab button:hover { background: @hover; color: @text; box-shadow: none; }
 tabbar.majoris-document-tabs tab button:active { background: @active; box-shadow: none; }
 tabbar.majoris-document-tabs tab button:focus-visible { border-color: @focus_color; box-shadow: inset 0 0 0 1px @focus_color; }
-tabbar.majoris-document-tabs tab button image { -gtk-icon-size: 16px; }
+tabbar.majoris-document-tabs tab button image { -gtk-icon-size: 16px; min-width: 16px; min-height: 16px; padding: 0; margin: 0; }
 tabbar.majoris-document-tabs tab indicator { background: @focus_color; transform: none; min-height: 2px; }
 tabbar.majoris-document-tabs tabbox > separator { min-width: 1px; margin: 8px 0; background: @border_soft; }
 tabbar.majoris-document-tabs tabbox > revealer > indicator { background: @focus_color; }
@@ -430,6 +432,10 @@ tabbar.majoris-document-tabs tabbox > revealer > indicator { background: @focus_
 .majoris-editor-toolbar > button image, .majoris-editor-toolbar > box > button image { -gtk-icon-size: 16px; }
 /* Honour GTK's explicit monospace opt-in; schemes contain colours, never fonts. */
 textview.monospace, textview.monospace text { font-family: monospace; }
+
+tabbar.majoris-document-tabs tab:backdrop .tab-title, tabbar.majoris-document-tabs tab:selected:backdrop .tab-title { font-weight: 500; }
+
+window:backdrop tabbar.majoris-document-tabs tab .tab-title { font-weight: 500; }
 /* Opt-in location component. Deliberate 9px/7px radius exceptions. */
 .majoris-location-bar { min-width: 0; padding: 2px; border: 1px solid @border_soft; border-radius: 9px; background: @surface_secondary; color: @text; box-shadow: none; transition: border-color 128ms cubic-bezier(.2,0,0,1), background-color 128ms cubic-bezier(.2,0,0,1); }
 .majoris-location-bar.majoris-location-editing { border-color: @focus_color; outline: 2px solid alpha(@focus_color,.24); outline-offset: 0; }
@@ -468,3 +474,5 @@ entry, spinbutton, checkbutton, dropdown, combobox, .sidebar row, .navigation-si
 .sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { font-weight: 600; }
 .title-2 { font-size: 16px; font-weight: 600; }
 .majoris-display-heading { font-size: 32px; font-weight: 700; }
+
+notebook > header tab:focus { outline: 2px solid @primary_500; outline-offset: -2px; }

@@ -70,3 +70,5 @@ tooltip > box, tooltip label { background: transparent; }
 menuitem:focus, modelbutton:focus-visible, button.model:focus-visible, button.majoris-menu-danger:focus-visible, dropdown popover row:focus-visible { outline-color: #818CF8; }
 
 .majoris-menu-row:focus, .majoris-menu-row:focus-visible { outline-color: #818CF8; }
+
+notebook > header tab:focus { outline-color: @focus_color; }

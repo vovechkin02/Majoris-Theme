@@ -40,12 +40,13 @@ namespace MajorisThemeFactory {
             var extra=selector("More",{"Insert code block","Insert image","Insert table"}); extra.tooltip_text="Additional editing actions"; toolbar.append(extra);
             var toolbar_scroll=new Gtk.ScrolledWindow(); toolbar_scroll.hscrollbar_policy=Gtk.PolicyType.EXTERNAL; toolbar_scroll.vscrollbar_policy=Gtk.PolicyType.NEVER; toolbar_scroll.child=toolbar;
             layout.append(toolbar_scroll);
-            string[] titles={"welcome.txt","notes.md","source.vala","a-very-long-filename-for-native-overflow-and-ellipsis.py","Unsaved document"};
-            for(int i=0;i<titles.length;i++) add_document(titles[i],i==1?"markdown":(i==2?"vala":(i==3?"python":"plain")));
-            var modified=documents.get_nth_page(4); modified.needs_attention=true; modified.indicator_icon=new ThemedIcon("document-save-symbolic"); modified.indicator_tooltip="Unsaved changes — application-owned indicator";
+            string[] titles={"Files","Favorites","Documents","notes.md","main.vala","Project Requirements.md"};
+            for(int i=0;i<titles.length;i++) add_document(titles[i],titles[i].has_suffix(".md")?"markdown":(titles[i].has_suffix(".vala")?"vala":"plain"));
+            var modified=documents.get_nth_page(5); modified.needs_attention=true; modified.indicator_icon=new ThemedIcon("document-save-symbolic"); modified.indicator_tooltip="Unsaved changes — application-owned indicator";
             documents.set_page_pinned(documents.get_nth_page(0),true);
+            if(mode=="editor-overflow") foreach(var title in new string[]{"Find","Format","Downloads","Preferences","New Folder","Majoris-Theme-Implementation-Notes.txt","A Very Long Document Filename That Exceeds Normal Tab Width.txt"})add_document(title,"plain");
             if(mode=="editor-overflow") for(int i=0;i<14;i++) add_document("Document %d with a long filename.vala".printf(i+1),"vala");
-            documents.selected_page=documents.get_nth_page(2);
+            documents.selected_page=documents.get_nth_page(1);
             layout.append(documents);
             status=new Gtk.Box(Gtk.Orientation.HORIZONTAL,4); status.add_css_class("majoris-statusbar");
             var position=new Gtk.Label("Ln 4, Col 12"); position.hexpand=true; position.xalign=0; status.append(position);
