@@ -1,6 +1,6 @@
 # Majoris design authority
 
-`reference/majoris-widget-factory.html` is preserved byte-for-byte. GTK runtime constraints are second in authority; external themes are selector references only.
+`reference/majoris-widget-factory.html` and its dark counterpart are canonical. The authorised sidebar finalisation of 26 October 2026 updates their sidebar contract; unrelated approved components remain unchanged. GTK runtime constraints are second in authority; external themes are selector references only.
 
 Indigo #6366F1 is the selection accent. Suggested buttons use #4F46E5 as specified by the HTML. Compact controls have 4px corners; windows, cards, menus and dialogs have 8px corners. Button fades are stationary at 128ms; surface motion is 256ms. Semantic shadows are extracted verbatim. Window controls have 32px targets and exact 16px SVG geometry, on the right.
 
@@ -8,7 +8,7 @@ Regenerate tokens/icons with `python3 tools/extract-design-tokens.py`, then CSS 
 
 ## Primitive, semantic and surface layers
 
-Both unchanged HTML authorities are extracted in source order. The primitive
+Both canonical HTML authorities are extracted in source order. The primitive
 indigo scale is invariant between light and dark: p50 #EEF2FF, p100 #E0E7FF,
 p200 #C7D2FE, p300 #A5B4FC, p400 #818CF8, p500 #6366F1, p600 #4F46E5,
 p700 #4338CA and p800 #3730A3. No dark component may redefine a palette index.
@@ -51,3 +51,14 @@ and light/dark semantic references; `gtk4-editor.css.in` owns opt-in native
 selectors. SourceView XML templates own their independently tuned syntax
 palette, deriving main surfaces from the approved tokens. Scheme comments are
 tuned for 4.5:1 contrast. See [native components](../docs/editor-components.md).
+
+## Final sidebar language
+
+The authorised 26 October 2026 sidebar revision adopts a recommended 224px
+application width, 16px/8px pane gutters, 32px row minimum plus 4px gap and a
+2px selected stripe with fixed 8px end insets. Typography is 14px Medium /
+SemiBold, with 12px/600 headings and badges. Main surfaces and base selected
+colours are preserved; selected hover/press, focus, disabled, backdrop and RTL
+are now explicit. Canonical references and both token cascades encode the
+changes. [Contract and responsibilities](../docs/sidebar-design.md) ·
+[Before/after and validation](../docs/sidebar-finalisation.md).

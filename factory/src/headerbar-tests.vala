@@ -87,10 +87,10 @@ namespace MajorisThemeFactory {
         public SplitFixture (Gtk.Application app) {
             Object(application:app,title:"Split / Sidebar",default_width:900,default_height:300);
             var box=new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
-            var left=new Adw.ToolbarView(); left.set_size_request(212,-1); left.add_css_class("majoris-split-sidebar");
+            var left=new Adw.ToolbarView(); left.set_size_request(224,-1); left.add_css_class("majoris-split-sidebar");
             sidebar_bar=new Adw.HeaderBar(); sidebar_bar.show_end_title_buttons=false; sidebar_bar.show_start_title_buttons=false;
             sidebar_bar.title_widget=new Gtk.Label("Places"); left.add_top_bar(sidebar_bar);
-            var sidebar=new Gtk.ListBox(); sidebar.add_css_class("majoris-sidebar"); sidebar.append(new Gtk.Label("Documents")); sidebar.append(new Gtk.Label("Downloads")); sidebar.select_row(sidebar.get_row_at_index(0)); left.content=sidebar;
+            var sidebar=new Gtk.ListBox(); sidebar.add_css_class("majoris-sidebar"); sidebar.append(new SidebarRow("Documents","folder-symbolic")); sidebar.append(new SidebarRow("Downloads","folder-download-symbolic")); sidebar.select_row(sidebar.get_row_at_index(0)); left.content=sidebar;
             var right=new Adw.ToolbarView(); right.hexpand=true;
             content_bar=new Adw.HeaderBar(); content_bar.pack_start(icon_button("go-previous-symbolic","Back")); content_bar.pack_end(menu_button()); right.add_top_bar(content_bar); right.content=new Gtk.Label("Content surface");
             box.append(left); box.append(right); content=box; install_menu_actions(this);

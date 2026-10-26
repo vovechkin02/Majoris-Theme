@@ -17,6 +17,7 @@ with tempfile.TemporaryDirectory(prefix='majoris-geometry-') as directory:
     env={**os.environ,'XDG_CONFIG_HOME':directory,'XDG_DATA_HOME':str(data),'GTK_A11Y':'none','GSK_RENDERER':'cairo','GDK_BACKEND':'x11','MAJORIS_THEME_ROOT':str(root/'theme/Majoris')}
     result=subprocess.run([sys.argv[1],'--geometry-report','--'+variant],env=env,text=True,capture_output=True,check=True,timeout=20)
     report=json.loads(result.stdout)
+    assert report['main_sidebar']['width']==224,report['main_sidebar']
     assert report['hidden_banner']['height']==0,report['hidden_banner']
     if os.environ.get('MAJORIS_REQUIRE_EXACT_FONT')=='1':
         assert report['resolved_pango_font'].startswith('Plus Jakarta Sans'),report['resolved_pango_font']
@@ -44,7 +45,7 @@ with tempfile.TemporaryDirectory(prefix='majoris-geometry-') as directory:
     for name in ('switch','switch_off'):assert (report[name]['width'],report[name]['height'])==(px('.switch','width'),px('.switch','height')),(name,report[name])
     assert report['view_switcher_button']['height']==px('.view-switch button','height'),report['view_switcher_button']
     assert report['tab']['label']['height']==px('.tab','height'),report['tab']
-    assert any(w['type']=='GtkListBoxRow' and w['height']==px('.nav','height')+px('.nav','margin-bottom') for w in report['widget_tree']),'Sidebar 34px target plus 2px gap disappeared'
+    assert any(w['type']=='GtkListBoxRow' and w['height']==px('.nav','min-height')+px('.nav','margin-bottom') for w in report['widget_tree']),'Sidebar 32px target plus 4px gap disappeared'
     (root/'artifacts').mkdir(exist_ok=True)
     (root/('artifacts/geometry-'+variant+'.json')).write_text(json.dumps(report,indent=2)+'\n')
     if variant=='light': (root/'artifacts/geometry.json').write_text(json.dumps(report,indent=2)+'\n')

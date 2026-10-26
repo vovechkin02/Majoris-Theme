@@ -264,3 +264,49 @@ Capture with the existing `tools/capture-visual.py` using
 `dark` under dbus-run-session / Xvfb. See [verification evidence](location-implementation-report.md).
 Real GNOME/Mutter, Wayland, fractional scaling, portal-driven desktop switching
 and screen-reader acceptance require the target desktop.
+
+## Sidebar finalisation validation
+
+For reproducible Xvfb startup, the final run used `GIO_USE_VFS=local` and
+`meson test -C build --num-processes 4 --print-errorlogs`. Keep native capture
+and the full suite separate when investigating startup-timing failures.
+
+Run generation/extraction through the existing pipeline:
+
+```bash
+python3 tools/extract-design-tokens.py
+python3 tools/generate-theme.py
+python3 tools/verify-design-tokens.py
+python3 tools/generate-theme.py --check
+meson setup build --reconfigure
+meson compile -C build
+MAJORIS_REQUIRE_EXACT_FONT=1 meson test -C build --print-errorlogs
+```
+
+`sidebar contracts`, four `GTK3/4 native sidebar 1x/2x` tests and
+`native sidebar input and adaptation` extend the existing suite. They cover
+actual ListBox/StackSidebar trees, logical 32px rows and 36px pitch, icon/gap
+allocations, Pango sizes/weights/ink/baselines, badge preservation, ellipsis,
+state stability, real indicator pixels in LTR/RTL, larger native Pango text,
+actual pointer/keyboard interaction, scrolling and adaptive focus restoration.
+The existing geometry report now asserts a 224px main factory sidebar.
+
+```bash
+MAJORIS_CAPTURE_DIRECTORY=artifacts/sidebar-finalisation MAJORIS_CAPTURE_PAGES=sidebar,sidebar-basic,sidebar-states,sidebar-focus,sidebar-selected-pressed,sidebar-scroll,sidebar-narrow,sidebar-narrow-content,sidebar-rtl,sidebar-large,sidebar-backdrop,split ./scripts/capture-visual-regressions.sh --both
+MAJORIS_CAPTURE_DIRECTORY=artifacts/sidebar-finalisation MAJORIS_CAPTURE_SCALE=2 MAJORIS_CAPTURE_PAGES=sidebar,sidebar-states,sidebar-narrow-content,sidebar-large,split ./scripts/capture-visual-regressions.sh --both
+./scripts/render-html-reference.sh --both
+```
+
+State fixtures hold real widget flags. The backdrop fixture instead opens a
+small native focus-target window so the sidebar window becomes genuinely
+inactive. Captures remain full-frame native output. Existing before images
+are preserved separately; do not replace them to grant acceptance. Reference
+HTML is now intentionally revised for this sidebar contract; previous
+completion reports describe earlier, unchanged-reference passes.
+
+See [the sidebar report](sidebar-finalisation.md) for the complete before/after
+table, screenshot map, evidence and GNOME/Wayland/fractional-scaling limitations.
+In particular, actual enlarged Pango text is tested without claiming that
+legacy Xft DPI or GNOME's text-scaling settings automatically alter fixed CSS
+pixel typography. Real screen-reader, high-contrast and session settings need
+the Majoris VM.

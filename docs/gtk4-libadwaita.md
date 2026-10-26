@@ -142,3 +142,13 @@ exercises narrow layouts. The fixture includes labelled held hover, pressed,
 focus, disabled, long-path, contrast, editing and backdrop states. Held flags
 are CSS diagnostics; verify real pointer, Tab and screen-reader interaction too.
 Use the application scheme menu for Light → Dark → Light.
+
+## Finalised navigation sidebars
+
+The [sidebar integration guide](sidebar-design.md) defines 224px as an app-owned
+starting width, 32px/4px rows, 16px symbolic icons, section headers, native
+expanders, badges, RTL, scrolling and NavigationSplitView breakpoint handling.
+Use `majoris-sidebar-native-divider` with a split view that already supplies
+separation. Preserve the chosen row across native focus restoration, and avoid
+global accelerators that swallow list/disclosure keys. The theme supplies
+presentation; application code supplies navigation structure and behavior.

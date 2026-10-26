@@ -100,3 +100,11 @@ foreach tab_variant : ['light', 'dark']
     find_program('dbus-run-session'), args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-tabs-native.py'), '4'],
     env: {'GDK_DPI_SCALE': '1.25', 'MAJORIS_TAB_TEXT_SCALE': '1.25', 'MAJORIS_VARIANT': tab_variant, 'GDK_BACKEND': 'x11', 'GTK_A11Y': 'none'}, timeout: 45)
 endforeach
+
+test('sidebar contracts',python,args:[files('tests/test-sidebar-contract.py')])
+foreach version : ['3','4']
+  foreach scale : ['1','2']
+    test('GTK'+version+' native sidebar '+scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-sidebar-native.py'),version],env:{'GDK_SCALE':scale,'GSK_RENDERER':'cairo','GTK_A11Y':'none','GIO_USE_VFS':'local'},timeout:60)
+  endforeach
+endforeach
+test('native sidebar input and adaptation',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 1440x1080x24',python.full_path(),files('tests/test-sidebar-interaction.py')],timeout:45)

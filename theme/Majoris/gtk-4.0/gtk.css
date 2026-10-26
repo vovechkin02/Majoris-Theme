@@ -77,9 +77,6 @@ notebook > header tab:checked { color: @text; font-weight: 600; border: none; ba
 row { border-radius: 4px; }
 row:hover { background-color: @hover; }
 row:selected { background-color: @primary_50; color: @primary_800; }
-.sidebar, .navigation-sidebar, .majoris-sidebar { background-color: @surface_secondary; padding: 12px 8px; border-right: 1px solid @border_soft; }
-.sidebar row, .navigation-sidebar row, .majoris-sidebar row { min-height: 34px; padding: 0 8px; margin-bottom: 2px; border: none; border-radius: 4px; }
-.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { background-color: @primary_50; color: @primary_700; font-weight: 600; background-image: linear-gradient(to bottom, transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)); background-size: 2px 100%; background-position: left; background-repeat: no-repeat; }
 .majoris-data-view row { padding: 9px 12px; font-size: 12px; border-top: 1px solid @border_soft; }
 .majoris-data-view row:selected { background-color: @primary_50; color: @primary_800; }
 .boxed-list.majoris-data-view > row { min-height: 0; padding: 9px 12px; }
@@ -268,6 +265,54 @@ popover.menu accelerator { min-height: 15px; padding: 2px 6px; margin-left: 16px
 popover.menu stack > box, popover.menu stack > box box { padding: 0; }
 /* GtkDropDown also tags its popup as .menu; keep its existing outer inset. */
 dropdown popover.menu > contents { padding: 8px; }
+/* Sidebar roles derive from the canonical light/dark references. No global width. */
+@define-color majoris_sidebar_surface #F2F2F4;
+@define-color majoris_sidebar_selected #EEF2FF;
+@define-color majoris_sidebar_hover #E0E7FF;
+@define-color majoris_sidebar_pressed #C7D2FE;
+.sidebar, .navigation-sidebar, .majoris-sidebar { background-color: #F2F2F4; color: @text; padding: 16px 8px; border: none; border-right: 1px solid @border_soft; box-shadow: none; }
+.sidebar:dir(rtl), .navigation-sidebar:dir(rtl), .majoris-sidebar:dir(rtl) { border-right: none; border-left: 1px solid @border_soft; }
+.sidebar.majoris-sidebar-native-divider, .navigation-sidebar.majoris-sidebar-native-divider, .majoris-sidebar.majoris-sidebar-native-divider { border-left: none; border-right: none; }
+.sidebar row, .navigation-sidebar row, .majoris-sidebar row { min-height: 32px; padding: 0 8px; margin: 0 0 4px; border: none; border-radius: 4px; background-color: transparent; background-image: none; box-shadow: none; color: @text; font-size: 14px; font-weight: 500; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); }
+.sidebar row:hover, .navigation-sidebar row:hover, .majoris-sidebar row:hover { background-color: @hover; }
+.sidebar row:active, .navigation-sidebar row:active, .majoris-sidebar row:active { background-color: @active; }
+.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { background-color: @majoris_sidebar_selected; color: @primary_700; font-weight: 600; background-image: linear-gradient(to bottom, transparent 8px, @primary_500 8px, @primary_500 calc(100% - 8px), transparent calc(100% - 8px)); background-size: 2px 100%; background-position: left; background-repeat: no-repeat; }
+.sidebar row:selected:hover, .navigation-sidebar row:selected:hover, .majoris-sidebar row:selected:hover { background-color: @majoris_sidebar_hover; background-image: linear-gradient(to bottom, transparent 8px, @primary_500 8px, @primary_500 calc(100% - 8px), transparent calc(100% - 8px)); }
+.sidebar row:selected:active, .navigation-sidebar row:selected:active, .majoris-sidebar row:selected:active { background-color: @majoris_sidebar_pressed; background-image: linear-gradient(to bottom, transparent 8px, @primary_500 8px, @primary_500 calc(100% - 8px), transparent calc(100% - 8px)); }
+.sidebar row:selected:dir(rtl), .navigation-sidebar row:selected:dir(rtl), .majoris-sidebar row:selected:dir(rtl) { background-position: right; }
+.sidebar row:focus-visible, .navigation-sidebar row:focus-visible, .majoris-sidebar row:focus-visible { outline: none; box-shadow: inset 0 0 0 2px @primary_500; }
+.sidebar row:backdrop, .navigation-sidebar row:backdrop, .majoris-sidebar row:backdrop { color: @text_secondary; }
+.sidebar row:selected:backdrop, .navigation-sidebar row:selected:backdrop, .majoris-sidebar row:selected:backdrop { color: mix(@primary_700, @text_secondary, .25); }
+.sidebar row:disabled, .navigation-sidebar row:disabled, .majoris-sidebar row:disabled, .sidebar row:disabled:hover, .navigation-sidebar row:disabled:hover, .majoris-sidebar row:disabled:hover, .sidebar row:disabled:active, .navigation-sidebar row:disabled:active, .majoris-sidebar row:disabled:active { background-color: transparent; background-image: none; color: @text_tertiary; font-weight: 500; opacity: 1; box-shadow: none; }
+.sidebar row > box, .navigation-sidebar row > box, .majoris-sidebar row > box { min-height: 0; padding: 0; margin: 0; }
+.sidebar row label, .navigation-sidebar row label, .majoris-sidebar row label { font-size: 14px; font-weight: inherit; color: inherit; }
+.sidebar row image, .navigation-sidebar row image, .majoris-sidebar row image { min-width: 16px; min-height: 16px; -gtk-icon-size: 16px; color: inherit; box-shadow: none; }
+.sidebar row.majoris-sidebar-child, .navigation-sidebar row.majoris-sidebar-child, .majoris-sidebar row.majoris-sidebar-child { padding-left: 24px; }
+.sidebar row.majoris-sidebar-child:dir(rtl), .navigation-sidebar row.majoris-sidebar-child:dir(rtl), .majoris-sidebar row.majoris-sidebar-child:dir(rtl) { padding-left: 8px; padding-right: 24px; }
+.majoris-sidebar-heading { font-size: 12px; font-weight: 600; color: @text_secondary; padding: 0 8px; margin: 16px 0 8px; background: transparent; border: none; box-shadow: none; }
+.majoris-sidebar-description { font-size: 12px; font-weight: 400; color: @text_secondary; }
+.sidebar .majoris-sidebar-badge, .navigation-sidebar .majoris-sidebar-badge, .majoris-sidebar .majoris-sidebar-badge { font-size: 12px; font-weight: 600; padding: 0 4px; min-height: 20px; border-radius: 4px; background-color: @hover; color: @text_secondary; }
+.sidebar row:selected .majoris-sidebar-badge, .navigation-sidebar row:selected .majoris-sidebar-badge, .majoris-sidebar row:selected .majoris-sidebar-badge { background-color: alpha(@primary_500,.14); color: inherit; }
+.sidebar expander.majoris-sidebar-group > title, .navigation-sidebar expander.majoris-sidebar-group > title, .majoris-sidebar expander.majoris-sidebar-group > title { min-height: 32px; padding: 0 8px; color: @text; font-size: 14px; font-weight: 500; border-radius: 4px; background: transparent; }
+.sidebar expander.majoris-sidebar-group > title:hover, .navigation-sidebar expander.majoris-sidebar-group > title:hover, .majoris-sidebar expander.majoris-sidebar-group > title:hover { background-color: @hover; }
+.sidebar expander.majoris-sidebar-group > title:focus-visible, .navigation-sidebar expander.majoris-sidebar-group > title:focus-visible, .majoris-sidebar expander.majoris-sidebar-group > title:focus-visible { outline: none; box-shadow: inset 0 0 0 2px @primary_500; }
+.sidebar list, .navigation-sidebar list, .majoris-sidebar list { background: transparent; border: none; box-shadow: none; }
+/* GtkStackSidebar's internal list owns its gutters, exactly once. */
+stacksidebar.sidebar, stacksidebar.navigation-sidebar, stacksidebar.majoris-sidebar { padding: 0; background: @majoris_sidebar_surface; border: none; border-right: 1px solid @border_soft; }
+stacksidebar.sidebar:dir(rtl), stacksidebar.navigation-sidebar:dir(rtl), stacksidebar.majoris-sidebar:dir(rtl) { border-right: none; border-left: 1px solid @border_soft; }
+stacksidebar > scrolledwindow > viewport > list, stacksidebar > scrolledwindow > list { padding: 16px 8px; background: @majoris_sidebar_surface; }
+
+
+/* GTK4 GtkExpander exposes expander-widget/box/title, unlike GTK3 expander/title. */
+.majoris-sidebar expander-widget.majoris-sidebar-group > box > title { min-height: 32px; padding: 0 8px; border-radius: 4px; background: transparent; }
+.majoris-sidebar expander-widget.majoris-sidebar-group > box > title:hover { background-color: @hover; }
+.majoris-sidebar expander-widget.majoris-sidebar-group:focus-visible > box > title { box-shadow: inset 0 0 0 2px @primary_500; }
+.majoris-sidebar-group-title { min-height: 32px; font-size: 14px; font-weight: 500; color: @text; }
+
+.sidebar .majoris-sidebar-description, .navigation-sidebar .majoris-sidebar-description, .majoris-sidebar .majoris-sidebar-description { font-size: 12px; font-weight: 400; color: @text_secondary; }
+
+/* Disclosure allocations align their title with ordinary 16px icon rows. */
+.majoris-sidebar expander-widget.majoris-sidebar-group > box > title > expander, .majoris-sidebar expander.majoris-sidebar-group > title > arrow { min-width: 16px; min-height: 16px; margin: 8px 0; }
 /* Supplemental editor components; libadwaita 1.7 native nodes, GTK4 only. */
 tabbar.majoris-document-tabs { background: @surface; color: @text_secondary; border: none; border-bottom: 1px solid @border_soft; padding: 0; min-height: 39px; }
 tabbar.majoris-document-tabs > revealer > .box { background: @surface; color: @text_secondary; padding: 0 6px; border: none; box-shadow: none; }
@@ -395,8 +440,7 @@ window.desktopwindow.background:backdrop,
 }
 
 /* Scoped UI typography: document and monospace widgets retain their fonts. */
-entry, spinbutton, checkbutton, dropdown, combobox, .sidebar row, .navigation-sidebar row, .majoris-sidebar row { font-size: 14px; font-weight: 500; }
-.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { font-weight: 600; }
+entry, spinbutton, checkbutton, dropdown, combobox { font-size: 14px; font-weight: 500; }
 .title-2 { font-size: 16px; font-weight: 600; }
 .majoris-display-heading { font-size: 32px; font-weight: 700; }
 

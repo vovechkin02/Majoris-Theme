@@ -11,8 +11,8 @@ variant=os.environ.get('MAJORIS_VARIANT','light')
 assert variant in ('light','dark')
 scale=os.environ.get('MAJORIS_CAPTURE_SCALE','1')
 assert scale in ('1','2')
-out=root/'artifacts/screenshots'/(variant+('-2x' if scale=='2' else ''));out.mkdir(parents=True,exist_ok=True)
-pages=['location','location-editing','location-narrow','editor','editor-source','editor-focus','editor-states','editor-overflow','layout','overview','scrolled','buttons','selection','inputs','ranges','preferences','navigation','data','menus','tooltip','feedback','dialog','status','simple','dense','split','states-buttons','states-controls','states-inputs','states-selection','states-navigation']
+out=root/os.environ.get('MAJORIS_CAPTURE_DIRECTORY','artifacts/screenshots')/(variant+('-2x' if scale=='2' else ''));out.mkdir(parents=True,exist_ok=True)
+pages=['sidebar','sidebar-basic','sidebar-states','sidebar-focus','sidebar-scroll','sidebar-narrow','sidebar-narrow-content','sidebar-large','sidebar-selected-pressed','sidebar-rtl','sidebar-backdrop','location','location-editing','location-narrow','editor','editor-source','editor-focus','editor-states','editor-overflow','layout','overview','scrolled','buttons','selection','inputs','ranges','preferences','navigation','data','menus','tooltip','feedback','dialog','status','simple','dense','split','states-buttons','states-controls','states-inputs','states-selection','states-navigation']
 pages+=['layout-'+str(width) for width in (360,390,650,900,1200)]
 pages+=['window-edge','window-edge-maximized','window-edge-fullscreen','window-edge-tiled','window-edge-tiled-left','window-edge-tiled-right','window-edge-tiled-top','window-edge-tiled-bottom']
 if os.environ.get('MAJORIS_CAPTURE_PAGES'): pages=os.environ['MAJORIS_CAPTURE_PAGES'].split(',')
@@ -44,6 +44,13 @@ with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
             try:
                 time.sleep(2.0)
                 assert process.poll() is None,f'{page} did not stay running; see log'
+                if page=='sidebar-backdrop':
+                    target=subprocess.check_output(['xdotool','search','--name','^Backdrop focus target$'],text=True).splitlines()[-1]
+                    subprocess.run(['xdotool','windowactivate','--sync',target],check=True)
+                    time.sleep(.2)
+                    active=subprocess.check_output(['xdotool','getactivewindow'],text=True).strip()
+                    assert int(active)==int(target), (active,target)
+                    (out/'sidebar-backdrop-focus.json').write_text(json.dumps({'focus_target':target,'active_window':active,'method':'real Openbox activation; no held backdrop CSS flags'},indent=2)+'\n')
                 if page.startswith('layout-'):
                     wid=subprocess.check_output(['xdotool','search','--name','^Majoris Widget Factory$'],text=True).splitlines()[0]
                     geometry=subprocess.check_output(['xdotool','getwindowgeometry','--shell',wid],text=True)

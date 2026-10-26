@@ -32,7 +32,8 @@ namespace MajorisThemeFactory {
             var sb=new Gtk.Button.with_label("Open split/sidebar window"); sb.clicked.connect(()=>new SplitFixture(app).present()); headers.append(sb);
             var status = new Adw.StatusPage (); status.title = "No files found"; status.description = "Try a different search or clear the current filters."; status.icon_name = "system-search-symbolic";
             stack.add_titled (status,"status","Status");
-            sidebar = new Gtk.StackSidebar (); sidebar.stack = stack; sidebar.add_css_class ("navigation-sidebar"); sidebar.set_size_request (212,-1);
+            stack.add_titled(new SidebarPage(app),"sidebar-design","Sidebar Design");
+            sidebar = new Gtk.StackSidebar (); sidebar.stack = stack; sidebar.add_css_class ("navigation-sidebar"); sidebar.set_size_request (224,-1);
             // Optional capture viewport: isolate available page width from navigation.
             var capture_width=Environment.get_variable("MAJORIS_CONTENT_WIDTH");
             if(capture_width!=null) {

@@ -58,3 +58,16 @@ never enter GTK3 outputs. [Geometry, Vala and ownership details](../docs/editor-
 
 These GTK4-only rules preserve standard toolbar buttons and reuse
 `majoris-document-tabs`. [Application interaction and ownership](../docs/gtk4-libadwaita.md#gtk4-location-bar).
+
+## Sidebar structures
+
+Use existing `.sidebar`, `.navigation-sidebar` or `.majoris-sidebar` scopes on
+one gutter owner. GtkStackSidebar's internal list has separate padding ownership
+from its wrapper. Native GtkListBoxRows own full interaction surfaces; do not
+style their labels as buttons. New opt-ins: `majoris-sidebar-heading`,
+`majoris-sidebar-description`, `majoris-sidebar-badge`, `majoris-sidebar-group`,
+`majoris-sidebar-group-title`, `majoris-sidebar-child` and
+`majoris-sidebar-native-divider`. The last class defers separation to a native owner only where that owner
+actually paints a divider; the fixture otherwise retains one CSS-owned line. No selector globally fixes sidebar width. GTK3 and GTK4
+use different expander nodes and indicator constructions but share the same
+geometry/roles. [Native Vala composition and states](../docs/sidebar-design.md).

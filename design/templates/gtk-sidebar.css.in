@@ -1,0 +1,48 @@
+/* Sidebar roles derive from the canonical light/dark references. No global width. */
+@define-color majoris_sidebar_surface ${.sidebar|background};
+@define-color majoris_sidebar_selected ${.nav.active|background};
+@define-color majoris_sidebar_hover ${.nav.active:hover|background};
+@define-color majoris_sidebar_pressed ${.nav.active:active|background};
+.sidebar, .navigation-sidebar, .majoris-sidebar { background-color: ${.sidebar|background}; color: @text; padding: ${.sidebar|padding}; border: none; border-right: 1px solid @border_soft; box-shadow: none; }
+.sidebar:dir(rtl), .navigation-sidebar:dir(rtl), .majoris-sidebar:dir(rtl) { border-right: none; border-left: 1px solid @border_soft; }
+.sidebar.majoris-sidebar-native-divider, .navigation-sidebar.majoris-sidebar-native-divider, .majoris-sidebar.majoris-sidebar-native-divider { border-left: none; border-right: none; }
+.sidebar row, .navigation-sidebar row, .majoris-sidebar row { min-height: ${.nav|min-height}; padding: ${.nav|padding}; margin: 0 0 ${.nav|margin-bottom}; border: none; border-radius: ${.nav|border-radius}; background-color: transparent; background-image: none; box-shadow: none; color: @text; font-size: ${.nav|font-size}; font-weight: 500; transition: background-color ${control_motion}, color ${control_motion}, box-shadow ${control_motion}; }
+.sidebar row:hover, .navigation-sidebar row:hover, .majoris-sidebar row:hover { background-color: @hover; }
+.sidebar row:active, .navigation-sidebar row:active, .majoris-sidebar row:active { background-color: @active; }
+.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { background-color: @majoris_sidebar_selected; color: ${sidebar_selected_text}; font-weight: 600; background-image: ${sidebar_indicator_image}; background-size: ${.nav.active:before|width} 100%; background-position: left; background-repeat: no-repeat; }
+.sidebar row:selected:hover, .navigation-sidebar row:selected:hover, .majoris-sidebar row:selected:hover { background-color: @majoris_sidebar_hover; background-image: ${sidebar_indicator_hover}; }
+.sidebar row:selected:active, .navigation-sidebar row:selected:active, .majoris-sidebar row:selected:active { background-color: @majoris_sidebar_pressed; background-image: ${sidebar_indicator_pressed}; }
+.sidebar row:selected:dir(rtl), .navigation-sidebar row:selected:dir(rtl), .majoris-sidebar row:selected:dir(rtl) { background-position: right; }
+.sidebar row:focus-visible, .navigation-sidebar row:focus-visible, .majoris-sidebar row:focus-visible { outline: none; box-shadow: inset 0 0 0 2px ${sidebar_focus}; }
+.sidebar row:backdrop, .navigation-sidebar row:backdrop, .majoris-sidebar row:backdrop { color: @text_secondary; }
+.sidebar row:selected:backdrop, .navigation-sidebar row:selected:backdrop, .majoris-sidebar row:selected:backdrop { color: mix(${sidebar_selected_text}, @text_secondary, .25); }
+.sidebar row:disabled, .navigation-sidebar row:disabled, .majoris-sidebar row:disabled, .sidebar row:disabled:hover, .navigation-sidebar row:disabled:hover, .majoris-sidebar row:disabled:hover, .sidebar row:disabled:active, .navigation-sidebar row:disabled:active, .majoris-sidebar row:disabled:active { background-color: transparent; background-image: none; color: @text_tertiary; font-weight: 500; opacity: 1; box-shadow: none; }
+.sidebar row > box, .navigation-sidebar row > box, .majoris-sidebar row > box { min-height: 0; padding: 0; margin: 0; }
+.sidebar row label, .navigation-sidebar row label, .majoris-sidebar row label { font-size: 14px; font-weight: inherit; color: inherit; }
+.sidebar row image, .navigation-sidebar row image, .majoris-sidebar row image { min-width: 16px; min-height: 16px; -gtk-icon-size: 16px; color: inherit; box-shadow: none; }
+.sidebar row.majoris-sidebar-child, .navigation-sidebar row.majoris-sidebar-child, .majoris-sidebar row.majoris-sidebar-child { padding-left: ${.nav-child|padding-inline-start}; }
+.sidebar row.majoris-sidebar-child:dir(rtl), .navigation-sidebar row.majoris-sidebar-child:dir(rtl), .majoris-sidebar row.majoris-sidebar-child:dir(rtl) { padding-left: 8px; padding-right: ${.nav-child|padding-inline-start}; }
+.majoris-sidebar-heading { font-size: ${.side-label|font-size}; font-weight: ${.side-label|font-weight}; color: @text_secondary; padding: ${.side-label|padding}; margin: ${.side-label|margin}; background: transparent; border: none; box-shadow: none; }
+.majoris-sidebar-description { font-size: 12px; font-weight: 400; color: @text_secondary; }
+.sidebar .majoris-sidebar-badge, .navigation-sidebar .majoris-sidebar-badge, .majoris-sidebar .majoris-sidebar-badge { font-size: 12px; font-weight: 600; padding: 0 4px; min-height: 20px; border-radius: 4px; background-color: @hover; color: @text_secondary; }
+.sidebar row:selected .majoris-sidebar-badge, .navigation-sidebar row:selected .majoris-sidebar-badge, .majoris-sidebar row:selected .majoris-sidebar-badge { background-color: alpha(@primary_500,.14); color: inherit; }
+.sidebar expander.majoris-sidebar-group > title, .navigation-sidebar expander.majoris-sidebar-group > title, .majoris-sidebar expander.majoris-sidebar-group > title { min-height: 32px; padding: 0 8px; color: @text; font-size: 14px; font-weight: 500; border-radius: 4px; background: transparent; }
+.sidebar expander.majoris-sidebar-group > title:hover, .navigation-sidebar expander.majoris-sidebar-group > title:hover, .majoris-sidebar expander.majoris-sidebar-group > title:hover { background-color: @hover; }
+.sidebar expander.majoris-sidebar-group > title:focus-visible, .navigation-sidebar expander.majoris-sidebar-group > title:focus-visible, .majoris-sidebar expander.majoris-sidebar-group > title:focus-visible { outline: none; box-shadow: inset 0 0 0 2px ${sidebar_focus}; }
+.sidebar list, .navigation-sidebar list, .majoris-sidebar list { background: transparent; border: none; box-shadow: none; }
+/* GtkStackSidebar's internal list owns its gutters, exactly once. */
+stacksidebar.sidebar, stacksidebar.navigation-sidebar, stacksidebar.majoris-sidebar { padding: 0; background: @majoris_sidebar_surface; border: none; border-right: 1px solid @border_soft; }
+stacksidebar.sidebar:dir(rtl), stacksidebar.navigation-sidebar:dir(rtl), stacksidebar.majoris-sidebar:dir(rtl) { border-right: none; border-left: 1px solid @border_soft; }
+stacksidebar > scrolledwindow > viewport > list, stacksidebar > scrolledwindow > list { padding: ${.sidebar|padding}; background: @majoris_sidebar_surface; }
+
+
+/* GTK4 GtkExpander exposes expander-widget/box/title, unlike GTK3 expander/title. */
+.majoris-sidebar expander-widget.majoris-sidebar-group > box > title { min-height: 32px; padding: 0 8px; border-radius: 4px; background: transparent; }
+.majoris-sidebar expander-widget.majoris-sidebar-group > box > title:hover { background-color: @hover; }
+.majoris-sidebar expander-widget.majoris-sidebar-group:focus-visible > box > title { box-shadow: inset 0 0 0 2px ${sidebar_focus}; }
+.majoris-sidebar-group-title { min-height: 32px; font-size: 14px; font-weight: 500; color: @text; }
+
+.sidebar .majoris-sidebar-description, .navigation-sidebar .majoris-sidebar-description, .majoris-sidebar .majoris-sidebar-description { font-size: 12px; font-weight: 400; color: @text_secondary; }
+
+/* Disclosure allocations align their title with ordinary 16px icon rows. */
+.majoris-sidebar expander-widget.majoris-sidebar-group > box > title > expander, .majoris-sidebar expander.majoris-sidebar-group > title > arrow { min-width: 16px; min-height: 16px; margin: 8px 0; }

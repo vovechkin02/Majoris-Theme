@@ -85,3 +85,11 @@ with the theme. [Integration guide](docs/editor-components.md) ·
 [Validation report](docs/editor-implementation-report.md).
 
 Menu and interface typography follow the [finalisation report](docs/menu-finalisation.md), with native Pango/allocation tests and review captures at both display scales.
+
+## Sidebar design
+
+The factory's **Sidebar Design** page and `./scripts/run-factory.sh --page=sidebar`
+show the final navigation component. Preferred width is 224px; native rows have
+a 32px minimum, 4px gap, 16px icons and a fixed-inset selected indicator.
+[Integration guide](docs/sidebar-design.md) ·
+[Before/after table and native validation](docs/sidebar-finalisation.md).

@@ -7,6 +7,7 @@ def output(path,content):
         assert path.read_text()==content,'Generated theme drift: '+str(path.relative_to(ROOT))
     else: path.write_text(content)
 values={**t['color'], **{k+'_radius':str(v)+'px' for k,v in t['radius'].items()}, **{k+'_motion':v for k,v in t['motion_css'].items()}, **{k+'_shadow':v for k,v in t['shadow'].items()}, **{k:str(v)+'px' for k,v in t['window'].items()}}
+from generate_sidebar import sidebar_values
 from generate_editor import editor_values, generate_schemes
 values.update(editor_values('light'))
 values['control_content_size']=str(t['window']['window_control_size']-2)+'px'
@@ -31,6 +32,7 @@ def render(s):
 colors='/* Generated from design/tokens.json. */\n'+''.join('@define-color '+k+' '+v+';\n' for k,v in t['color'].items())
 colors+=''.join('@define-color '+k+' @'+v+';\n' for k,v in {'accent_color':'primary_500','accent_bg_color':'primary_500','accent_fg_color':'surface','window_bg_color':'background','window_fg_color':'text','view_bg_color':'surface','view_fg_color':'text','headerbar_bg_color':'surface','headerbar_fg_color':'text','card_bg_color':'surface','card_fg_color':'text','popover_bg_color':'surface','popover_fg_color':'text','dialog_bg_color':'surface','dialog_fg_color':'text','destructive_bg_color':'danger','destructive_fg_color':'surface','success_bg_color':'success','warning_bg_color':'warning','theme_bg_color':'background','theme_fg_color':'text','theme_base_color':'surface','theme_text_color':'text','theme_selected_bg_color':'primary_500','theme_selected_fg_color':'surface'}.items())
 for version in ('3','4'):
+    values.update(sidebar_values(t,'light',version))
     directory=ROOT/f'theme/Majoris/gtk-{version}.0'
     directory.mkdir(parents=True,exist_ok=True)
     (directory/'assets').mkdir(exist_ok=True)
@@ -41,6 +43,9 @@ for version in ('3','4'):
     shared,desktop=shared.split('/* Desktop Icons NG:',1)
     desktop='/* Desktop Icons NG:'+desktop
     specific=(ROOT/f'design/templates/gtk{version}.css.in').read_text()
+    sidebar=(ROOT/'design/templates/gtk-sidebar.css.in').read_text()
+    if version=='3': sidebar=sidebar.replace(':focus-visible',':focus').replace('-gtk-icon-size: 16px;','')
+    specific+=sidebar
     if version=='4': specific+=(ROOT/'design/templates/gtk4-editor.css.in').read_text()+(ROOT/'design/templates/gtk4-location.css.in').read_text()
     if version=='4':
         # GTK4 distinguishes keyboard-visible button focus; entries keep focus
@@ -49,10 +54,8 @@ for version in ('3','4'):
     if version=='3':
         shared=shared.replace('${.tab.active|font-weight}', '600').replace('${.nav.active|font-weight}', '600')
         # GTK3 gradients do not support calc(); tabs use a label-owned underline
-        # below, and sidebar rows have a fixed 34px target so percentage stops
-        # faithfully reproduce the HTML's 9px vertical insets.
+        # below. Sidebar fixed insets are generated separately for each toolkit.
         shared=shared.replace('transparent 10px, @primary_500 10px','transparent 10%, @primary_500 10%').replace('calc(100% - 10px)','90%')
-        shared=shared.replace('transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)', 'transparent 26.470588%, @primary_500 26.470588%, @primary_500 73.529412%, transparent 73.529412%')
     base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
     output(directory/'gtk.css','/* Generated; edit design/templates and regenerate. */\n'+base+'@import url("colors.css");\n'+render(shared+specific+desktop))
 p=ROOT/'theme/Majoris/gnome-shell/gnome-shell.css'

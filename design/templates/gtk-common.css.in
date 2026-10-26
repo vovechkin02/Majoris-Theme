@@ -75,9 +75,6 @@ notebook > header tab:checked { color: @text; font-weight: ${.tab.active|font-we
 row { border-radius: ${control_radius}; }
 row:hover { background-color: @hover; }
 row:selected { background-color: @primary_50; color: @primary_800; }
-.sidebar, .navigation-sidebar, .majoris-sidebar { background-color: @surface_secondary; padding: ${.sidebar|padding}; border-right: 1px solid @border_soft; }
-.sidebar row, .navigation-sidebar row, .majoris-sidebar row { min-height: ${.nav|height}; padding: ${.nav|padding}; margin-bottom: ${.nav|margin-bottom}; border: none; border-radius: ${.nav|border-radius}; }
-.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { background-color: @primary_50; color: @primary_700; font-weight: ${.nav.active|font-weight}; background-image: linear-gradient(to bottom, transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)); background-size: 2px 100%; background-position: left; background-repeat: no-repeat; }
 .majoris-data-view row { padding: ${.table-row div|padding}; font-size: ${.table-row|font-size}; border-top: 1px solid @border_soft; }
 .majoris-data-view row:selected { background-color: @primary_50; color: @primary_800; }
 .boxed-list.majoris-data-view > row { min-height: 0; padding: ${.table-row div|padding}; }
@@ -144,8 +141,7 @@ window.desktopwindow.background:backdrop,
 }
 
 /* Scoped UI typography: document and monospace widgets retain their fonts. */
-entry, spinbutton, checkbutton, dropdown, combobox, .sidebar row, .navigation-sidebar row, .majoris-sidebar row { font-size: 14px; font-weight: 500; }
-.sidebar row:selected, .navigation-sidebar row:selected, .majoris-sidebar row:selected { font-weight: 600; }
+entry, spinbutton, checkbutton, dropdown, combobox { font-size: 14px; font-weight: 500; }
 .title-2 { font-size: 16px; font-weight: 600; }
 .majoris-display-heading { font-size: 32px; font-weight: 700; }
 

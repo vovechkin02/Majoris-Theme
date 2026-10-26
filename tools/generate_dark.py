@@ -1,5 +1,6 @@
 """Generate the dark variant from the effective dark HTML cascade."""
 import json,re
+from generate_sidebar import sidebar_values
 from generate_editor import editor_values
 from design import ROOT,extract,html_value
 
@@ -22,6 +23,7 @@ def generate(output):
     colors+=''.join('@define-color '+name+' '+t['semantic_color'][key]+';\n' for name,key in aliases.items())
     for name in ('accent_fg_color','destructive_fg_color','theme_selected_fg_color'): colors+='@define-color '+name+' #FFFFFF;\n'
     for version in ('3','4'):
+        values.update(sidebar_values(t,'dark',version))
         directory=ROOT/f'theme/Majoris/gtk-{version}.0'
         output(directory/'colors-dark.css',colors)
         output(directory/'assets/spinner-dark.svg','<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="none" stroke="'+html_value(t,'.spinner','border-color')+'" stroke-width="2"/><path d="M3.63604 3.63604 A9 9 0 0 1 16.36396 3.63604" fill="none" stroke="'+html_value(t,'.spinner','border-top-color')+'" stroke-width="2"/></svg>\n')
@@ -31,7 +33,7 @@ def generate(output):
         specific=(ROOT/f'design/templates/gtk{version}.css.in').read_text()
         if version=='4': shared=re.sub(r'(button(?:\.[\w-]+)?):focus\b',r'\1:focus-visible',shared)
         else:
-            shared=shared.replace('${.tab.active|font-weight}','600').replace('${.nav.active|font-weight}','600').replace('transparent 10px, @primary_500 10px','transparent 10%, @primary_500 10%').replace('calc(100% - 10px)','90%').replace('transparent 9px, @primary_500 9px, @primary_500 calc(100% - 9px), transparent calc(100% - 9px)','transparent 26.470588%, @primary_500 26.470588%, @primary_500 73.529412%, transparent 73.529412%')
+            shared=shared.replace('${.tab.active|font-weight}','600').replace('${.nav.active|font-weight}','600').replace('transparent 10px, @primary_500 10px','transparent 10%, @primary_500 10%').replace('calc(100% - 10px)','90%')
         # Target only semantic action/focus declarations, never all palette uses.
         lines=[]
         for line in (shared+specific).splitlines(keepends=True):
@@ -44,12 +46,15 @@ def generate(output):
             lines.append(line)
         css=render(''.join(lines)).replace('rgba(99,102,241,.24)','rgba(129,140,248,.34)').replace('alpha(@primary_500,.24)','alpha(@focus_color,.34)').replace('assets/spinner.svg','assets/spinner-dark.svg')
         extra=render((ROOT/'design/templates/gtk-dark.css.in').read_text())
-        if version=='3': extra=extra.replace(':focus-visible',':focus').replace('calc(100% - 9px)','73.529412%').replace('transparent 9px, #818CF8 9px','transparent 26.470588%, #818CF8 26.470588%').replace('#818CF8 73.529412%, transparent 73.529412%','#818CF8 73.529412%, transparent 73.529412%')
+        if version=='3': extra=extra.replace(':focus-visible',':focus')
         if version=='3':
             extra=re.sub(r'notebook > header tab:checked \{ background-image:.*?\}\n', '', extra)
             extra=extra.replace('popover.background { background: transparent; }','')
             extra+=render((ROOT/'design/templates/gtk3-dark.css.in').read_text())
         if version=='4': extra+=render((ROOT/'design/templates/gtk4-editor.css.in').read_text()+(ROOT/'design/templates/gtk4-location.css.in').read_text())
+        sidebar=(ROOT/'design/templates/gtk-sidebar.css.in').read_text()
+        if version=='3': sidebar=sidebar.replace(':focus-visible',':focus').replace('-gtk-icon-size: 16px;','')
+        extra+=render(sidebar)
         base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
         output(directory/'gtk-dark.css','/* Generated: shared geometry, effective dark cascade, native overrides. */\n'+base+'@import url("colors.css");\n@import url("colors-dark.css");\n'+css+extra+render(desktop))
     # Explicit Shell roles avoid substring replacements matching background-color.

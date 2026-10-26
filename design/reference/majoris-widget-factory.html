@@ -58,13 +58,13 @@ body{
 }
 .toolbar{display:flex;gap:4px;align-items:center}
 .title{justify-self:center;font-size:14px;font-weight:700}
-.shell{display:grid;grid-template-columns:212px 1fr;min-height:870px}
-.sidebar{background:var(--surface2);border-right:1px solid var(--border-soft);padding:12px 8px}
-.side-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:8px 8px 6px}
-.nav{height:34px;display:flex;align-items:center;gap:8px;padding:0 8px;border-radius:4px;font-size:13px;margin-bottom:2px;cursor:pointer;position:relative;transition:background-color var(--motion-control),color var(--motion-control)}
+.shell{display:grid;grid-template-columns:224px 1fr;min-height:870px}
+.sidebar{background:var(--surface2);border-right:1px solid var(--border-soft);padding:16px 8px}
+.side-label{font-size:12px;font-weight:600;color:var(--text2);padding:0 8px;margin:16px 0 8px}
+.nav{min-height:32px;display:flex;align-items:center;gap:8px;padding:0 8px;border-radius:4px;font-size:14px;font-weight:500;margin-bottom:4px;cursor:pointer;position:relative;transition:background-color var(--motion-control),color var(--motion-control)}
 .nav:hover{background:var(--hover)}
-.nav.active{background:var(--p50);color:var(--p700);font-weight:650}
-.nav.active:before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:2px;border-radius:2px;background:var(--p500)}
+.nav.active{background:var(--p50);color:var(--p700);font-weight:600}
+.nav.active:before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:2px;border-radius:2px;background:var(--p500)}
 .content{padding:24px;overflow:hidden}
 .page-title{margin:0 0 4px;font-size:24px;letter-spacing:-.02em}
 .page-sub{margin:0 0 20px;color:var(--text2);font-size:13px}
@@ -315,6 +315,21 @@ kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px soli
 .menu-item[aria-disabled=true]{opacity:.45;pointer-events:none}
 .menu-item.destructive{color:#DC3C4D}
 .menu-icon{width:16px;height:16px;margin-right:8px;display:inline-block;color:#6366F1}
+
+/* Sidebar finalisation: layout structure, ellipsis and collapse are app-owned. */
+.nav.active:hover{background:var(--p100)}
+.nav.active:active{background:var(--p200)}
+.nav:active{background:var(--active)}
+.nav:focus-visible{outline:2px solid var(--p500);outline-offset:-2px}
+.nav[aria-disabled="true"]{color:var(--text3);background:transparent;cursor:default}
+.nav-icon{width:16px;height:16px;flex:none;fill:currentColor}
+.nav-text{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-badge{font-size:12px;font-weight:600;border-radius:4px;padding:0 4px;background:var(--hover);flex:none}
+.nav-child{padding-inline-start:24px}
+.nav-description{font-size:12px;font-weight:400;color:var(--text2);padding:0 8px}
+.sidebar details>summary{list-style:none;cursor:pointer}
+.sidebar details>summary::marker{display:none}
+html[dir="rtl"] .nav.active:before{left:auto;right:0}
 </style>
 <style>
 /* Document tabs: independent from notebook and segmented navigation. */
@@ -371,19 +386,14 @@ kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px soli
 </div>
 </div>
 <div class="shell">
-<aside class="sidebar">
-<div class="side-label">Controls</div>
-<div class="nav active">◈ <span>Overview</span></div>
-<div class="nav">▣ <span>Buttons</span></div>
-<div class="nav">⌨ <span>Inputs</span></div>
-<div class="nav">✓ <span>Selection</span></div>
-<div class="nav">↔ <span>Ranges</span></div>
-<div class="side-label">Adwaita</div>
-<div class="nav">☷ <span>Rows &amp; Lists</span></div>
-<div class="nav">▤ <span>Navigation</span></div>
-<div class="nav">◫ <span>Menus</span></div>
-<div class="nav">◇ <span>Dialogs</span></div>
-<div class="nav">● <span>Status &amp; Feedback</span></div>
+<aside class="sidebar" aria-label="Example application navigation">
+<div class="side-label">Favorites</div>
+<div class="nav active" tabindex="0" title="Home"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Home</span></div><div class="nav" tabindex="0" title="Documents"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Documents</span><span class="nav-badge">12</span></div><div class="nav" tabindex="0" title="Downloads"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Downloads</span></div>
+<div class="side-label">Locations</div>
+<div class="nav" tabindex="0" title="Computer"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Computer</span></div><div class="nav" tabindex="0" title="Recently Opened Files"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Recently Opened Files</span></div><div class="nav" tabindex="0" title="Trash"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Trash</span></div>
+<details open><summary class="nav">Devices <span aria-hidden="true">⌄</span></summary><div class="nav nav-child" tabindex="0" title="Internal Drive"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Internal Drive</span></div><div class="nav nav-child" tabindex="0" title="External Storage Devices"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">External Storage Devices</span></div></details>
+<div class="side-label">Network</div>
+<div class="nav" tabindex="0" title="Shared Network Locations"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Shared Network Locations</span><span class="nav-badge">3</span></div><div class="nav" tabindex="0" title="A Very Long Shared Network Folder Name"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">A Very Long Shared Network Folder Name</span></div><p class="nav-description">224px recommended; width, icons, grouping, badges and responsive collapse are application-owned.</p>
 </aside>
 <main class="content">
 <h2 class="page-title">GTK &amp; libadwaita Controls</h2>
