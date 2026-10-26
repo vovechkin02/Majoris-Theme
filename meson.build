@@ -108,3 +108,9 @@ foreach version : ['3','4']
   endforeach
 endforeach
 test('native sidebar input and adaptation',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 1440x1080x24',python.full_path(),files('tests/test-sidebar-interaction.py')],timeout:45)
+
+foreach version : ['3','4']
+  foreach scale : ['1','2']
+    test('GTK'+version+' sidebar initial padding '+scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-sidebar-padding.py'),version],env:{'GDK_SCALE':scale,'GSK_RENDERER':'cairo','GTK_A11Y':'none','GIO_USE_VFS':'local','ADW_DISABLE_PORTAL':'1'},timeout:30)
+  endforeach
+endforeach

@@ -310,3 +310,13 @@ In particular, actual enlarged Pango text is tested without claiming that
 legacy Xft DPI or GNOME's text-scaling settings automatically alter fixed CSS
 pixel typography. Real screen-reader, high-contrast and session settings need
 the Majoris VM.
+
+### Initial sidebar padding
+
+The four `sidebar initial padding` tests exercise GTK3/GTK4 at 1× and 2×,
+including visibility/removal/reordering and direct-row starts in light/dark.
+See [native spacing evidence](sidebar-padding.md). Capture the fixtures with:
+
+```bash
+MAJORIS_CAPTURE_DIRECTORY=artifacts/sidebar-padding MAJORIS_CAPTURE_PAGES=sidebar,sidebar-no-heading,sidebar-first-hidden,sidebar-first-removed,sidebar-scroll ./scripts/capture-visual-regressions.sh --both
+```

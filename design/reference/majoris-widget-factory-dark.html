@@ -61,6 +61,7 @@ body{
 .shell{display:grid;grid-template-columns:224px 1fr;min-height:870px}
 .sidebar{background:var(--surface2);border-right:1px solid var(--border-soft);padding:16px 8px}
 .side-label{font-size:12px;font-weight:600;color:var(--text2);padding:0 8px;margin:16px 0 8px}
+.side-label-first { margin-top: 0; }
 .nav{min-height:32px;display:flex;align-items:center;gap:8px;padding:0 8px;border-radius:4px;font-size:14px;font-weight:500;margin-bottom:4px;cursor:pointer;position:relative;transition:background-color var(--motion-control),color var(--motion-control)}
 .nav:hover{background:var(--hover)}
 .nav.active{background:var(--p50);color:var(--p700);font-weight:600}
@@ -551,7 +552,7 @@ html[dir="rtl"] .nav.active:before{left:auto;right:0}
 </div>
 <div class="shell">
 <aside class="sidebar" aria-label="Example application navigation">
-<div class="side-label">Favorites</div>
+<div class="side-label side-label-first">Favorites</div>
 <div class="nav active" tabindex="0" title="Home"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Home</span></div><div class="nav" tabindex="0" title="Documents"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Documents</span><span class="nav-badge">12</span></div><div class="nav" tabindex="0" title="Downloads"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Downloads</span></div>
 <div class="side-label">Locations</div>
 <div class="nav" tabindex="0" title="Computer"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Computer</span></div><div class="nav" tabindex="0" title="Recently Opened Files"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Recently Opened Files</span></div><div class="nav" tabindex="0" title="Trash"><svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span class="nav-text">Trash</span></div>

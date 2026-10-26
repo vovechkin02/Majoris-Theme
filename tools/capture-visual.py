@@ -33,6 +33,7 @@ with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
         with (out/f'{page}.log').open('w') as log:
             capture_env=dict(env)
             capture_page=page
+            if page.startswith("sidebar"):capture_env["MAJORIS_SIDEBAR_REPORT"]=str(out/(page+"-geometry.json"))
             if page=='location-narrow':
                 capture_env['MAJORIS_CONTENT_WIDTH']='480'
                 capture_page='location'

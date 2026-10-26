@@ -224,6 +224,9 @@
       "padding": "0 8px",
       "margin": "16px 0 8px"
     },
+    ".side-label-first": {
+      "margin-top": "0"
+    },
     ".nav": {
       "min-height": "32px",
       "display": "flex",

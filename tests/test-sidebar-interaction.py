@@ -29,7 +29,8 @@ try:
   with (out/'interaction.log').open('w') as log:
    app=subprocess.Popen([str(root/'build/factory/majoris-theme-factory'),'--page=sidebar','--light'],env=env,stdout=log,stderr=log)
    try:
-    initial=read(lambda r:r['sidebar_width']>=224 and not r['collapsed']);assert initial['sidebar_width']==224,initial
+    initial=read(lambda r:r['sidebar_width']>=224 and not r['collapsed'] and len(r['headings'])==3 and all(h['bounds'][3]>0 for h in r['headings']));assert initial['sidebar_width']==224,initial
+    assert [(h['first'],h['top_margin'],h['bottom_margin']) for h in initial['headings']]==[(True,0,8),(False,16,8),(False,16,8)]
     wid=command('search','--name','^Majoris Sidebar Design$').splitlines()[0];command('windowactivate','--sync',wid)
     click(initial['rows'][1]['bounds']);selected=read(lambda r:r['selected']=='Documents')
     assert selected['rows'][1]['weight']==600
@@ -68,6 +69,15 @@ try:
     assert top['rows'][0]['bounds'][1]>=48 and top['rows'][0]['bounds'][1]+32<=650
     evidence.append({'event':'native Home keyboard scrolling','selected':'Home','scroll':top['scroll'],'focused_row_visible':True})
    finally:app.terminate();app.wait(timeout=5)
+   for mode in ('sidebar-first-hidden','sidebar-first-removed'):
+    report.unlink(missing_ok=True)
+    app=subprocess.Popen([str(root/'build/factory/majoris-theme-factory'),'--page='+mode,'--light'],env=env,stdout=log,stderr=log)
+    try:
+     changed=read(lambda r:len(r['headings'])==2 and r['headings'][0]['title']=='Locations' and all(h['bounds'][3]>0 for h in r['headings']))
+     assert [(h['first'],h['top_margin'],h['bottom_margin']) for h in changed['headings']]==[(True,0,8),(False,16,8)],changed
+     assert changed['headings'][0]['bounds'][1]-changed['surface'][1]==16,changed
+     evidence.append({'event':mode,'headings':changed['headings']})
+    finally:app.terminate();app.wait(timeout=5)
   assert 'CRITICAL' not in (out/'interaction.log').read_text()
   (out/'interaction.json').write_text(json.dumps(evidence,indent=2)+'\n')
 finally:wm.terminate();wm.wait(timeout=5)

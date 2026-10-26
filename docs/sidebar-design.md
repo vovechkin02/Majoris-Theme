@@ -14,7 +14,7 @@ retain their existing authority.
 | Symbolic icon / icon-label gap | 16×16px / 8px |
 | Selection stripe | 2px wide, 8px top and bottom |
 | Normal / selected label | Plus Jakarta Sans 14px, Medium 500 / SemiBold 600 |
-| Heading | 12px/600, 8px horizontal inset, 16px above and 8px below |
+| Heading | 12px/600, 8px horizontal inset, 0px above the first heading; 16px above later headings; 8px below |
 | Supporting description / badge | 12px/400 secondary text / 12px/600 count |
 | Optional child indentation | 16px beyond parent content (24px total row inset) |
 | Transition | 128ms cubic-bezier(.2,0,0,1), stationary |
@@ -31,6 +31,9 @@ minimum line area and 4px corners rather than capsules.
   surfaces and row states; none sets a global sidebar width.
 - `majoris-sidebar-heading`: nonselectable Label, preferably a ListBox row
   header. CSS owns its group spacing; do not repeat that margin in application code.
+- `majoris-sidebar-heading-first`: combine with the heading class only when
+  its section begins the visible navigation content; this removes its top margin.
+  The sidebar still supplies its 16px outer inset.
 - `majoris-sidebar-description`: optional secondary 12px/400 text, including
   descriptions inside explicitly composed rows.
 - `majoris-sidebar-badge`: optional trailing Label/count. The application
@@ -181,3 +184,17 @@ accessible descriptions, group composition, counts, preferred widths, adaptive
 collapse, focus/selection coordination and actual navigation remain app-owned.
 See [the implementation report](sidebar-finalisation.md) for before/after values,
 validation evidence and remaining checks.
+
+## Initial section spacing
+
+`SidebarNavigation.configure(list)` installs the factory's reusable native
+header composition. `SidebarNavigation.append_navigation(list, row, section)`
+associates an optional section title with a row. GTK's public header callback
+supplies the previous visible row; a null predecessor applies the first-heading
+modifier. Visibility changes invalidate headers, while GTK also re-evaluates
+headers after insertions, removals and reordering. Hide all rows belonging to a
+section to hide that section; do not leave an empty header or spacer behind.
+A list beginning directly with a row needs no heading or compensation margin.
+Standalone headings in static compositions explicitly receive the same modifier.
+GTK3 apps can use the equivalent public ListBox header callback and CSS classes.
+See [padding correction and native measurements](sidebar-padding.md).

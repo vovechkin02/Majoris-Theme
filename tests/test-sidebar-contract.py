@@ -23,6 +23,7 @@ for version in ('3','4'):
    expect(css,root+'.majoris-sidebar-native-divider','border-right','none')
    expect(css,root+' row:selected','background-size','2px 100%')
    assert 'inset 0 0 0 2px' in css[root+' row:'+('focus-visible' if version=='4' else 'focus')]['box-shadow']
+  expect(css,'.majoris-sidebar-heading.majoris-sidebar-heading-first','margin-top','0')
   expect(css,'.majoris-sidebar-heading','font-size','12px')
   expect(css,'.majoris-sidebar-heading','font-weight','600')
   expect(css,'.majoris-sidebar .majoris-sidebar-badge','font-size','12px')

@@ -17,6 +17,25 @@ namespace MajorisThemeFactory {
             if(count!=null)update_property(Gtk.AccessibleProperty.DESCRIPTION,"Count: "+count,-1);
         }
     }
+    // GTK supplies the previous visible row to this public header callback.
+    // Re-evaluation on append/remove/reorder/visibility keeps the first heading semantic.
+    public class SidebarNavigation : Object {
+        public static void configure(Gtk.ListBox list) {
+            list.set_header_func((row,before)=>{
+                var text=row.get_data<string>("majoris-section");
+                if(text==null){row.set_header(null);return;}
+                var heading=new Gtk.Label(text);heading.xalign=0;
+                heading.add_css_class("majoris-sidebar-heading");
+                if(before==null)heading.add_css_class("majoris-sidebar-heading-first");
+                row.set_header(heading);
+            });
+        }
+        public static void append_navigation(Gtk.ListBox list,SidebarRow row,string? section=null) {
+            row.set_data<string>("majoris-section",section);
+            row.notify["visible"].connect(()=>list.invalidate_headers());
+            list.append(row);
+        }
+    }
     public class SidebarPage : Gtk.Box {
         public SidebarPage(Gtk.Application app) {
             Object(orientation:Gtk.Orientation.VERTICAL,spacing:16);
@@ -27,7 +46,7 @@ namespace MajorisThemeFactory {
             var previews=new Gtk.Box(Gtk.Orientation.HORIZONTAL,16);
             foreach(bool icons in new bool[]{false,true}) {
                 var surface=new Gtk.Box(Gtk.Orientation.VERTICAL,0);surface.add_css_class("majoris-sidebar");surface.set_size_request(224,-1);surface.valign=Gtk.Align.START;
-                var heading=new Gtk.Label(icons?"Icon navigation":"Plain navigation");heading.xalign=0;heading.add_css_class("majoris-sidebar-heading");surface.append(heading);
+                var heading=new Gtk.Label(icons?"Icon navigation":"Plain navigation");heading.xalign=0;heading.add_css_class("majoris-sidebar-heading");heading.add_css_class("majoris-sidebar-heading-first");surface.append(heading);
                 var list=new Gtk.ListBox();list.selection_mode=Gtk.SelectionMode.SINGLE;
                 foreach(var text in new string[]{"Home","Documents","Downloads","Shared Network Locations"})list.append(new SidebarRow(text,icons?"folder-symbolic":null,text=="Documents"?"12":null));
                 list.select_row(list.get_row_at_index(0));surface.append(list);previews.append(surface);
@@ -52,17 +71,15 @@ namespace MajorisThemeFactory {
             var sidebar_view=new Adw.ToolbarView();var sidebar_bar=new Adw.HeaderBar();sidebar_bar.show_back_button=false;sidebar_bar.title_widget=new Gtk.Label("Places");sidebar_view.add_top_bar(sidebar_bar);
             var forward=icon_button("go-next-symbolic","Show content");forward_button=forward;forward.clicked.connect(()=>split.show_content=true);sidebar_bar.pack_end(forward);split.bind_property("collapsed",forward,"visible",BindingFlags.SYNC_CREATE);
             surface=new Gtk.Box(Gtk.Orientation.VERTICAL,0);surface.add_css_class("majoris-sidebar");
-            navigation=new Gtk.ListBox();navigation.selection_mode=Gtk.SelectionMode.SINGLE;
+            navigation=new Gtk.ListBox();SidebarNavigation.configure(navigation);navigation.selection_mode=Gtk.SelectionMode.SINGLE;
             string[] labels={"Home","Documents","Downloads","Recently Opened Files","Settings","Preferences","Network","A Very Long Shared Network Folder Name"};
             for(int i=0;i<labels.length;i++) {
                 var row=new SidebarRow(labels[i],mode=="sidebar-basic"?null:(i==0?"user-home-symbolic":"folder-symbolic"),i==1?"12":(i==7?"3":null));
                 if(i==5)row.sensitive=false;
-                navigation.append(row);
+                SidebarNavigation.append_navigation(navigation,row,mode=="sidebar-no-heading"?null:(i==0?"Favorites":(i==4?"Locations":(i==6?"Network":null))));
             }
-            navigation.set_header_func((row,before)=>{
-                string text="";if(row.get_index()==0)text="Favorites";if(row.get_index()==4)text="Locations";if(row.get_index()==6)text="Network";
-                if(text!=""){var heading=new Gtk.Label(text);heading.xalign=0;heading.add_css_class("majoris-sidebar-heading");row.set_header(heading);}else row.set_header(null);
-            });
+            if(mode=="sidebar-first-hidden")Timeout.add(500,()=>{for(int i=0;i<4;i++)navigation.get_row_at_index(i).visible=false;return Source.REMOVE;});
+            if(mode=="sidebar-first-removed")Timeout.add(500,()=>{for(int i=0;i<4;i++)navigation.remove(navigation.get_row_at_index(0));return Source.REMOVE;});
             surface.append(navigation);
             group=new Gtk.Expander(null);var group_title=new Gtk.Label("Devices");group_title.xalign=0;group_title.margin_start=8;group_title.add_css_class("majoris-sidebar-group-title");group.label_widget=group_title;group.add_css_class("majoris-sidebar-group");group.expanded=true;
             children=new Gtk.ListBox();children.selection_mode=Gtk.SelectionMode.SINGLE;
@@ -103,7 +120,17 @@ namespace MajorisThemeFactory {
                 var target=new Adw.ApplicationWindow(app);target.title="Backdrop focus target";target.default_width=280;target.default_height=120;
                 var view=new Adw.ToolbarView();view.add_top_bar(new Adw.HeaderBar());var note=new Gtk.Label("Native inactive-window check");note.wrap=true;view.content=note;target.content=view;target.present();return Source.REMOVE;
             });
-            if(mode=="sidebar-scroll")Timeout.add(600,()=>{navigation.select_row(navigation.get_row_at_index(37));scroll.vadjustment.value=scroll.vadjustment.upper-scroll.vadjustment.page_size;return Source.REMOVE;});
+            if(mode=="sidebar-scroll") {
+                // Wait for a measured scroll range, rather than assuming the
+                // first native layout is complete at a fixed wall-clock delay.
+                bool requested=false;
+                scroll.vadjustment.changed.connect(()=>{
+                    if(requested || scroll.vadjustment.upper<=scroll.vadjustment.page_size)return;
+                    requested=true;
+                    Idle.add(()=>{var last=navigation.get_row_at_index(37);navigation.select_row(last);last.grab_focus();scroll.vadjustment.value=scroll.vadjustment.upper-scroll.vadjustment.page_size;return Source.REMOVE;});
+                });
+            }
+
             if(mode=="sidebar-large") {
                 var attributes=new Pango.AttrList();attributes.insert(Pango.attr_scale_new(2.0));
                 for(var row=navigation.get_first_child();row!=null;row=row.get_next_sibling()) {
@@ -135,9 +162,17 @@ namespace MajorisThemeFactory {
             json.append("\"sidebar_width\":%d,\"collapsed\":%s,\"show_content\":%s,\"selected\":\"%s\",\"expanded\":%s,\"scroll\":%g,\"rows\":[".printf(split.sidebar.get_allocated_width(),split.collapsed.to_string(),split.show_content.to_string(),selected_title,group.expanded.to_string(),scroll.vadjustment.value));
             bool first=true;
             for(int i=0;i<8;i++) {
-                var row=navigation.get_row_at_index(i) as SidebarRow;if(!first)json.append(",");first=false;
+                var row=navigation.get_row_at_index(i) as SidebarRow;if(row==null || !row.visible)continue;if(!first)json.append(",");first=false;
                 var font=row.label.get_pango_context().get_font_description();Pango.Rectangle ink,logical;row.label.get_layout().get_pixel_extents(out ink,out logical);
                 json.append("{\"title\":\"%s\",\"height\":%d,\"bounds\":%s,\"label\":%s,\"baseline\":%d,\"ink\":[%d,%d,%d,%d],\"font_size\":%g,\"weight\":%d,\"ellipsized\":%s,\"icon\":%s,\"badge\":%s}".printf(row.title,row.get_height(),bounds(row),bounds(row.label),row.label.get_layout().get_baseline()/Pango.SCALE,ink.x,ink.y,ink.width,ink.height,(double)font.get_size()/Pango.SCALE,(int)font.get_weight(),row.label.get_layout().is_ellipsized().to_string(),row.icon==null?"null":bounds(row.icon),row.badge==null?"null":bounds(row.badge)));
+            }
+            json.append("]");
+            json.append(",\"scroll_upper\":%g,\"scroll_page\":%g,\"scroll_bounds\":%s,\"surface\":%s,\"headings\":[".printf(scroll.vadjustment.upper,scroll.vadjustment.page_size,bounds(scroll),bounds(surface)));bool first_heading=true;
+            for(int i=0;i<8;i++) {
+                var row=navigation.get_row_at_index(i);if(row==null || !row.visible || row.get_header()==null)continue;
+                var heading=row.get_header();var margins=heading.get_style_context().get_margin();
+                if(!first_heading)json.append(",");first_heading=false;
+                json.append("{\"title\":\"%s\",\"first\":%s,\"top_margin\":%d,\"bottom_margin\":%d,\"bounds\":%s}".printf(((Gtk.Label)heading).label,heading.has_css_class("majoris-sidebar-heading-first").to_string(),margins.top,margins.bottom,bounds(heading)));
             }
             json.append("]");
             var focused=get_focus();

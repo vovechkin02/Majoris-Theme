@@ -23,6 +23,7 @@
 .sidebar row.majoris-sidebar-child, .navigation-sidebar row.majoris-sidebar-child, .majoris-sidebar row.majoris-sidebar-child { padding-left: ${.nav-child|padding-inline-start}; }
 .sidebar row.majoris-sidebar-child:dir(rtl), .navigation-sidebar row.majoris-sidebar-child:dir(rtl), .majoris-sidebar row.majoris-sidebar-child:dir(rtl) { padding-left: 8px; padding-right: ${.nav-child|padding-inline-start}; }
 .majoris-sidebar-heading { font-size: ${.side-label|font-size}; font-weight: ${.side-label|font-weight}; color: @text_secondary; padding: ${.side-label|padding}; margin: ${.side-label|margin}; background: transparent; border: none; box-shadow: none; }
+.majoris-sidebar-heading.majoris-sidebar-heading-first { margin-top: ${.side-label-first|margin-top}; }
 .majoris-sidebar-description { font-size: 12px; font-weight: 400; color: @text_secondary; }
 .sidebar .majoris-sidebar-badge, .navigation-sidebar .majoris-sidebar-badge, .majoris-sidebar .majoris-sidebar-badge { font-size: 12px; font-weight: 600; padding: 0 4px; min-height: 20px; border-radius: 4px; background-color: @hover; color: @text_secondary; }
 .sidebar row:selected .majoris-sidebar-badge, .navigation-sidebar row:selected .majoris-sidebar-badge, .majoris-sidebar row:selected .majoris-sidebar-badge { background-color: alpha(@primary_500,.14); color: inherit; }
