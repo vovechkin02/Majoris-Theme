@@ -21,12 +21,14 @@ def rules(css):
   ds={d.name:tinycss2.serialize(d.value).strip() for d in tinycss2.parse_declaration_list(rule.content,skip_comments=True,skip_whitespace=True) if d.type=='declaration'}
   for sel in tinycss2.serialize(rule.prelude).split(','):result.setdefault(sel.strip(),{}).update(ds)
  return result
-contracts=[('headerbar','background-color','.headerbar','background'),('button.suggested-action:hover','background-color','.btn.primary:hover','background'),('button.suggested-action:active','background-color','.btn.primary:active','background'),('button.destructive-action:hover','background-color','.btn.danger:hover','background'),('button.destructive-action:active','background-color','.btn.danger:active','background'),('.sidebar','background-color','.sidebar','background'),('.sidebar row:selected','color','.nav.active','color'),('.majoris-data-view row:selected','color','.table-row.selected','color'),('scale slider','box-shadow','.thumb','box-shadow'),('switch slider','background-color','.switch:after','background'),('tooltip','background-color','.tooltip','background'),('tooltip label','color','.tooltip','color'),('tooltip','box-shadow','.tooltip','box-shadow'),('menuitem:hover','background-color','.menu-item:hover','background'),('card','box-shadow','.card','box-shadow')]
+contracts=[('headerbar','background-color','.headerbar','background'),('button.suggested-action:hover','background-color','.btn.primary:hover','background'),('button.suggested-action:active','background-color','.btn.primary:active','background'),('button.destructive-action:hover','background-color','.btn.danger:hover','background'),('button.destructive-action:active','background-color','.btn.danger:active','background'),('.sidebar','background-color','.sidebar','background'),('.sidebar row:selected','color','.nav.active','color'),('scale slider','box-shadow','.thumb','box-shadow'),('switch slider','background-color','.switch:after','background'),('tooltip','background-color','.tooltip','background'),('tooltip label','color','.tooltip','color'),('tooltip','box-shadow','.tooltip','box-shadow'),('menuitem:hover','background-color','.menu-item:hover','background'),('card','box-shadow','.card','box-shadow')]
 for version in ('3','4'):
  css=(root/f'theme/Majoris/gtk-{version}.0/gtk-dark.css').read_text();native=rules(css)
  for selector,prop,htmlsel,htmlprop in contracts:
   if selector=='card':selector='.card'
   assert resolve(native[selector][prop],colors(version,'dark'))==html_value(stored,htmlsel,htmlprop),(version,selector,prop,native[selector][prop],html_value(stored,htmlsel,htmlprop))
+ data_selector='treeview.majoris-data-view:selected' if version=='3' else 'columnview.majoris-data-view > listview > row:selected'
+ assert resolve(native[data_selector]['color'],colors(version,'dark'))==html_value(stored,'.data-views','--dv-selected-text')
  assert native['.boxed-list']['box-shadow']=='none'
  assert native['windowcontrols > button:hover']['box-shadow']=='none'
  assert native['windowcontrols > button:backdrop']['color']=='#666670'

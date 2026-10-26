@@ -1,4 +1,5 @@
 """Generate the dark variant from the effective dark HTML cascade."""
+from generate_data import data_values
 import json,re
 from generate_sidebar import sidebar_values
 from generate_editor import editor_values
@@ -23,7 +24,7 @@ def generate(output):
     colors+=''.join('@define-color '+name+' '+t['semantic_color'][key]+';\n' for name,key in aliases.items())
     for name in ('accent_fg_color','destructive_fg_color','theme_selected_fg_color'): colors+='@define-color '+name+' #FFFFFF;\n'
     for version in ('3','4'):
-        values.update(sidebar_values(t,'dark',version))
+        values.update(sidebar_values(t,'dark',version));values.update(data_values(t))
         directory=ROOT/f'theme/Majoris/gtk-{version}.0'
         output(directory/'colors-dark.css',colors)
         output(directory/'assets/spinner-dark.svg','<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="none" stroke="'+html_value(t,'.spinner','border-color')+'" stroke-width="2"/><path d="M3.63604 3.63604 A9 9 0 0 1 16.36396 3.63604" fill="none" stroke="'+html_value(t,'.spinner','border-top-color')+'" stroke-width="2"/></svg>\n')
@@ -54,7 +55,7 @@ def generate(output):
         if version=='4': extra+=render((ROOT/'design/templates/gtk4-editor.css.in').read_text()+(ROOT/'design/templates/gtk4-location.css.in').read_text())
         sidebar=(ROOT/'design/templates/gtk-sidebar.css.in').read_text()
         if version=='3': sidebar=sidebar.replace(':focus-visible',':focus').replace('-gtk-icon-size: 16px;','')
-        extra+=render(sidebar)
+        extra+=render(sidebar)+render((ROOT/f'design/templates/gtk{version}-data.css.in').read_text())
         base='@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");\n' if version=='3' else ''
         output(directory/'gtk-dark.css','/* Generated: shared geometry, effective dark cascade, native overrides. */\n'+base+'@import url("colors.css");\n@import url("colors-dark.css");\n'+css+extra+render(desktop))
     # Explicit Shell roles avoid substring replacements matching background-color.

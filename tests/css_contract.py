@@ -25,6 +25,8 @@ def colors(version,variant='light'):
     for name in ['colors.css']+(['colors-dark.css'] if variant=='dark' else []):
         source=(ROOT/f'theme/Majoris/gtk-{version}.0'/name).read_text()
         result.update(re.findall(r'@define-color\s+(\w+)\s+([^;]+);',source))
+    source=(ROOT/f"theme/Majoris/gtk-{version}.0"/("gtk-dark.css" if variant=="dark" else "gtk.css")).read_text()
+    result.update(re.findall(r"@define-color\s+(\w+)\s+([^;]+);",source))
     return result
 
 def resolve(value,palette):

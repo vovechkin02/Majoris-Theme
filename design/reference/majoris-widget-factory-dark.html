@@ -227,10 +227,10 @@ kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px soli
 
 .table{border:1px solid var(--border-soft);border-radius:8px;overflow:hidden}
 .table-head,.table-row{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:0}
-.table-head{background:var(--surface2);font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase}
-.table-head div,.table-row div{padding:9px 12px;border-right:1px solid var(--border-soft)}
+.table-head{background:var(--surface2);font-size:12px;font-weight:600;color:var(--text2);text-transform:none}
+.table-head div,.table-row div{padding:8px 16px;border-right:1px solid var(--border-soft)}
 .table-head div:last-child,.table-row div:last-child{border-right:0}
-.table-row{font-size:12px;border-top:1px solid var(--border-soft);background:white}
+.table-row{font-size:14px;font-weight:500;border-top:1px solid var(--border-soft);background:white}
 .table-row.selected{background:var(--p50);color:var(--p800)}
 
 .popover-wrap{position:relative;height:620px;border:1px dashed var(--border);border-radius:8px;background:linear-gradient(#FAFAFB,#F4F4F7);padding:12px}
@@ -400,7 +400,7 @@ body{
 .tab.active:after{background:#818CF8}
 
 .table{border-color:var(--border-soft)}
-.table-head{background:#28282C;color:var(--text3)}
+.table-head{background:#28282C;color:var(--text2)}
 .table-head div,.table-row div{border-right-color:var(--border-soft)}
 .table-row{background:#202023;border-top-color:var(--border-soft)}
 .table-row.selected{background:rgba(99,102,241,.16);color:#E0E7FF}
@@ -478,6 +478,43 @@ html[dir="rtl"] .nav.active:before{left:auto;right:0}
 .nav.active:hover{background:rgba(99,102,241,.22)}
 .nav.active:active{background:rgba(99,102,241,.28)}
 .nav:focus-visible{outline-color:#818CF8}
+
+/* MAJORIS DATA VIEWS — shared component authority */
+.data-views { --dv-surface:#FFFFFF; --dv-text:#1C1C1F; --dv-secondary:#626269; --dv-hover:#ECECEF; --dv-pressed:#E2E2E6; --dv-selected:#EEF2FF; --dv-selected-text:#3730A3; --dv-focus:#6366F1; --dv-border:#E5E5E9; --dv-header:#F2F2F4; --dv-selected-hover:#E0E7FF; --dv-selected-pressed:#C7D2FE; }
+.data-item { font-size:14px; font-weight:500; color:var(--dv-text); border-radius:4px; background:transparent; transition:background-color 128ms cubic-bezier(.2,0,0,1); }
+.data-metadata {font-size:12px;font-weight:400;color:var(--dv-secondary)}
+.data-item:hover,.data-item.is-hover {background:var(--dv-hover)}
+.data-item:active {background:var(--dv-pressed)}
+.data-item.selected {background:var(--dv-selected);color:var(--dv-selected-text);font-weight:500}
+.data-item.selected:hover {background:var(--dv-selected-hover)}
+.data-item.selected:active {background:var(--dv-selected-pressed)}
+.data-item:focus-visible,.data-item.is-focus {outline:2px solid var(--dv-focus);outline-offset:-2px}
+.data-list {background:var(--dv-surface);overflow:auto;max-height:200px}
+.data-list .data-item {box-sizing:border-box;min-height:40px;padding:8px 16px;display:flex;align-items:center;gap:8px}
+.data-list.compact .data-item {min-height:32px;padding:4px 8px}
+.data-grid {display:grid;grid-template-columns:repeat(auto-fill,128px);gap:16px;padding:16px;background:var(--dv-surface)}
+.data-grid.compact {grid-template-columns:repeat(auto-fill,96px);gap:8px;padding:8px}
+.data-tile {box-sizing:border-box;width:128px;min-height:160px;padding:8px;border-radius:8px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.data-grid.compact .data-tile {width:96px;min-height:128px;padding:8px}
+.data-artwork {width:96px;height:96px;display:grid;place-items:center}
+.data-grid.compact .data-artwork {width:64px;height:64px}
+.data-artwork img {max-width:100%;max-height:100%;object-fit:contain;border-radius:4px}
+.data-tile .filename {display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;font-size:14px;font-weight:500;line-height:normal}
+.data-column {background:var(--dv-surface);overflow:auto}
+.data-column .table-head,.data-column .table-row {grid-template-columns:minmax(192px,2fr) 160px 128px 96px}
+.data-column .table-head {background:var(--dv-header);color:var(--dv-secondary);font-size:12px;font-weight:600;text-transform:none}
+.data-column .table-head div {box-sizing:border-box;min-height:32px;padding:4px 16px;display:flex;align-items:center;gap:8px}
+.data-column .table-row {font-size:14px;font-weight:500;background:transparent;border-top:1px solid var(--dv-border)}
+.data-column .table-row div {box-sizing:border-box;min-height:39px;padding:8px 16px;border-right:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.data-column.compact .table-row div {min-height:31px;padding:4px 8px}
+.data-column.compact .table-head div {padding:4px 8px}
+.data-column .table-row.selected {background:var(--dv-selected);color:var(--dv-selected-text)}
+
+.data-views { --dv-surface:#202023; --dv-text:#F4F4F5; --dv-secondary:#A9A9B0; --dv-hover:#303035; --dv-pressed:#38383D; --dv-selected:rgba(99,102,241,.16); --dv-selected-text:#E0E7FF; --dv-focus:#818CF8; --dv-border:#313136; --dv-header:#28282C; --dv-selected-hover:rgba(99,102,241,.22); --dv-selected-pressed:rgba(99,102,241,.28); }
+
+.data-file-icon {width:64px;height:64px;fill:currentColor;flex:none}
+.data-grid.compact .data-file-icon {width:32px;height:32px}
+.data-list .data-file-icon {width:16px;height:16px}
 </style>
 <style>
 /* Final menu and interactive typography contract. */
@@ -948,7 +985,7 @@ html[dir="rtl"] .nav.active:before{left:auto;right:0}
 <rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
 <rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
 </svg></button></div>
-<div class="document-tab">Project Requirements.md</div></div></section></main>
+<div class="document-tab">Project Requirements.md</div></div></section><section class="section data-views"><h2>Data Views</h2><p>Native Grid, List and Details: standard and compact density. Columns are resizable in the native factory.</p><h3>Grid standard</h3><div class="data-grid"><div tabindex="0" class="data-item data-tile "><div class="data-artwork"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg></div><span class="filename">Documents</span></div><div tabindex="0" class="data-item data-tile selected"><div class="data-artwork"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg></div><span class="filename">Downloads</span></div><div tabindex="0" class="data-item data-tile is-hover"><div class="data-artwork"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg></div><span class="filename">Photos</span></div><div tabindex="0" class="data-item data-tile is-focus"><div class="data-artwork"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg></div><span class="filename">Majoris Design.md</span></div><div tabindex="0" class="data-item data-tile"><div class="data-artwork"><img src="../../factory/data/thumbnails/landscape.svg" alt="landscape thumbnail"/></div><span class="filename">A Very Long Filename That Exceeds The Available View Width.txt</span></div><div tabindex="0" class="data-item data-tile"><div class="data-artwork"><img src="../../factory/data/thumbnails/portrait.svg" alt="portrait thumbnail"/></div><span class="filename">A Very Long Filename That Exceeds The Available View Width.txt</span></div><div tabindex="0" class="data-item data-tile"><div class="data-artwork"><img src="../../factory/data/thumbnails/square.svg" alt="square thumbnail"/></div><span class="filename">A Very Long Filename That Exceeds The Available View Width.txt</span></div></div><h3>List</h3><div class="data-list"><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Documents</span></div><div tabindex="0" class="data-item selected"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Downloads</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Photos</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Majoris Design.md</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Majoris-Theme-Implementation-Notes.txt</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>A Very Long Filename That Exceeds The Available View Width.txt</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Wallpaper.png</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Project Requirements.pdf</span></div></div><h3>Details</h3><div class="data-column"><div class="table-head"><div>Name ↑</div><div>Date modified</div><div>Type</div><div>Size</div></div><div class="table-row "><div>Documents</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row selected"><div>Downloads</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row selected"><div>Photos</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>Majoris Design.md</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>Majoris-Theme-Implementation-Notes.txt</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>A Very Long Filename That Exceeds The Available View Width.txt</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>Wallpaper.png</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>Project Requirements.pdf</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div></div><h3>Grid compact</h3><div class="data-grid compact"><div tabindex="0" class="data-item data-tile "><div class="data-artwork"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg></div><span class="filename">Documents</span></div><div tabindex="0" class="data-item data-tile selected"><div class="data-artwork"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg></div><span class="filename">Downloads</span></div><div tabindex="0" class="data-item data-tile is-hover"><div class="data-artwork"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg></div><span class="filename">Photos</span></div><div tabindex="0" class="data-item data-tile is-focus"><div class="data-artwork"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg></div><span class="filename">Majoris Design.md</span></div><div tabindex="0" class="data-item data-tile"><div class="data-artwork"><img src="../../factory/data/thumbnails/landscape.svg" alt="landscape thumbnail"/></div><span class="filename">A Very Long Filename That Exceeds The Available View Width.txt</span></div><div tabindex="0" class="data-item data-tile"><div class="data-artwork"><img src="../../factory/data/thumbnails/portrait.svg" alt="portrait thumbnail"/></div><span class="filename">A Very Long Filename That Exceeds The Available View Width.txt</span></div><div tabindex="0" class="data-item data-tile"><div class="data-artwork"><img src="../../factory/data/thumbnails/square.svg" alt="square thumbnail"/></div><span class="filename">A Very Long Filename That Exceeds The Available View Width.txt</span></div></div><h3>List</h3><div class="data-list compact"><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Documents</span></div><div tabindex="0" class="data-item selected"><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Downloads</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Photos</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Majoris Design.md</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Majoris-Theme-Implementation-Notes.txt</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>A Very Long Filename That Exceeds The Available View Width.txt</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Wallpaper.png</span></div><div tabindex="0" class="data-item "><svg class="data-file-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h5l2 2h5v8H2z"/></svg><span>Project Requirements.pdf</span></div></div><h3>Details</h3><div class="data-column compact"><div class="table-head"><div>Name ↑</div><div>Date modified</div><div>Type</div><div>Size</div></div><div class="table-row "><div>Documents</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row selected"><div>Downloads</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row selected"><div>Photos</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>Majoris Design.md</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>Majoris-Theme-Implementation-Notes.txt</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>A Very Long Filename That Exceeds The Available View Width.txt</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>Wallpaper.png</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div><div class="table-row "><div>Project Requirements.pdf</div><div>26 October 2026</div><div>Document</div><div>128 KB</div></div></div></section></main>
 </div>
 </section>
 </div>

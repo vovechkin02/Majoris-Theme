@@ -75,9 +75,6 @@ notebook > header tab:checked { color: @text; font-weight: ${.tab.active|font-we
 row { border-radius: ${control_radius}; }
 row:hover { background-color: @hover; }
 row:selected { background-color: @primary_50; color: @primary_800; }
-.majoris-data-view row { padding: ${.table-row div|padding}; font-size: ${.table-row|font-size}; border-top: 1px solid @border_soft; }
-.majoris-data-view row:selected { background-color: @primary_50; color: @primary_800; }
-.boxed-list.majoris-data-view > row { min-height: 0; padding: ${.table-row div|padding}; }
 .card, .boxed-list { border: 1px solid @border_soft; border-radius: ${structure_radius}; background-color: @surface; }
 .card { box-shadow: ${card_shadow}; }
 .boxed-list { box-shadow: none; }

@@ -1,0 +1,52 @@
+/* Shared, opt-in data families. Native state remains on row/child nodes. */
+@define-color majoris_data_surface ${.data-views|--dv-surface};
+@define-color majoris_data_text ${.data-views|--dv-text};
+@define-color majoris_data_secondary ${.data-views|--dv-secondary};
+@define-color majoris_data_hover ${.data-views|--dv-hover};
+@define-color majoris_data_pressed ${.data-views|--dv-pressed};
+@define-color majoris_data_selected ${.data-views|--dv-selected};
+@define-color majoris_data_selected_text ${.data-views|--dv-selected-text};
+@define-color majoris_data_focus ${.data-views|--dv-focus};
+@define-color majoris_data_border ${.data-views|--dv-border};
+@define-color majoris_data_header ${.data-views|--dv-header};
+@define-color majoris_data_selected_hover ${.data-views|--dv-selected-hover};
+@define-color majoris_data_selected_pressed ${.data-views|--dv-selected-pressed};
+treeview.majoris-data-view, treeview.majoris-data-list, iconview.majoris-data-grid { background-color: @majoris_data_surface; color: @majoris_data_text; font-family: "Plus Jakarta Sans"; font-size: 14px; font-weight: 500; -GtkTreeView-vertical-separator: 4; -GtkTreeView-horizontal-separator: 32; -GtkTreeView-grid-line-width: 1; border-color: @majoris_data_border; }
+treeview.majoris-data-view:selected, treeview.majoris-data-list:selected, iconview.majoris-data-grid:selected { background-color: ${data_selected_paint}; color: @majoris_data_selected_text; font-weight: 500; }
+treeview.majoris-data-view:hover, treeview.majoris-data-list:hover, iconview.majoris-data-grid:hover { background-color: @majoris_data_hover; }
+treeview.majoris-data-view:selected:hover, treeview.majoris-data-list:selected:hover, iconview.majoris-data-grid:selected:hover { background-color: ${data_selected_hover_paint}; }
+treeview.majoris-data-view:focus, treeview.majoris-data-list:focus, iconview.majoris-data-grid:focus { outline: 2px solid @majoris_data_focus; outline-offset: -2px; }
+treeview.majoris-data-view:backdrop:selected, treeview.majoris-data-list:backdrop:selected, iconview.majoris-data-grid:backdrop:selected { background-color: ${data_selected_paint}; color: @majoris_data_secondary; }
+treeview.majoris-data-view:disabled, treeview.majoris-data-list:disabled, iconview.majoris-data-grid:disabled { color: @majoris_data_secondary; }
+treeview.majoris-data-view > header > button { min-height: 23px; padding: 4px 16px; border: none; border-bottom: 1px solid @majoris_data_border; border-radius: 0; background: @majoris_data_header; color: @majoris_data_secondary; font-size: 12px; font-weight: 600; box-shadow: none; }
+treeview.majoris-data-view.majoris-density-compact > header > button { padding: 4px 8px; }
+treeview.majoris-data-view > header > button label { font-size: 12px; font-weight: 600; }
+treeview.majoris-data-view > header > button:hover { background: @majoris_data_hover; }
+treeview.majoris-data-view > header > button:active { background: @majoris_data_pressed; }
+
+treeview.majoris-data-view.majoris-density-compact { -GtkTreeView-horizontal-separator: 16; }
+treeview.majoris-data-view > header > button image { min-width: 16px; min-height: 16px; }
+
+treeview.majoris-data-list { -GtkTreeView-vertical-separator: 5; }
+treeview.majoris-data-list.majoris-density-compact { -GtkTreeView-horizontal-separator: 16; }
+
+treeview.majoris-data-view:active, treeview.majoris-data-list:active, iconview.majoris-data-grid:active { background-color: @majoris_data_pressed; }
+treeview.majoris-data-view:selected:active, treeview.majoris-data-list:selected:active, iconview.majoris-data-grid:selected:active { background-color: ${data_selected_pressed_paint}; }
+treeview.majoris-data-view:disabled:hover, treeview.majoris-data-list:disabled:hover, iconview.majoris-data-grid:disabled:hover { background-color: @majoris_data_surface; color: @majoris_data_secondary; }
+
+treeview.majoris-data-view.view:selected, treeview.majoris-data-list.view:selected, iconview.majoris-data-grid.view:selected { background-color: ${data_selected_paint}; color: @majoris_data_selected_text; font-weight: 500; }
+
+treeview.majoris-data-view.view:selected:focus, treeview.majoris-data-list.view:selected:focus, iconview.majoris-data-grid.view:selected:focus { background-color: ${data_selected_paint}; color: @majoris_data_selected_text; font-weight: 500; }
+
+treeview.majoris-data-view.view:selected:hover, treeview.majoris-data-list.view:selected:hover, iconview.majoris-data-grid.view:selected:hover { background-color: ${data_selected_hover_paint}; color: @majoris_data_selected_text; }
+
+treeview.majoris-data-view.view:selected:active, treeview.majoris-data-list.view:selected:active, iconview.majoris-data-grid.view:selected:active { background-color: ${data_selected_pressed_paint}; color: @majoris_data_selected_text; }
+
+treeview.majoris-data-view.view:selected:backdrop, treeview.majoris-data-list.view:selected:backdrop, iconview.majoris-data-grid.view:selected:backdrop { background-color: ${data_selected_paint}; color: @majoris_data_secondary; }
+
+iconview.majoris-data-grid.view:selected, iconview.majoris-data-grid.view:selected:focus { border-radius: 8px; }
+
+treeview.majoris-data-view.view:disabled, treeview.majoris-data-list.view:disabled, iconview.majoris-data-grid.view:disabled { background-color: @majoris_data_surface; color: @majoris_data_secondary; }
+
+treeview.majoris-data-view.view:selected, treeview.majoris-data-view.view:selected:focus { border-radius: 0; }
+treeview.majoris-data-list.view:selected, treeview.majoris-data-list.view:selected:focus { border-radius: 4px; }

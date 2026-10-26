@@ -93,3 +93,6 @@ show the final navigation component. Preferred width is 224px; native rows have
 a 32px minimum, 4px gap, 16px icons and a fixed-inset selected indicator.
 [Integration guide](docs/sidebar-design.md) ·
 [Before/after table and native validation](docs/sidebar-finalisation.md).
+
+Data presentation: [Grid/List/Details design and integration](docs/data-view-design.md),
+[native finalisation evidence](docs/data-view-finalisation.md).

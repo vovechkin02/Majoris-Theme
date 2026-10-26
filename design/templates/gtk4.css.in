@@ -83,11 +83,7 @@ windowcontrols > button > image, windowcontrols > button:hover > image, windowco
 popover.menu > contents { min-width: 192px; }
 headerbar.default-decoration windowcontrols > button { min-width: ${control_content_size}; min-height: ${control_content_size}; padding: 0; margin: 0; }
 headerbar.default-decoration windowcontrols > button > image { min-width: ${window_control_glyph}; min-height: ${window_control_glyph}; padding: 0; margin: 0; background: transparent; border-radius: 0; box-shadow: none; }
-columnview.majoris-data-view row { min-height: 0; padding: 0; }
-columnview.majoris-data-view cell { padding: ${.table-row div|padding}; font-size: ${.table-row|font-size}; }
-columnview.majoris-data-view header button { min-height: 0; padding: ${.table-head div|padding}; border: none; border-radius: 0; background: @surface_secondary; color: @text_tertiary; font-size: ${.table-head|font-size}; font-weight: ${.table-head|font-weight}; box-shadow: none; }
 
-columnview.majoris-data-view header button > box { color: @text_tertiary; font-size: ${.table-head|font-size}; font-weight: ${.table-head|font-weight}; }
 .majoris-card-description { line-height: ${.card-head p|line-height}; }
 dialog.alert .body { line-height: ${.dialog-body p|line-height}; }
 /* Entry suffix controls fit inside the 32px parent, including native margins. */

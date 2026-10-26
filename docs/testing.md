@@ -320,3 +320,17 @@ See [native spacing evidence](sidebar-padding.md). Capture the fixtures with:
 ```bash
 MAJORIS_CAPTURE_DIRECTORY=artifacts/sidebar-padding MAJORIS_CAPTURE_PAGES=sidebar,sidebar-no-heading,sidebar-first-hidden,sidebar-first-removed,sidebar-scroll ./scripts/capture-visual-regressions.sh --both
 ```
+
+### Data views
+
+See [data-view specification](data-view-design.md) and
+[finalisation evidence](data-view-finalisation.md). Tests named `data view`
+exercise native densities, metrics, selection pixels, thumbnail aspect ratio,
+GTK3 equivalents, real sort/resize/modifier input and a 1,200-item recycled grid.
+State diagnostics use actual GTK flags; the input test uses X11 events.
+
+```bash
+meson test -C build --num-processes 4 --print-errorlogs
+MAJORIS_CAPTURE_DIRECTORY=artifacts/data-view-finalisation MAJORIS_CAPTURE_PAGES=data-grid,data-grid-compact,data-list,data-list-compact,data-column,data-column-compact,data-column-sorted,data-column-multi,data-column-resized,data ./scripts/capture-visual-regressions.sh --both
+MAJORIS_CAPTURE_DIRECTORY=artifacts/data-view-finalisation MAJORIS_CAPTURE_SCALE=2 MAJORIS_CAPTURE_PAGES=data-grid,data-grid-compact,data-list,data-list-compact,data-column,data-column-compact ./scripts/capture-visual-regressions.sh --both
+```

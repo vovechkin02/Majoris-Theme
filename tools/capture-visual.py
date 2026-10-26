@@ -33,6 +33,7 @@ with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
         with (out/f'{page}.log').open('w') as log:
             capture_env=dict(env)
             capture_page=page
+            if page.startswith("data-"):capture_env["MAJORIS_DATA_REPORT"]=str(out/(page+"-geometry.json"))
             if page.startswith("sidebar"):capture_env["MAJORIS_SIDEBAR_REPORT"]=str(out/(page+"-geometry.json"))
             if page=='location-narrow':
                 capture_env['MAJORIS_CONTENT_WIDTH']='480'
@@ -45,13 +46,13 @@ with tempfile.TemporaryDirectory(prefix='majoris-capture-') as temporary:
             try:
                 time.sleep(2.0)
                 assert process.poll() is None,f'{page} did not stay running; see log'
-                if page=='sidebar-backdrop':
-                    target=subprocess.check_output(['xdotool','search','--name','^Backdrop focus target$'],text=True).splitlines()[-1]
+                if page in ('sidebar-backdrop','data-grid-backdrop','data-list-backdrop','data-column-backdrop'):
+                    target=subprocess.check_output(['xdotool','search','--name','^Backdrop focus target$' if page=='sidebar-backdrop' else '^Data backdrop target$'],text=True).splitlines()[-1]
                     subprocess.run(['xdotool','windowactivate','--sync',target],check=True)
                     time.sleep(.2)
                     active=subprocess.check_output(['xdotool','getactivewindow'],text=True).strip()
                     assert int(active)==int(target), (active,target)
-                    (out/'sidebar-backdrop-focus.json').write_text(json.dumps({'focus_target':target,'active_window':active,'method':'real Openbox activation; no held backdrop CSS flags'},indent=2)+'\n')
+                    (out/(page+'-focus.json')).write_text(json.dumps({'focus_target':target,'active_window':active,'method':'real Openbox activation; no held backdrop CSS flags'},indent=2)+'\n')
                 if page.startswith('layout-'):
                     wid=subprocess.check_output(['xdotool','search','--name','^Majoris Widget Factory$'],text=True).splitlines()[0]
                     geometry=subprocess.check_output(['xdotool','getwindowgeometry','--shell',wid],text=True)

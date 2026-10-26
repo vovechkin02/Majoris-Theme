@@ -114,3 +114,12 @@ foreach version : ['3','4']
     test('GTK'+version+' sidebar initial padding '+scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-sidebar-padding.py'),version],env:{'GDK_SCALE':scale,'GSK_RENDERER':'cairo','GTK_A11Y':'none','GIO_USE_VFS':'local','ADW_DISABLE_PORTAL':'1'},timeout:30)
   endforeach
 endforeach
+
+test('data view source contracts',python,args:[files('tests/test-data-view-contract.py')])
+foreach scale : ['1','2']
+  test('data view GTK4 native '+scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-data-view-native.py')],env:{'GDK_SCALE':scale,'GSK_RENDERER':'cairo','GTK_A11Y':'none','GIO_USE_VFS':'local'},timeout:90)
+  test('data view GTK3 native '+scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-data-view-gtk3.py')],env:{'GDK_SCALE':scale,'GTK_A11Y':'none','GIO_USE_VFS':'local'},timeout:60)
+endforeach
+test('data view native interactions',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 1440x1080x24',python.full_path(),files('tests/test-data-view-interaction.py')],env:{'GIO_USE_VFS':'local','GTK_A11Y':'none'},timeout:90)
+
+test('data view native states',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 1440x1080x24',python.full_path(),files('tests/test-data-view-state.py')],env:{'GIO_USE_VFS':'local','GTK_A11Y':'none'},timeout:180)

@@ -159,20 +159,20 @@ namespace MajorisThemeFactory {
             var nav=section("Navigation","navigation"); var ns=new Gtk.Stack(); ns.add_titled(new Gtk.Label("List content"),"list","List"); ns.add_titled(new Gtk.Label("Grid content"),"grid","Grid"); ns.add_titled(new Gtk.Label("Columns content"),"columns","Columns"); var switcher=new Gtk.StackSwitcher(); switcher.stack=ns; switcher.halign=Gtk.Align.START; nav.append(switcher); probes.insert("view_switcher",switcher); nav.append(ns);
             var notebook=new Gtk.Notebook(); notebook.append_page(new Gtk.Label("Native GTK tab"),new Gtk.Label("Tab one")); notebook.append_page(new Gtk.Label("Second tab"),new Gtk.Label("Tab two")); nav.append(notebook); probes.insert("notebook",notebook);
             var data_card=section("Lists, Tables & Selection","data");
-            var data_model=new Gtk.StringList({"Documents|Folder|Today","Majoris Design.md|Markdown|14:28","Wallpaper.png|PNG image|Yesterday"});
+            var data_model=new GLib.ListStore(typeof(DataRecord));data_model.append(new DataRecord(0,"Documents"));data_model.append(new DataRecord(1,"Majoris Design.md"));data_model.append(new DataRecord(2,"Wallpaper.png"));
             var data_selection=new Gtk.SingleSelection(data_model); data_selection.selected=1;
-            var data=new Gtk.ColumnView(data_selection); data.add_css_class("majoris-data-view"); data.add_css_class("boxed-list");
-            string[] headings={"NAME","TYPE","MODIFIED"};
+            var data=new Gtk.ColumnView(data_selection); data.add_css_class("majoris-data-view"); data.add_css_class("majoris-data-boxed"); data.overflow=Gtk.Overflow.HIDDEN;
+            string[] headings={"Name","Type","Date modified"};
             data.show_column_separators=true; data.show_row_separators=true;
             for(int i=0;i<headings.length;i++) {
                 int column_index=i;
                 var cell_factory=new Gtk.SignalListItemFactory();
-                cell_factory.setup.connect((item)=>{var label=new Gtk.Label("");label.xalign=0;((Gtk.ListItem)item).child=label;});
-                cell_factory.bind.connect((item)=>{var value=(Gtk.StringObject)((Gtk.ListItem)item).item; ((Gtk.Label)((Gtk.ListItem)item).child).label=value.get_string().split("|")[column_index];});
+                cell_factory.setup.connect((item)=>{((Gtk.ListItem)item).child=new DataCell("column",column_index==1?2:(column_index==2?1:0));});
+                cell_factory.bind.connect((item)=>((DataCell)((Gtk.ListItem)item).child).bind_record((DataRecord)((Gtk.ListItem)item).item));
+                cell_factory.unbind.connect((item)=>((DataCell)((Gtk.ListItem)item).child).unbind_record());
                 var column=new Gtk.ColumnViewColumn(headings[i],cell_factory); column.expand=false;data.append_column(column);
             }
-            int last_data_width=0;
-            data.add_tick_callback((widget,clock)=>{int width=data.get_width();if(width!=last_data_width && width>200){last_data_width=width;int[] widths={(int)(width*1.4/3),(int)(width*0.8/3),0};widths[2]=width-widths[0]-widths[1];for(uint c=0;c<3;c++)((Gtk.ColumnViewColumn)data.columns.get_item(c)).fixed_width=widths[c];}return Source.CONTINUE;});
+            for(uint c=0;c<3;c++){var column=(Gtk.ColumnViewColumn)data.columns.get_item(c);column.resizable=true;column.expand=c==0;column.fixed_width=c==0?192:160;}
             data_card.append(data);
             var feedback=section("Popover & Menu","menus"); r=row(); feedback.append(r); var file_menu=menu_button(); r.append(file_menu); var plain_model=new Menu(); plain_model.append("New Folder…","win.folder"); plain_model.append("Duplicate","win.duplicate"); plain_model.append("Preferences","win.preferences"); var plain_menu=new Gtk.MenuButton(); plain_menu.label="Menu without shortcuts"; plain_menu.menu_model=plain_model; r.append(plain_menu); var menu_dropdown=new Gtk.DropDown.from_strings({"Automatic","Ask every time","Never","Only on this device"}); r.append(menu_dropdown);
             var context_area=new Gtk.Label("Right-click for File actions"); context_area.hexpand=true; feedback.append(context_area); var context_button=menu_button(); context_button.halign=Gtk.Align.END; feedback.append(context_button); var context_click=new Gtk.GestureClick(); context_click.button=3; context_click.pressed.connect(()=>context_button.popup()); context_area.add_controller(context_click);

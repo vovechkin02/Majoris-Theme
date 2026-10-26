@@ -27,7 +27,7 @@ windowcontrols > button.close:active, button.titlebutton.close:active { backgrou
 windowcontrols > button:focus-visible, button.titlebutton:focus-visible { border-color: transparent; box-shadow: ${.window-control:focus-visible|box-shadow}; }
 windowcontrols > button:backdrop, button.titlebutton:backdrop { background: transparent; color: #666670; box-shadow: none; }
 headerbar:backdrop .title { color: #6F6F78; }
-.majoris-data-view row:selected, treeview.view:selected, iconview.view:selected, row:selected { background-color: ${.table-row.selected|background}; color: ${.table-row.selected|color}; }
+treeview.view:selected, iconview.view:selected, row:selected { background-color: ${.table-row.selected|background}; color: ${.table-row.selected|color}; }
 .majoris-segmented, viewswitcher, stackswitcher { background-color: ${.toggle-group|background}; }
 .majoris-segmented button:checked, viewswitcher button:checked, stackswitcher button:checked { background-color: ${.toggle.active|background}; }
 check, radio { background-color: ${.checkbox|background}; border-color: ${.checkbox|border-color}; color: white; }

@@ -71,3 +71,11 @@ style their labels as buttons. New opt-ins: `majoris-sidebar-heading`,
 actually paints a divider; the fixture otherwise retains one CSS-owned line. No selector globally fixes sidebar width. GTK3 and GTK4
 use different expander nodes and indicator constructions but share the same
 geometry/roles. [Native Vala composition and states](../docs/sidebar-design.md).
+
+## Data view families
+
+Opt-in native Grid/List/Details families and density are specified in
+[the data-view design guide](../docs/data-view-design.md). `majoris-data-view`
+remains a ColumnView/TreeView compatibility alias. Scoped GTK4 roots prevent
+standalone row padding from leaking into ColumnView internals or preferences.
+Canonical `.data-views` roles provide all shared light/dark data colours.

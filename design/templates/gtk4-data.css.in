@@ -1,0 +1,72 @@
+/* Shared, opt-in data families. Native state remains on row/child nodes. */
+@define-color majoris_data_surface ${.data-views|--dv-surface};
+@define-color majoris_data_text ${.data-views|--dv-text};
+@define-color majoris_data_secondary ${.data-views|--dv-secondary};
+@define-color majoris_data_hover ${.data-views|--dv-hover};
+@define-color majoris_data_pressed ${.data-views|--dv-pressed};
+@define-color majoris_data_selected ${.data-views|--dv-selected};
+@define-color majoris_data_selected_text ${.data-views|--dv-selected-text};
+@define-color majoris_data_focus ${.data-views|--dv-focus};
+@define-color majoris_data_border ${.data-views|--dv-border};
+@define-color majoris_data_header ${.data-views|--dv-header};
+@define-color majoris_data_selected_hover ${.data-views|--dv-selected-hover};
+@define-color majoris_data_selected_pressed ${.data-views|--dv-selected-pressed};
+listview.majoris-data-list, gridview.majoris-data-grid, columnview.majoris-data-column, columnview.majoris-data-view { background: @majoris_data_surface; color: @majoris_data_text; font-family: "Plus Jakarta Sans"; font-size: 14px; font-weight: 500; border: none; box-shadow: none; }
+listview.majoris-data-list > row, gridview.majoris-data-grid > child > .majoris-data-tile, columnview.majoris-data-column > listview > row, columnview.majoris-data-view > listview > row { background: transparent; background-image: none; color: @majoris_data_text; font-size: 14px; font-weight: 500; border: none; box-shadow: none; margin: 0; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); }
+listview.majoris-data-list > row:hover, gridview.majoris-data-grid > child:hover > .majoris-data-tile, columnview.majoris-data-column > listview > row:hover, columnview.majoris-data-view > listview > row:hover { background-color: @majoris_data_hover; }
+listview.majoris-data-list > row:active, gridview.majoris-data-grid > child:active > .majoris-data-tile, columnview.majoris-data-column > listview > row:active, columnview.majoris-data-view > listview > row:active { background-color: @majoris_data_pressed; }
+listview.majoris-data-list > row:selected, gridview.majoris-data-grid > child:selected > .majoris-data-tile, columnview.majoris-data-column > listview > row:selected, columnview.majoris-data-view > listview > row:selected { background-color: @majoris_data_selected; color: @majoris_data_selected_text; font-weight: 500; }
+listview.majoris-data-list > row:selected:hover, gridview.majoris-data-grid > child:selected:hover > .majoris-data-tile, columnview.majoris-data-column > listview > row:selected:hover, columnview.majoris-data-view > listview > row:selected:hover { background-color: @majoris_data_selected_hover; }
+listview.majoris-data-list > row:selected:active, gridview.majoris-data-grid > child:selected:active > .majoris-data-tile, columnview.majoris-data-column > listview > row:selected:active, columnview.majoris-data-view > listview > row:selected:active { background-color: @majoris_data_selected_pressed; }
+listview.majoris-data-list > row:focus-visible, gridview.majoris-data-grid > child:focus-visible > .majoris-data-tile, columnview.majoris-data-column > listview > row:focus-visible, columnview.majoris-data-view > listview > row:focus-visible { outline: none; box-shadow: inset 0 0 0 2px @majoris_data_focus; }
+listview.majoris-data-list > row:backdrop, gridview.majoris-data-grid > child:backdrop > .majoris-data-tile, columnview.majoris-data-column > listview > row:backdrop, columnview.majoris-data-view > listview > row:backdrop { color: @majoris_data_secondary; }
+listview.majoris-data-list > row:selected:backdrop, gridview.majoris-data-grid > child:selected:backdrop > .majoris-data-tile, columnview.majoris-data-column > listview > row:selected:backdrop, columnview.majoris-data-view > listview > row:selected:backdrop { background-color: @majoris_data_selected; color: mix(@majoris_data_selected_text,@majoris_data_secondary,.35); }
+listview.majoris-data-list > row:disabled, gridview.majoris-data-grid > child:disabled > .majoris-data-tile, columnview.majoris-data-column > listview > row:disabled, columnview.majoris-data-view > listview > row:disabled { background: transparent; color: @majoris_data_secondary; opacity: .55; box-shadow: none; }
+listview.majoris-data-list > row:disabled:hover, gridview.majoris-data-grid > child:disabled:hover > .majoris-data-tile, columnview.majoris-data-column > listview > row:disabled:hover, columnview.majoris-data-view > listview > row:disabled:hover { background: transparent; box-shadow: none; }
+listview.majoris-data-list > row:disabled:active, gridview.majoris-data-grid > child:disabled:active > .majoris-data-tile, columnview.majoris-data-column > listview > row:disabled:active, columnview.majoris-data-view > listview > row:disabled:active { background: transparent; box-shadow: none; }
+listview.majoris-data-list > row { min-height: ${data_list_min}; padding: ${.data-list .data-item|padding}; border-radius: 4px; }
+listview.majoris-data-list.majoris-density-compact > row { min-height: ${data_compact_min}; padding: ${.data-list.compact .data-item|padding}; }
+listview.majoris-data-list.majoris-data-separators > row { min-height: ${data_column_min}; border-bottom: 1px solid @majoris_data_border; }
+listview.majoris-data-list.majoris-density-compact.majoris-data-separators > row { min-height: ${data_column_compact_min}; }
+gridview.majoris-data-grid { padding: 8px; }
+gridview.majoris-data-grid.majoris-density-compact { padding: 4px; }
+gridview.majoris-data-grid > child { padding: 0; margin: 8px; min-width: 0; min-height: 0; background: transparent; border: none; box-shadow: none; outline: none; }
+gridview.majoris-data-grid.majoris-density-compact > child { margin: 4px; }
+gridview.majoris-data-grid .majoris-data-tile { min-width: ${data_tile_width}; min-height: ${data_tile_height}; padding: 8px; border-radius: 8px; }
+gridview.majoris-data-grid.majoris-density-compact .majoris-data-tile { min-width: ${data_tile_compact_width}; min-height: ${data_tile_compact_height}; }
+.majoris-data-artwork { min-width: 96px; min-height: 96px; }
+gridview.majoris-density-compact .majoris-data-artwork { min-width: 64px; min-height: 64px; }
+.majoris-data-thumbnail { border-radius: 4px; box-shadow: none; }
+.majoris-data-cell { padding: 0; margin: 0; border: none; min-height: 0; }
+.majoris-data-cell label { font-size: 14px; font-weight: 500; color: inherit; }
+.majoris-data-cell label.majoris-data-metadata { font-size: 12px; font-weight: 400; }
+columnview.majoris-data-column > listview, columnview.majoris-data-view > listview { padding: 0; background: transparent; }
+columnview.majoris-data-column > listview > row, columnview.majoris-data-view > listview > row { min-height: 0; padding: 0; border-radius: 0; border-bottom: 1px solid @majoris_data_border; }
+columnview.majoris-data-column cell, columnview.majoris-data-view cell { min-height: ${data_column_min}; padding: ${.data-list .data-item|padding}; border: none; border-radius: 0; background: transparent; box-shadow: none; }
+columnview.majoris-data-column.majoris-density-compact cell, columnview.majoris-data-view.majoris-density-compact cell { min-height: ${data_column_compact_min}; padding: ${.data-list.compact .data-item|padding}; }
+columnview.majoris-data-column > header, columnview.majoris-data-view > header { padding: 0; border-bottom: 1px solid @majoris_data_border; background: @majoris_data_header; }
+columnview.majoris-data-column > header > button, columnview.majoris-data-view > header > button { min-height: ${data_header_min}; min-width: 0; padding: ${.data-column .table-head div|padding}; border: none; border-radius: 0; background: @majoris_data_header; color: @majoris_data_secondary; font-size: 12px; font-weight: 600; box-shadow: none; }
+columnview.majoris-density-compact > header > button { padding: ${.data-list.compact .data-item|padding}; }
+columnview.majoris-data-column > header > button label, columnview.majoris-data-view > header > button label { font-size: 12px; font-weight: 600; }
+columnview.majoris-data-column > header > button > box, columnview.majoris-data-view > header > button > box { min-height: 0; padding: 0; }
+columnview.majoris-data-column > header > button:hover, columnview.majoris-data-view > header > button:hover { background: @majoris_data_hover; }
+columnview.majoris-data-column > header > button:active, columnview.majoris-data-view > header > button:active { background: @majoris_data_pressed; }
+columnview.majoris-data-column > header > button:focus-visible, columnview.majoris-data-view > header > button:focus-visible { box-shadow: inset 0 0 0 2px @majoris_data_focus; }
+columnview.majoris-data-column sort-indicator, columnview.majoris-data-view sort-indicator { min-width: 16px; min-height: 16px; -gtk-icon-size: 16px; color: @majoris_data_focus; }
+columnview.majoris-data-column cell:focus-visible, columnview.majoris-data-view cell:focus-visible { outline: none; box-shadow: none; }
+columnview.majoris-data-boxed { border: 1px solid @majoris_data_border; border-radius: 8px; }
+
+columnview.majoris-data-column > listview > row:focus-within, columnview.majoris-data-view > listview > row:focus-within { box-shadow: inset 0 0 0 2px @majoris_data_focus; }
+
+columnview.majoris-data-column > header > button:disabled, columnview.majoris-data-view > header > button:disabled, columnview.majoris-data-column > header > button:disabled:hover, columnview.majoris-data-view > header > button:disabled:hover { background: @majoris_data_header; color: @majoris_data_secondary; opacity: .55; box-shadow: none; }
+
+columnview.majoris-data-column > header > button, columnview.majoris-data-view > header > button { border-right: 1px solid @majoris_data_border; }
+columnview.majoris-data-column > header > button:last-child, columnview.majoris-data-view > header > button:last-child { border-right: none; }
+columnview.majoris-data-column.column-separators cell, columnview.majoris-data-view.column-separators cell { border-right: 1px solid @majoris_data_border; }
+listview.majoris-data-list.majoris-data-boxed, gridview.majoris-data-grid.majoris-data-boxed { border: 1px solid @majoris_data_border; border-radius: 8px; }
+
+/* ColumnView's title box has a native dim colour; do not dim the approved role twice. */
+columnview.majoris-data-column > header > button > box, columnview.majoris-data-view > header > button > box { color: @majoris_data_secondary; opacity: 1; }
+columnview.majoris-data-column > header > button label, columnview.majoris-data-view > header > button label { color: inherit; opacity: 1; }
+
+.majoris-data-artwork-frame { border: none; padding: 0; margin: 0; background: transparent; box-shadow: none; }
