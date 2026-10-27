@@ -38,7 +38,8 @@ namespace MajorisThemeFactory {
                     GeometryReport.print (simple, dense,split,main);
                     simple.close (); dense.close (); split.close(); main.close(); quit (); return Source.REMOVE;
                 });
-            } else if(page.has_prefix("data-")) new DataViewsFixture(this,page).present();
+            } else if(page.has_prefix("toolbars")) new ToolbarsFixture(this,page).present();
+            else if(page.has_prefix("data-")) new DataViewsFixture(this,page).present();
             else if(page.has_prefix("sidebar")) new SidebarFixture(this,page).present();
             else if(page.has_prefix("location")) new LocationFixture(this,page).present();
             else if(page.has_prefix("editor")) new EditorFixture(this,page).present();

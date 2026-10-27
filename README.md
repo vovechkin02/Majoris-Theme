@@ -96,3 +96,9 @@ a 32px minimum, 4px gap, 16px icons and a fixed-inset selected indicator.
 
 Data presentation: [Grid/List/Details design and integration](docs/data-view-design.md),
 [native finalisation evidence](docs/data-view-finalisation.md).
+
+The opt-in [Toolbar Design System](docs/toolbar-design-system.md) provides 40px
+Navigation and Command bars, 32px controls and a toolbar-specific view switcher.
+Open the factory's Toolbars page or run `--page=toolbars`; narrow, editing, held-state
+and popup examples use `toolbars-narrow`, `toolbars-editing`, `toolbars-states` and
+`toolbars-popover`. The existing 28px editor actions remain independent.

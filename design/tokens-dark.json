@@ -1963,6 +1963,144 @@
       "margin": "8px 0",
       "background": "var(--border-soft)",
       "flex-shrink": "0"
+    },
+    ".majoris-toolbar": {
+      "min-height": "40px",
+      "padding": "4px 16px",
+      "display": "flex",
+      "align-items": "center",
+      "gap": "8px",
+      "background": "var(--surface)",
+      "font-size": "14px",
+      "font-weight": "500",
+      "box-shadow": "none"
+    },
+    ".majoris-toolbar-navigation": {
+      "background": "var(--surface)"
+    },
+    ".majoris-toolbar-commands": {
+      "background": "var(--surface2)",
+      "background-image": "linear-gradient(var(--border-soft),var(--border-soft))",
+      "background-size": "100% 1px",
+      "background-position": "bottom",
+      "background-repeat": "no-repeat"
+    },
+    ".majoris-toolbar-divider": {
+      "background-image": "linear-gradient(var(--border-soft),var(--border-soft))",
+      "background-size": "100% 1px",
+      "background-position": "bottom",
+      "background-repeat": "no-repeat"
+    },
+    ".majoris-toolbar-group": {
+      "display": "flex",
+      "align-items": "center",
+      "gap": "4px",
+      "background": "transparent",
+      "border": "0",
+      "box-shadow": "none"
+    },
+    ".majoris-toolbar-major-groups": {
+      "gap": "16px"
+    },
+    ".majoris-toolbar-spacer": {
+      "flex": "1"
+    },
+    ".majoris-toolbar-separator": {
+      "width": "1px",
+      "align-self": "stretch",
+      "margin": "4px 0",
+      "background": "var(--border-soft)",
+      "box-shadow": "none"
+    },
+    ".majoris-toolbar-control": {
+      "height": "auto",
+      "min-height": "32px",
+      "padding": "0 8px",
+      "border-radius": "4px",
+      "font-size": "14px",
+      "font-weight": "600"
+    },
+    ".majoris-toolbar-icon": {
+      "width": "32px",
+      "height": "32px",
+      "padding": "0",
+      "display": "flex",
+      "align-items": "center",
+      "justify-content": "center"
+    },
+    ".majoris-toolbar-icon svg": {
+      "width": "16px",
+      "height": "16px"
+    },
+    ".majoris-toolbar-menu": {
+      "font-weight": "500"
+    },
+    ".majoris-toolbar-action": {
+      "display": "flex",
+      "align-items": "center",
+      "gap": "8px"
+    },
+    ".majoris-toolbar-view-switcher": {
+      "height": "32px",
+      "display": "flex",
+      "gap": "2px",
+      "padding": "3px",
+      "border": "1px solid var(--border)",
+      "border-radius": "8px",
+      "background": "#242428",
+      "box-shadow": "none"
+    },
+    ".majoris-toolbar-view-switcher button": {
+      "min-height": "24px",
+      "min-width": "24px",
+      "padding": "2px 4px",
+      "border": "0",
+      "border-radius": "4px",
+      "background": "transparent",
+      "color": "var(--text2)",
+      "font-size": "14px",
+      "font-weight": "500"
+    },
+    ".majoris-toolbar-view-switcher button:hover": {
+      "background": "var(--hover)"
+    },
+    ".majoris-toolbar-view-switcher button.active": {
+      "background": "#35353A",
+      "color": "var(--text)",
+      "font-weight": "600",
+      "box-shadow": "var(--shadow-control)"
+    },
+    ".majoris-toolbar-view-switcher button:focus-visible": {
+      "outline": "2px solid #818CF8",
+      "outline-offset": "-2px"
+    },
+    ".majoris-toolbar-field": {
+      "height": "auto",
+      "min-height": "32px",
+      "padding": "0 8px",
+      "font-size": "14px",
+      "font-weight": "500"
+    },
+    ".majoris-toolbar-metadata": {
+      "font-size": "12px",
+      "font-weight": "400",
+      "color": "var(--text2)"
+    },
+    ".majoris-toolbar-demo-narrow": {
+      "max-width": "480px",
+      "overflow-x": "auto"
+    },
+    ".majoris-toolbar-control.is-hover": {
+      "background": "var(--hover)",
+      "box-shadow": "var(--shadow-control-hover)"
+    },
+    ".majoris-toolbar-control.is-pressed": {
+      "background": "var(--active)",
+      "box-shadow": "var(--shadow-control-active)"
+    },
+    ".majoris-toolbar-control.is-focus": {
+      "border-color": "#818CF8",
+      "box-shadow": "0 0 0 2px rgba(129,140,248,.34),var(--shadow-control)"
     }
   },
   "inline_styles": [

@@ -1,4 +1,5 @@
 """Generate native CSS from token placeholders. Run after editing design/templates."""
+from generate_toolbar import toolbar_values, toolbar_template
 from generate_data import data_values
 import json,re,sys
 from design import ROOT,html_value
@@ -33,7 +34,7 @@ def render(s):
 colors='/* Generated from design/tokens.json. */\n'+''.join('@define-color '+k+' '+v+';\n' for k,v in t['color'].items())
 colors+=''.join('@define-color '+k+' @'+v+';\n' for k,v in {'accent_color':'primary_500','accent_bg_color':'primary_500','accent_fg_color':'surface','window_bg_color':'background','window_fg_color':'text','view_bg_color':'surface','view_fg_color':'text','headerbar_bg_color':'surface','headerbar_fg_color':'text','card_bg_color':'surface','card_fg_color':'text','popover_bg_color':'surface','popover_fg_color':'text','dialog_bg_color':'surface','dialog_fg_color':'text','destructive_bg_color':'danger','destructive_fg_color':'surface','success_bg_color':'success','warning_bg_color':'warning','theme_bg_color':'background','theme_fg_color':'text','theme_base_color':'surface','theme_text_color':'text','theme_selected_bg_color':'primary_500','theme_selected_fg_color':'surface'}.items())
 for version in ('3','4'):
-    values.update(sidebar_values(t,'light',version));values.update(data_values(t))
+    values.update(sidebar_values(t,'light',version));values.update(data_values(t));values.update(toolbar_values(t))
     directory=ROOT/f'theme/Majoris/gtk-{version}.0'
     directory.mkdir(parents=True,exist_ok=True)
     (directory/'assets').mkdir(exist_ok=True)
@@ -46,7 +47,7 @@ for version in ('3','4'):
     specific=(ROOT/f'design/templates/gtk{version}.css.in').read_text()
     sidebar=(ROOT/'design/templates/gtk-sidebar.css.in').read_text()
     if version=='3': sidebar=sidebar.replace(':focus-visible',':focus').replace('-gtk-icon-size: 16px;','')
-    specific+=sidebar+(ROOT/f'design/templates/gtk{version}-data.css.in').read_text()
+    specific+=sidebar+(ROOT/f'design/templates/gtk{version}-data.css.in').read_text()+toolbar_template(version)
     if version=='4': specific+=(ROOT/'design/templates/gtk4-editor.css.in').read_text()+(ROOT/'design/templates/gtk4-location.css.in').read_text()
     if version=='4':
         # GTK4 distinguishes keyboard-visible button focus; entries keep focus

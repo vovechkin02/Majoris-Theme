@@ -381,6 +381,36 @@ columnview.majoris-data-column > header > button > box, columnview.majoris-data-
 columnview.majoris-data-column > header > button label, columnview.majoris-data-view > header > button label { color: inherit; opacity: 1; }
 
 .majoris-data-artwork-frame { border: none; padding: 0; margin: 0; background: transparent; box-shadow: none; }
+/* General-purpose opt-in toolbars; never match editor toolbar or nested crumbs. */
+.majoris-toolbar { min-height: 32px; padding: 4px 16px; border: none; background-color: @surface; box-shadow: none; border-spacing: 8px; font-size: 14px; font-weight: 500; }
+.majoris-toolbar-navigation { background-color: #FFFFFF; }
+.majoris-toolbar-commands { background-color: #F7F7F8; }
+.majoris-toolbar-divider, .majoris-toolbar-commands { background-image: linear-gradient(@border_soft,@border_soft); background-size: 100% 1px; background-position: bottom; background-repeat: no-repeat; }
+.majoris-toolbar-group { padding: 0; border: none; background: transparent; box-shadow: none; border-spacing: 4px; }
+.majoris-toolbar-major-groups { border-spacing: 16px; }
+.majoris-toolbar-spacer { min-width: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
+separator.majoris-toolbar-separator { min-width: 1px; min-height: 1px; padding: 0; border: none; margin: 4px 0; background: @border_soft; box-shadow: none; }
+button.majoris-toolbar-control, menubutton.majoris-toolbar-control > button { min-height: 30px; padding: 0 8px; border-radius: 4px; font-size: 14px; font-weight: 600; }
+button.majoris-toolbar-icon, menubutton.majoris-toolbar-icon > button { min-width: 16px; min-height: 16px; padding: 7px; }
+button.majoris-toolbar-control > image, button.majoris-toolbar-control > box > image, menubutton.majoris-toolbar-control > button > image, menubutton.majoris-toolbar-control > button > box > image { -gtk-icon-size: 16px; padding: 0; margin: 0; }
+button.majoris-toolbar-menu, menubutton.majoris-toolbar-menu > button { font-weight: 500; }
+button.majoris-toolbar-action > box { border-spacing: 8px; }
+entry.majoris-toolbar-field, searchentry.majoris-toolbar-field { min-height: 30px; padding: 0 8px; font-size: 14px; font-weight: 500; }
+.majoris-toolbar-metadata { font-size: 12px; font-weight: 400; color: @text_secondary; }
+.majoris-toolbar-view-switcher { min-height: 24px; padding: 3px; border: 1px solid @border; border-radius: 8px; background: #F2F2F4; box-shadow: none; border-spacing: 2px; }
+.majoris-toolbar-view-switcher > button { min-height: 20px; min-width: 16px; padding: 2px 4px; margin: 0; border: none; border-radius: 4px; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); }
+.majoris-toolbar-view-switcher > button image { min-width: 16px; min-height: 16px; padding: 0; margin: 0; -gtk-icon-size: 16px; }
+.majoris-toolbar-view-switcher > button:hover { background: @hover; box-shadow: none; }
+.majoris-toolbar-view-switcher > button:active { background: @active; box-shadow: none; }
+.majoris-toolbar-view-switcher > button:checked, .majoris-toolbar-view-switcher > button:checked:hover { background: #FFFFFF; color: @text; font-weight: 600; box-shadow: 0 1px 2px rgba(20,20,25,.10); }
+.majoris-toolbar-view-switcher > button:focus-visible { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+.majoris-toolbar-view-switcher > button:disabled, .majoris-toolbar-view-switcher > button:disabled:hover { background: transparent; color: @text_tertiary; box-shadow: none; }
+.majoris-toolbar-view-switcher > button:checked:disabled { background: #FFFFFF; }
+.majoris-toolbar:backdrop { color: @text_secondary; }
+
+button.majoris-toolbar-control:disabled:hover, button.majoris-toolbar-control:disabled:active, menubutton.majoris-toolbar-control > button:disabled:hover, menubutton.majoris-toolbar-control > button:disabled:active { background-color: #FFFFFF; color: @text_tertiary; border-color: @border; box-shadow: none; }
+button.majoris-toolbar-control:backdrop, menubutton.majoris-toolbar-control > button:backdrop { color: @text_secondary; }
+.majoris-toolbar-view-switcher:backdrop > button:checked { color: @text_secondary; }
 /* Supplemental editor components; libadwaita 1.7 native nodes, GTK4 only. */
 tabbar.majoris-document-tabs { background: @surface; color: @text_secondary; border: none; border-bottom: 1px solid @border_soft; padding: 0; min-height: 39px; }
 tabbar.majoris-document-tabs > revealer > .box { background: @surface; color: @text_secondary; padding: 0 6px; border: none; box-shadow: none; }

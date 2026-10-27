@@ -132,3 +132,15 @@ foreach scale : ['1', '2']
       env: {'GDK_SCALE': scale, 'GDK_BACKEND': 'x11', 'GSK_RENDERER': 'cairo', 'GTK_A11Y': 'none', 'GIO_USE_VFS': 'local'}, timeout: 150)
   endforeach
 endforeach
+
+foreach toolbar_version : ['3', '4']
+  foreach toolbar_scale : ['1', '2']
+    foreach toolbar_variant : ['light', 'dark']
+      test('toolbar system GTK' + toolbar_version + ' ' + toolbar_variant + ' scale ' + toolbar_scale,
+        find_program('dbus-run-session'), args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-toolbar-native.py'), toolbar_version],
+        env: {'GDK_SCALE': toolbar_scale, 'MAJORIS_VARIANT': toolbar_variant, 'GDK_BACKEND': 'x11', 'GTK_A11Y': 'none'}, timeout: 45)
+    endforeach
+  endforeach
+endforeach
+
+test('toolbar component contract', python, args: [files('tests/test-toolbar-contract.py')])
