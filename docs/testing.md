@@ -334,3 +334,27 @@ meson test -C build --num-processes 4 --print-errorlogs
 MAJORIS_CAPTURE_DIRECTORY=artifacts/data-view-finalisation MAJORIS_CAPTURE_PAGES=data-grid,data-grid-compact,data-list,data-list-compact,data-column,data-column-compact,data-column-sorted,data-column-multi,data-column-resized,data ./scripts/capture-visual-regressions.sh --both
 MAJORIS_CAPTURE_DIRECTORY=artifacts/data-view-finalisation MAJORIS_CAPTURE_SCALE=2 MAJORIS_CAPTURE_PAGES=data-grid,data-grid-compact,data-list,data-list-compact,data-column,data-column-compact ./scripts/capture-visual-regressions.sh --both
 ```
+
+
+## Data-view focus consistency and metadata
+
+`data view focus validation 1x/2x` uses real X11 pointer/key events and native
+screenshot pixels, verifying the owner row/tile, 2px focus, absence of nested
+Details cell rings, selection combinations, Ctrl/Shift selection, focus loss,
+view switching, keyboard return, disabled views and focused child controls.
+`data view metadata validation 1x/2x` checks every requested string at 12px/400,
+Pango extents including layout offsets, label and parent containment, standard/
+compact rows, resolved fonts and normal/unhinted rendering settings.
+GTK3 tests additionally verify native pointer/cursor navigation, Shift selection,
+inactive-window selection retention and focus return. GTK3 retains its native
+focus model rather than emulating GTK4 CSS states.
+
+```bash
+python3 tools/generate-theme.py --check
+meson test -C build --num-processes 4 --print-errorlogs
+```
+
+New tests regenerate unmodified native captures under `artifacts/data-view-focus/`
+in `light`, `dark`, `light-2x` and `dark-2x`. The `geometry` directory includes
+`focus-state-report.json`, `metadata-text-metrics.json` and corresponding `-2x`
+reports. [Investigation, measurements and limitations](data-view-focus-validation.md).

@@ -121,3 +121,12 @@ operations, editing and application drag-and-drop policies remain app-owned.
 Final native state refresh: 54 cases passed in `states-final.log`. Final bound-text,
 thumbnail-corner, enlarged-caption and input checks passed in `final-current.log`.
 All review captures and the consolidated measurement index have been refreshed.
+
+
+## Focus consistency follow-up — 27 October 2026
+
+The Details-only broad focus-within rule has been removed after real-input
+verification. All three GTK4 families now use native keyboard-visible focus,
+including descendant focus on a continuous Details row. Metadata clipping was
+not reproduced at the approved 12px/400; typography and geometry are unchanged.
+See [focus states, Pango measurements and Files follow-up](data-view-focus-validation.md).

@@ -12,6 +12,8 @@ for variant in ('light','dark'):
      selector=root+(' > child:'+state+' > .majoris-data-tile' if 'grid' in root else item+':'+state)
      assert selector in css,selector
     assert 'background-image' not in css.get(root+item+':selected',{}),'No sidebar stripe'
+   assert not any('row:focus-within' in selector and 'majoris-data-' in selector for selector in css)
+   expect(css,'columnview.majoris-data-column cell:focus-visible','box-shadow','none')
    expect(css,'listview.majoris-data-list > row','min-height','24px')
    expect(css,'listview.majoris-data-list.majoris-density-compact > row','padding','4px 8px')
    expect(css,'columnview.majoris-data-column cell','min-height','23px')

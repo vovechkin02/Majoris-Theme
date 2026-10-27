@@ -45,6 +45,18 @@ try:
     actual=Image.open(png).convert('RGB').getpixel((px,py));expected=(238,242,255) if variant=='light' else (43,43,68)
     assert max(abs(a-b) for a,b in zip(actual,expected))<=2,(family,variant,actual,expected,(area.x,area.y,area.width,area.height),(px,py),values)
     d['selected_pixel']=actual
+    if not grid:
+     # GTK3 owns its cursor and renderer focus; it has no GTK4 FOCUS_VISIBLE flag.
+     first=view.get_background_area(Gtk.TreePath.new_from_indices([0]),view.get_column(0));bx,by=view.get_bin_window().get_origin()[-2:]
+     subprocess.run(['xdotool','mousemove',str(round((bx+first.x+50)*scale)),str(round((by+first.y+first.height/2)*scale)),'click','1'],check=True);settle()
+     pointer_cursor=view.get_cursor()[0].to_string();assert view.has_focus()
+     subprocess.run(['xdotool','key','Home','Down','shift+Down'],check=True);settle()
+     keyboard_cursor=view.get_cursor()[0].to_string();selected_before=[p.to_string() for p in view.get_selection().get_selected_rows()[1]]
+     assert len(selected_before)>=2 and keyboard_cursor!=pointer_cursor,(pointer_cursor,keyboard_cursor,selected_before)
+     away=Gtk.Window(title='GTK3 focus elsewhere');away.add(Gtk.Button(label='Elsewhere'));away.show_all();away.present();settle()
+     assert not window.is_active();assert [p.to_string() for p in view.get_selection().get_selected_rows()[1]]==selected_before
+     away.destroy();window.present();view.grab_focus();settle();assert view.has_focus()
+     d['focus_contract']={'pointer_cursor':pointer_cursor,'keyboard_cursor':keyboard_cursor,'selection_after_focus_loss':selected_before,'returned_focus':view.has_focus(),'native_flags':int(view.get_state_flags())}
     reports.append(d);window.destroy();settle()
   Gtk.StyleContext.remove_provider_for_screen(Gdk.Screen.get_default(),provider)
 finally:wm.terminate();wm.wait(timeout=5)

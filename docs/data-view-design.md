@@ -116,7 +116,13 @@ and emitted as shared `@majoris_data_*` colours. Each family consumes the same
 roles. Default items are transparent. Hover/pressed feedback is neutral unless
 selected; selected combinations retain a stronger indigo tint. Focus is a
 separate 2px inset treatment and can appear on an unselected item. Details cell
-focus is represented once on its containing row via native focus-within state.
+focus is represented once on its containing row via native `:focus-visible`.
+GTK 4.18 propagates FOCUS_VISIBLE through a keyboard-focused cell/control's
+ancestors, so the same selector covers descendants without a second cell ring.
+FOCUS_WITHIN alone also occurs after pointer clicks and must not request a ring.
+Selection alone never requests focus. GTK may mark keyboard visibility after
+Ctrl/Shift modifier input; preserve that native indicator rather than overriding
+it with application pointer-mode flags.
 Disabled items reduce emphasis and suppress hover/pressed surfaces. Backdrop
 retains the selected surface and reduces text emphasis.
 
@@ -220,3 +226,28 @@ screen-reader announcements and third-party integration remain session acceptanc
 checks. Accessible names/roles are preserved in native widgets and instance-role
 reports; this is not an end-to-end screen-reader certification. See the
 [finalisation report](data-view-finalisation.md) for evidence and before/after values.
+
+
+## Focus and metadata diagnostics
+
+The native fixture reports the complete mapped CSS-node hierarchy, numeric
+state flags, explicit focus-visible/focus-within booleans and the actual focused
+widget. These states come from GTK input, not an appearance provider. Use
+`MAJORIS_DATA_REPORT=/path/report.json` with `--page=data-grid`, `data-list` or
+`data-column`. `MAJORIS_DATA_CHILD_CONTROL=1` adds a native checkbutton for
+keyboard descendant verification; this is a diagnostic composition opt-in.
+
+`--page=data-column-metadata` displays the requested metadata strings without
+ellipsizing them, using wider diagnostic columns only. Add `-compact` for 32px
+rows, or `-unhinted` to request process-local legacy GTK Xft settings with
+hinting/antialiasing off. The validation report distinguishes requested settings
+from confirmed rasterizer behaviour. The normal fixture geometry is unchanged.
+Reports include actual Pango-resolved fonts, ink/logical bounds, layout offsets,
+layout and allocated baselines, label/cell/ancestor allocations and overflow,
+scale factor, and GTK Xft settings. An allocated baseline of -1 means that no
+baseline was requested from the centered label; it does not mean missing text.
+
+The complete metadata ink must fit vertically after applying the layout offset,
+both in the label and in its row/cell ancestry. Horizontally ellipsized labels
+and partially visible rows at a scrolling viewport edge are normal scrolling
+behaviour, not glyph clipping. [Measured results and Files checks](data-view-focus-validation.md).

@@ -123,3 +123,12 @@ endforeach
 test('data view native interactions',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 1440x1080x24',python.full_path(),files('tests/test-data-view-interaction.py')],env:{'GIO_USE_VFS':'local','GTK_A11Y':'none'},timeout:90)
 
 test('data view native states',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 1440x1080x24',python.full_path(),files('tests/test-data-view-state.py')],env:{'GIO_USE_VFS':'local','GTK_A11Y':'none'},timeout:180)
+
+# Genuine native input and Pango measurements; screenshots are local test artifacts.
+foreach scale : ['1', '2']
+  foreach subject : ['focus', 'metadata']
+    test('data view ' + subject + ' validation ' + scale + 'x', find_program('dbus-run-session'),
+      args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-data-view-' + subject + '.py')],
+      env: {'GDK_SCALE': scale, 'GDK_BACKEND': 'x11', 'GSK_RENDERER': 'cairo', 'GTK_A11Y': 'none', 'GIO_USE_VFS': 'local'}, timeout: 150)
+  endforeach
+endforeach

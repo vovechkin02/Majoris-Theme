@@ -6,6 +6,7 @@ namespace MajorisThemeFactory {
         public int64 modified {get;set;}
         public int64 bytesize {get;set;}
         public string icon {get;set;}
+        public string? diagnostic_metadata {get;set;default=null;}
         public string thumbnail {get;set;default="";}
         public DataRecord(uint id,string title) {
             identity=id;name=title;kind=title.contains(".")?"Document":"Folder";if(title.has_suffix(".png"))kind="Image";if(title.has_suffix(".pdf"))kind="PDF document";
@@ -36,6 +37,9 @@ namespace MajorisThemeFactory {
                 var overlay=new Gtk.Overlay();overlay.hexpand=true;overlay.vexpand=true;overlay.child=icon;thumbnail_frame=new Gtk.AspectFrame(0.5f,0.5f,1.0f,false);thumbnail_frame.add_css_class("majoris-data-artwork-frame");thumbnail_frame.child=picture;overlay.add_overlay(thumbnail_frame);picture.halign=Gtk.Align.FILL;picture.valign=Gtk.Align.FILL;
                 artwork.append(overlay);artwork.vexpand=false;append(artwork);label.justify=Gtk.Justification.CENTER;label.yalign=0;label.wrap=true;label.wrap_mode=Pango.WrapMode.WORD_CHAR;label.lines=2;label.max_width_chars=1;append(label);
             } else {if(col==0)append(icon);append(label);if(col>0)label.add_css_class("majoris-data-metadata");}
+            if(Environment.get_variable("MAJORIS_DATA_CHILD_CONTROL")=="1" && col==0 && mode!="grid") {
+                var control=new Gtk.CheckButton();control.tooltip_text="Example item control";control.valign=Gtk.Align.CENTER;append(control);
+            }
             if(family=="grid")label.notify["attributes"].connect(()=>reserve_caption());
             configure(compact);
         }
@@ -43,7 +47,7 @@ namespace MajorisThemeFactory {
         public void configure(bool compact) {reserve_caption();label.xalign=family=="grid"?0.5f:(get_direction()==Gtk.TextDirection.RTL?1:0);icon.pixel_size=family=="grid"?(compact?32:64):16;if(family=="grid")label.width_request=compact?80:112;}
         public void bind_record(DataRecord value) {
             unbind_record();record=value;tooltip_text=value.name;
-            if(column==0)label.label=value.name;else if(column==1)label.label="%04lld-%02lld-%02lld".printf(value.modified/10000,(value.modified/100)%100,value.modified%100);else if(column==2)label.label=value.kind;else label.label="%lld KB".printf(value.bytesize/1024);
+            if(column==0)label.label=value.name;else if(value.diagnostic_metadata!=null)label.label=value.diagnostic_metadata;else if(column==1)label.label="%04lld-%02lld-%02lld".printf(value.modified/10000,(value.modified/100)%100,value.modified%100);else if(column==2)label.label=value.kind;else label.label="%lld KB".printf(value.bytesize/1024);
             string accessible_text=value.name;if(column>0)accessible_text=value.name+", "+label.label;label.update_property(Gtk.AccessibleProperty.LABEL,accessible_text,-1);
             icon.icon_name=value.icon;update_artwork();
             if(family=="grid")thumbnail_handler=value.notify["thumbnail"].connect(()=>update_artwork());
@@ -95,10 +99,17 @@ namespace MajorisThemeFactory {
             Object(application:app,title:"Majoris Data Views",default_width:1000,default_height:720);
             if(mode.contains("rtl"))Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL);
             compact=mode.contains("compact");
+            if(mode.contains("unhinted")) {
+                var settings=Gtk.Settings.get_default();settings.gtk_xft_hinting=0;settings.gtk_xft_antialias=0;settings.gtk_xft_hintstyle="hintnone";
+            }
             store=new GLib.ListStore(typeof(DataRecord));
             string[] names={"Documents","Downloads","Photos","Majoris Design.md","Majoris-Theme-Implementation-Notes.txt","A Very Long Filename That Exceeds The Available View Width.txt","Wallpaper.png","Project Requirements.pdf","Favorites","Files","Folders","Find","Format","Properties","gjpqy","ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
             int count=mode.contains("stress")?1200:64;
             for(int i=0;i<count;i++)store.append(new DataRecord((uint)i,i<names.length?names[i]:"File %04d.txt".printf(i)));
+            if(mode.contains("metadata")) {
+                string[] samples={"18 bytes","24 bytes","Folder","Plain text document","Modified","Favorites","Files","Format","ABCDEFGHIJKLMNOPQRSTUVWXYZ","gjpqy","10/27/2026 02:41:48 AM"};
+                for(uint i=0;i<samples.length;i++)((DataRecord)store.get_item(i)).diagnostic_metadata=samples[i];
+            }
             sorted=new Gtk.SortListModel(store,null);selection=new Gtk.SingleSelection(sorted);
             grid=new Gtk.GridView(null,item_factory("grid"));grid.add_css_class("majoris-data-grid");grid.min_columns=1;grid.max_columns=12;
             list=new Gtk.ListView(null,item_factory("list"));list.add_css_class("majoris-data-list");
@@ -107,6 +118,7 @@ namespace MajorisThemeFactory {
             for(int i=0;i<4;i++) {
                 int index=i;var c=new Gtk.ColumnViewColumn(titles[i],item_factory("column",i));c.fixed_width=widths[i];c.expand=i==0;c.resizable=true;
                 c.sorter=new Gtk.CustomSorter((a,b)=>{var x=(DataRecord)a;var y=(DataRecord)b;if(index==0)return strcmp(x.name,y.name);if(index==2)return strcmp(x.kind,y.kind);int64 delta=index==1?x.modified-y.modified:x.bytesize-y.bytesize;return delta<0?-1:(delta>0?1:0);});
+                if(mode.contains("metadata") && i>0)c.fixed_width=330;
                 column.append_column(c);columns+=c;
             }
             // Subscribe before SortListModel so selected identities are captured
@@ -133,6 +145,7 @@ namespace MajorisThemeFactory {
             if(mode.contains("disabled" ) && !mode.contains("disabled-sort")){grid.sensitive=false;list.sensitive=false;column.sensitive=false;}
             if(mode.contains("sorted"))column.sort_by_column(columns[0],Gtk.SortType.ASCENDING);
             if(mode.contains("resized")){columns[0].expand=false;columns[0].fixed_width=260;}
+            if(mode.contains("metadata"))set_default_size(1400,760);
             if(mode.contains("narrow"))set_default_size(390,720);
             if(mode.contains("rtl"))set_direction_recursive(this,Gtk.TextDirection.RTL);
             if(mode.contains("backdrop"))Timeout.add(1000,()=>{var target=new Adw.ApplicationWindow(app);target.title="Data backdrop target";target.default_width=220;target.default_height=100;target.content=new Gtk.Label("Inactive-window selection");target.present();return Source.REMOVE;});
@@ -183,9 +196,37 @@ namespace MajorisThemeFactory {
             }
             for(var c=w.get_first_child();c!=null;c=c.get_next_sibling())cells_report(c,json,ref first);
         }
+        // Native diagnostics only: no focus-state synthesis or appearance provider.
+        void node_report(Gtk.Widget w,StringBuilder json,ref bool first,string ancestry="") {
+            if(!w.get_mapped())return;
+            if(!first)json.append(",");first=false;
+            string node_path=ancestry+"/"+css_name(w);
+            json.append("{\"node\":%s,\"path\":%s,\"type\":%s,\"flags\":%u,\"state\":%s,\"focused\":%s,\"focus_visible\":%s,\"focus_within\":%s,\"bounds\":%s}".printf(quote(css_name(w)),quote(node_path),quote(w.get_type().name()),(uint)w.get_state_flags(),quote(w.get_state_flags().to_string()),w.has_focus.to_string(),((w.get_state_flags()&Gtk.StateFlags.FOCUS_VISIBLE)!=0).to_string(),((w.get_state_flags()&Gtk.StateFlags.FOCUS_WITHIN)!=0).to_string(),bounds(w)));
+            for(var c=w.get_first_child();c!=null;c=c.get_next_sibling())node_report(c,json,ref first,node_path);
+        }
+        void text_report(Gtk.Widget w,StringBuilder json,ref bool first) {
+            var cell=w as DataCell;
+            if(cell!=null && cell.record!=null && cell.get_mapped()) {
+                if(!first)json.append(",");first=false;
+                var label=cell.label;var layout=label.get_layout();Pango.Rectangle ink,logical;layout.get_pixel_extents(out ink,out logical);
+                int x,y;label.get_layout_offsets(out x,out y);
+                var context=label.get_pango_context();var description=context.get_font_description();var resolved=context.load_font(description);
+                json.append("{\"id\":%u,\"column\":%d,\"text\":%s,\"font\":%s,\"resolved_font\":%s,\"scale\":%d,\"ink\":[%d,%d,%d,%d],\"logical\":[%d,%d,%d,%d],\"layout_offset\":[%d,%d],\"layout_baseline\":%g,\"allocated_baseline\":%d,\"label\":%s,\"cell\":%s,\"ancestors\":[".printf(cell.record.identity,cell.column,quote(label.label),quote(description.to_string()),quote(resolved.describe().to_string()),label.get_scale_factor(),ink.x,ink.y,ink.width,ink.height,logical.x,logical.y,logical.width,logical.height,x,y,(double)layout.get_baseline()/Pango.SCALE,label.get_allocated_baseline(),bounds(label),bounds(cell)));
+                bool ancestor_first=true;
+                for(var parent=label.get_parent();parent!=null && parent!=stack;parent=parent.get_parent()) {
+                    if(!ancestor_first)json.append(",");ancestor_first=false;
+                    json.append("{\"node\":%s,\"bounds\":%s,\"overflow\":%s}".printf(quote(css_name(parent)),bounds(parent),quote(parent.overflow.to_string())));
+                }
+                json.append("]}");
+            }
+            for(var c=w.get_first_child();c!=null;c=c.get_next_sibling())text_report(c,json,ref first);
+        }
         uint find_position(DataRecord r){for(uint i=0;i<sorted.get_n_items();i++)if(sorted.get_item(i)==r)return i;return uint.MAX;}
         void write_report(string path){
-            var json=new StringBuilder("{");json.append("\"active\":%s,\"window_bounds\":%s,\"mode\":%s,\"compact\":%s,\"multi\":%s,\"count\":%u,\"setups\":%u,\"binds\":%u,\"unbinds\":%u,\"activated\":%u,\"view\":%s,\"controls\":[".printf(is_active.to_string(),bounds(this),quote(mode_name),compact.to_string(),multi_button.active.to_string(),sorted.get_n_items(),setups,binds,unbinds,activated,bounds(stack)));
+            var settings=Gtk.Settings.get_default();
+            var json=new StringBuilder("{");
+            json.append("\"font_rendering\":{\"antialias\":%d,\"hinting\":%d,\"hintstyle\":%s,\"rgba\":%s,\"dpi\":%d},".printf(settings.gtk_xft_antialias,settings.gtk_xft_hinting,quote(settings.gtk_xft_hintstyle??"default"),quote(settings.gtk_xft_rgba??"default"),settings.gtk_xft_dpi));
+            json.append("\"active\":%s,\"window_bounds\":%s,\"mode\":%s,\"compact\":%s,\"multi\":%s,\"count\":%u,\"setups\":%u,\"binds\":%u,\"unbinds\":%u,\"activated\":%u,\"view\":%s,\"controls\":[".printf(is_active.to_string(),bounds(this),quote(mode_name),compact.to_string(),multi_button.active.to_string(),sorted.get_n_items(),setups,binds,unbinds,activated,bounds(stack)));
             foreach(var b in mode_buttons){if(b!=mode_buttons[0])json.append(",");json.append(bounds(b));}json.append(","+bounds(compact_button)+","+bounds(multi_button)+"],\"selected\":[");bool first=true;
             foreach(var r in selected_records()){if(!first)json.append(",");first=false;json.append(r.identity.to_string());}json.append("],\"order\":[");for(uint i=0;i<uint.min(16,sorted.get_n_items());i++){if(i>0)json.append(",");json.append(((DataRecord)sorted.get_item(i)).identity.to_string());}json.append("],\"widths\":[");for(int i=0;i<4;i++){if(i>0)json.append(",");json.append(columns[i].fixed_width.to_string());}json.append("],\"headers\":[");first=true;
             var header=find_nodes(column,"header");if(header.length>0)for(var c=header[0].get_first_child();c!=null;c=c.get_next_sibling()){if(!first)json.append(",");first=false;json.append(bounds(c));}
@@ -193,7 +234,9 @@ namespace MajorisThemeFactory {
             first=true;if(header.length>0)foreach(var h in find_nodes(header[0],"label")){if(!first)json.append(",");first=false;var font=h.get_pango_context().get_font_description();json.append("[%g,%d]".printf((double)font.get_size()/Pango.SCALE,(int)font.get_weight()));}
             json.append("],\"header_foregrounds\":[");first=true;if(header.length>0)foreach(var label in find_nodes(header[0],"label")){if(!first)json.append(",");first=false;var colour=label.get_style_context().get_color();json.append("[%g,%g,%g,%g]".printf(colour.red,colour.green,colour.blue,colour.alpha));}
             json.append("],\"indicators\":[");first=true;foreach(var indicator in find_nodes(column,"sort-indicator")){if(!first)json.append(",");first=false;json.append("{\"bounds\":%s,\"classes\":%s}".printf(bounds(indicator),quote(string.joinv(" ",indicator.get_css_classes()))));}
-            json.append("],\"cells\":[");first=true;cells_report(stack.visible_child,json,ref first);json.append("]}");try{FileUtils.set_contents(path,json.str);}catch(Error e){warning("%s",e.message);}
+            json.append("],\"cells\":[");first=true;cells_report(stack.visible_child,json,ref first);json.append("],\"nodes\":[");first=true;node_report(stack.visible_child,json,ref first);
+            json.append("],\"text_metrics\":[");first=true;text_report(stack.visible_child,json,ref first);
+            json.append("]}");try{FileUtils.set_contents(path,json.str);}catch(Error e){warning("%s",e.message);}
         }
     }
 }

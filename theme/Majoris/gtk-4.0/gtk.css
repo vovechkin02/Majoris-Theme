@@ -365,7 +365,9 @@ columnview.majoris-data-column sort-indicator, columnview.majoris-data-view sort
 columnview.majoris-data-column cell:focus-visible, columnview.majoris-data-view cell:focus-visible { outline: none; box-shadow: none; }
 columnview.majoris-data-boxed { border: 1px solid @majoris_data_border; border-radius: 8px; }
 
-columnview.majoris-data-column > listview > row:focus-within, columnview.majoris-data-view > listview > row:focus-within { box-shadow: inset 0 0 0 2px @majoris_data_focus; }
+/* GTK propagates FOCUS_VISIBLE to ancestors, including a focused cell/control's row.
+ * The shared :focus-visible rule above paints one continuous row; pointer
+ * FOCUS_WITHIN alone must not request a keyboard indicator. */
 
 columnview.majoris-data-column > header > button:disabled, columnview.majoris-data-view > header > button:disabled, columnview.majoris-data-column > header > button:disabled:hover, columnview.majoris-data-view > header > button:disabled:hover { background: @majoris_data_header; color: @majoris_data_secondary; opacity: .55; box-shadow: none; }
 
