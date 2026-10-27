@@ -1,202 +1,252 @@
-# Majoris Toolbar Design Specification
+# Universal Majoris Toolbar Design Specification
 
-The general toolbar family is opt-in. Use `.majoris-toolbar` with either
-`.majoris-toolbar-navigation` or `.majoris-toolbar-commands` on a horizontal GtkBox.
-The existing `.majoris-editor-toolbar` stays independent: a 40px strip containing
-28px flat controls. Adding the new family never upgrades editor controls to 32px.
+`Majoris.Ui.Toolbar` is one GTK4 container for application-owned native controls.
+It has the compositional role of WinForms ToolStrip, while using ordinary GTK
+widgets, signals, GActions, ownership and size negotiation. File navigation,
+formatting and playback are examples of content, not component types.
 
-## Contract
+## Geometry and appearance
 
-| Property | Navigation / Command |
-| --- | --- |
-| Complete height | 40px minimum at normal text size; larger text can grow |
-| Content minimum / padding | 32px content + 4px top/bottom; 16px left/right |
-| Standard icon button | 32×32px, 4px radius, existing Majoris elevation/states |
-| Standard text action | 32px high, natural width, 14px/600 |
-| Menu button / entry | 32px high, 14px/500 |
-| Supporting text | `.majoris-toolbar-metadata`, 12px/400 |
-| Symbolic artwork | 16×16px; SVG files remain unchanged |
-| Icon-and-label gap | 8px |
-| Within / between groups | 4px / 8px; optional 16px major-group spacing |
-| Toolbar elevation | None |
-| Bottom divider | Optional 1px background stripe painted inside the 40px box |
-| Vertical separator | 1px soft-border line, 4px vertical inset within content |
-| Motion | Existing 128ms cubic-bezier(.2,0,0,1), colours/border/shadow only |
-
-| Surface | Light | Dark |
+| Property | Standard | Compact |
 | --- | --- | --- |
-| Navigation | #FFFFFF | #202023 |
-| Commands | #F7F7F8 | #28282C |
+| Complete normal-text strip | 40px | 40px |
+| Controls | 32px | 28px, vertically centred |
+| Icon button | 32×32px | 28×28px |
+| Symbolic artwork | 16×16px | 16×16px |
+| Control radius | 4px | 4px |
+| Outer padding | 4px vertical, 16px horizontal | Same |
+| Within a group / between groups | 4px / 8px | Same |
+| Major group separation | Optional 16px | Same |
+| Icon-to-label gap | 8px | Same |
+| Segmented container | 32px, radius 8px, inner segments 24px/radius 4px | Same |
+| Bottom divider | Optional 1px painted inside allocation | Same |
+
+The content minimum is 32px, plus 8px padding. Compact items occupy 28px inside
+that same content area, giving 6px above/below. Large text can grow the strip.
+Text buttons have natural widths. Border-box generation derives 30px/26px content
+heights and 7px/5px icon padding from the canonical 32px/28px controls, accounting
+for two 1px borders. Segmented padding is derived as 3px around a 24px segment
+inside a 32px container with two 1px borders. These are calculations, not new
+spacing tokens. A vertical separator has restrained 4px content insets.
+
+| Colour | Light | Dark |
+| --- | --- | --- |
+| Universal surface | #FFFFFF | #202023 |
 | Divider | #E5E5E9 | #313136 |
-| View-switcher container | #F2F2F4 | #242428 |
-| Selected segment | #FFFFFF | #35353A |
+| Text | #1C1C1F | #F4F4F5 |
+| Secondary text | #626269 | #A9A9B0 |
 | Focus | #6366F1 | #818CF8 |
+| Segmented surface | #F2F2F4 | #242428 |
+| Selected segment | #FFFFFF | #35353A |
 
-Normal controls inherit existing Majoris default, hover, pressed, focus, disabled
-and backdrop treatment. Ordinary Trash/Delete actions do not acquire window-close
-red styling. Apply an existing destructive semantic class deliberately if needed.
-Do not introduce a new destructive palette. Selected segments retain a persistent
-surface while unselected hover uses the ordinary neutral tint. A single inset 2px
-focus outline is independent of selection. Disabled controls have no hover/press
-feedback; checked disabled segments retain their identifiable selected surface.
+Raised items retain existing Majoris backgrounds, borders and subtle control
+shadows. Flat items are transparent without default elevation, with neutral hover
+and pressed feedback and persistent checked treatment. Both may share one strip.
+A 2px indigo focus outline identifies focus independently of selection. Disabled
+and backdrop states retain the existing semantics. Transitions remain 128ms and
+stationary: no scaling, translation, resizing or baseline movement. Existing GTK
+reduced-motion handling applies; applications should honour GTK settings.
 
-## Classes and ownership
+Typography uses Plus Jakarta Sans: action labels 14px/600, menus, selectors and
+secondary labels 14px/500, metadata 12px/400. Real fonts and natural Pango layout
+supply ascent and descent; no text offsets or synthetic boldening are used.
 
-- `.majoris-toolbar`: flat surface, complete-height geometry, UI typography.
-- `.majoris-toolbar-navigation`, `.majoris-toolbar-commands`: surface variants.
-- `.majoris-toolbar-divider`: optional painted bottom hairline; Commands includes it.
-- `.majoris-toolbar-group`: transparent, unbordered horizontal action group.
-- `.majoris-toolbar-major-groups`: optional 16px gap between major groups.
-- `.majoris-toolbar-spacer`: neutral zero-minimum box; set `hexpand=true` in code.
-- `.majoris-toolbar-control`: opt in an intended button or GtkMenuButton to 32px.
-- `.majoris-toolbar-icon`: 32px icon-only treatment, in addition to control.
-- `.majoris-toolbar-action`: icon-and-text control with an 8px content gap.
-- `.majoris-toolbar-menu`: 14px/500 menu trigger, in addition to control.
-- `.majoris-toolbar-field`: GtkEntry/GtkSearchEntry sizing; do not attach to crumbs.
-- `.majoris-toolbar-view-switcher`: native exclusive toggle group, 32px overall.
-- `.majoris-toolbar-separator`: native inline separator with soft-border colour.
+## Install and consume
 
-Applications own horizontal orientation, expansion, accessible names/tooltips,
-commands, navigation history, focus order, accelerator registration, and responsive
-presentation. CSS does not implement navigation or collapse controls automatically.
-Only explicit control classes receive new button geometry; no broad toolbar-button
-descendant rule can restyle a nested breadcrumb or menu row.
+The Meson build installs `libmajoris-ui-gtk4.so` (SONAME 0),
+`majoris-ui-gtk4.h`, `majoris-ui-gtk4.vapi`, its GTK4 `.deps`, and
+`majoris-ui-gtk4.pc`. The core links GTK4 only, independently of the factory,
+libadwaita and both existing theme bridges. Header/VAPI are the public APIs;
+no GIR is provided. Use the normal Meson prefix and library search paths:
 
-## GTK4 / Vala composition
+```sh
+meson setup build --prefix=/usr
+meson compile -C build
+# Stage/review a package without installing onto the running system:
+DESTDIR="$PWD/artifacts/package-stage" meson install -C build
+```
 
-Construct GtkBoxes with spacing 0 under GTK4: scoped CSS border-spacing supplies
-8px between groups, 4px within groups, and 8px inside an icon-and-label control.
-Do not also add the same widget spacing or icon margins a second time.
+Consumer `meson.build`:
+
+```meson
+project('toolbar-example', 'vala', 'c')
+ui = dependency('majoris-ui-gtk4')
+executable('toolbar-example', 'main.vala', dependencies: ui)
+```
+
+A nonstandard prefix needs its `lib/pkgconfig` (or multiarch equivalent) in
+`PKG_CONFIG_PATH`, `share/vala/vapi` in valac's VAPI search path, and its library
+directory in the runtime loader search path. Library installation does not activate
+the theme or replace `libmajoris-gtk4-theme` / `libmajoris-gtk3-theme`.
+The user-local theme symlink installer is distinct from library/package installation.
+Without Majoris CSS the class remains a functional native GtkBox with ordinary
+GTK controls; the exact Majoris dimensions and spacing require the theme.
+
+## Public API and ownership
+
+- `append_control`, `prepend_control`, `insert_control(widget, position)` designate
+  only the supplied control and centre it; positions are zero-based, past-end appends.
+- `remove_control` unparents an item; callers can retain/reuse it and its callbacks.
+- `move_control(widget, position)` reorders an existing direct child.
+- `append_widget` inserts an arbitrary native composite without traversing or styling
+  its internals. Ordinary GtkBox methods remain available.
+- `append_group()` returns `ToolbarGroup`; its `append_control`, `append_widget`
+  and `remove_control` support arbitrary child counts. Empty groups hide themselves.
+- `append_separator()` and `append_spacer()` return native widgets. The spacer uses
+  `hexpand`, never fixed margins. API mutations suppress leading/trailing/redundant
+  separators. Use the component/group methods for automatic cleanup; direct GtkBox
+  mutation or hiding arbitrary children leaves visibility policy with the application.
+- `compact` selects density; `divider` selects the inset bottom stripe.
+- `Toolbar.set_item_flat(widget, bool)` switches an individual item's treatment.
+
+Button/MenuButton, Entry/SearchEntry and DropDown controls receive only their
+explicit toolbar classes. Custom progress bars, spinners, scales and supporting
+labels use ordinary GTK layout; label metadata can opt into
+`majoris-toolbar-metadata`. Icon-only buttons are detected. For custom icon-and-text
+button children, use a horizontal box with an 8px gap and mark the button
+`majoris-toolbar-action`; set image pixel size 16. Set accessible labels on icon-only
+controls. Removing widgets follows GTK reference ownership; it does not disconnect
+application signals or undo intentionally applied item classes.
+
+## Vala examples
+
+These snippets are placed inside a normal Gtk.Application activation handler.
+All three use the same class. The application supplies window/content parenting.
+
+Files-style composition:
 
 ```vala
-var navigation = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-navigation.add_css_class("majoris-toolbar");
-navigation.add_css_class("majoris-toolbar-navigation");
-navigation.add_css_class("majoris-toolbar-divider");
-var history = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-history.add_css_class("majoris-toolbar-group");
+var toolbar = new Majoris.Ui.Toolbar();
+toolbar.divider = true;
+var history = toolbar.append_group();
 var back = new Gtk.Button.from_icon_name("go-previous-symbolic");
-back.add_css_class("majoris-toolbar-control");
-back.add_css_class("majoris-toolbar-icon");
-back.valign = Gtk.Align.CENTER;
-back.tooltip_text = "Back";
-back.update_property(Gtk.AccessibleProperty.LABEL, "Back", -1);
-history.append(back);
-navigation.append(history);
-
-var location = new MajorisThemeFactory.LocationBar(); // Or your existing component.
+history.append_control(back);
+history.append_control(new Gtk.Button.from_icon_name("go-next-symbolic"));
+toolbar.append_separator();
+// Substitute an application's existing breadcrumb composite unchanged here.
+var location = new Gtk.Entry();
 location.hexpand = true;
-location.valign = Gtk.Align.CENTER;
-navigation.append(location); // No toolbar-control class on location or crumbs.
+toolbar.append_control(location);
 var search = new Gtk.SearchEntry();
-search.add_css_class("majoris-toolbar-field");
-search.valign = Gtk.Align.CENTER;
-navigation.append(search);
+toolbar.append_control(search);
+back.clicked.connect(() => { /* application navigation */ });
 ```
 
-The LocationBar above is the repository's native fixture/reference component,
-not a new installed application library. Existing applications should use their
-own implementation of the documented location classes. Its 32px outer component,
-26px crumbs and 26px entry remain authoritative, including existing typography,
-9px/7px radius exceptions, transparent crumbs and native editing behaviour.
-The toolbar fixture wires Ctrl+L/Alt+D to location entry and Ctrl+F to search;
-applications own these shortcuts and their conflicts.
+Notepad-style formatting:
 
 ```vala
-var commands = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-commands.add_css_class("majoris-toolbar");
-commands.add_css_class("majoris-toolbar-commands");
-var primary = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-primary.add_css_class("majoris-toolbar-group");
-commands.append(primary);
-var spacer = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-spacer.add_css_class("majoris-toolbar-spacer");
-spacer.hexpand = true;
-commands.append(spacer);
-var views = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-views.add_css_class("majoris-toolbar-view-switcher");
-views.valign = Gtk.Align.CENTER;
-Gtk.ToggleButton? first = null;
-foreach (var name in new string[]{"Grid", "List", "Columns", "Gallery"}) {
-    var button = new Gtk.ToggleButton.with_label(name);
-    if (first == null) { first = button; button.active = true; }
-    else button.group = first;
-    button.tooltip_text = name;
-    views.append(button);
+var toolbar = new Majoris.Ui.Toolbar();
+toolbar.compact = true;
+var formatting = toolbar.append_group();
+foreach (var name in new string[] {"Bold", "Italic", "Underline"}) {
+    var item = new Gtk.ToggleButton.with_label(name);
+    Majoris.Ui.Toolbar.set_item_flat(item);
+    formatting.append_control(item);
 }
-commands.append(views);
+var alignment = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+alignment.add_css_class("majoris-toolbar-segmented");
+alignment.valign = Gtk.Align.CENTER;
+var left = new Gtk.ToggleButton.with_label("Left");
+var right = new Gtk.ToggleButton.with_label("Right");
+right.group = left;
+left.active = true;
+alignment.append(left);
+alignment.append(right);
+toolbar.append_widget(alignment);
 ```
 
-For icon-only segments, put a 16px GtkImage inside each toggle, with
-`halign=valign=CENTER`, and provide a meaningful accessible label. Icon-and-text
-buttons similarly use a horizontal GtkBox and a vertically centered 16px image.
-The button provides surrounding allocation; the SVG has no intrinsic padding.
+Media-player composition:
 
-The segmented allocation is derived: 24px segment + 3px padding on each side +
-1px border on each side = 32px. Each segment has a 20px content minimum and 2px
-vertical padding; 16px images center within it and 14px labels fit naturally.
-The 3px and 7px icon-button padding values are native border-box arithmetic, not
-new general spacing tokens: 16px icon + 7px each side + 1px borders = 32px.
+```vala
+var toolbar = new Majoris.Ui.Toolbar();
+toolbar.append_control(new Gtk.Button.from_icon_name("media-playback-start-symbolic"));
+toolbar.append_control(new Gtk.Button.from_icon_name("media-playback-pause-symbolic"));
+var progress = new Gtk.ProgressBar();
+progress.valign = Gtk.Align.CENTER;
+progress.hexpand = true;
+toolbar.append_widget(progress);
+var time = new Gtk.Label("01:24 / 04:00");
+time.add_css_class("majoris-toolbar-metadata");
+toolbar.append_widget(time);
+var mode = new Gtk.DropDown.from_strings({"Normal", "Repeat", "Shuffle"});
+toolbar.append_control(mode);
+```
 
-Do not insert a separate horizontal GtkSeparator below a toolbar and count it as
-40px: that would add a pixel. Use the painted divider class. For native separators
-inside an appropriate group/overlay, set orientation and alignment in code; use
-`valign=CENTER` for a horizontal line, and retain natural 1px thickness. The fixture
-uses an inline vertical separator, not a floating card or elevated group surface.
+The native factory adds volume, a spinner, native menu models, actual Majoris
+LocationBar, search, and a dynamic Extra action toggle that inserts/removes Queue.
+The editor example combines compact flat buttons with generic text segments;
+the file example has icon-only segments. Icon-and-text segments can use ordinary
+GtkBox children with spacing 8 and GtkImage pixel_size 16. Group native toggles with
+`group`; the theme does not emulate selection or dispatch application events.
 
-## Menus, narrow windows and GTK3
+## CSS composition and isolation
 
-Apply toolbar-control/menu classes only to the trigger. Build its normal native
-GtkPopover/GtkPopoverMenu separately. Popover rows do not receive toolbar classes;
-they retain the existing menu radius, padding, typography, keycaps and shadow.
-The fixture demonstrates a Locations menu and a Sort/View menu with real Gio
-choices. Text/background styling is not applied through generic descendant rules.
+`.majoris-toolbar` is the sole canonical container. Optional modifiers are
+`.majoris-toolbar-compact`, `.majoris-toolbar-divider`, and
+`.majoris-toolbar-major-groups` (16px instead of 8px between direct children).
+Direct children are separated by 8px; group children by 4px. GTK4 uses CSS
+`border-spacing` with native box spacing 0, avoiding duplicate padding/gaps.
+Group, separator, spacer, control, icon, action, menu, field, select, metadata,
+item-flat and segmented classes are reusable building blocks. An explicitly
+designated `majoris-toolbar-scale` fits a native volume slider into the strip;
+turn off its value label or allow extra height when that label is needed.
 
-At narrow widths the fixture uses a GtkScrolledWindow per row with horizontal
-policy EXTERNAL and vertical policy NEVER. The scroll window itself has no fixed
-width and propagates natural height. Keyboard focus reveals offscreen controls.
-No extra visible horizontal scrollbar is added. This is one sample policy;
-applications may instead collapse groups into native overflow menus or hide
-secondary controls. Do not encode a Files-specific collapse policy in theme CSS.
+Only explicitly marked controls receive toolbar sizes. There is no broad
+`.majoris-toolbar button` rule. Do not apply control classes to location crumbs,
+menu rows or other composite internals. Use `append_widget(location_bar)` to retain
+its 32px shell, 26px crumbs/entry and existing radius exceptions. Native menu/popover
+contents retain normal Majoris menu typography and row sizing.
 
-GTK3 uses the same opt-in classes and palettes, but CSS cannot set GtkBox spacing.
-Set widget spacing explicitly: 8px on the toolbar, 4px on a group, 8px in an
-icon-and-label box and 2px inside the view switcher (16px for major separation).
-Use GtkRadioButtons with `draw_indicator=false`/`set_mode(false)` for native exclusive
-icon segments. Use real GtkMenu where appropriate. Associate a container's focus
-horizontal adjustment with its scrolled viewport when needed. Resize an already
-mapped GTK3 test window with `resize()`, not just `set_default_size()`.
-The GTK4-specific location implementation is not ported or simulated for GTK3.
+## Responsive behaviour, focus and accessibility
 
-Reduced motion is GTK-owned: honour GtkSettings `gtk-enable-animations`. The theme
-uses native CSS transitions; it does not introduce animation timers or custom
-rendering. Fixture timers only hold native review states or run measurement probes.
+The container supplies no application-specific overflow policy. A caller may hide
+secondary actions, compose overflow menus or wrap the strip in a GtkScrolledWindow:
 
-## Validation and before/after
+```vala
+var scroll = new Gtk.ScrolledWindow();
+scroll.hscrollbar_policy = Gtk.PolicyType.EXTERNAL;
+scroll.vscrollbar_policy = Gtk.PolicyType.NEVER;
+scroll.propagate_natural_height = true;
+scroll.child = toolbar;
+```
 
-| Before | After |
-| --- | --- |
-| General bars were application-owned GtkBoxes | Explicit Navigation / Command component classes |
-| Height/insets varied by application | Measured 40px minimum, 4px/16px padding |
-| Group spacing was ad hoc | 4px / 8px / optional 16px contract |
-| Generic segments could enlarge a toolbar | Independent measured 32px toolbar segment group |
-| Breadcrumbs risked broad button overrides | Only explicit toolbar-control classes get sizing |
-| Editor was the only specialised toolbar | Editor remains 40px / 28px flat, alongside general bars |
+EXTERNAL supports native focus scrolling without an extra visible scrollbar.
+The factory demonstrates a real 480px window. Standard controls retain dimensions;
+flexible location/search space and scrolling cooperate. Native keyboard focus and
+exclusive toggles handle tab/arrow/Space navigation. Applications supply shortcut
+controllers, accessible names, callbacks and actions. The factory uses Ctrl+L /
+Alt+D for its location component and Ctrl+F for search. Enlarged fonts may increase
+strip height; do not impose a maximum or clip content to maintain 40px.
 
-Canonical HTML component rules are extracted into both token JSON files. The
-existing generator appends `gtk-toolbar.css.in` to both GTK versions and palettes;
-GTK3-only CSS capability adaptation remains in that same pipeline. Typography,
-surfaces, spacing and border-box derivation read the canonical design rules.
+## Compatibility and GTK3
 
-Native matrix tests inspect actual 40px bars, 32px controls/switcher, 16px images,
-8px icon-label and inter-group gaps, 4px in-group gaps, stationary text baselines,
-native keyboard selection, menus, narrow scrolling and enlarged text growth.
-The compiled factory probe independently checks normal, 480px narrow and location
-entry modes. Existing menu/tab/sidebar/data/headerbar/editor tests remain intact.
+| Previous usage | New application usage | Compatibility |
+| --- | --- | --- |
+| Navigation / Command classes and different surfaces | `Toolbar()` with neutral surface | Old classes alias common strip geometry/surface; no purpose colours |
+| Independent editor toolbar | `Toolbar { compact = true }` plus flat items | Legacy editor CSS retains its exact 28px flat appearance |
+| `majoris-toolbar-view-switcher` | `majoris-toolbar-segmented` | Both names share one CSS implementation |
 
-See `artifacts/toolbar-finalisation/README.md` for native GTK3/GTK4 captures and
-JSON measurements. Full GNOME/Wayland focus, backdrop, fractional scaling and
-screen-reader validation still need the repository's VM workflow. Xvfb state
-captures hold native flags; they are not proof of compositor state forwarding.
-Direct popup captures accompany main-window views because root X11 captures can
-omit ARGB popup content. No HTML screenshots substitute for native validation.
+Existing applications need not migrate immediately. The legacy editor rules remain
+in the editor generator; they are compatibility styling, not a new public widget
+type. New application APIs contain no NavigationToolbar, CommandToolbar or
+EditorToolbar. Migration changes construction and opt-in item classes, not actions.
+
+GTK3 receives equivalent opt-in CSS for standard/compact controls, flat items,
+groups and segmented aliases. There is no GTK3 wrapper library. Compose native
+GtkBox rows with spacing 8, groups with spacing 4 and segmented boxes with spacing 2;
+CSS border-spacing is omitted because GTK3 does not implement it. Centre controls
+with `valign`, set native GtkImage pixel size 16, use GtkRadioButton with indicator
+mode off for exclusive segments, GtkComboBoxText with `majoris-toolbar-select`
+instead of GtkDropDown, and native `hexpand` spacers. GTK3 scrolled boxes should
+receive the scroller's focus horizontal adjustment. Location composition stays
+application-owned; do not compile the GTK4 subclass against GTK3.
+
+## Sources and evidence
+
+Canonical light/dark HTML supplies shared border-box tokens. `generate_toolbar.py`
+derives standard/compact dimensions; `gtk-toolbar.css.in` is included by the normal
+light/dark GTK3/4 generator. Regenerate with extract-design-tokens.py and
+generate-theme.py; verify with verify-design-tokens.py and generate-theme.py --check.
+
+See [implementation report](toolbar-implementation-report.md) and native evidence
+in [artifacts/universal-toolbar](../artifacts/universal-toolbar/README.md).

@@ -55,7 +55,7 @@ w=Adw.Window(title='Majoris native toolbar GTK'+version) if version=='4' else Gt
 w.set_default_size(1280,400)
 page=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
 w.set_content(page) if version=='4' else w.add(page)
-nav=box('majoris-toolbar','majoris-toolbar-navigation','majoris-toolbar-divider',spacing=8 if version=='3' else 0)
+nav=box('majoris-toolbar','majoris-toolbar-divider',spacing=8 if version=='3' else 0)
 group=box('majoris-toolbar-group',spacing=4 if version=='3' else 0);append(nav,group)
 back=button(icon='go-previous-symbolic');forward=button(icon='go-next-symbolic');forward.set_sensitive(False);append(group,back);append(group,forward)
 buttons=[back,forward]
@@ -67,13 +67,14 @@ plain_popup=Gtk.Popover();popup_label=Gtk.Label(label='Favorites Files Format gy
 plain_popup.set_child(popup_label) if version=='4' else plain_popup.add(popup_label)
 nav_menu.set_popover(plain_popup);append(nav,nav_menu)
 append(page,viewport(nav))
-commands=box('majoris-toolbar','majoris-toolbar-commands',spacing=8 if version=='3' else 0)
+commands=box('majoris-toolbar','majoris-toolbar-divider',spacing=8 if version=='3' else 0)
 actions=box('majoris-toolbar-group',spacing=4 if version=='3' else 0);append(commands,actions)
 create=Gtk.Button();style(create,'majoris-toolbar-control','majoris-toolbar-action');create.set_valign(Gtk.Align.CENTER)
 contents=box(spacing=8 if version=='3' else 0);image=Gtk.Image.new_from_icon_name('folder-new-symbolic') if version=='4' else Gtk.Image.new_from_icon_name('folder-new-symbolic',Gtk.IconSize.MENU);image.set_valign(Gtk.Align.CENTER);append(contents,image);action_label=Gtk.Label(label='New Folder');append(contents,action_label)
 create.set_child(contents) if version=='4' else create.add(contents);append(actions,create);buttons.append(create)
 for title in ('Cut','Copy','Paste','Rename','Share','Trash'):
  item=button(title);append(actions,item);buttons.append(item)
+flat_toggle=Gtk.ToggleButton(label='Format gyp;!');style(flat_toggle,'majoris-toolbar-control','majoris-toolbar-item-flat');flat_toggle.set_valign(Gtk.Align.CENTER);append(actions,flat_toggle)
 separator=Gtk.Separator(orientation=Gtk.Orientation.VERTICAL);style(separator,'majoris-toolbar-separator');append(commands,separator)
 spacer=box('majoris-toolbar-spacer');spacer.set_hexpand(True);append(commands,spacer,True)
 sort=Gtk.MenuButton();sort.set_label('Sort');style(sort,'majoris-toolbar-control','majoris-toolbar-menu');sort.set_valign(Gtk.Align.CENTER)
@@ -83,7 +84,7 @@ w.insert_action_group('example',menu_actions)
 menu_model=Gio.Menu();menu_model.append('Favorites','example.favorites');menu_model.append('Files','example.files');menu_model.append('Format','example.format')
 model_popup=Gtk.PopoverMenu.new_from_model(menu_model) if version=='4' else Gtk.Menu.new_from_model(menu_model)
 sort.set_popover(model_popup) if version=='4' else sort.set_popup(model_popup);append(commands,sort)
-switcher=box('majoris-toolbar-view-switcher',spacing=2 if version=='3' else 0);switcher.set_valign(Gtk.Align.CENTER);append(commands,switcher)
+switcher=box('majoris-toolbar-segmented',spacing=2 if version=='3' else 0);switcher.set_valign(Gtk.Align.CENTER);append(commands,switcher)
 segments=[]
 for title,name in [('Grid','view-grid-symbolic'),('List','view-list-symbolic'),('Columns','view-dual-symbolic'),('Gallery','view-paged-symbolic')]:
  toggle=Gtk.ToggleButton() if version=='4' else Gtk.RadioButton.new_from_widget(segments[0] if segments else None)
@@ -113,6 +114,49 @@ def capture(name):
 def geometry():return dict(navigation=nav.get_allocated_height(),commands=commands.get_allocated_height(),icon=[back.get_allocated_width(),back.get_allocated_height()],text=create.get_allocated_height(),search=field.get_allocated_height(),switcher=switcher.get_allocated_height())
 assert not Gtk.Settings.get_default().get_property('gtk-enable-animations'),'Reduced motion setting was lost'
 assert plain_entry.get_allocated_height()==32,('native entry',plain_entry.get_allocated_height())
+# Measure the same strip and existing controls at both densities.
+padding=nav.get_style_context().get_padding() if version=='4' else nav.get_style_context().get_padding(Gtk.StateFlags.NORMAL)
+outer_x=padding.left
+assert outer_x==16,('outer inset',outer_x)
+standard=geometry()
+assert bounds(back,nav)[1]+(padding.top if version=='4' else 0)==4,('standard centring',bounds(back,nav))
+for strip in (nav,commands):style(strip,'majoris-toolbar-compact')
+settle()
+compact=geometry()
+assert compact==dict(navigation=40,commands=40,icon=[28,28],text=28,search=28,switcher=32),compact
+outer_y=padding.top if version=='4' else 0
+assert bounds(back,nav)[1]+outer_y==6,('compact centring',bounds(back,nav),outer_y)
+style(create,'majoris-toolbar-item-flat')
+compact_text=[]
+for label in nodes(page):
+ if isinstance(label,Gtk.Label) and label.get_mapped() and label.get_text():
+  layout=label.get_layout();ink,logical=layout.get_pixel_extents();x,y=label.get_layout_offsets()
+  if version=='3':allocation=label.get_allocation();x-=allocation.x;y-=allocation.y
+  assert y+ink.y>=0 and y+ink.y+ink.height<=label.get_allocated_height(),('compact glyph clip',label.get_text())
+  assert logical.width<=label.get_allocated_width(),('compact label width',label.get_text())
+  compact_text.append(dict(text=label.get_text(),ink=[ink.x,ink.y,ink.width,ink.height],logical=[logical.width,logical.height],allocation=[label.get_allocated_width(),label.get_allocated_height()],baseline=layout.get_baseline()/Pango.SCALE))
+assert next(item for item in nodes(back) if isinstance(item,Gtk.Image)).get_allocated_height()==16
+(out/('gtk'+version+'-compact-text.json')).write_text(json.dumps(compact_text,indent=2)+'\n')
+capture('compact-toolbar')
+flat_position=bounds(flat_toggle,commands)
+flat_label=next(item for item in nodes(flat_toggle) if isinstance(item,Gtk.Label))
+flat_baseline=flat_label.get_layout().get_baseline()
+compact_states=[]
+for flag,name in [(Gtk.StateFlags.PRELIGHT,'hover'),(Gtk.StateFlags.ACTIVE,'pressed'),(Gtk.StateFlags.FOCUSED | (Gtk.StateFlags.FOCUS_VISIBLE if version=='4' else Gtk.StateFlags.NORMAL),'focus'),(Gtk.StateFlags.BACKDROP,'backdrop')]:
+ flat_toggle.set_state_flags(flag,False);settle()
+ assert geometry()==compact and bounds(flat_toggle,commands)==flat_position
+ assert flat_label.get_layout().get_baseline()==flat_baseline
+ compact_states.append(dict(state=name,geometry=geometry(),flat=bounds(flat_toggle,commands)))
+ if name=='focus':capture('compact-flat-focus')
+ flat_toggle.unset_state_flags(flag)
+flat_toggle.set_active(True);settle();assert flat_toggle.get_active() and bounds(flat_toggle,commands)==flat_position;capture('compact-flat-selected')
+flat_toggle.set_sensitive(False);settle();assert geometry()==compact;flat_toggle.set_sensitive(True)
+(out/('gtk'+version+'-compact-focus.json')).write_text(json.dumps(compact_states,indent=2)+'\n')
+create.remove_css_class('majoris-toolbar-item-flat') if version=='4' else create.get_style_context().remove_class('majoris-toolbar-item-flat')
+for strip in (nav,commands):
+ strip.remove_css_class('majoris-toolbar-compact') if version=='4' else strip.get_style_context().remove_class('majoris-toolbar-compact')
+settle()
+(out/('gtk'+version+'-compact.json')).write_text(json.dumps(compact,indent=2)+'\n')
 initial=geometry();assert initial==dict(navigation=40,commands=40,icon=[32,32],text=32,search=32,switcher=32),initial
 if version=='4':assert editor.get_allocated_height()==40 and edit_button.get_allocated_height()==28
 icon_widget=next(item for item in nodes(back) if isinstance(item,Gtk.Image));assert [icon_widget.get_allocated_width(),icon_widget.get_allocated_height()]==[16,16]
@@ -177,7 +221,7 @@ if version=='4':
  for mode in ('toolbars','toolbars-narrow','toolbars-editing'):
   probe=subprocess.run([str(root/'build/factory/majoris-theme-factory'),'--page='+mode,'--'+variant],env={**os.environ,'MAJORIS_TOOLBAR_PROBE':'1'},capture_output=True,text=True,check=True,timeout=10)
   record=json.loads(next(line for line in probe.stdout.splitlines() if line.startswith('{')))
-  for name,value in dict(navigation=40,commands=40,back=[32,32],location=32,search=32,switcher=32).items():assert record[name]==value,(mode,record)
+  for name,value in dict(navigation=40,commands=40,back=[32,32],location=32,search=32,switcher=32,compact_toolbar=40,compact_button=28,mixed_toolbar=40,dropdown=32).items():assert record[name]==value,(mode,record)
   assert record['window_width']==(480 if mode=='toolbars-narrow' else 1280),(mode,record)
   if mode=='toolbars-editing':assert record['entry']==26,record
   else:assert record['crumb']==26,record

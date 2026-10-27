@@ -97,8 +97,11 @@ a 32px minimum, 4px gap, 16px icons and a fixed-inset selected indicator.
 Data presentation: [Grid/List/Details design and integration](docs/data-view-design.md),
 [native finalisation evidence](docs/data-view-finalisation.md).
 
-The opt-in [Toolbar Design System](docs/toolbar-design-system.md) provides 40px
-Navigation and Command bars, 32px controls and a toolbar-specific view switcher.
-Open the factory's Toolbars page or run `--page=toolbars`; narrow, editing, held-state
-and popup examples use `toolbars-narrow`, `toolbars-editing`, `toolbars-states` and
-`toolbars-popover`. The existing 28px editor actions remain independent.
+The [Universal Toolbar](docs/toolbar-design-system.md) provides one reusable
+`Majoris.Ui.Toolbar` GTK4/Vala component, packaged as `majoris-ui-gtk4`. All uses
+share a neutral 40px strip, with standard 32px or compact 28px controls and mixed
+raised/flat items. Groups, separators, spacers, arbitrary native widgets and generic
+segmented controls are supported. Legacy toolbar classes remain compatible.
+Open the factory's Toolbars page or use `--page=toolbars`; `toolbars-narrow`,
+`toolbars-editing`, `toolbars-states` and `toolbars-popover` remain available.
+See the specification for Meson consumption, GTK3 composition and migration.

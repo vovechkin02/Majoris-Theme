@@ -317,11 +317,9 @@ treeview.majoris-data-view.view:disabled, treeview.majoris-data-list.view:disabl
 
 treeview.majoris-data-view.view:selected, treeview.majoris-data-view.view:selected:focus { border-radius: 0; }
 treeview.majoris-data-list.view:selected, treeview.majoris-data-list.view:selected:focus { border-radius: 4px; }
-/* General-purpose opt-in toolbars; never match editor toolbar or nested crumbs. */
-.majoris-toolbar { min-height: 32px; padding: 4px 16px; border: none; background-color: @surface; box-shadow: none;  font-size: 14px; font-weight: 500; }
-.majoris-toolbar-navigation { background-color: #FFFFFF; }
-.majoris-toolbar-commands { background-color: #F7F7F8; }
-.majoris-toolbar-divider, .majoris-toolbar-commands { background-image: linear-gradient(@border_soft,@border_soft); background-size: 100% 1px; background-position: bottom; background-repeat: no-repeat; }
+/* Universal opt-in toolbar; legacy purpose names are compatibility aliases. */
+.majoris-toolbar, .majoris-toolbar-navigation, .majoris-toolbar-commands { min-height: 32px; padding: 4px 16px; border: none; background-color: @surface; box-shadow: none;  font-size: 14px; font-weight: 500; }
+.majoris-toolbar-divider { background-image: linear-gradient(@border_soft,@border_soft); background-size: 100% 1px; background-position: bottom; background-repeat: no-repeat; }
 .majoris-toolbar-group { padding: 0; border: none; background: transparent; box-shadow: none;  }
 .majoris-toolbar-major-groups {  }
 .majoris-toolbar-spacer { min-width: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
@@ -333,20 +331,37 @@ button.majoris-toolbar-menu, menubutton.majoris-toolbar-menu > button { font-wei
 button.majoris-toolbar-action > box {  }
 entry.majoris-toolbar-field, searchentry.majoris-toolbar-field { min-height: 30px; padding: 0 8px; font-size: 14px; font-weight: 500; }
 .majoris-toolbar-metadata { font-size: 12px; font-weight: 400; color: @text_secondary; }
-.majoris-toolbar-view-switcher { min-height: 24px; padding: 3px; border: 1px solid @border; border-radius: 8px; background: #F2F2F4; box-shadow: none;  }
-.majoris-toolbar-view-switcher > button { min-height: 20px; min-width: 16px; padding: 2px 4px; margin: 0; border: none; border-radius: 4px; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); }
-.majoris-toolbar-view-switcher > button image { min-width: 16px; min-height: 16px; padding: 0; margin: 0;  }
-.majoris-toolbar-view-switcher > button:hover { background: @hover; box-shadow: none; }
-.majoris-toolbar-view-switcher > button:active { background: @active; box-shadow: none; }
-.majoris-toolbar-view-switcher > button:checked, .majoris-toolbar-view-switcher > button:checked:hover { background: #FFFFFF; color: @text; font-weight: 600; box-shadow: 0 1px 2px rgba(20,20,25,.10); }
-.majoris-toolbar-view-switcher > button:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
-.majoris-toolbar-view-switcher > button:disabled, .majoris-toolbar-view-switcher > button:disabled:hover { background: transparent; color: @text_tertiary; box-shadow: none; }
-.majoris-toolbar-view-switcher > button:checked:disabled { background: #FFFFFF; }
+.majoris-toolbar-segmented , .majoris-toolbar-view-switcher { min-height: 24px; padding: 3px; border: 1px solid @border; border-radius: 8px; background: #F2F2F4; box-shadow: none;  }
+.majoris-toolbar-segmented > button , .majoris-toolbar-view-switcher > button { min-height: 20px; min-width: 16px; padding: 2px 4px; margin: 0; border: none; border-radius: 4px; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); }
+.majoris-toolbar-segmented > button image , .majoris-toolbar-view-switcher > button image { min-width: 16px; min-height: 16px; padding: 0; margin: 0;  }
+.majoris-toolbar-segmented > button:hover , .majoris-toolbar-view-switcher > button:hover { background: @hover; box-shadow: none; }
+.majoris-toolbar-segmented > button:active , .majoris-toolbar-view-switcher > button:active { background: @active; box-shadow: none; }
+.majoris-toolbar-segmented > button:checked, .majoris-toolbar-segmented > button:checked:hover , .majoris-toolbar-view-switcher > button:checked, .majoris-toolbar-view-switcher > button:checked:hover { background: #FFFFFF; color: @text; font-weight: 600; box-shadow: 0 1px 2px rgba(20,20,25,.10); }
+.majoris-toolbar-segmented > button:focus , .majoris-toolbar-view-switcher > button:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+.majoris-toolbar-segmented > button:disabled, .majoris-toolbar-segmented > button:disabled:hover , .majoris-toolbar-view-switcher > button:disabled, .majoris-toolbar-view-switcher > button:disabled:hover { background: transparent; color: @text_tertiary; box-shadow: none; }
+.majoris-toolbar-segmented > button:checked:disabled , .majoris-toolbar-view-switcher > button:checked:disabled { background: #FFFFFF; }
 .majoris-toolbar:backdrop { color: @text_secondary; }
 
 button.majoris-toolbar-control:disabled:hover, button.majoris-toolbar-control:disabled:active, menubutton.majoris-toolbar-control > button:disabled:hover, menubutton.majoris-toolbar-control > button:disabled:active { background-color: #FFFFFF; color: @text_tertiary; border-color: @border; box-shadow: none; }
 button.majoris-toolbar-control:backdrop, menubutton.majoris-toolbar-control > button:backdrop { color: @text_secondary; }
-.majoris-toolbar-view-switcher:backdrop > button:checked { color: @text_secondary; }
+.majoris-toolbar-segmented:backdrop > button:checked , .majoris-toolbar-view-switcher:backdrop > button:checked { color: @text_secondary; }
+
+/* Density targets only explicitly designated items, preserving nested composites. */
+.majoris-toolbar-compact button.majoris-toolbar-control, .majoris-toolbar-compact menubutton.majoris-toolbar-control > button, .majoris-toolbar-compact entry.majoris-toolbar-field, .majoris-toolbar-compact searchentry.majoris-toolbar-field { min-height: 26px; }
+.majoris-toolbar-compact button.majoris-toolbar-icon, .majoris-toolbar-compact menubutton.majoris-toolbar-icon > button { min-height: 16px; padding: 5px; }
+dropdown.majoris-toolbar-select > button, combobox.majoris-toolbar-select > box > button { min-height: 30px; padding: 0 8px; font-size: 14px; font-weight: 500; border-radius: 4px; }
+.majoris-toolbar-compact dropdown.majoris-toolbar-select > button, .majoris-toolbar-compact combobox.majoris-toolbar-select > box > button { min-height: 26px; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button { background: transparent; border-color: transparent; box-shadow: none; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:hover, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:hover { background: @hover; box-shadow: none; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:active, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:active { background: @active; box-shadow: none; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:checked, button.majoris-toolbar-control.majoris-toolbar-item-flat:checked:hover { background: @hover; color: @text; box-shadow: none; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:focus, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled, button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled:hover, button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled:active, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:disabled { background: transparent; border-color: transparent; color: @text_tertiary; box-shadow: none; }
+
+button.majoris-toolbar-control.majoris-toolbar-item-flat:checked:disabled { background: @hover; color: @text_tertiary; }
+
+scale.majoris-toolbar-scale { min-height: 32px; padding: 0 8px; }
+.majoris-toolbar-compact scale.majoris-toolbar-scale { min-height: 28px; }
 /* Desktop Icons NG: desktopwindow compatibility, emitted after native overrides. */
 window.desktopwindow,
 window.desktopwindow:backdrop,

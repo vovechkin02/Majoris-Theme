@@ -1,110 +1,122 @@
-# Toolbar finalisation implementation report
+# Universal Toolbar implementation and validation
 
-Implemented the opt-in toolbar family in Majoris-Theme only. No first-party
-application repositories, symbolic SVGs or installation/GTK bridge mechanisms
-were changed. The untracked `Majoris-Theme.zip` remains user-owned input.
+The toolbar system now has one public GTK4 container, `Majoris.Ui.Toolbar`,
+packaged as `majoris-ui-gtk4`. The same class is instantiated for file navigation,
+file actions, formatting and playback. There are no purpose-specific public widget
+types or surface tokens. Standard/compact density and per-item flat treatment are
+independent options. All new styling remains opt-in.
 
-## Source changes
+## Changes
 
-| Files | Change |
-| --- | --- |
-| Both canonical widget-factory HTML references | Navigation/Command, grouping, states, segmented selection, narrow example and editor distinction |
-| `design/tokens.json`, `design/tokens-dark.json` | Extracted toolbar geometry, typography and palette rules |
-| `design/templates/gtk-toolbar.css.in` | Explicit opt-in containers/controls, groups, fields, separators and view switcher |
-| `tools/generate_toolbar.py` | Canonical-value mapping and derived border-box arithmetic; GTK3 capability adaptation |
-| `tools/generate-theme.py`, `tools/generate_dark.py` | Include the toolbar template in the existing light/dark pipeline |
-| Four generated GTK3/GTK4 stylesheets | Reproducible component rules; prior selectors remain unchanged |
-| `factory/src/toolbars.vala` | Native stacked toolbar page, location component, real menu choices, exclusive views, keyboard shortcuts and editor comparison |
-| Factory application/window/Meson registration | Toolbars sidebar page and dedicated CLI normal/narrow/state/entry/popup windows |
-| `tests/test-toolbar-contract.py` | Source authority, scope, derived dimensions and editor isolation |
-| `tests/test-toolbar-native.py` | Eight native toolkit/palette/scale cases, complete allocations, text, state stability, popovers, exclusive keyboard selection and narrow focus scrolling |
-| `tools/capture-visual.py` | Include new pages in the established native capture workflow |
-| `tools/report-toolbar-finalisation.py` | Palette geometry comparison and consolidated JSON evidence |
-| `docs/toolbar-design-system.md`, README | Reusable specification, Vala examples and application ownership |
+- `ui/toolbar.vala` implements the GTK4-only container, lightweight arbitrary-content
+  groups, native append/prepend/insert/move/remove operations, separators and expanding
+  spacers. Empty groups and redundant separators are managed through its API. Native
+  callbacks, ownership, focus and menu handling remain GTK's responsibility.
+- `ui/meson.build` installs the shared library, SONAME, C header, VAPI, GTK4 deps
+  and pkg-config metadata. The factory consumes the dependency rather than compiling
+  a second copy. The existing GTK3/GTK4 theme bridges remain separate.
+- Canonical light/dark HTML now shows one neutral toolbar with different contents,
+  densities and item treatments. Tokens and all four GTK3/GTK4 generated stylesheets
+  were regenerated through the existing pipeline. `generate_toolbar.py` derives
+  complete standard/compact dimensions; there is no parallel stylesheet generator.
+- `gtk-toolbar.css.in` shares the segmented implementation with its deprecated
+  view-switcher alias. Legacy navigation/command names alias the neutral strip.
+  Existing editor CSS remains unchanged for applications still using that class.
+- The factory uses the packaged component in all four examples, with native
+  location/search, menus, icon and text segments, toggles, DropDown, Entry,
+  progress, spinner and volume scale. Extra action inserts/removes Queue through
+  the public API. Existing fixture modes remain usable.
+- The specification documents API ownership, Vala/Meson consumption, native GTK3
+  composition, compatibility and migration. The README points to the new contract.
 
-## Measured geometry
+## Native measurements
 
-Both GTK3 and GTK4, light and dark, at logical scales 1 and 2:
+| Allocation | Standard | Compact |
+| --- | --- | --- |
+| Toolbar | 40px | 40px |
+| Icon button | 32×32px | 28×28px |
+| Text action / search | 32px | 28px |
+| Icon artwork | 16px | 16px |
+| Within-group / between-group gap | 4px / 8px | 4px / 8px |
+| Outer horizontal padding | 16px | 16px |
+| Top/bottom control clearance | 4px | 6px |
+| Generic segmented container | 32px | 32px |
 
-- Navigation and Command bars: **40px** complete.
-- Icon buttons: **32×32px**, image allocation **16×16px**.
-- Text button/search entry: **32px** high.
-- Toolbar segmented group: **32px**, including padding/border.
-- Within-group gap: **4px**; inter-group gap: **8px**.
-- Icon-to-text gap: **8px**.
-- Editor comparison: **40px** strip, **28px** flat action.
-- Compiled Vala factory: normal width **1280px**, narrow width **480px**.
-- Nested location bar remains **32px**; crumbs and visible entry remain **26px**.
+The compiled public-component factory additionally measures its formatting strip
+at 40px with 28px buttons, mixed strip at 40px, selector at 32px, location shell at
+32px and existing crumbs/editing entry at 26px. Normal and true 480px-wide fixtures
+are checked. Geometry is identical across light/dark, GTK3/GTK4 and 1×/2× cases.
+The nested location entry's 26px allocation is intentional compatibility geometry,
+not the general toolbar field contract.
 
-The Vala probe uses complete allocated dimensions, not content-only `get_height()`
-values. The latter omit CSS padding/borders and initially reported misleading
-32px bars / 16px icon buttons despite correct complete allocations.
+Pango tests cover action/menu labels, supporting labels and compact ascenders and
+descenders, logical/ink extents, widths and baselines. Ordinary and compact flat
+hover/pressed/focus/backdrop states retain allocations and text positions. Native
+exclusive toggles and Space activation work; narrow focus reveals off-screen items.
+Disabled controls and selected states are exercised. Popover labels retain native
+14px/500 menu typography, demonstrating style isolation. Enlarged action text grows
+its strip instead of being clipped. GTK reduced-motion settings remain disabled
+through the native runs; no positional animation is added.
 
-The narrow fixture must wrap explanatory labels; otherwise a long non-toolbar
-label establishes an unrelated 544px window minimum. GTK3 additionally needs
-`resize()` for a mapped window. Tests now assert a real 480px viewport and that
-keyboard focus scrolls the command row horizontally into view.
+The mixed-controls measurement initially caught a 34px native scale causing a 42px
+strip. An explicit opt-in toolbar scale class removes excess vertical scale padding;
+ordinary scale styling is untouched. GTK4 reports content-relative child coordinates,
+so inset checks combine realised geometry with native computed GTK padding. Native
+lifetime testing clears window focus and popup parenting before releasing the root;
+its weak finalization callback confirms that the component releases owned children.
 
-The 1px divider is a background stripe inside the bar; it adds no height or
-outside elevation. Derived 7px icon padding and 3px segmented padding are formulas
-from the approved 32px/16px/24px boxes and borders, not new design spacing tokens.
+## Validation
 
-## Interaction and typography evidence
+The full regression suite passed **98/98**. After adding further compact typography
+and flat-state assertions, the focused toolbar/API/package matrix passed **11/11**.
+No failures were suppressed or tests removed. Coverage includes the existing
+headerbar, window, menus, tabs, editor, location, sidebar, data-view, SourceView,
+Shell, colour, CSS-parser and generator checks.
 
-Native state flags cover hover, pressed, focus, disabled and backdrop; positions,
-text baseline and geometry remain stationary. Native GTK4 grouped toggles and
-GTK3 radio-style buttons preserve exclusive selection; keyboard Space activation
-is exercised. Both navigation and command triggers open real native popovers or
-menus. Menu labels are independently asserted Medium and their glyphs measured.
-Toolbar styles do not match the location crumbs or popup controls.
+The staged-package test installs to a temporary DESTDIR, verifies all development
+outputs, uses pkg-config flags and the installed VAPI/header to compile a separate
+Vala consumer, and runs it without Majoris CSS. The consumer tests empty construction,
+append/prepend/insertion/reordering/removal, arbitrary widgets, groups, separator
+cleanup, spacers, density/item modifiers, native exclusive selection, a real menu,
+keyboard traversal, retained application callbacks and finalization. It links GTK4
+and the public library, with no widget-factory or libadwaita dependency.
 
-Pango evidence includes allocation, ink/logical rectangles, layout origin,
-baseline, ascent/descent and resolved font. Search text includes Favorites, Files,
-Format and descenders/punctuation; buttons include New Folder, Back, Forward,
-Refresh, Locations and Sort. Actual menu text is also measured. A 40px native
-Pango title tests natural toolbar growth rather than fixed-height clipping. It
-is an allocation stress test, not proof that GNOME accessibility preferences are
-forwarded under Xvfb's fixed-pixel CSS environment.
+Commands:
 
-The symbolic icon set is checked against the installed icon theme. Visual review
-caught an unavailable Preview name; the fixture now uses the existing
-`view-reveal-symbolic` icon, without modifying or adding artwork.
-
-## Validation and reproduction
-
-The full repository suite passed **96 tests**, including existing menus, tabs,
-headerbars, location components, SourceView, sidebar and data views. The final
-focused nine-test toolbar suite also passed after complete text/icon checks.
-Generation/token verification and light/dark native geometry comparison passed.
-Compiler deprecations and WSL GVFS/portal warnings remain visible in logs.
-
-```bash
+```sh
 python3 tools/extract-design-tokens.py
 python3 tools/generate-theme.py
 python3 tools/verify-design-tokens.py
 python3 tools/generate-theme.py --check
 meson compile -C build
 meson test -C build --print-errorlogs
-python3 tools/report-toolbar-finalisation.py
-MAJORIS_CAPTURE_DIRECTORY=artifacts/toolbar-finalisation/factory MAJORIS_CAPTURE_PAGES=toolbars,toolbars-narrow,toolbars-states,toolbars-editing,toolbars-popover scripts/capture-visual-regressions.sh --both
-MAJORIS_CAPTURE_DIRECTORY=artifacts/toolbar-finalisation/factory MAJORIS_CAPTURE_PAGES=toolbars,toolbars-narrow,toolbars-states,toolbars-editing,toolbars-popover MAJORIS_CAPTURE_SCALE=2 scripts/capture-visual-regressions.sh --both
+python3 tools/capture-universal-toolbar.py
+python3 tools/report-universal-toolbar.py
 ```
 
-Screenshots and consolidated geometry/focus/text reports are indexed at
-`artifacts/toolbar-finalisation/README.md`. The specification includes a before/after
-contract table; there was no previous reusable general toolbar component to
-capture as an equivalent native baseline. No simulated before image was created.
+Native captures cover all four examples, compact density, held interaction states,
+dynamic insertion, location editing, menus and narrow windows in both palettes at
+both display scales. GTK3 styling captures and standard/compact geometry, state and
+text reports are consolidated in [the evidence index](../artifacts/universal-toolbar/README.md).
+Screenshots are native Xvfb/X11 captures; no HTML or image composites replace them.
 
-## Limits and adoption
+## Compatibility and limits
 
-Applications must opt in and own composition, commands, accessibility names,
-shortcuts, expansion and responsive/overflow policy. Existing applications do not
-change automatically. GTK3 box spacing is set through native properties because
-its CSS lacks GTK4 border-spacing; GTK3 location composition remains app-owned.
+Only Majoris-Theme changed. Existing applications can keep their classes while
+migrating. Navigation/command classes now use the neutral universal surface; legacy
+editor controls retain 28px flat styling. New applications use one class with
+optional density and item modifiers. Existing artwork and unrelated components
+retain their source definitions. The already modified archive in the workspace was
+not edited by this task.
 
-Xvfb captures and held backdrop states do not establish real GNOME/Wayland state
-forwarding, reduced-motion preference propagation, accessibility preference
-forwarding, fractional compositor scaling or screen-reader behaviour. Those remain
-session/VM checks. Direct native popup surfaces accompany window captures because
-root X11/ARGB captures can omit popup pixels. No HTML or image composites substitute
-for the native evidence.
+The packaged core currently targets the repository's GTK4 4.18 baseline. GTK3 has
+native composition/CSS compatibility, not a compiled wrapper. There is no GIR;
+C headers and Vala metadata are supplied. Exact Majoris styling requires Majoris
+CSS; without it the component uses ordinary GTK appearance. Applications own
+adaptive layout, shortcuts, actions, labels and accessible names. Direct GtkBox
+mutations bypassing helpers leave separator/group visibility with the caller.
+
+Xvfb does not establish actual GNOME/Wayland compositor behaviour, fractional
+scaling, screen-reader output or session-level accessibility/reduced-motion
+preference forwarding. These remain desktop/VM checks. Native menu surface captures
+accompany window views where root X11/ARGB screenshots omit popup pixels.

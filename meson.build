@@ -6,6 +6,7 @@ theme_bridge = shared_library('majoris-gtk4-theme', 'integration/gtk4-theme-brid
 shared_library('majoris-gtk3-theme','integration/gtk3-theme-bridge.c',dependencies:[dependency('gtk+-3.0')],install:true)
 install_data('scripts/with-majoris-gtk4.sh',rename:'majoris-gtk4',install_dir:get_option('bindir'),install_mode:'rwxr-xr-x')
 install_data('scripts/with-majoris-gtk3.sh',rename:'majoris-gtk3',install_dir:get_option('bindir'),install_mode:'rwxr-xr-x')
+subdir('ui')
 subdir('factory')
 install_subdir('theme/Majoris', install_dir: get_option('datadir') / 'themes')
 install_data('theme/Majoris/gtksourceview-5/styles/majoris-light.xml', 'theme/Majoris/gtksourceview-5/styles/majoris-dark.xml', install_dir: get_option('datadir') / 'gtksourceview-5/styles')
@@ -144,3 +145,8 @@ foreach toolbar_version : ['3', '4']
 endforeach
 
 test('toolbar component contract', python, args: [files('tests/test-toolbar-contract.py')])
+
+# A GTK4-only client of the installed reusable component; no factory source linkage.
+toolbar_api_test=executable('toolbar-api-test','tests/toolbar-api.vala',dependencies:majoris_ui_dep)
+test('universal toolbar public API without theme',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',toolbar_api_test.full_path()],env:{'GTK_A11Y':'none','GTK_THEME':'Adwaita','XDG_CONFIG_HOME':meson.project_build_root()/'no-toolbar-theme'},timeout:30)
+test('universal toolbar staged external consumer',python,args:[files('tests/test-toolbar-package.py')],timeout:45)

@@ -24,4 +24,7 @@ for version in ('3','4'):
    assert all('majoris-toolbar' in selector for selector in selectors),selectors
   assert '.majoris-toolbar button' not in text,'Broad descendant rule could leak into crumbs or popovers'
   assert 'majoris-editor-toolbar' not in text
+  assert values['toolbar_compact_content']=='26px' and values['toolbar_compact_icon_padding']=='5px'
+  expect(css,'.majoris-toolbar-segmented','min-height','24px')
+  assert '.majoris-toolbar-navigation|background' not in text and '.majoris-toolbar-commands|background' not in text
 print('Toolbar border-box derivation, canonical palettes, opt-in scope and editor isolation passed')
