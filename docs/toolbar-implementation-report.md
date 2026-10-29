@@ -21,7 +21,8 @@ independent options. All new styling remains opt-in.
   complete standard/compact dimensions; there is no parallel stylesheet generator.
 - `gtk-toolbar.css.in` shares the segmented implementation with its deprecated
   view-switcher alias. Legacy navigation/command names alias the neutral strip.
-  Existing editor CSS remains unchanged for applications still using that class.
+  Legacy editor geometry remains unchanged; toolbar-only flat weights and disabled
+  filters follow the polished action contract, independently of statusbar styling.
 - The factory uses the packaged component in all four examples, with native
   location/search, menus, icon and text segments, toggles, DropDown, Entry,
   progress, spinner and volume scale. Extra action inserts/removes Queue through
@@ -38,7 +39,7 @@ independent options. All new styling remains opt-in.
 | Text action / search | 32px | 28px |
 | Icon artwork | 16px | 16px |
 | Within-group / between-group gap | 4px / 8px | 4px / 8px |
-| Outer horizontal padding | 16px | 16px |
+| Outer horizontal padding | 8px | 8px |
 | Top/bottom control clearance | 4px | 6px |
 | Generic segmented container | 32px | 32px |
 
@@ -64,6 +65,10 @@ ordinary scale styling is untouched. GTK4 reports content-relative child coordin
 so inset checks combine realised geometry with native computed GTK padding. Native
 lifetime testing clears window focus and popup parenting before releasing the root;
 its weak finalization callback confirms that the component releases owned children.
+
+The subsequent [final polish report](toolbar-polish.md) records current focus,
+opacity, spacing and stacking validation. Historical initial implementation
+results below predate that polish.
 
 ## Validation
 
@@ -113,8 +118,8 @@ The packaged core currently targets the repository's GTK4 4.18 baseline. GTK3 ha
 native composition/CSS compatibility, not a compiled wrapper. There is no GIR;
 C headers and Vala metadata are supplied. Exact Majoris styling requires Majoris
 CSS; without it the component uses ordinary GTK appearance. Applications own
-adaptive layout, shortcuts, actions, labels and accessible names. Direct GtkBox
-mutations bypassing helpers leave separator/group visibility with the caller.
+adaptive layout, shortcuts, actions, labels and accessible names. Child-model and visibility observation now covers native GtkBox mutations and
+hidden group members as well as the component helpers.
 
 Xvfb does not establish actual GNOME/Wayland compositor behaviour, fractional
 scaling, screen-reader output or session-level accessibility/reduced-motion

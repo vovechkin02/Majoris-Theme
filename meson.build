@@ -150,3 +150,8 @@ test('toolbar component contract', python, args: [files('tests/test-toolbar-cont
 toolbar_api_test=executable('toolbar-api-test','tests/toolbar-api.vala',dependencies:majoris_ui_dep)
 test('universal toolbar public API without theme',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',toolbar_api_test.full_path()],env:{'GTK_A11Y':'none','GTK_THEME':'Adwaita','XDG_CONFIG_HOME':meson.project_build_root()/'no-toolbar-theme'},timeout:30)
 test('universal toolbar staged external consumer',python,args:[files('tests/test-toolbar-package.py')],timeout:45)
+
+polish_probe=executable('toolbar-polish-probe','tests/toolbar-polish.vala',dependencies:[majoris_ui_dep,dependency('libadwaita-1')],link_with:theme_bridge)
+foreach scale : ['1','2']
+  test('toolbar polish native '+scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-toolbar-polish.py')],env:{'GDK_SCALE':scale,'GIO_USE_VFS':'local','GTK_A11Y':'none'},timeout:90)
+endforeach

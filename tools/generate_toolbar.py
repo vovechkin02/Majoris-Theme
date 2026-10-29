@@ -16,7 +16,11 @@ def toolbar_values(tokens):
 def toolbar_template(version):
     text=(ROOT/'design/templates/gtk-toolbar.css.in').read_text()
     if version=='3':
+        # GTK3 cannot distinguish pointer/keyboard focus: retain native :focus,
+        # and omit GTK4-only pointer resets rather than restyling unfocused controls.
+        text='\n'.join(line for line in text.split('\n') if ':focus:not(:focus-visible)' not in line)
         text=text.replace(':focus-visible',':focus').replace('-gtk-icon-size: 16px;','')
         import re
         text=re.sub(r'border-spacing: [^;]+;', '', text)
+        text=text.replace(' filter: none;', '').replace('-gtk-icon-filter: none;', '-gtk-icon-effect: none;')
     return text

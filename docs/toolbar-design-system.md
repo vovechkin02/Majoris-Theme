@@ -14,7 +14,7 @@ formatting and playback are examples of content, not component types.
 | Icon button | 32×32px | 28×28px |
 | Symbolic artwork | 16×16px | 16×16px |
 | Control radius | 4px | 4px |
-| Outer padding | 4px vertical, 16px horizontal | Same |
+| Outer padding | 4px vertical, 8px horizontal | Same |
 | Within a group / between groups | 4px / 8px | Same |
 | Major group separation | Optional 16px | Same |
 | Icon-to-label gap | 8px | Same |
@@ -42,13 +42,19 @@ spacing tokens. A vertical separator has restrained 4px content insets.
 Raised items retain existing Majoris backgrounds, borders and subtle control
 shadows. Flat items are transparent without default elevation, with neutral hover
 and pressed feedback and persistent checked treatment. Both may share one strip.
-A 2px indigo focus outline identifies focus independently of selection. Disabled
-and backdrop states retain the existing semantics. Transitions remain 128ms and
+A 2px indigo focus outline identifies focus independently of selection. Disabled controls
+use one toolbar-scoped opacity of 0.58; native filters and child dimming are cleared. Backdrop remains
+native. Transitions remain 128ms and
 stationary: no scaling, translation, resizing or baseline movement. Existing GTK
 reduced-motion handling applies; applications should honour GTK settings.
 
-Typography uses Plus Jakarta Sans: action labels 14px/600, menus, selectors and
-secondary labels 14px/500, metadata 12px/400. Real fonts and natural Pango layout
+Typography uses Plus Jakarta Sans: primary actions 14px/600; ordinary flat actions,
+menus and selectors 14px/500; checked flat/segmented actions 14px/600; metadata
+12px/400. Toggle and explicitly segmented labels reserve the larger native Pango
+width of weights 500/600, recomputing for text/attribute changes and shrinking
+after font restoration while honouring application minimum widths. Explicit
+segmented boxes also observe newly inserted children. Other text buttons retain
+their natural widths. Real fonts and natural Pango layout
 supply ascent and descent; no text offsets or synthetic boldening are used.
 
 ## Install and consume
@@ -89,13 +95,14 @@ GTK controls; the exact Majoris dimensions and spacing require the theme.
 - `remove_control` unparents an item; callers can retain/reuse it and its callbacks.
 - `move_control(widget, position)` reorders an existing direct child.
 - `append_widget` inserts an arbitrary native composite without traversing or styling
-  its internals. Ordinary GtkBox methods remain available.
+  its internals. Explicit segmented/view-switcher opt-ins receive stable label
+  sizing and pointer-focus handling. Ordinary GtkBox methods remain available.
 - `append_group()` returns `ToolbarGroup`; its `append_control`, `append_widget`
   and `remove_control` support arbitrary child counts. Empty groups hide themselves.
 - `append_separator()` and `append_spacer()` return native widgets. The spacer uses
   `hexpand`, never fixed margins. API mutations suppress leading/trailing/redundant
-  separators. Use the component/group methods for automatic cleanup; direct GtkBox
-  mutation or hiding arbitrary children leaves visibility policy with the application.
+  separators. Child-model and visibility observation also covers native GtkBox
+  insertion/removal/reordering and hidden group members.
 - `compact` selects density; `divider` selects the inset bottom stripe.
 - `Toolbar.set_item_flat(widget, bool)` switches an individual item's treatment.
 
@@ -176,16 +183,22 @@ The native factory adds volume, a spinner, native menu models, actual Majoris
 LocationBar, search, and a dynamic Extra action toggle that inserts/removes Queue.
 The editor example combines compact flat buttons with generic text segments;
 the file example has icon-only segments. Icon-and-text segments can use ordinary
-GtkBox children with spacing 8 and GtkImage pixel_size 16. Group native toggles with
+GtkBox children with spacing 4 and GtkImage pixel_size 16. Group native toggles with
 `group`; the theme does not emulate selection or dispatch application events.
 
 ## CSS composition and isolation
 
 `.majoris-toolbar` is the sole canonical container. Optional modifiers are
 `.majoris-toolbar-compact`, `.majoris-toolbar-divider`, and
-`.majoris-toolbar-major-groups` (16px instead of 8px between direct children).
-Direct children are separated by 8px; group children by 4px. GTK4 uses CSS
-`border-spacing` with native box spacing 0, avoiding duplicate padding/gaps.
+`.majoris-toolbar-major-groups` (16px instead of 8px at logical group boundaries).
+The component and its groups use native GtkBox spacing 4; their CSS border-spacing
+is zero. Visible group boundaries add only 4px (or 12px in major mode), so the
+measured totals are 8px/16px. Direct ordinary controls stay 4px apart. Internal
+`majoris-toolbar-group-gap` markers are recomputed after mutations; removed groups
+lose their marker, and empty/hidden groups leave no extra gap. Separators and
+expanding spacers do not acquire group margins. Icon/label action boxes use native
+spacing 8 and CSS spacing zero. Explicit segmented boxes retain their native/CSS
+2px segment spacing contract. Arbitrary unmarked composites remain untouched.
 Group, separator, spacer, control, icon, action, menu, field, select, metadata,
 item-flat and segmented classes are reusable building blocks. An explicitly
 designated `majoris-toolbar-scale` fits a native volume slider into the strip;
@@ -218,6 +231,19 @@ controllers, accessible names, callbacks and actions. The factory uses Ctrl+L /
 Alt+D for its location component and Ctrl+F for search. Enlarged fonts may increase
 strip height; do not impose a maximum or clip content to maintain 40px.
 
+Actionable controls use GTK4 `:focus-visible`: a stationary 2px inset indigo outline.
+A passive capture gesture resets GTK's native window `focus_visible` property on
+pointer press, including a click on the already keyboard-focused action. It does
+not claim events or implement keyboard navigation. Tab/arrow/Space remain GTK's;
+editable entries keep their existing `:focus-within` editing indication. The
+handler is limited to designated actions and explicitly segmented buttons.
+
+Stack rows in `new Gtk.Box(Gtk.Orientation.VERTICAL, 0)` with zero external margins.
+Two bars measure 80px; an optional bottom divider is a 1px background stripe inside
+its owner's 40px allocation, with no border height or shadow. A document TabBar
+followed by two bars measures 120px. See [polish report](toolbar-polish.md) for the
+Majoris-Files parent-layout integration fix.
+
 ## Compatibility and GTK3
 
 | Previous usage | New application usage | Compatibility |
@@ -226,6 +252,14 @@ strip height; do not impose a maximum or clip content to maintain 40px.
 | Independent editor toolbar | `Toolbar { compact = true }` plus flat items | Legacy editor CSS retains its exact 28px flat appearance |
 | `majoris-toolbar-view-switcher` | `majoris-toolbar-segmented` | Both names share one CSS implementation |
 
+Legacy CSS-only GTK4 navigation/command rows and plain groups retain native
+spacing 0 and use CSS spacing 4; group boundaries add 4px. Do not also set their
+native spacing to 4. Native `ToolbarGroup` instances carry an internal marker
+that prevents the legacy CSS from adding a second inner gap. Adding the canonical
+class/using `Toolbar` selects the native
+spacing implementation instead. This exception preserves existing CSS-only GTK4
+compositions. GTK3 omits CSS border-spacing and uses native spacing 4 throughout.
+
 Existing applications need not migrate immediately. The legacy editor rules remain
 in the editor generator; they are compatibility styling, not a new public widget
 type. New application APIs contain no NavigationToolbar, CommandToolbar or
@@ -233,8 +267,11 @@ EditorToolbar. Migration changes construction and opt-in item classes, not actio
 
 GTK3 receives equivalent opt-in CSS for standard/compact controls, flat items,
 groups and segmented aliases. There is no GTK3 wrapper library. Compose native
-GtkBox rows with spacing 8, groups with spacing 4 and segmented boxes with spacing 2;
-CSS border-spacing is omitted because GTK3 does not implement it. Centre controls
+GtkBox rows with spacing 4, groups with spacing 4 and segmented boxes with spacing 2;
+CSS border-spacing is omitted because GTK3 does not implement it. CSS-only
+canonical groups need a 4px leading boundary margin (12px for major separation),
+excluding the first item and separators/spacers. GTK3 uses its accessible native
+`:focus` behaviour; it has no equivalent GTK4 focus-visible window policy. Centre controls
 with `valign`, set native GtkImage pixel size 16, use GtkRadioButton with indicator
 mode off for exclusive segments, GtkComboBoxText with `majoris-toolbar-select`
 instead of GtkDropDown, and native `hexpand` spacers. GTK3 scrolled boxes should
@@ -249,4 +286,5 @@ light/dark GTK3/4 generator. Regenerate with extract-design-tokens.py and
 generate-theme.py; verify with verify-design-tokens.py and generate-theme.py --check.
 
 See [implementation report](toolbar-implementation-report.md) and native evidence
-in [artifacts/universal-toolbar](../artifacts/universal-toolbar/README.md).
+in [the polish report](toolbar-polish.md); the earlier
+[universal-toolbar evidence](../artifacts/universal-toolbar/README.md) is historical.

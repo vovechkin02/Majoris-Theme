@@ -318,7 +318,7 @@ treeview.majoris-data-view.view:disabled, treeview.majoris-data-list.view:disabl
 treeview.majoris-data-view.view:selected, treeview.majoris-data-view.view:selected:focus { border-radius: 0; }
 treeview.majoris-data-list.view:selected, treeview.majoris-data-list.view:selected:focus { border-radius: 4px; }
 /* Universal opt-in toolbar; legacy purpose names are compatibility aliases. */
-.majoris-toolbar, .majoris-toolbar-navigation, .majoris-toolbar-commands { min-height: 32px; padding: 4px 16px; border: none; background-color: @surface; box-shadow: none;  font-size: 14px; font-weight: 500; }
+.majoris-toolbar, .majoris-toolbar-navigation, .majoris-toolbar-commands { min-height: 32px; padding: 4px 8px; border: none; background-color: @surface; box-shadow: none;  font-size: 14px; font-weight: 500; }
 .majoris-toolbar-divider { background-image: linear-gradient(@border_soft,@border_soft); background-size: 100% 1px; background-position: bottom; background-repeat: no-repeat; }
 .majoris-toolbar-group { padding: 0; border: none; background: transparent; box-shadow: none;  }
 .majoris-toolbar-major-groups {  }
@@ -358,10 +358,51 @@ button.majoris-toolbar-control.majoris-toolbar-item-flat:checked, button.majoris
 button.majoris-toolbar-control.majoris-toolbar-item-flat:focus, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:focus { outline: 2px solid @primary_500; outline-offset: -2px; box-shadow: none; }
 button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled, button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled:hover, button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled:active, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:disabled { background: transparent; border-color: transparent; color: @text_tertiary; box-shadow: none; }
 
-button.majoris-toolbar-control.majoris-toolbar-item-flat:checked:disabled { background: @hover; color: @text_tertiary; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:checked:disabled { background: @hover; color: @text; }
 
 scale.majoris-toolbar-scale { min-height: 32px; padding: 0 8px; }
 .majoris-toolbar-compact scale.majoris-toolbar-scale { min-height: 28px; }
+
+/* Gtk.Box.spacing owns the base gap. Only logical boundaries add its difference. */
+.majoris-toolbar-group-gap { margin-left: 4px; }
+.majoris-toolbar-group-gap:dir(rtl) { margin-left: 0; margin-right: 4px; }
+.majoris-toolbar-major-groups > .majoris-toolbar-group-gap { margin-left: 12px; }
+.majoris-toolbar-major-groups > .majoris-toolbar-group-gap:dir(rtl) { margin-left: 0; margin-right: 12px; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button { font-weight: 500; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:checked { font-weight: 600; }
+/* Pointer focus never inherits the generic keyboard focus shadow/border. */
+button.majoris-toolbar-control:focus, menubutton.majoris-toolbar-control > button:focus { outline: 2px solid @primary_500; outline-offset: -2px; border-color: @border; box-shadow: none; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:focus { border-color: transparent; }
+button.majoris-toolbar-control:disabled, menubutton.majoris-toolbar-control > button:disabled,
+.majoris-toolbar-segmented > button:disabled, .majoris-toolbar-view-switcher > button:disabled { opacity: .58; color: @text; -gtk-icon-effect: none; box-shadow: none; outline: none; }
+button.majoris-toolbar-control:disabled:hover, button.majoris-toolbar-control:disabled:active, menubutton.majoris-toolbar-control > button:disabled:hover, menubutton.majoris-toolbar-control > button:disabled:active { color: @text; }
+button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled, button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled:hover, button.majoris-toolbar-control.majoris-toolbar-item-flat:disabled:active { background: transparent; color: @text; outline: none; border-color: transparent; box-shadow: none; }
+/* A single opacity layer: menu wrappers, labels and glyphs remain opaque. */
+menubutton.majoris-toolbar-control:disabled { opacity: 1; }
+button.majoris-toolbar-control > image:disabled, button.majoris-toolbar-control > label:disabled, button.majoris-toolbar-control > box:disabled,
+button.majoris-toolbar-control > box > image:disabled, button.majoris-toolbar-control > box > label:disabled,
+menubutton.majoris-toolbar-control > button > label:disabled, menubutton.majoris-toolbar-control > button > image:disabled,
+menubutton.majoris-toolbar-control > button > box:disabled, menubutton.majoris-toolbar-control > button > box > label:disabled, menubutton.majoris-toolbar-control > button > box > image:disabled,
+.majoris-toolbar-view-switcher > button > label:disabled, .majoris-toolbar-view-switcher > button > image:disabled,
+.majoris-toolbar-segmented > button > label:disabled, .majoris-toolbar-segmented > button > image:disabled { opacity: 1; color: inherit; -gtk-icon-effect: none; }
+
+/* CSS-only legacy GTK4 rows keep native spacing 0; the installed component
+ * always has .majoris-toolbar and uses native spacing 4. GTK3 uses native 4. */
+.majoris-toolbar-navigation:not(.majoris-toolbar), .majoris-toolbar-commands:not(.majoris-toolbar) {  }
+.majoris-toolbar-navigation:not(.majoris-toolbar) > .majoris-toolbar-group:not(.majoris-toolbar-native-group), .majoris-toolbar-commands:not(.majoris-toolbar) > .majoris-toolbar-group:not(.majoris-toolbar-native-group) {  }
+.majoris-toolbar-navigation:not(.majoris-toolbar) > :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) + .majoris-toolbar-group, .majoris-toolbar-navigation:not(.majoris-toolbar) > .majoris-toolbar-group + :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer),
+.majoris-toolbar-commands:not(.majoris-toolbar) > :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) + .majoris-toolbar-group, .majoris-toolbar-commands:not(.majoris-toolbar) > .majoris-toolbar-group + :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) { margin-left: 4px; }
+.majoris-toolbar-navigation:not(.majoris-toolbar) > :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) + .majoris-toolbar-group:dir(rtl), .majoris-toolbar-navigation:not(.majoris-toolbar) > .majoris-toolbar-group + :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer):dir(rtl),
+.majoris-toolbar-commands:not(.majoris-toolbar) > :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) + .majoris-toolbar-group:dir(rtl), .majoris-toolbar-commands:not(.majoris-toolbar) > .majoris-toolbar-group + :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer):dir(rtl) { margin-left: 0; margin-right: 4px; }
+
+.majoris-toolbar-major-groups:not(.majoris-toolbar) > :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) + .majoris-toolbar-group,
+.majoris-toolbar-major-groups:not(.majoris-toolbar) > .majoris-toolbar-group + :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) { margin-left: 12px; }
+.majoris-toolbar-major-groups:not(.majoris-toolbar) > :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) + .majoris-toolbar-group:dir(rtl),
+.majoris-toolbar-major-groups:not(.majoris-toolbar) > .majoris-toolbar-group + :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer):dir(rtl) { margin-left: 0; margin-right: 12px; }
+menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:focus { border-color: transparent; }
+menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:disabled, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:disabled:hover, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:disabled:active { background: transparent; color: @text; border-color: transparent; box-shadow: none; }
+.majoris-toolbar-segmented > button:disabled:hover, .majoris-toolbar-segmented > button:disabled:active, .majoris-toolbar-view-switcher > button:disabled:hover, .majoris-toolbar-view-switcher > button:disabled:active { color: @text; background: transparent; box-shadow: none; outline: none; }
+.majoris-toolbar-segmented > button:checked:disabled:hover, .majoris-toolbar-view-switcher > button:checked:disabled:hover { background: #FFFFFF; }
 /* Desktop Icons NG: desktopwindow compatibility, emitted after native overrides. */
 window.desktopwindow,
 window.desktopwindow:backdrop,

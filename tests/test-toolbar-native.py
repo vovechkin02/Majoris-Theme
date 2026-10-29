@@ -8,7 +8,7 @@ gi.require_version('Gtk',version+'.0')
 gi.require_version('GdkX11',version+'.0')
 from gi.repository import Gtk,Gdk,GdkX11,GLib,Gio,Pango
 root=Path(__file__).resolve().parents[1];variant=os.environ.get('MAJORIS_VARIANT','light');scale=os.environ.get('GDK_SCALE','1')
-out=root/'artifacts/toolbar-finalisation'/(variant+('-2x' if scale=='2' else ''));out.mkdir(parents=True,exist_ok=True)
+out=root/os.environ.get('MAJORIS_TOOLBAR_ARTIFACTS','artifacts/toolbar-polish')/(variant+('-2x' if scale=='2' else ''));out.mkdir(parents=True,exist_ok=True)
 if version=='4':
  gi.require_version('Adw','1');from gi.repository import Adw
  Adw.init();os.environ['MAJORIS_THEME_ROOT']=str(root/'theme/Majoris');ctypes.CDLL(str(root/'build/libmajoris-gtk4-theme.so')).majoris_theme_attach()
@@ -55,22 +55,22 @@ w=Adw.Window(title='Majoris native toolbar GTK'+version) if version=='4' else Gt
 w.set_default_size(1280,400)
 page=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=0)
 w.set_content(page) if version=='4' else w.add(page)
-nav=box('majoris-toolbar','majoris-toolbar-divider',spacing=8 if version=='3' else 0)
-group=box('majoris-toolbar-group',spacing=4 if version=='3' else 0);append(nav,group)
+nav=box('majoris-toolbar','majoris-toolbar-divider',spacing=4)
+group=box('majoris-toolbar-group',spacing=4);append(nav,group)
 back=button(icon='go-previous-symbolic');forward=button(icon='go-next-symbolic');forward.set_sensitive(False);append(group,back);append(group,forward)
 buttons=[back,forward]
 for title in ('Back','Forward','Refresh','Locations'):
  item=button(title);append(group,item);buttons.append(item)
-field=Gtk.SearchEntry();style(field,'majoris-toolbar-field');field.set_text('Favorites Files Format gyp;!');field.set_valign(Gtk.Align.CENTER);field.set_hexpand(True);append(nav,field,True)
+field=Gtk.SearchEntry();field.set_margin_start(4);style(field,'majoris-toolbar-field');field.set_text('Favorites Files Format gyp;!');field.set_valign(Gtk.Align.CENTER);field.set_hexpand(True);append(nav,field,True)
 nav_menu=Gtk.MenuButton();nav_menu.set_label('Locations');style(nav_menu,'majoris-toolbar-control','majoris-toolbar-menu');nav_menu.set_valign(Gtk.Align.CENTER)
 plain_popup=Gtk.Popover();popup_label=Gtk.Label(label='Favorites Files Format gyp;!')
 plain_popup.set_child(popup_label) if version=='4' else plain_popup.add(popup_label)
 nav_menu.set_popover(plain_popup);append(nav,nav_menu)
 append(page,viewport(nav))
-commands=box('majoris-toolbar','majoris-toolbar-divider',spacing=8 if version=='3' else 0)
-actions=box('majoris-toolbar-group',spacing=4 if version=='3' else 0);append(commands,actions)
+commands=box('majoris-toolbar','majoris-toolbar-divider',spacing=4)
+actions=box('majoris-toolbar-group',spacing=4);append(commands,actions)
 create=Gtk.Button();style(create,'majoris-toolbar-control','majoris-toolbar-action');create.set_valign(Gtk.Align.CENTER)
-contents=box(spacing=8 if version=='3' else 0);image=Gtk.Image.new_from_icon_name('folder-new-symbolic') if version=='4' else Gtk.Image.new_from_icon_name('folder-new-symbolic',Gtk.IconSize.MENU);image.set_valign(Gtk.Align.CENTER);append(contents,image);action_label=Gtk.Label(label='New Folder');append(contents,action_label)
+contents=box(spacing=8);image=Gtk.Image.new_from_icon_name('folder-new-symbolic') if version=='4' else Gtk.Image.new_from_icon_name('folder-new-symbolic',Gtk.IconSize.MENU);image.set_valign(Gtk.Align.CENTER);append(contents,image);action_label=Gtk.Label(label='New Folder');append(contents,action_label)
 create.set_child(contents) if version=='4' else create.add(contents);append(actions,create);buttons.append(create)
 for title in ('Cut','Copy','Paste','Rename','Share','Trash'):
  item=button(title);append(actions,item);buttons.append(item)
@@ -99,6 +99,9 @@ for title,name in [('Grid','view-grid-symbolic'),('List','view-list-symbolic'),(
  append(switcher,toggle);segments.append(toggle)
 settings=Gtk.MenuButton();settings.set_label('View Settings');style(settings,'majoris-toolbar-control','majoris-toolbar-menu');settings.set_valign(Gtk.Align.CENTER);settings.set_menu_model(menu_model);append(commands,settings)
 command_scroll=viewport(commands);append(page,command_scroll)
+legacy=box('majoris-toolbar-navigation',spacing=4 if version=='3' else 0)
+legacy_a=button('Back');legacy_b=button('Refresh');append(legacy,legacy_a);append(legacy,legacy_b)
+legacy_group=box('majoris-toolbar-group',spacing=4 if version=='3' else 0);legacy_c=button('Undo');legacy_d=button('Redo');append(legacy_group,legacy_c);append(legacy_group,legacy_d);append(legacy,legacy_group);append(page,legacy)
 editor=box('majoris-editor-toolbar',spacing=4);edit_button=Gtk.Button(label='Bold');edit_button.set_valign(Gtk.Align.CENTER);append(editor,edit_button)
 if version=='4':append(page,editor)
 note=Gtk.Label(label='32px standard controls; native scrolling at narrow widths; editor actions remain 28px.');style(note,'majoris-toolbar-metadata');note.set_wrap(True) if version=='4' else note.set_line_wrap(True);append(page,note)
@@ -112,12 +115,21 @@ def capture(name):
  settle();wid=subprocess.check_output(['xdotool','search','--name','^Majoris native toolbar GTK'+version+'$'],text=True).splitlines()[0]
  path=out/(('gtk3-' if version=='3' else '')+name+'.xwd');subprocess.run(['xwd','-silent','-id',wid,'-out',str(path)],check=True);subprocess.run(['magick',str(path),str(path.with_suffix('.png'))],check=True);path.unlink()
 def geometry():return dict(navigation=nav.get_allocated_height(),commands=commands.get_allocated_height(),icon=[back.get_allocated_width(),back.get_allocated_height()],text=create.get_allocated_height(),search=field.get_allocated_height(),switcher=switcher.get_allocated_height())
+assert legacy.get_allocated_height()==40
+la,lb,lc,ld=[bounds(item,page) for item in (legacy_a,legacy_b,legacy_c,legacy_d)]
+assert la[0]-bounds(legacy,page)[0]==8,(la,bounds(legacy,page))
+assert lb[0]-la[0]-la[2]==4,(la,lb)
+assert ld[0]-lc[0]-lc[2]==4,(lc,ld)
+assert lc[0]-lb[0]-lb[2]==8,(lb,lc)
+style(legacy,'majoris-toolbar-major-groups');settle()
+assert bounds(legacy_c,page)[0]-bounds(legacy_b,page)[0]-legacy_b.get_allocated_width()==16
+legacy.remove_css_class('majoris-toolbar-major-groups') if version=='4' else legacy.get_style_context().remove_class('majoris-toolbar-major-groups');settle()
 assert not Gtk.Settings.get_default().get_property('gtk-enable-animations'),'Reduced motion setting was lost'
 assert plain_entry.get_allocated_height()==32,('native entry',plain_entry.get_allocated_height())
 # Measure the same strip and existing controls at both densities.
 padding=nav.get_style_context().get_padding() if version=='4' else nav.get_style_context().get_padding(Gtk.StateFlags.NORMAL)
 outer_x=padding.left
-assert outer_x==16,('outer inset',outer_x)
+assert outer_x==8,('outer inset',outer_x)
 standard=geometry()
 assert bounds(back,nav)[1]+(padding.top if version=='4' else 0)==4,('standard centring',bounds(back,nav))
 for strip in (nav,commands):style(strip,'majoris-toolbar-compact')
@@ -138,6 +150,13 @@ for label in nodes(page):
 assert next(item for item in nodes(back) if isinstance(item,Gtk.Image)).get_allocated_height()==16
 (out/('gtk'+version+'-compact-text.json')).write_text(json.dumps(compact_text,indent=2)+'\n')
 capture('compact-toolbar')
+# Native width reservation for GTK-only composition (the Vala component does this itself).
+label=next(item for item in nodes(flat_toggle) if isinstance(item,Gtk.Label))
+widths=[]
+for weight in (Pango.Weight.MEDIUM,Pango.Weight.SEMIBOLD):
+ desc=label.get_pango_context().get_font_description().copy();desc.set_weight(weight)
+ layout=label.create_pango_layout(label.get_text());layout.set_font_description(desc);widths.append(layout.get_pixel_size()[0])
+label.set_size_request(max(widths),-1);settle()
 flat_position=bounds(flat_toggle,commands)
 flat_label=next(item for item in nodes(flat_toggle) if isinstance(item,Gtk.Label))
 flat_baseline=flat_label.get_layout().get_baseline()
@@ -172,13 +191,16 @@ for label in nodes(create):
 field_layout=field.create_pango_layout(field.get_text());field_ink,field_logical=field_layout.get_pixel_extents()
 assert field_logical.height<=field.get_allocated_height()-2 and field_ink.y>=0,'Field glyphs clipped'
 metrics=[]
-def measure_label(label,source='toolbar'):
+def measure_label(label,source='toolbar',absolute_size=None):
  layout=label.get_layout();ink,logical=layout.get_pixel_extents();x,y=label.get_layout_offsets()
  if version=='3':allocation=label.get_allocation();x-=allocation.x;y-=allocation.y
  assert y+ink.y>=0 and y+ink.y+ink.height<=label.get_allocated_height(),(label.get_text(),'glyph clip')
  assert logical.width<=label.get_allocated_width(),(label.get_text(),'label width clipped')
- desc=label.get_pango_context().get_font_description();font_metrics=label.get_pango_context().get_metrics(desc,label.get_pango_context().get_language())
- return dict(source=source,text=label.get_text(),allocation=[label.get_allocated_width(),label.get_allocated_height()],ink=[ink.x,ink.y,ink.width,ink.height],logical=[logical.width,logical.height],layout_origin=[x,y],baseline=layout.get_baseline()/Pango.SCALE,ascent=font_metrics.get_ascent()/Pango.SCALE,descent=font_metrics.get_descent()/Pango.SCALE,font=desc.to_string())
+ desc=label.get_pango_context().get_font_description().copy()
+ if absolute_size is not None:desc.set_absolute_size(absolute_size*Pango.SCALE)
+ font_metrics=label.get_pango_context().get_metrics(desc,label.get_pango_context().get_language())
+ resolved=label.get_pango_context().load_font(desc).describe().to_string()
+ return dict(resolved_font=resolved,source=source,text=label.get_text(),allocation=[label.get_allocated_width(),label.get_allocated_height()],ink=[ink.x,ink.y,ink.width,ink.height],logical=[logical.width,logical.height],layout_origin=[x,y],baseline=layout.get_baseline()/Pango.SCALE,ascent=font_metrics.get_ascent()/Pango.SCALE,descent=font_metrics.get_descent()/Pango.SCALE,font=desc.to_string())
 for label in nodes(page):
  if isinstance(label,Gtk.Label) and label.get_text() and label.get_mapped():metrics.append(measure_label(label))
 metrics.append(dict(source='search-field',text=field.get_text(),allocation=[field.get_allocated_width(),field.get_allocated_height()],ink=[field_ink.x,field_ink.y,field_ink.width,field_ink.height],logical=[field_logical.width,field_logical.height],baseline=field_layout.get_baseline()/Pango.SCALE,font=field.get_pango_context().get_font_description().to_string()))
@@ -210,7 +232,7 @@ for menu in (nav_menu,sort):
  subprocess.run(['xwd','-silent','-id',str(popup_id),'-out',str(path)],check=True);subprocess.run(['magick',str(path),str(path.with_suffix('.png'))],check=True);path.unlink()
  popup.popdown()
 # Font changes must be measured naturally instead of cropped into a fixed strip.
-attrs=Pango.AttrList();attrs.insert(Pango.attr_size_new_absolute(40*Pango.SCALE));action_label.set_attributes(attrs);settle();assert commands.get_allocated_height()>40;capture('toolbar-large-text');action_label.set_attributes(None);settle()
+action_label.set_text('New Folder gyp;!');attrs=Pango.AttrList();attrs.insert(Pango.attr_size_new_absolute(40*Pango.SCALE));action_label.set_attributes(attrs);settle();assert commands.get_allocated_height()>40;metrics.append(measure_label(action_label,'accessibility-40px',40));capture('toolbar-large-text');action_label.set_attributes(None);action_label.set_text('New Folder');settle()
 w.set_default_size(480,400) if version=='4' else w.resize(480,400);settle();assert w.get_allocated_width()==480,('narrow resize',w.get_allocated_width());assert nav.get_allocated_height()==40 and commands.get_allocated_height()==40;segments[3].grab_focus();settle();assert command_scroll.get_hadjustment().get_value()>0,'Narrow row did not scroll to keyboard focus';capture('toolbar-narrow')
 (out/('gtk'+version+'-measurements.json')).write_text(json.dumps(initial,indent=2)+'\n')
 (out/('gtk'+version+'-text-metrics.json')).write_text(json.dumps(metrics,indent=2)+'\n')
@@ -218,13 +240,17 @@ w.set_default_size(480,400) if version=='4' else w.resize(480,400);settle();asse
 w.destroy()
 if version=='4':
  records=[]
- for mode in ('toolbars','toolbars-narrow','toolbars-editing'):
+ for mode in ('toolbars','toolbars-narrow','toolbars-editing','toolbars-stacked','toolbars-files-parent'):
   probe=subprocess.run([str(root/'build/factory/majoris-theme-factory'),'--page='+mode,'--'+variant],env={**os.environ,'MAJORIS_TOOLBAR_PROBE':'1'},capture_output=True,text=True,check=True,timeout=10)
   record=json.loads(next(line for line in probe.stdout.splitlines() if line.startswith('{')))
-  for name,value in dict(navigation=40,commands=40,back=[32,32],location=32,search=32,switcher=32,compact_toolbar=40,compact_button=28,mixed_toolbar=40,dropdown=32).items():assert record[name]==value,(mode,record)
+  expected=dict(navigation=40,commands=40,back=[32,32],location=32,search=32,switcher=32)
+  if mode not in ('toolbars-stacked','toolbars-files-parent'):expected.update(compact_toolbar=40,compact_button=28,mixed_toolbar=40,dropdown=32)
+  for name,value in expected.items():assert record[name]==value,(mode,record)
   assert record['window_width']==(480 if mode=='toolbars-narrow' else 1280),(mode,record)
   if mode=='toolbars-editing':assert record['entry']==26,record
   else:assert record['crumb']==26,record
+  if mode=='toolbars-stacked':assert record['tabs']==40 and record['navigation_y']==40 and record['commands_y']==80,record
+  if mode=='toolbars-files-parent':assert record['tabs']==40 and record['navigation_y']>=40 and record['commands_y']-record['navigation_y']==40,record
   records.append(dict(mode=mode,**record))
  (out/'factory-measurements.json').write_text(json.dumps(records,indent=2)+'\n')
 print('Native toolbar geometry, text, state stability and isolation fixture passed',version,variant,scale)

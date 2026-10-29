@@ -1922,6 +1922,47 @@
     ".majoris-toolbar-compact .majoris-toolbar-scale": {
       "min-height": "28px"
     },
+    ".majoris-toolbar > :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) + .majoris-toolbar-group": {
+      "margin-inline-start": "4px"
+    },
+    ".majoris-toolbar > .majoris-toolbar-group + :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer)": {
+      "margin-inline-start": "4px"
+    },
+    ".majoris-toolbar-control.majoris-toolbar-item-flat": {
+      "font-weight": "500"
+    },
+    ".majoris-toolbar-control.majoris-toolbar-item-flat.active": {
+      "font-weight": "600"
+    },
+    ".majoris-toolbar-control.majoris-toolbar-item-flat:checked": {
+      "font-weight": "600"
+    },
+    ".majoris-toolbar-control:disabled": {
+      "opacity": ".58",
+      "color": "var(--text)",
+      "pointer-events": "none"
+    },
+    ".majoris-toolbar-segmented > button:disabled": {
+      "opacity": ".58",
+      "color": "var(--text)",
+      "pointer-events": "none"
+    },
+    ".majoris-toolbar-control:disabled > *": {
+      "opacity": "1"
+    },
+    ".majoris-toolbar-control:focus-visible": {
+      "outline": "2px solid var(--p400)",
+      "outline-offset": "-2px",
+      "box-shadow": "none"
+    },
+    ".majoris-toolbar-control.is-focus": {
+      "outline": "2px solid var(--p400)",
+      "outline-offset": "-2px",
+      "box-shadow": "none"
+    },
+    ".majoris-toolbar-control:focus:not(:focus-visible)": {
+      "outline": "none"
+    },
     ".document-tabs": {
       "min-height": "40px",
       "border-bottom": "1px solid var(--border-soft)",
@@ -1999,10 +2040,10 @@
     },
     ".majoris-toolbar": {
       "min-height": "40px",
-      "padding": "4px 16px",
+      "padding": "4px 8px",
       "display": "flex",
       "align-items": "center",
-      "gap": "8px",
+      "gap": "4px",
       "background": "var(--surface)",
       "font-size": "14px",
       "font-weight": "500",
@@ -2022,8 +2063,11 @@
       "border": "0",
       "box-shadow": "none"
     },
-    ".majoris-toolbar-major-groups": {
-      "gap": "16px"
+    ".majoris-toolbar-major-groups > :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer) + .majoris-toolbar-group": {
+      "margin-inline-start": "12px"
+    },
+    ".majoris-toolbar-major-groups > .majoris-toolbar-group + :not(.majoris-toolbar-separator):not(.majoris-toolbar-spacer)": {
+      "margin-inline-start": "12px"
     },
     ".majoris-toolbar-spacer": {
       "flex": "1"
@@ -2120,10 +2164,6 @@
     ".majoris-toolbar-control.is-pressed": {
       "background": "var(--active)",
       "box-shadow": "var(--shadow-control-active)"
-    },
-    ".majoris-toolbar-control.is-focus": {
-      "border-color": "#818CF8",
-      "box-shadow": "0 0 0 2px rgba(129,140,248,.34),var(--shadow-control)"
     }
   },
   "inline_styles": [

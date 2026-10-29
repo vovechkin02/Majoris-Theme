@@ -104,4 +104,8 @@ raised/flat items. Groups, separators, spacers, arbitrary native widgets and gen
 segmented controls are supported. Legacy toolbar classes remain compatible.
 Open the factory's Toolbars page or use `--page=toolbars`; `toolbars-narrow`,
 `toolbars-editing`, `toolbars-states` and `toolbars-popover` remain available.
+The [final polish report](docs/toolbar-polish.md) records 8px insets, native spacing,
+focus/opacity and font validation. `toolbars-stacked` demonstrates zero-gap
+document-tab composition; `toolbars-files-parent` reproduces the application
+parent padding for comparison.
 See the specification for Meson consumption, GTK3 composition and migration.

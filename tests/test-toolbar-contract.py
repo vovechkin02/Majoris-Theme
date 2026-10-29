@@ -9,8 +9,15 @@ for version in ('3','4'):
   tokens=json.loads((ROOT/'design'/('tokens-dark.json' if variant=='dark' else 'tokens.json')).read_text())
   values=toolbar_values(tokens);css=rules(version,variant)
   assert values['toolbar_content']=='32px' and values['toolbar_icon_padding']=='7px'
-  expect(css,'.majoris-toolbar','min-height','32px');expect(css,'.majoris-toolbar','padding','4px 16px')
-  expect(css,'.majoris-toolbar','box-shadow','none');expect(css,'button.majoris-toolbar-control','min-height','30px')
+  expect(css,'.majoris-toolbar','min-height','32px');expect(css,'.majoris-toolbar','padding','4px 8px')
+  expect(css,'.majoris-toolbar','box-shadow','none');
+  if version=='4':expect(css,'.majoris-toolbar','border-spacing','0')
+  expect(css,'.majoris-toolbar-group-gap','margin-left','4px')
+  expect(css,'.majoris-toolbar-major-groups > .majoris-toolbar-group-gap','margin-left','12px')
+  expect(css,'button.majoris-toolbar-control:disabled','opacity','.58')
+  expect(css,'button.majoris-toolbar-control.majoris-toolbar-item-flat','font-weight','500')
+  expect(css,'button.majoris-toolbar-control.majoris-toolbar-item-flat:checked','font-weight','600')
+  expect(css,'button.majoris-toolbar-control','min-height','30px')
   expect(css,'button.majoris-toolbar-icon','padding','7px');expect(css,'.majoris-toolbar-view-switcher','min-height','24px')
   expect(css,'.majoris-toolbar-view-switcher','padding','3px');expect(css,'.majoris-toolbar-view-switcher','border-radius','8px')
   expect(css,'.majoris-toolbar-view-switcher > button','min-height','20px')

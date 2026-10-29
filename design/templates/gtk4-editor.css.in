@@ -91,3 +91,15 @@ textview.monospace, textview.monospace text { font-family: monospace; }
 tabbar.majoris-document-tabs tab:backdrop .tab-title, tabbar.majoris-document-tabs tab:selected:backdrop .tab-title { font-weight: 500; }
 
 window:backdrop tabbar.majoris-document-tabs tab .tab-title { font-weight: 500; }
+
+/* Legacy toolbar alias: typography/disabled polish only; statusbar remains separate. */
+.majoris-editor-toolbar > button, .majoris-editor-toolbar > menubutton > button,
+.majoris-editor-toolbar > box > button, .majoris-editor-toolbar > box > menubutton > button { font-size: 14px; font-weight: 500; }
+.majoris-editor-toolbar > button:checked, .majoris-editor-toolbar > box > button:checked { font-weight: 600; }
+.majoris-editor-toolbar > button:disabled, .majoris-editor-toolbar > menubutton > button:disabled,
+.majoris-editor-toolbar > box > button:disabled, .majoris-editor-toolbar > box > menubutton > button:disabled { opacity: ${.majoris-toolbar-control:disabled|opacity}; filter: none; -gtk-icon-filter: none; }
+
+/* Legacy editor glyphs must not inherit a second native disabled filter. */
+.majoris-editor-toolbar > button:disabled > image, .majoris-editor-toolbar > button:disabled > label,
+.majoris-editor-toolbar > box > button:disabled > image, .majoris-editor-toolbar > box > button:disabled > label,
+.majoris-editor-toolbar > menubutton > button:disabled > image, .majoris-editor-toolbar > box > menubutton > button:disabled > image { opacity: 1; filter: none; -gtk-icon-filter: none; }
