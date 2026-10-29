@@ -5,7 +5,7 @@ Implemented on 23 October 2026.
 ## Changes
 
 - `design/templates/gtk4-location.css.in` supplies the seven opt-in location
-  classes, 9px/7px geometry, semantic colours, flat breadcrumb states, full-width
+  classes, standard 4px geometry (updated 29 October 2026), semantic colours, flat 14px/500 breadcrumbs with 14px/600 current emphasis, full-width
   editing and optional high contrast. Both existing generators include it;
   `theme/Majoris/gtk-4.0/gtk.css` and `gtk-dark.css` are regenerated.
 - `factory/src/location-bar.vala` implements the simulated path/history component
@@ -74,3 +74,9 @@ GNOME/Mutter, Wayland, fractional scaling, real portal/desktop appearance change
 physical keyboard traversal across a complete Files app and screen-reader
 acceptance remain unverified. Native Light → Dark → Light checks exercise the
 existing application StyleManager bridge, not an actual desktop settings change.
+
+
+The current 29 October visual contract and universal Toolbar integration are
+specified in [Location Bar standardisation](location-bar-standardisation.md).
+The original behaviour report above remains historical verification evidence;
+current fields share normal Entry surfaces, borders and elevation.

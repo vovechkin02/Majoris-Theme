@@ -79,11 +79,10 @@ that also matched `background-color` and made dark surfaces white. See
 
 ## GTK4 location bar
 
-The opt-in location pill uses the same semantic tokens in both generated
-entrypoints: secondary surface #F2F2F4 / #28282C, soft border #E5E5E9 / #313136,
+The opt-in location field uses the same semantic tokens in both generated
+entrypoints: Entry surface #FFFFFF / #28282C, border #D8D8DD / #3B3B40,
 primary text #1C1C1F / #F4F4F5 and focus #6366F1 / #818CF8. Hover and pressed
-states use the existing theme tokens. High contrast uses the primary text border
-and surface token. Surrounding dark toolbar controls retain #28282C, #3B3B40
+states use the existing theme tokens. High contrast uses the primary text border without a separate palette. Surrounding dark toolbar controls retain #28282C, #3B3B40
 borders and existing shadows. No global control rules or stylesheet imports change.
 
 The source is `design/templates/gtk4-location.css.in`, included after existing

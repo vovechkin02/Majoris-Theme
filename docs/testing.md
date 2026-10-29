@@ -247,7 +247,7 @@ and held native state flags do not establish those session/input results.
 
 Run `python3 tools/generate-theme.py --check` and `./scripts/test.sh`.
 The `location component contract` verifies opt-in selectors, scheme palettes,
-9px/7px exceptions, focus colours, normal control geometry and GTK3 isolation.
+standard 4px field geometry, focus colours, normal control geometry and GTK3 isolation.
 `native location interactions` compiles the actual factory component and uses
 X11 input via xdotool: Ctrl+L, Alt+D, selection, invalid/valid Enter, Escape,
 outside cancellation, breadcrumb activation, empty-space click, history,
@@ -358,3 +358,15 @@ New tests regenerate unmodified native captures under `artifacts/data-view-focus
 in `light`, `dark`, `light-2x` and `dark-2x`. The `geometry` directory includes
 `focus-state-report.json`, `metadata-text-metrics.json` and corresponding `-2x`
 reports. [Investigation, measurements and limitations](data-view-focus-validation.md).
+
+
+## Location Bar standardisation
+
+The Meson tests `location standardisation native 1x/2x` inspect the actual Vala
+fixture inside Majoris.Ui.Toolbar. They verify complete 32px fields in a 40px
+Toolbar, matching native GSK 4px border outlines/control and focus shadows,
+flat 4px hovered crumbs, 14px/500 and 14px/600 Pango metrics, no duplicate inner
+entry paint, real input, RTL/narrow layouts and native accessibility growth.
+Evidence is saved under `artifacts/location-bar-standardisation/`, including
+geometry/search/text JSON and light/dark captures at both scales.
+[Measurements, before/after and GTK limitations](location-bar-standardisation.md).

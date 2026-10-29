@@ -66,7 +66,7 @@ test('editor staged packaging',python,args:[files('tests/test-editor-package.py'
 test('native editor components at 200 percent',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-editor-native.py')],env:{'GDK_SCALE':'2'},timeout:30)
 
 location_test = executable('location-native-test', 'tests/location-native.vala', 'factory/src/location-bar.vala',
-  link_with: theme_bridge, dependencies: [dependency('gtk4'), dependency('libadwaita-1')])
+  link_with: theme_bridge, dependencies: [majoris_ui_dep, dependency('gtk4'), dependency('libadwaita-1')])
 test('location component contract', python, args: [files('tests/test-location-contract.py')])
 test('native location interactions', find_program('dbus-run-session'),
   args: ['--', find_program('xvfb-run').full_path(), '-a', location_test.full_path()],
@@ -154,4 +154,10 @@ test('universal toolbar staged external consumer',python,args:[files('tests/test
 polish_probe=executable('toolbar-polish-probe','tests/toolbar-polish.vala',dependencies:[majoris_ui_dep,dependency('libadwaita-1')],link_with:theme_bridge)
 foreach scale : ['1','2']
   test('toolbar polish native '+scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-toolbar-polish.py')],env:{'GDK_SCALE':scale,'GIO_USE_VFS':'local','GTK_A11Y':'none'},timeout:90)
+endforeach
+
+foreach location_scale : ['1', '2']
+  test('location standardisation native ' + location_scale + 'x', find_program('dbus-run-session'),
+    args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-location-standardisation.py')],
+    env: {'GDK_SCALE': location_scale, 'GDK_BACKEND': 'x11', 'GTK_A11Y': 'none', 'GIO_USE_VFS': 'local', 'ADW_DISABLE_PORTAL': '1'}, timeout: 150)
 endforeach

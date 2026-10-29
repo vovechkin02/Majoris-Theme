@@ -48,9 +48,9 @@ never enter GTK3 outputs. [Geometry, Vala and ownership details](../docs/editor-
 
 | Class | Native widget / role |
 |---|---|
-| `majoris-location-bar` | Horizontal container; 9px radius, tinted surface, no raised shadow |
-| `majoris-location-crumb` | Flat native breadcrumb button; 7px radius |
-| `majoris-location-current` | Current crumb; stronger weight |
+| `majoris-location-bar` | Composite textbox; standard 4px radius, field surface and control shadow |
+| `majoris-location-crumb` | Flat native breadcrumb button; 4px radius, 14px/500 |
+| `majoris-location-current` | Current crumb; 14px/600 |
 | `majoris-location-separator` | Path separator label |
 | `majoris-location-entry` | Expanding full-path Gtk.Entry |
 | `majoris-location-editing` | Container editing state; unified focus outline |

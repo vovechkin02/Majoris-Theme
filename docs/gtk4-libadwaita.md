@@ -118,8 +118,13 @@ folder button. Separators use `majoris-location-separator`. Switch a Gtk.Stack
 to an expanding Gtk.Entry with `majoris-location-entry`, adding
 `majoris-location-editing` to the outer container while editing.
 `majoris-high-contrast` on that container opts into stronger borders and text.
-The 9px container and 7px crumbs deliberately differ from ordinary 4px controls.
-The pill has no raised shadow. Semantic surfaces, text, hover, pressed and focus
+The outer field, breadcrumbs and internal entry use the standard 4px control
+radius. The composite field shares the normal Entry surface, border and subtle
+control shadow. Its complete height is 32px: 24px child content + 2px transparent
+child border + 4px outer padding + 2px outer border. Native text can grow it.
+Breadcrumbs stay flat and use 14px/500; the current folder uses 14px/600.
+Editing uses the normal Entry border and focus shadow only on the outer field
+while the inner entry has focus. Breadcrumb :focus-visible is independent. Semantic surfaces, text, hover, pressed and focus
 colours follow the existing light/dark theme and StyleManager bridge.
 
 Keep Back, Forward, Up, Home and Copy outside the pill as ordinary 32px icon
@@ -152,3 +157,50 @@ Use `majoris-sidebar-native-divider` with a split view that already supplies
 separation. Preserve the chosen row across native focus restoration, and avoid
 global accelerators that swallow list/disclosure keys. The theme supplies
 presentation; application code supplies navigation structure and behavior.
+
+
+### Composite location field in the universal Toolbar
+
+Use `append_widget` for the composite and `append_control` for a SearchEntry;
+never designate its internal crumbs as Toolbar controls. The Toolbar keeps its
+existing 40px/4px/8px geometry and 4px spacing; no extra margins or provider are
+needed. The composite uses existing control-radius, field surface, border,
+shadow and focus definitions, with a transparent 4px inner entry.
+
+```vala
+var toolbar = new Majoris.Ui.Toolbar();
+var location = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+location.add_css_class("majoris-location-bar");
+location.hexpand = true;
+location.valign = Gtk.Align.CENTER;
+var modes = new Gtk.Stack();
+modes.hexpand = true;
+modes.hhomogeneous = false;
+var crumbs = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+var folder = new Gtk.Button.with_label("Documents");
+folder.add_css_class("majoris-location-crumb");
+folder.add_css_class("majoris-location-current");
+crumbs.append(folder);
+// In a real app, put crumbs in a horizontal scrolling viewport and reserve
+// the accessible empty-space target. See LocationBar in the native factory.
+modes.add_named(crumbs, "crumbs");
+var path = new Gtk.Entry();
+path.add_css_class("majoris-location-entry");
+path.hexpand = true;
+modes.add_named(path, "entry");
+location.append(modes);
+toolbar.append_widget(location);
+var search = new Gtk.SearchEntry();
+search.placeholder_text = "Search files";
+toolbar.append_control(search);
+// Application-owned switch to editing:
+location.add_css_class("majoris-location-editing");
+modes.visible_child_name = "entry";
+path.grab_focus();
+path.select_region(0, -1);
+```
+
+The factory preserves simulated history and path editing. It does not implement
+filesystem completion, suggestions, volumes or network navigation; applications
+retain those behaviours and can attach native completion/popovers to the entry.
+[Native standardisation measurements and screenshots](location-bar-standardisation.md).
