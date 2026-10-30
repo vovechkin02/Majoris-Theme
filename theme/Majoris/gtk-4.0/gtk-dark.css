@@ -68,8 +68,8 @@ notebook > header tab { min-height: 36px; padding: 0 12px; margin: 0; border: no
 notebook > header tab:hover { background-color: rgba(255,255,255,.035); }
 notebook > header tab:active { background-color: rgba(255,255,255,.06); }
 notebook > header tab:checked { color: @text; font-weight: 600; border: none; background-image: linear-gradient(to right, transparent 10px, @primary_500 10px, @primary_500 calc(100% - 10px), transparent calc(100% - 10px)); background-size: 100% 2px; background-repeat: no-repeat; background-position: bottom; box-shadow: none; }
-.majoris-segmented, viewswitcher, stackswitcher { background-color: @surface_secondary; border: 1px solid @border; border-radius: 8px; padding: 2px; }
-.majoris-segmented button, viewswitcher button, stackswitcher button { min-height: 28px; padding: 0 10px; margin: 0; border: none; border-radius: 4px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; }
+.majoris-segmented, viewswitcher, stackswitcher { background-color: @surface_secondary; border: 1px solid @border; border-radius: 4px; padding: 2px; }
+.majoris-segmented button, viewswitcher button, stackswitcher button { min-height: 28px; padding: 0 10px; margin: 0; border: none; border-radius: 2px; background: transparent; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; }
 .majoris-segmented button { margin-right: 2px; }
 .majoris-segmented button:last-child { margin-right: 0; }
 .majoris-segmented button:hover, viewswitcher button:hover, stackswitcher button:hover { background-color: #303035; box-shadow: none; }
@@ -589,8 +589,8 @@ button.majoris-toolbar-menu, menubutton.majoris-toolbar-menu > button { font-wei
 button.majoris-toolbar-action > box { border-spacing: 0; }
 entry.majoris-toolbar-field, searchentry.majoris-toolbar-field { min-height: 30px; padding: 0 8px; font-size: 14px; font-weight: 500; }
 .majoris-toolbar-metadata { font-size: 12px; font-weight: 400; color: @text_secondary; }
-.majoris-toolbar-segmented , .majoris-toolbar-view-switcher { min-height: 24px; padding: 3px; border: 1px solid @border; border-radius: 8px; background: #242428; box-shadow: none; border-spacing: 2px; }
-.majoris-toolbar-segmented > button , .majoris-toolbar-view-switcher > button { min-height: 20px; min-width: 16px; padding: 2px 4px; margin: 0; border: none; border-radius: 4px; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); }
+.majoris-toolbar-segmented , .majoris-toolbar-view-switcher { min-height: 24px; padding: 3px; border: 1px solid @border; border-radius: 4px; background: #242428; box-shadow: none; border-spacing: 2px; }
+.majoris-toolbar-segmented > button , .majoris-toolbar-view-switcher > button { min-height: 20px; min-width: 16px; padding: 2px 4px; margin: 0; border: none; border-radius: 2px; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; font-size: 14px; font-weight: 500; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); }
 .majoris-toolbar-segmented > button image , .majoris-toolbar-view-switcher > button image { min-width: 16px; min-height: 16px; padding: 0; margin: 0; -gtk-icon-size: 16px; }
 .majoris-toolbar-segmented > button:hover , .majoris-toolbar-view-switcher > button:hover { background: @hover; box-shadow: none; }
 .majoris-toolbar-segmented > button:active , .majoris-toolbar-view-switcher > button:active { background: @active; box-shadow: none; }

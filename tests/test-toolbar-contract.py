@@ -19,7 +19,7 @@ for version in ('3','4'):
   expect(css,'button.majoris-toolbar-control.majoris-toolbar-item-flat:checked','font-weight','600')
   expect(css,'button.majoris-toolbar-control','min-height','30px')
   expect(css,'button.majoris-toolbar-icon','padding','7px');expect(css,'.majoris-toolbar-view-switcher','min-height','24px')
-  expect(css,'.majoris-toolbar-view-switcher','padding','3px');expect(css,'.majoris-toolbar-view-switcher','border-radius','8px')
+  expect(css,'.majoris-toolbar-view-switcher','padding','3px');expect(css,'.majoris-toolbar-view-switcher','border-radius','4px')
   expect(css,'.majoris-toolbar-view-switcher > button','min-height','20px')
   expect(css,'button','min-height','30px');expect(css,'button','border-radius','4px')
   if version=='4':expect(css,'.majoris-editor-toolbar > button','min-height','26px')

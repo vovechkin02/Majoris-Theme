@@ -147,6 +147,6 @@ visual comparisons, scaling results and outstanding session checks.
 
 The final tab typography is 14px Medium (500), selected SemiBold (600), and
 Medium in inactive windows. Document tabs use 2px/8px padding and an 8px underline
-inset. Text-only segmented controls retain 28px children inside an 8px outer
+inset. Text-only segmented controls retain 28px children with 2px corners inside a 4px outer
 radius and 2px padding. See [tab finalisation](tab-finalisation.md) for measured
 geometry, clipping evidence and application adoption diagnostics.

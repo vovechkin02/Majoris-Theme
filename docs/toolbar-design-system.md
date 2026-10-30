@@ -18,7 +18,7 @@ formatting and playback are examples of content, not component types.
 | Within a group / between groups | 4px / 8px | Same |
 | Major group separation | Optional 16px | Same |
 | Icon-to-label gap | 8px | Same |
-| Segmented container | 32px, radius 8px, inner segments 24px/radius 4px | Same |
+| Segmented container | 32px, radius 4px, inner segments 24px/radius 2px | Same |
 | Bottom divider | Optional 1px painted inside allocation | Same |
 
 The content minimum is 32px, plus 8px padding. Compact items occupy 28px inside

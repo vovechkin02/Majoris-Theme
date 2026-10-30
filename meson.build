@@ -161,3 +161,13 @@ foreach location_scale : ['1', '2']
     args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-location-standardisation.py')],
     env: {'GDK_SCALE': location_scale, 'GDK_BACKEND': 'x11', 'GTK_A11Y': 'none', 'GIO_USE_VFS': 'local', 'ADW_DISABLE_PORTAL': '1'}, timeout: 150)
 endforeach
+
+# Real segmented controls and PreferencesDialog, including accessibility growth.
+foreach variant : ['light', 'dark']
+  foreach profile : ['standard', 'double', 'text']
+    test('native segmented ' + variant + ' ' + profile, find_program('dbus-run-session'),
+      args: ['--', find_program('xvfb-run').full_path(), '-a', '-s', '-screen 0 2880x2160x24', python.full_path(), files('tests/test-segmented-native.py')],
+      env: {'MAJORIS_VARIANT': variant, 'GDK_BACKEND': 'x11', 'GTK_A11Y': 'none', 'ADW_DISABLE_PORTAL': '1',
+            'GDK_SCALE': profile == 'double' ? '2' : '1', 'GDK_DPI_SCALE': profile == 'text' ? '1.25' : '1'}, timeout: 45)
+  endforeach
+endforeach

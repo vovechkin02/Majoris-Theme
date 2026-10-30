@@ -845,9 +845,12 @@
       "padding": "2px",
       "border": "1px solid var(--border)",
       "background": "#242428",
-      "border-radius": "8px",
+      "border-radius": "var(--r-control)",
       "gap": "2px",
       "border-color": "var(--border)"
+    },
+    ".toggle-group .toggle": {
+      "border-radius": "2px"
     },
     ".toggle:hover": {
       "background": "#303035",
@@ -1181,7 +1184,7 @@
       "display": "inline-flex",
       "border": "1px solid var(--border)",
       "background": "#242428",
-      "border-radius": "8px",
+      "border-radius": "var(--r-control)",
       "padding": "2px",
       "border-color": "var(--border)"
     },
@@ -1189,7 +1192,7 @@
       "height": "28px",
       "border": "0",
       "background": "transparent",
-      "border-radius": "4px",
+      "border-radius": "2px",
       "padding": "0 12px",
       "font": "inherit",
       "font-size": "14px",
@@ -2113,7 +2116,7 @@
       "gap": "2px",
       "padding": "3px",
       "border": "1px solid var(--border)",
-      "border-radius": "8px",
+      "border-radius": "var(--r-control)",
       "background": "#242428",
       "box-shadow": "none"
     },
@@ -2122,7 +2125,7 @@
       "min-width": "24px",
       "padding": "2px 4px",
       "border": "0",
-      "border-radius": "4px",
+      "border-radius": "2px",
       "background": "transparent",
       "color": "var(--text2)",
       "font-size": "14px",

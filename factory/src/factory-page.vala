@@ -157,6 +157,41 @@ namespace MajorisThemeFactory {
                 clamp.child=content; demo_scroll.child=clamp; layouts.append(demo_scroll);
             }
             var nav=section("Navigation","navigation"); var ns=new Gtk.Stack(); ns.add_titled(new Gtk.Label("List content"),"list","List"); ns.add_titled(new Gtk.Label("Grid content"),"grid","Grid"); ns.add_titled(new Gtk.Label("Columns content"),"columns","Columns"); var switcher=new Gtk.StackSwitcher(); switcher.stack=ns; switcher.halign=Gtk.Align.START; nav.append(switcher); probes.insert("view_switcher",switcher); nav.append(ns);
+            // Native segmented corner gallery: no replacement selection logic.
+            for(int count=2;count<=4;count++) {
+                for(int selected_index=0;selected_index<count;selected_index++) {
+                    var segment_group=new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
+                    segment_group.add_css_class("majoris-segmented"); segment_group.halign=Gtk.Align.START;
+                    Gtk.ToggleButton? first=null;
+                    for(int index=0;index<count;index++) {
+                        var segment=new Gtk.ToggleButton.with_label("Page %d".printf(index+1));
+                        if(first==null)first=segment;else segment.group=first;
+                        segment.active=index==selected_index;
+                        if(count==4 && index==2 && selected_index!=2)segment.sensitive=false;
+                        segment_group.append(segment);
+                    }
+                    nav.append(segment_group);
+                }
+            }
+            var view_stack=new Adw.ViewStack();
+            foreach(var page_title in new string[]{"General","Metadata","Permissions","Open With"}) {
+                var page=view_stack.add_titled(new Gtk.Label(page_title),page_title,page_title);
+                page.icon_name="document-properties-symbolic";
+            }
+            var view_switch=new Adw.ViewSwitcher(); view_switch.policy=Adw.ViewSwitcherPolicy.WIDE;
+            view_switch.stack=view_stack; view_switch.halign=Gtk.Align.START;nav.append(view_switch);nav.append(view_stack);
+            var preferences_demo=new Gtk.Button.with_label("File Properties — native PreferencesDialog");
+            preferences_demo.clicked.connect(()=>{
+                var dialog=new Adw.PreferencesDialog();dialog.title="File Properties";
+                foreach(var page_title in new string[]{"General","Metadata","Permissions","Open With"}) {
+                    var page=new Adw.PreferencesPage();page.title=page_title;page.icon_name="document-properties-symbolic";
+                    var segment_group=new Adw.PreferencesGroup();segment_group.title=page_title;
+                    var setting=new Adw.ActionRow();setting.title="Native file properties";
+                    segment_group.add(setting);page.add(segment_group);dialog.add(page);
+                }
+                dialog.present(owner);
+            });
+            nav.append(preferences_demo);
             var notebook=new Gtk.Notebook(); notebook.append_page(new Gtk.Label("Native GTK tab"),new Gtk.Label("Tab one")); notebook.append_page(new Gtk.Label("Second tab"),new Gtk.Label("Tab two")); nav.append(notebook); probes.insert("notebook",notebook);
             var data_card=section("Lists, Tables & Selection","data");
             var data_model=new GLib.ListStore(typeof(DataRecord));data_model.append(new DataRecord(0,"Documents"));data_model.append(new DataRecord(1,"Majoris Design.md"));data_model.append(new DataRecord(2,"Wallpaper.png"));

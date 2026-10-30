@@ -16,6 +16,12 @@ entry=Gtk.Entry(); box.pack_start(entry,False,False,0)
 for widget in [Gtk.CheckButton(label='Check'),Gtk.RadioButton(label='Radio'),Gtk.Switch(),Gtk.SpinButton.new_with_range(0,100,1),Gtk.ProgressBar(),Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL,0,100,1)]: box.pack_start(widget,False,False,0)
 popover=Gtk.Popover.new(button); popover.add(Gtk.Label(label='Native popover'))
 menu=Gtk.Menu(); menu.append(Gtk.MenuItem(label='Native menu item'))
+stack=Gtk.Stack()
+for name in ('General','Metadata','Permissions'):stack.add_titled(Gtk.Label(label=name),name,name)
+switcher=Gtk.StackSwitcher(stack=stack);box.pack_start(switcher,False,False,0);box.pack_start(stack,False,False,0)
+segments=Gtk.Box();segments.get_style_context().add_class('majoris-segmented')
+# ToggleButtons retain their native grouped behavior through Gtk.StackSwitcher.
+segments.pack_start(Gtk.ToggleButton(label='First'),False,False,0);box.pack_start(segments,False,False,0)
 window.show_all()
 loop=GLib.MainLoop(); GLib.timeout_add(250,lambda:(loop.quit(),False)[1]); loop.run()
 for widget in [button,entry]:
@@ -25,5 +31,16 @@ for widget in [button,entry]:
     assert widget.get_allocated_height()==32,(type(widget).__name__,widget.get_allocated_height())
 color=button.get_style_context().get_color(Gtk.StateFlags.NORMAL)
 assert round(color.red*255)==28 and round(color.green*255)==28 and round(color.blue*255)==31,color.to_string()
+# GTK3 does not expose border radii through StyleContext.get_property;
+# render its native background to compare the corner arc against Cairo.
+import cairo,io
+from PIL import Image
+for group in (switcher,segments):
+ surface=cairo.ImageSurface(cairo.FORMAT_ARGB32,100,40)
+ Gtk.render_background(group.get_style_context(),cairo.Context(surface),0,0,100,40)
+ stream=io.BytesIO();surface.write_to_png(stream);image=Image.open(stream)
+ assert image.getpixel((0,0))[3]<image.getpixel((4,4))[3]
+ assert group.get_style_context().get_padding(Gtk.StateFlags.NORMAL).top==2
+stack.set_visible_child_name('Permissions');assert stack.get_visible_child_name()=='Permissions'
 window.destroy()
-print('Realized GTK3 button/entry geometry, borders and text color passed; radius remains a visual check')
+print('Realized GTK3 button/entry geometry, borders and text color passed; native segmented corner rendering and selection passed')
