@@ -180,3 +180,17 @@ foreach switch_version : ['3','4']
     test('native switches GTK'+switch_version+' '+switch_variant+' large fonts',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-switch-native.py'),switch_version],env:{'MAJORIS_VARIANT':switch_variant,'MAJORIS_LARGE_FONT':'1','GSK_RENDERER':'cairo','GTK_A11Y':'none'},timeout:60)
   endforeach
 endforeach
+
+test('preferences component source contract',python,args:[files('tests/test-preferences-contract.py')])
+foreach preference_variant : ['light','dark']
+  foreach preference_scale : ['1','2']
+    foreach preference_renderer : ['cairo','gl']
+      test('native preferences '+preference_variant+' '+preference_scale+'x '+preference_renderer,find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-preferences-native.py')],env:{'MAJORIS_VARIANT':preference_variant,'GDK_SCALE':preference_scale,'GSK_RENDERER':preference_renderer,'GTK_A11Y':'none'},timeout:90)
+    endforeach
+  endforeach
+  test('native preferences '+preference_variant+' enlarged fonts',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-preferences-native.py')],env:{'MAJORIS_VARIANT':preference_variant,'MAJORIS_LARGE_FONT':'1','GSK_RENDERER':'cairo','GTK_A11Y':'none'},timeout:90)
+endforeach
+
+foreach preference_variant : ['light','dark']
+  test('native preferences '+preference_variant+' default renderer',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-preferences-native.py')],env:{'MAJORIS_VARIANT':preference_variant,'GTK_A11Y':'none'},timeout:90)
+endforeach

@@ -83,17 +83,22 @@ notebook > header tab:checked { color: @text; font-weight: 600; border: none; ba
 .majoris-segmented button:active, viewswitcher button:active, stackswitcher button:active { background-color: #38383D; box-shadow: none; }
 .majoris-segmented button:checked, viewswitcher button:checked, stackswitcher button:checked { background-color: @surface; color: @text; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.035); }
 row { border-radius: 4px; }
-row:hover { background-color: @hover; }
+row.activatable:hover { background-color: @hover; }
+row.activatable:active { background-color: @active; }
 row:selected { background-color: @primary_50; color: @primary_800; }
 .card, .boxed-list { border: 1px solid @border_soft; border-radius: 8px; background-color: @surface; }
 .card { box-shadow: 0 4px 8px rgba(0,0,0,.24),0 1px 2px rgba(0,0,0,.20); }
 .boxed-list { box-shadow: none; }
 .card, .boxed-list, popover, dialog { transition: background-color 256ms cubic-bezier(.2,.8,.2,1), box-shadow 256ms cubic-bezier(.2,.8,.2,1); }
-.boxed-list > row { min-height: 33px; padding: 8px 12px 8px 16px; border-bottom: 1px solid @border_soft; border-radius: 0; }
+.boxed-list > row { font-size: 10.5pt; min-height: 31px; padding: 8px 16px; border-bottom: 1px solid @border_soft; border-radius: 0; }
 .boxed-list > row:last-child { border-bottom: none; }
-.boxed-list > row label { font-size: 14px; }
-.boxed-list > row .title { font-weight: 500; }
-.boxed-list > row .subtitle { font-size: 12px; color: @text_secondary; font-weight: 400; }
+/* Only the exterior corners follow the group's inner edge; shared row boundaries stay square. */
+.boxed-list > row:first-child { border-top-left-radius: 7px; border-top-right-radius: 7px; }
+.boxed-list > row:last-child { border-bottom-left-radius: 7px; border-bottom-right-radius: 7px; }
+/* Passive list rows remain neutral, including independent suffix actions. */
+.boxed-list > row:not(.activatable):hover, .boxed-list > row:not(.activatable):active { background-color: transparent; }
+.boxed-list > row { transition: background-color 128ms cubic-bezier(.2,0,0,1), outline-color 128ms cubic-bezier(.2,0,0,1); }
+.boxed-list > row.majoris-preference-info:hover, .boxed-list > row.majoris-preference-info:active { background-color: transparent; }
 tooltip { border-radius: 4px; border: none; background-color: #F4F4F5; color: @surface; padding: 6px 8px; box-shadow: 0 12px 24px rgba(0,0,0,.52),0 4px 8px rgba(0,0,0,.30); font-size: 11px; }
 tooltip label { font-size: 11px; }
 scrollbar, scrollbar trough { background: transparent; border: none; }
@@ -174,9 +179,28 @@ button.model:active, modelbutton:active, button.majoris-menu-danger:active { bac
 button.majoris-menu-danger, button.majoris-menu-danger:hover, button.majoris-menu-danger:active { color: @danger; border-color: transparent; }
 button.majoris-menu-danger:focus { box-shadow: 0 0 0 2px rgba(129,140,248,.34); }
 popover separator { min-height: 1px; margin: 4px 8px; background-color: @border_soft; }
-.boxed-list > row > box { min-height: 0; padding: 0; }
-.boxed-list > row .title, .boxed-list > row .subtitle { min-height: 0; padding: 0; margin: 0; }
-.boxed-list > row .subtitle { margin-top: 2px; }
+/* Adw 1.7 native header/title hierarchy: retain natural label measurements. */
+.boxed-list row > box.header { min-height: 31px; margin: 0; border-spacing: 0; }
+.boxed-list row > box.header > box.title { margin-top: 0; margin-bottom: 0; border-spacing: 4px; }
+.boxed-list row > box.header > box.title > label.title { font-size: 10.5pt; font-weight: 500; color: @text; }
+.boxed-list row > box.header > box.title > label.subtitle { font-size: 9pt; font-weight: 400; color: @text_secondary; opacity: 1; }
+.boxed-list row > box.header > .prefixes:dir(ltr), .boxed-list row > box.header > .icon:dir(ltr) { margin-right: 8px; }
+.boxed-list row > box.header > .prefixes:dir(rtl), .boxed-list row > box.header > .icon:dir(rtl) { margin-left: 8px; }
+.boxed-list row > box.header > .suffixes:dir(ltr) { margin-left: 16px; }
+.boxed-list row > box.header > .suffixes:dir(rtl) { margin-right: 16px; }
+.boxed-list row > box.header > image.icon { -gtk-icon-size: 16px; }
+.boxed-list > row.property > box.header > box.title > label.title { font-size: 9pt; font-weight: 400; opacity: 1; color: @text_secondary; }
+.boxed-list > row.property > box.header > box.title > label.subtitle { font-size: 10.5pt; color: @text; }
+/* .property intentionally preserves native read-only hierarchy; no global promotion. */
+.boxed-list > row.entry > box.header { min-height: 31px; }
+.boxed-list > row.activatable:focus-visible { outline: 2px solid @focus_color; outline-offset: -2px; border-color: @border_soft; }
+preferencesgroup > box { border-spacing: 8px; }
+preferencesgroup > box > box.header { border-spacing: 8px; margin-bottom: 0; }
+preferencesgroup > box > box.header.single-line { min-height: 0; }
+preferencesgroup > box > box.header > box.labels { border-spacing: 4px; }
+preferencesgroup > box > box.header > box.labels > label.heading { font-size: 10.5pt; font-weight: 600; color: @text; }
+preferencesgroup > box > box.header > box.labels > label:not(.heading) { font-size: 9pt; font-weight: 400; color: @text_secondary; opacity: 1; }
+preferencespage > scrolledwindow > viewport > clamp > box { border-spacing: 16px; }
 .boxed-list > row.expander .expander { background-color: @surface_secondary; box-shadow: none; }
 viewswitcher button { min-width: 0; padding: 0 12px; }
 viewswitcher button box { min-height: 0; padding: 0; margin: 0; }
@@ -208,7 +232,6 @@ dialog.alert .heading-bin { margin-bottom: 6px; }
 dialog.alert .title-2 { font-size: 16px; }
 dialog.alert .body { font-size: 12px; color: @text_secondary; }
 dialog.alert .response-area { padding: 12px; border-top: 1px solid @border_soft; background-color: @surface_secondary; border-radius: 0 0 8px 8px; }
-.boxed-list > row .subtitle { opacity: 1; }
 spinbutton > text { min-height: 0; padding: 0 10px; }
 banner button { background-color: @action_primary; border-color: @action_primary; color: @surface; box-shadow: 0 1px 2px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.10); }
 banner button:hover { background-color: @action_primary_hover; border-color: @action_primary_hover; box-shadow: 0 2px 4px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,255,255,.12); }
@@ -272,6 +295,26 @@ switch:focus-visible:not(:disabled) { outline: 2px solid @focus_color; outline-o
 
 /* libadwaita supplies a disabled opacity filter; use one theme opacity only. */
 switch:disabled { filter: none; }
+
+/* Selectable informational text must not acquire a whole-row action outline. */
+.boxed-list > row:not(.activatable):focus-visible { outline: none; }
+/* Native SpinRow adds 10px button margins for an unpadded row. Our row owns the inset. */
+.boxed-list > row.spin spinbutton { border: none; background: transparent; box-shadow: none; }
+.boxed-list > row.spin spinbutton > button { margin-top: 0; margin-bottom: 0; }
+/* ExpanderRow wraps a native header row and nested list; apply each inset once. */
+.boxed-list > row.expander { padding: 0; }
+.boxed-list > row.expander row.header, .boxed-list > row.expander list.nested > row { min-height: 31px; padding: 8px 16px; border-radius: 0; }
+.boxed-list > row.expander list.nested > row { border-bottom: 1px solid @border_soft; }
+.boxed-list > row.expander list.nested > row:last-child { border-bottom: none; }
+
+.boxed-list > row.expander:first-child row.header { border-top-left-radius: 7px; border-top-right-radius: 7px; }
+.boxed-list > row.expander:last-child:not(:checked) row.header, .boxed-list > row.expander:last-child:checked list.nested > row:last-child { border-bottom-left-radius: 7px; border-bottom-right-radius: 7px; }
+
+/* ButtonRow's explicit action treatments take precedence over neutral row hover. */
+.boxed-list > row.button.suggested-action { background-color: @action_primary; color: @accent_fg_color; background-image: none; }
+.boxed-list > row.button.suggested-action:hover { background-color: @action_primary_hover; background-image: none; }
+.boxed-list > row.button.suggested-action:active { background-color: @action_primary_pressed; background-image: none; }
+.boxed-list > row.button.destructive-action { color: @danger; }
 /* Dark-only semantic overrides; shared allocations remain in gtk-common.css.in. */
 .view, columnview, treeview, iconview { background-color: @surface; color: @text; }
 columnview row:selected, listview row:selected, gridview child:selected { background-color: rgba(99,102,241,.16); color: #E0E7FF; }

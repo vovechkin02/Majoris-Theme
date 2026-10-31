@@ -20,11 +20,14 @@ values['header_padding_top']=str(remaining//2)+'px'
 values['header_padding_bottom']=str(remaining-remaining//2)+'px'
 values['entry_content_width']=str(int(html_value(t,'.entry','min-width')[:-2])-22)+'px'
 values['dropdown_content_width']=str(int(html_value(t,'.select','min-width')[:-2])-26)+'px'
-values['preference_content_height']=str(int(html_value(t,'.pref-row','min-height')[:-2])-17)+'px'
+values['preference_content_height']=str(int(html_value(t,'.pref-row','--single-target')[:-2])-17)+'px'
 values['banner_button_content_height']=str(int(html_value(t,'.banner .btn','height')[:-2])-2)+'px'
 values['control_duration']=str(t['motion']['control_ms'])+'ms'
 values['surface_duration']=str(t['motion']['surface_ms'])+'ms'
 values.update(shell_panel_surface=t['color']['surface'],shell_popup_surface=t['color']['surface'],shell_control_surface=t['color']['surface_secondary'],shell_search_surface=t['color']['surface'],shell_disabled_foreground=t['color']['text_tertiary'],shell_selected_foreground='#FFFFFF',shell_focus_color=t['color']['primary_500'],shell_tooltip_background=html_value(t,'.tooltip','background'),shell_tooltip_foreground=t['color']['surface'],shell_tooltip_shadow=t['shadow']['pop'])
+# Points preserve 14px/12px at 96 DPI and follow native accessibility text DPI.
+values.update(preference_title_font=f"{float(html_value(t,'.pref-title','font-size')[:-2])*.75:g}pt",preference_subtitle_font=f"{float(html_value(t,'.pref-desc','font-size')[:-2])*.75:g}pt")
+values['preference_inner_radius']=str(t['radius']['structure']-1)+'px'
 values['menu_border']='#E5E5E9'
 values['window_edge_color']=html_value(t,'.window','border').split('solid ',1)[1]
 

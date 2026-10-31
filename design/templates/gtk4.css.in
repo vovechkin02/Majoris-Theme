@@ -40,9 +40,28 @@ button.model:active, modelbutton:active, button.majoris-menu-danger:active { bac
 button.majoris-menu-danger, button.majoris-menu-danger:hover, button.majoris-menu-danger:active { color: @danger; border-color: transparent; }
 button.majoris-menu-danger:focus { box-shadow: 0 0 0 2px rgba(99,102,241,.24); }
 popover separator { min-height: ${.separator|height}; margin: 4px 8px; background-color: @border_soft; }
-.boxed-list > row > box { min-height: 0; padding: 0; }
-.boxed-list > row .title, .boxed-list > row .subtitle { min-height: 0; padding: 0; margin: 0; }
-.boxed-list > row .subtitle { margin-top: ${.pref-desc|margin-top}; }
+/* Adw 1.7 native header/title hierarchy: retain natural label measurements. */
+.boxed-list row > box.header { min-height: ${preference_content_height}; margin: 0; border-spacing: 0; }
+.boxed-list row > box.header > box.title { margin-top: 0; margin-bottom: 0; border-spacing: ${.pref-desc|margin-top}; }
+.boxed-list row > box.header > box.title > label.title { font-size: ${preference_title_font}; font-weight: ${.pref-title|font-weight}; color: @text; }
+.boxed-list row > box.header > box.title > label.subtitle { font-size: ${preference_subtitle_font}; font-weight: ${.pref-desc|font-weight}; color: @text_secondary; opacity: 1; }
+.boxed-list row > box.header > .prefixes:dir(ltr), .boxed-list row > box.header > .icon:dir(ltr) { margin-right: ${.pref-row|--prefix-gap}; }
+.boxed-list row > box.header > .prefixes:dir(rtl), .boxed-list row > box.header > .icon:dir(rtl) { margin-left: ${.pref-row|--prefix-gap}; }
+.boxed-list row > box.header > .suffixes:dir(ltr) { margin-left: ${.pref-row|--suffix-gap}; }
+.boxed-list row > box.header > .suffixes:dir(rtl) { margin-right: ${.pref-row|--suffix-gap}; }
+.boxed-list row > box.header > image.icon { -gtk-icon-size: 16px; }
+.boxed-list > row.property > box.header > box.title > label.title { font-size: ${preference_subtitle_font}; font-weight: ${.pref-desc|font-weight}; opacity: 1; color: @text_secondary; }
+.boxed-list > row.property > box.header > box.title > label.subtitle { font-size: ${preference_title_font}; color: @text; }
+/* .property intentionally preserves native read-only hierarchy; no global promotion. */
+.boxed-list > row.entry > box.header { min-height: ${preference_content_height}; }
+.boxed-list > row.activatable:focus-visible { outline: 2px solid @primary_500; outline-offset: -2px; border-color: @border_soft; }
+preferencesgroup > box { border-spacing: ${.pref-group-heading|margin-bottom}; }
+preferencesgroup > box > box.header { border-spacing: ${.pref-row|--prefix-gap}; margin-bottom: 0; }
+preferencesgroup > box > box.header.single-line { min-height: 0; }
+preferencesgroup > box > box.header > box.labels { border-spacing: ${.pref-group-description|margin-top}; }
+preferencesgroup > box > box.header > box.labels > label.heading { font-size: ${preference_title_font}; font-weight: ${.pref-group-heading|font-weight}; color: @text; }
+preferencesgroup > box > box.header > box.labels > label:not(.heading) { font-size: ${preference_subtitle_font}; font-weight: ${.pref-group-description|font-weight}; color: @text_secondary; opacity: 1; }
+preferencespage > scrolledwindow > viewport > clamp > box { border-spacing: ${.pref-group|margin-bottom}; }
 .boxed-list > row.expander .expander { background-color: @surface_secondary; box-shadow: none; }
 viewswitcher button { min-width: 0; padding: ${.view-switch button|padding}; }
 viewswitcher button box { min-height: 0; padding: 0; margin: 0; }
@@ -74,7 +93,6 @@ dialog.alert .heading-bin { margin-bottom: 6px; }
 dialog.alert .title-2 { font-size: ${.dialog-body h4|font-size}; }
 dialog.alert .body { font-size: ${.dialog-body p|font-size}; color: @text_secondary; }
 dialog.alert .response-area { padding: ${.dialog-actions|padding}; border-top: 1px solid @border_soft; background-color: @surface_secondary; border-radius: 0 0 ${structure_radius} ${structure_radius}; }
-.boxed-list > row .subtitle { opacity: 1; }
 spinbutton > text { min-height: 0; padding: 0 10px; }
 banner button { background-color: @primary_600; border-color: @primary_600; color: @surface; box-shadow: ${.btn.primary|box-shadow}; }
 banner button:hover { background-color: @primary_700; border-color: @primary_700; box-shadow: ${.btn.primary:hover|box-shadow}; }
@@ -138,3 +156,23 @@ switch:focus-visible:not(:disabled) { outline: 2px solid @primary_500; outline-o
 
 /* libadwaita supplies a disabled opacity filter; use one theme opacity only. */
 switch:disabled { filter: none; }
+
+/* Selectable informational text must not acquire a whole-row action outline. */
+.boxed-list > row:not(.activatable):focus-visible { outline: none; }
+/* Native SpinRow adds 10px button margins for an unpadded row. Our row owns the inset. */
+.boxed-list > row.spin spinbutton { border: none; background: transparent; box-shadow: none; }
+.boxed-list > row.spin spinbutton > button { margin-top: 0; margin-bottom: 0; }
+/* ExpanderRow wraps a native header row and nested list; apply each inset once. */
+.boxed-list > row.expander { padding: 0; }
+.boxed-list > row.expander row.header, .boxed-list > row.expander list.nested > row { min-height: ${preference_content_height}; padding: ${.pref-row|padding}; border-radius: 0; }
+.boxed-list > row.expander list.nested > row { border-bottom: 1px solid @border_soft; }
+.boxed-list > row.expander list.nested > row:last-child { border-bottom: none; }
+
+.boxed-list > row.expander:first-child row.header { border-top-left-radius: ${preference_inner_radius}; border-top-right-radius: ${preference_inner_radius}; }
+.boxed-list > row.expander:last-child:not(:checked) row.header, .boxed-list > row.expander:last-child:checked list.nested > row:last-child { border-bottom-left-radius: ${preference_inner_radius}; border-bottom-right-radius: ${preference_inner_radius}; }
+
+/* ButtonRow's explicit action treatments take precedence over neutral row hover. */
+.boxed-list > row.button.suggested-action { background-color: @primary_600; color: @accent_fg_color; background-image: none; }
+.boxed-list > row.button.suggested-action:hover { background-color: @primary_700; background-image: none; }
+.boxed-list > row.button.suggested-action:active { background-color: @primary_800; background-image: none; }
+.boxed-list > row.button.destructive-action { color: @danger; }

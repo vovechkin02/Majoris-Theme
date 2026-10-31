@@ -92,3 +92,7 @@ menuitem.majoris-menu-row label.majoris-menu-keycap { color: ${.menu-item kbd|co
 
 /* Native keyboard focus; GTK3 keeps its accessible :focus fallback. */
 switch:focus:not(:disabled) { outline: 2px solid @primary_500; outline-offset: 2px; border-color: @primary_500; }
+
+/* GTK3 boxed-list equivalents; libadwaita components remain GTK4 only. */
+.boxed-list > row label.title { font-size: ${preference_title_font}; font-weight: ${.pref-title|font-weight}; }
+.boxed-list > row label.subtitle { font-size: ${preference_subtitle_font}; font-weight: ${.pref-desc|font-weight}; color: @text_secondary; }

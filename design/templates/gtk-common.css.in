@@ -80,17 +80,22 @@ notebook > header tab:checked { color: @text; font-weight: ${.tab.active|font-we
 .majoris-segmented button:active, viewswitcher button:active, stackswitcher button:active { background-color: ${.toggle:active|background}; box-shadow: none; }
 .majoris-segmented button:checked, viewswitcher button:checked, stackswitcher button:checked { background-color: @surface; color: @text; font-weight: 600; box-shadow: ${control_shadow}; }
 row { border-radius: ${control_radius}; }
-row:hover { background-color: @hover; }
+row.activatable:hover { background-color: @hover; }
+row.activatable:active { background-color: @active; }
 row:selected { background-color: @primary_50; color: @primary_800; }
 .card, .boxed-list { border: 1px solid @border_soft; border-radius: ${structure_radius}; background-color: @surface; }
 .card { box-shadow: ${card_shadow}; }
 .boxed-list { box-shadow: none; }
 .card, .boxed-list, popover, dialog { transition: background-color ${surface_motion}, box-shadow ${surface_motion}; }
-.boxed-list > row { min-height: ${preference_content_height}; padding: ${.pref-row|padding}; border-bottom: 1px solid @border_soft; border-radius: 0; }
+.boxed-list > row { font-size: ${preference_title_font}; min-height: ${preference_content_height}; padding: ${.pref-row|padding}; border-bottom: 1px solid @border_soft; border-radius: 0; }
 .boxed-list > row:last-child { border-bottom: none; }
-.boxed-list > row label { font-size: ${.pref-title|font-size}; }
-.boxed-list > row .title { font-weight: ${.pref-title|font-weight}; }
-.boxed-list > row .subtitle { font-size: ${.pref-desc|font-size}; color: @text_secondary; font-weight: 400; }
+/* Only the exterior corners follow the group's inner edge; shared row boundaries stay square. */
+.boxed-list > row:first-child { border-top-left-radius: ${preference_inner_radius}; border-top-right-radius: ${preference_inner_radius}; }
+.boxed-list > row:last-child { border-bottom-left-radius: ${preference_inner_radius}; border-bottom-right-radius: ${preference_inner_radius}; }
+/* Passive list rows remain neutral, including independent suffix actions. */
+.boxed-list > row:not(.activatable):hover, .boxed-list > row:not(.activatable):active { background-color: transparent; }
+.boxed-list > row { transition: background-color ${control_motion}, outline-color ${control_motion}; }
+.boxed-list > row.majoris-preference-info:hover, .boxed-list > row.majoris-preference-info:active { background-color: transparent; }
 tooltip { border-radius: ${.tooltip|border-radius}; border: none; background-color: ${.tooltip|background}; color: @surface; padding: ${.tooltip|padding}; box-shadow: ${pop_shadow}; font-size: ${.tooltip|font-size}; }
 tooltip label { font-size: ${.tooltip|font-size}; }
 scrollbar, scrollbar trough { background: transparent; border: none; }

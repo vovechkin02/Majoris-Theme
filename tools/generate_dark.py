@@ -12,11 +12,14 @@ def generate(output):
     light=json.loads((ROOT/'design/tokens.json').read_text())
     assert all(t[k]==light[k] for k in ('radius','motion','motion_css','window','font'))
     values={**t['color'],**{k+'_radius':str(v)+'px' for k,v in t['radius'].items()},**{k+'_motion':v for k,v in t['motion_css'].items()},**{k+'_shadow':v for k,v in t['shadow'].items()},**{k:str(v)+'px' for k,v in t['window'].items()}}
-    values.update(control_content_size='30px',header_padding=html_value(t,'.headerbar','padding'),header_padding_top='7px',header_padding_bottom='8px',entry_content_width=str(int(html_value(t,'.entry','min-width')[:-2])-22)+'px',dropdown_content_width=str(int(html_value(t,'.select','min-width')[:-2])-26)+'px',preference_content_height='33px',banner_button_content_height=str(int(html_value(t,'.banner .btn','height')[:-2])-2)+'px',control_duration='128ms',surface_duration='256ms')
+    values.update(control_content_size='30px',header_padding=html_value(t,'.headerbar','padding'),header_padding_top='7px',header_padding_bottom='8px',entry_content_width=str(int(html_value(t,'.entry','min-width')[:-2])-22)+'px',dropdown_content_width=str(int(html_value(t,'.select','min-width')[:-2])-26)+'px',preference_content_height=str(int(html_value(t,'.pref-row','--single-target')[:-2])-17)+'px',banner_button_content_height=str(int(html_value(t,'.banner .btn','height')[:-2])-2)+'px',control_duration='128ms',surface_duration='256ms')
     def render(s):
         s=re.sub(r'\$\{([^|}]+)\|([^}]+)\}',lambda m:html_value(t,m[1],m[2]),s)
         return re.sub(r'\$\{(\w+)\}',lambda m:values[m[1]],s)
     values.update(editor_values('dark'))
+    # Points preserve 14px/12px at 96 DPI and follow native accessibility text DPI.
+    values.update(preference_title_font=f"{float(html_value(t,'.pref-title','font-size')[:-2])*.75:g}pt",preference_subtitle_font=f"{float(html_value(t,'.pref-desc','font-size')[:-2])*.75:g}pt")
+    values['preference_inner_radius']=str(t['radius']['structure']-1)+'px'
     values['menu_border']='#3B3B40'
     values['window_edge_color']=html_value(t,'.window','border-color')
     colors='/* Generated from the effective dark reference cascade. */\n'+''.join('@define-color '+k+' '+v+';\n' for k,v in t['color'].items())

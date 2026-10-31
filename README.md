@@ -111,3 +111,5 @@ parent padding for comparison.
 See the specification for Meson consumption, GTK3 composition and migration.
 
 Switches: [design, native geometry and validation](docs/switch-standardisation.md). Open the factory’s Switches page for GTK/libadwaita examples.
+
+Preferences: [native ActionRow and PreferencesGroup specification](docs/preferences-components.md). The factory’s Preferences Components page includes Files Properties and native row-subclass fixtures.

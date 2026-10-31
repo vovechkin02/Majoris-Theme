@@ -32,6 +32,9 @@ namespace MajorisThemeFactory {
             var sb=new Gtk.Button.with_label("Open split/sidebar window"); sb.clicked.connect(()=>new SplitFixture(app).present()); headers.append(sb);
             var status = new Adw.StatusPage (); status.title = "No files found"; status.description = "Try a different search or clear the current filters."; status.icon_name = "system-search-symbolic";
             stack.add_titled (status,"status","Status");
+            var preferences_components=new Gtk.Box(Gtk.Orientation.VERTICAL,0);
+            stack.add_titled(preferences_components,"preference-components","Preferences Components");
+            stack.notify["visible-child-name"].connect(()=>{if(stack.visible_child_name=="preference-components" && preferences_components.get_first_child()==null)preferences_components.append(new PreferencesComponents());});
             var switches=new Gtk.Box(Gtk.Orientation.VERTICAL,0);
             stack.add_titled(switches,"switches","Switches");
             // Build the dedicated fixture when opened, keeping hidden fixtures out of geometry reports.
@@ -53,6 +56,7 @@ namespace MajorisThemeFactory {
             view.content = overlay; content = view; install_menu_actions(this);
             if(selected.has_prefix("states-")) { var sc=new Gtk.ScrolledWindow(); sc.child=new VisualStates(this,selected.substring(7)); stack.add_titled(sc,"capture-states","Visual States"); stack.visible_child_name="capture-states"; }
             else if(selected=="scrolled") { stack.visible_child_name="widgets"; Timeout.add(700,()=>{scroll.vadjustment.value=scroll.vadjustment.upper-scroll.vadjustment.page_size;return Source.REMOVE;}); }
+            else if(selected=="preference-components") stack.visible_child_name="preference-components";
             else if(selected=="switches") stack.visible_child_name="switches";
             else if(selected=="status" || selected=="states" || selected=="headerbars") stack.visible_child_name=selected;
             else if(selected!="overview") { var capture=new FactoryPage(this,selected=="dialog"?"menus":(selected=="tooltip"?"buttons":selected)); capture.toast_overlay=overlay; var sc=new Gtk.ScrolledWindow(); sc.child=capture; stack.add_titled(sc,"capture",selected); stack.visible_child_name="capture"; if(selected=="feedback") Timeout.add(700,()=>{capture.show_toast();return Source.REMOVE;}); if(selected=="dialog") Timeout.add(700,()=>{capture.show_dialog();return Source.REMOVE;}); if(selected=="menus") Timeout.add(700,()=>{ main_menu.get_popover().autohide=false; main_menu.active=true; main_menu.get_popover().popup(); main_menu.get_popover().present(); Timeout.add(300,()=>{main_menu.get_popover().queue_draw();return Source.REMOVE;});return Source.REMOVE;}); }

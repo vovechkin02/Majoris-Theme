@@ -208,10 +208,10 @@ kbd{font:inherit;font-size:11px;font-weight:700;background:white;border:1px soli
 .banner{border:1px solid var(--p200);background:var(--p50);border-radius:8px;padding:12px 14px;display:flex;align-items:center;gap:12px;font-size:12px;color:var(--p800)}
 .banner .grow{flex:1}.banner .btn{height:28px}
 .listbox{border:1px solid var(--border-soft);border-radius:8px;background:var(--surface);overflow:hidden}
-.pref-row{min-height:50px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:8px 12px 8px 16px;border-bottom:1px solid var(--border-soft)}
+.pref-row{min-height:48px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:8px 16px;border-bottom:1px solid var(--border-soft)}
 .pref-row:last-child{border-bottom:0}
 .pref-title{font-size:13px;font-weight:600}
-.pref-desc{font-size:11.5px;color:var(--text2);margin-top:2px}
+.pref-desc{font-size:11.5px;color:var(--text2);margin-top:4px}
 .chev{color:var(--text3)}
 .expander-body{padding:10px 16px 12px;background:var(--surface2);font-size:12px;color:var(--text2);border-top:1px solid var(--border-soft)}
 
@@ -545,6 +545,25 @@ html[dir="rtl"] .nav.active:before{left:auto;right:0}
 .switch.is-disabled:after{opacity:1}
 
 .switch:focus-visible,.switch.is-focus{outline-color:#818CF8}
+
+/* Native preferences contract; generic gallery headings remain unchanged. */
+.pref-group{margin:0;margin-bottom:16px}
+.pref-group-heading{font-size:14px;font-weight:600;color:var(--text);margin:0;margin-bottom:8px;text-transform:none}
+.pref-group-description{font-size:12px;font-weight:400;color:var(--text2);margin:0;margin-top:4px;margin-bottom:8px}
+.pref-group-heading:has(+.pref-group-description){margin-bottom:0}
+.pref-group-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.pref-group-header .pref-group-heading{margin:0;flex:1}
+.pref-group-surface{border:1px solid var(--border-soft);border-radius:8px;background:var(--surface);overflow:hidden;box-shadow:none}
+.pref-row{--single-target:48px;--two-line-target:56px;--prefix-gap:8px;--suffix-gap:16px;--vertical-inset:8px;--horizontal-inset:16px;--separator:1px;transition:background-color var(--motion-control)}
+.pref-row:has(.pref-desc){min-height:56px}
+.pref-row.is-action:hover,.pref-row.is-hover{background:var(--hover)}
+.pref-row.is-action:active,.pref-row.is-pressed{background:var(--active)}
+.pref-row.is-action:focus-visible{outline:2px solid var(--p500);outline-offset:-2px}
+.pref-row.is-info:hover,.pref-row.is-info:active{background:transparent}
+.pref-row .pref-title{font-size:14px;font-weight:500;line-height:18px}
+.pref-row .pref-desc{font-size:12px;font-weight:400;line-height:16px;margin-top:4px}
+.pref-row.property .pref-title{font-size:12px;font-weight:400;line-height:16px;color:var(--text2)}
+.pref-row.property .pref-desc{font-size:14px;font-weight:400;line-height:18px;color:var(--text)}
 </style>
 <style>
 /* Final menu and interactive typography contract. */
@@ -949,6 +968,11 @@ html[dir="rtl"] .nav.active:before{left:auto;right:0}
 <section class="card wide">
 <div class="card-head"><h3>Adwaita Boxed Lists &amp; Preference Rows</h3><p>Action row, switch row, combo row, entry row, spin row, expander row and button row equivalents.</p></div>
 <div class="card-body">
+<section class="pref-group"><h3 class="pref-group-heading">Information</h3><p class="pref-group-description">Read-only file properties. Values can be selected and copied.</p><div class="pref-group-surface">
+<div class="pref-row is-info property"><div><div class="pref-title">Type</div><div class="pref-desc">Plain text document</div></div><button class="btn">Copy</button></div>
+<div class="pref-row is-info property"><div><div class="pref-title">Size</div><div class="pref-desc">19 bytes</div></div></div></div></section>
+<section class="pref-group"><div class="pref-group-header"><h3 class="pref-group-heading">Open With</h3><button class="btn">Add</button></div><div class="pref-group-surface"><div class="pref-row is-action" tabindex="0"><div><div class="pref-title">Notepad</div><div class="pref-desc">Default application</div></div><button class="btn">Change…</button></div></div></section>
+<section class="pref-group"><h3 class="pref-group-heading">Organisation</h3><div class="pref-group-surface"><div class="pref-row is-action"><div class="pref-title">Favorite</div><div class="switch on"></div></div></div></section>
 <div class="listbox">
 <div class="pref-row"><div><div class="pref-title">Action Row</div><div class="pref-desc">A standard preference row with secondary text.</div></div><span class="chev">›</span></div>
 <div class="pref-row"><div><div class="pref-title">Switch Row</div><div class="pref-desc">Enable automatic updates.</div></div><div class="switch on"></div></div>
