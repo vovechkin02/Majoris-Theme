@@ -113,3 +113,8 @@ See the specification for Meson consumption, GTK3 composition and migration.
 Switches: [design, native geometry and validation](docs/switch-standardisation.md). Open the factory’s Switches page for GTK/libadwaita examples.
 
 Preferences: [native ActionRow and PreferencesGroup specification](docs/preferences-components.md). The factory’s Preferences Components page includes Files Properties and native row-subclass fixtures.
+
+Phase 2 native controls: [Calendar, LinkButton, EditableLabel, Paned, FlowBox,
+Expander and SearchBar](docs/phase2-controls.md). Open **Phase 2 Controls** in the
+factory or use `--page=phase2`; the guide lists individual capture modes, native
+hierarchies, GTK3 compatibility and renderer/geometry diagnostics.

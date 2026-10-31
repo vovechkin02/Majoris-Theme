@@ -194,3 +194,18 @@ endforeach
 foreach preference_variant : ['light','dark']
   test('native preferences '+preference_variant+' default renderer',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-preferences-native.py')],env:{'MAJORIS_VARIANT':preference_variant,'GTK_A11Y':'none'},timeout:90)
 endforeach
+# Phase 2 native controls: input, geometry, glyph pixels and renderer profiles.
+test('phase2 source contract',python,args:[files('tests/test-phase2-contract.py')])
+foreach phase2_variant : ['light','dark']
+  foreach phase2_scale : ['1','2']
+    foreach phase2_renderer : ['cairo','gl','default']
+      phase2_env={'MAJORIS_VARIANT':phase2_variant,'GDK_SCALE':phase2_scale,'GDK_BACKEND':'x11','GTK_A11Y':'none','ADW_DISABLE_PORTAL':'1','GIO_USE_VFS':'local'}
+      if phase2_renderer!='default'
+        phase2_env += {'GSK_RENDERER':phase2_renderer}
+      endif
+      test('phase2 GTK4 '+phase2_variant+' '+phase2_scale+'x '+phase2_renderer,find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-phase2-native.py'),'4'],env:phase2_env,timeout:120)
+    endforeach
+    test('phase2 GTK3 '+phase2_variant+' '+phase2_scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-phase2-native.py'),'3'],env:{'MAJORIS_VARIANT':phase2_variant,'GDK_SCALE':phase2_scale,'GDK_BACKEND':'x11','GTK_A11Y':'none','GIO_USE_VFS':'local'},timeout:90)
+  endforeach
+  test('phase2 GTK4 '+phase2_variant+' large fonts',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-phase2-native.py'),'4'],env:{'MAJORIS_VARIANT':phase2_variant,'MAJORIS_LARGE_FONT':'1','GSK_RENDERER':'cairo','GDK_BACKEND':'x11','GTK_A11Y':'none','ADW_DISABLE_PORTAL':'1','GIO_USE_VFS':'local'},timeout:120)
+endforeach

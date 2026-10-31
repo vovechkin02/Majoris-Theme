@@ -1,6 +1,54 @@
-<svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
-<!-- Rear window -->
-<path d="     M6 0     H14     Q16 0 16 2     V10     Q16 12 14 12     H12     V10     H14     V2     H6     V4     H4     V2     Q4 0 6 0     Z" fill="currentColor"></path>
-<!-- Front window -->
-<path d="     M2 4     H10     Q12 4 12 6     V14     Q12 16 10 16     H2     Q0 16 0 14     V6     Q0 4 2 4     Z      M3 6     Q2 6 2 7     V13     Q2 14 3 14     H9     Q10 14 10 13     V7     Q10 6 9 6     Z" fill="currentColor" fill-rule="evenodd"></path>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 128 128"
+     width="128"
+     height="128">
+  <!-- Rear window -->
+  <path fill="currentColor" fill-rule="evenodd"
+        d="
+          M56 0
+          H104
+          A24 24 0 0 1 128 24
+          V72
+          A24 24 0 0 1 104 96
+          H56
+          A24 24 0 0 1 32 72
+          V24
+          A24 24 0 0 1 56 0
+          Z
+
+          M56 16
+          H104
+          A8 8 0 0 1 112 24
+          V72
+          A8 8 0 0 1 104 80
+          H56
+          A8 8 0 0 1 48 72
+          V24
+          A8 8 0 0 1 56 16
+          Z"/>
+
+  <!-- Front window -->
+  <path fill="currentColor" fill-rule="evenodd"
+        d="
+          M24 32
+          H72
+          A24 24 0 0 1 96 56
+          V104
+          A24 24 0 0 1 72 128
+          H24
+          A24 24 0 0 1 0 104
+          V56
+          A24 24 0 0 1 24 32
+          Z
+
+          M24 48
+          H72
+          A8 8 0 0 1 80 56
+          V104
+          A8 8 0 0 1 72 112
+          H24
+          A8 8 0 0 1 16 104
+          V56
+          A8 8 0 0 1 24 48
+          Z"/>
 </svg>

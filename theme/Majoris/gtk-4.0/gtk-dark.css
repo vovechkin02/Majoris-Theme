@@ -727,6 +727,94 @@ menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:focus-visi
 menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:disabled, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:disabled:hover, menubutton.majoris-toolbar-control.majoris-toolbar-item-flat > button:disabled:active { background: transparent; color: @text; border-color: transparent; box-shadow: none; }
 .majoris-toolbar-segmented > button:disabled:hover, .majoris-toolbar-segmented > button:disabled:active, .majoris-toolbar-view-switcher > button:disabled:hover, .majoris-toolbar-view-switcher > button:disabled:active { color: @text; background: transparent; box-shadow: none; outline: none; }
 .majoris-toolbar-segmented > button:checked:disabled:hover, .majoris-toolbar-view-switcher > button:checked:disabled:hover { background: #35353A; }
+/* Phase 2 — Gtk.Calendar (GTK 4.18 real label nodes). */
+calendar.view { background: @surface; color: @text; border: none; border-radius: 0; padding: 0; box-shadow: none; }
+calendar.view.majoris-calendar-surface { border-radius: 8px; }
+calendar.view > header { padding: 0; border-spacing: 4px; }
+calendar.view > header label { font-size: 10.5pt; font-weight: 600; color: @text; }
+calendar.view > header > button, searchbar > revealer > box > button.close { min-width: 16px; min-height: 16px; padding: 8px; margin: 0; border: none; border-radius: 4px; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1); }
+calendar.view > header > button > image, searchbar > revealer > box > button.close > image { -gtk-icon-size: 16px; min-width: 16px; min-height: 16px; padding: 0; margin: 0; }
+calendar.view > header > button:hover, searchbar > revealer > box > button.close:hover { background: @hover; color: @text; box-shadow: none; }
+calendar.view > header > button:active, searchbar > revealer > box > button.close:active { background: @active; color: @text; box-shadow: none; }
+calendar.view > header > button:focus-visible, searchbar > revealer > box > button.close:focus-visible { outline: 2px solid @focus_color; outline-offset: -2px; box-shadow: none; }
+calendar.view > header > button:disabled, calendar.view > header > button:disabled:hover, searchbar > revealer > box > button.close:disabled, searchbar > revealer > box > button.close:disabled:hover { background: transparent; color: @text_tertiary; box-shadow: none; }
+calendar.view > grid { padding: 0; border-radius: 0; }
+calendar.view > grid > label { padding: 0; margin: 0; border: none; }
+calendar.view > grid > label.day-number { min-width: 32px; min-height: 32px; border-radius: 4px; font-size: 10.5pt; font-weight: 500; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1); }
+calendar.view > grid > label.day-name { min-height: 24px; font-size: 9pt; font-weight: 600; color: @text_secondary; }
+calendar.view > grid > label.week-number { min-width: 24px; font-size: 9pt; font-weight: 400; color: @text_tertiary; }
+calendar.view > grid > label.other-month { color: @text_secondary; }
+calendar.view > grid > label.day-number:hover { background: @hover; }
+calendar.view > grid > label.day-number:active { background: @active; }
+calendar.view > grid > label.today { box-shadow: inset 0 0 0 1px @focus_color; font-weight: 600; }
+calendar.view > grid > label.day-number:selected, calendar.view > grid > label.day-number:selected:hover { background: #4F46E5; color: #FFFFFF; font-weight: 600; }
+calendar.view > grid > label.today:selected { box-shadow: inset 0 0 0 2px #FFFFFF; }
+calendar.view > grid > label.day-number:checked { text-decoration-line: underline; text-decoration-color: @focus_color; text-decoration-style: double; }
+calendar.view > grid > label.day-number:checked:not(:selected) { background: transparent; }
+calendar.view > grid > label.day-number:checked:not(:selected):hover { background: @hover; }
+calendar.view > grid > label.day-number:checked:not(:selected):active { background: @active; }
+calendar.view > grid > label.day-number:selected:checked { text-decoration-color: #FFFFFF; }
+calendar.view:focus:focus-visible > grid > label:selected { outline: 2px solid @focus_color; outline-offset: 2px; }
+calendar.view:disabled > grid > label { color: @text_tertiary; }
+calendar.view:backdrop > grid > label:not(:selected) { color: @text_secondary; }
+
+/* Phase 2 — native Gtk.LinkButton is button.link, including :visited. */
+button.link, button.link:hover, button.link:active, button.link:visited, button.link:disabled, button.link:backdrop { min-height: 0; min-width: 0; padding: 0; border: none; border-radius: 4px; background: transparent; background-image: none; box-shadow: none; font-size: 10.5pt; font-weight: 500; color: #818CF8; }
+button.link > label { text-decoration-line: underline; }
+button.link:visited { color: #C7D2FE; }
+button.link:hover { color: #A5B4FC; }
+button.link:active { color: #E0E7FF; }
+button.link:focus-visible { outline: 2px solid @focus_color; outline-offset: 2px; border-color: transparent; box-shadow: none; }
+button.link:disabled { color: @text_secondary; }
+button.link:backdrop { color: @text_secondary; }
+
+/* Phase 2 — Gtk.EditableLabel: paint inside text, never add layout borders. */
+editablelabel { transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); min-width: 0; min-height: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
+editablelabel > stack > label, editablelabel > stack > text { transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); padding: 0; margin: 0; border: none; min-height: 0; font-size: inherit; font-weight: inherit; }
+editablelabel.majoris-editable-discoverable:hover { background: @hover; border-radius: 4px; }
+editablelabel.editing > stack > text { border-radius: 4px; background: @surface; color: @text; caret-color: @text; box-shadow: inset 0 0 0 1px @border; }
+editablelabel.editing:focus-within > stack > text { box-shadow: inset 0 0 0 2px @focus_color; }
+editablelabel:focus:focus-visible:not(.editing) { outline: 2px solid @focus_color; outline-offset: 2px; border-radius: 4px; }
+editablelabel:disabled { color: @text_tertiary; }
+editablelabel:backdrop { color: @text_secondary; }
+
+/* Phase 2 — Gtk.Paned, 1px paint inside a native 8px (wide 16px) hit gutter. */
+paned > separator { padding: 0; margin: 0; border: none; border-radius: 0; background-color: transparent; color: @border_soft; background-image: linear-gradient(currentColor,currentColor); background-position: center; background-repeat: no-repeat; box-shadow: none; transition: color 128ms cubic-bezier(.2,0,0,1); }
+paned.horizontal > separator { min-width: 8px; min-height: 0; background-size: 1px 100%; }
+paned.vertical > separator { min-height: 8px; min-width: 0; background-size: 100% 1px; }
+paned.horizontal > separator.wide { min-width: 16px; }
+paned.vertical > separator.wide { min-height: 16px; }
+paned > separator:hover { color: @text_tertiary; }
+paned > separator:active, paned:focus:focus-visible > separator, paned > separator:focus-visible { color: @focus_color; }
+paned > separator:disabled, paned:backdrop > separator { color: @border_soft; }
+
+/* Phase 2 — FlowBox remains a layout; selectable children opt into tiles. */
+flowbox:not(.majoris-flow-tiles), flowbox:not(.majoris-flow-tiles) > flowboxchild { color: inherit; background: transparent; border: none; border-radius: 0; box-shadow: none; }
+flowbox.majoris-flow-tiles { background: transparent; border: none; box-shadow: none; }
+flowbox.majoris-flow-tiles > flowboxchild { padding: 8px; border-radius: 8px; border: none; background: transparent; color: @text; transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1); }
+flowbox.majoris-flow-tiles.majoris-flow-compact > flowboxchild { border-radius: 4px; }
+flowbox.majoris-flow-tiles > flowboxchild:hover { background: @hover; }
+flowbox.majoris-flow-tiles > flowboxchild:active { background: @active; }
+flowbox.majoris-flow-tiles > flowboxchild:selected, flowbox.majoris-flow-tiles > flowboxchild:selected:hover, flowbox.majoris-flow-tiles > flowboxchild:selected:active { background: mix(@majoris_data_surface, rgb(99,102,241), .16); color: @majoris_data_selected_text; }
+flowbox.majoris-flow-tiles > flowboxchild:focus-visible { outline: 2px solid @focus_color; outline-offset: -2px; }
+flowbox.majoris-flow-tiles > flowboxchild:disabled { color: @text_tertiary; opacity: .5; }
+flowbox.majoris-flow-tiles:backdrop > flowboxchild:not(:selected) { color: @text_secondary; }
+flowbox.majoris-flow-tiles > rubberband { background: alpha(@focus_color,.16); border: 1px solid @focus_color; border-radius: 4px; }
+
+/* Phase 2 — native Gtk.Expander; exclude specialised sidebar groups explicitly. */
+expander-widget:not(.majoris-sidebar-group) > box > title { transition: background-color 128ms cubic-bezier(.2,0,0,1), color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1); min-height: 32px; padding: 0; border: none; border-radius: 4px; border-spacing: 8px; background: transparent; box-shadow: none; font-size: 10.5pt; font-weight: 500; }
+expander-widget:not(.majoris-sidebar-group) > box > title > expander { min-width: 16px; min-height: 16px; margin: 0; -gtk-icon-size: 16px; }
+expander-widget:not(.majoris-sidebar-group) > box > title:hover { background: @hover; }
+expander-widget:not(.majoris-sidebar-group) > box > title:active { background: @active; }
+expander-widget:not(.majoris-sidebar-group):focus:focus-visible > box > title { box-shadow: inset 0 0 0 2px @focus_color; }
+expander-widget:not(.majoris-sidebar-group):disabled > box > title { color: @text_tertiary; }
+expander-widget:not(.majoris-sidebar-group):backdrop > box > title { color: @text_secondary; }
+
+/* Phase 2 — native SearchBar revealer: no outer padding while hidden. */
+searchbar { padding: 0; border: none; background: transparent; box-shadow: none; }
+searchbar > revealer > box { padding: 4px 8px; border: none; background: transparent; border-spacing: 8px; box-shadow: none; }
+
+paned:focus:focus-visible > separator { outline: 2px solid @focus_color; outline-offset: -2px; }
 /* Desktop Icons NG: desktopwindow compatibility, emitted after native overrides. */
 window.desktopwindow,
 window.desktopwindow:backdrop,

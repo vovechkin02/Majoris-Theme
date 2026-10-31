@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 128 128"
+     width="128"
+     height="128">
+
+  <!-- Portrait document outline -->
+  <path d="M40 8 H72 L104 40
+           V104 Q104 120 88 120
+           H40 Q24 120 24 104
+           V24 Q24 8 40 8 Z"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="16"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Folded corner -->
+  <path d="M72 8 V32
+           Q72 40 80 40 H104"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="8"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Document content -->
+  <path d="M44 72 H84 M44 96 H72"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="12"
+        stroke-linecap="round"/>
+</svg>

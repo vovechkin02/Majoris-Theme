@@ -1,0 +1,68 @@
+/* Phase 2 — GTK3 native Calendar classes and SearchBar flat close control. */
+searchbar > revealer > box > button.close { min-width: 16px; min-height: 16px; padding: 8px; margin: 0; border: none; border-radius: ${control_radius}; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; transition: background-color ${control_motion}, color ${control_motion}; }
+searchbar > revealer > box > button.close > image {  min-width: 16px; min-height: 16px; padding: 0; margin: 0; }
+searchbar > revealer > box > button.close:hover { background: @hover; color: @text; box-shadow: none; }
+searchbar > revealer > box > button.close:active { background: @active; color: @text; box-shadow: none; }
+searchbar > revealer > box > button.close:focus { outline: 2px solid ${editor_focus}; outline-offset: -2px; box-shadow: none; }
+searchbar > revealer > box > button.close:disabled, searchbar > revealer > box > button.close:disabled:hover { background: transparent; color: @text_tertiary; box-shadow: none; }
+/* GTK3 GtkCalendar uses calendar nodes/states, not label.day-number. */
+calendar { padding: 0; background: @surface; color: @text; border: none; border-radius: 0; font-size: ${phase2_control_font}; font-weight: 500; }
+calendar.majoris-calendar-surface { border-radius: ${structure_radius}; }
+calendar.header { font-weight: 600; }
+calendar.button { min-width: 32px; min-height: 32px; border: none; background: transparent; box-shadow: none; }
+calendar.button:hover { background: @hover; }
+calendar:selected { background: ${.phase2-day.selected|background}; color: ${.phase2-day.selected|color}; border-radius: ${control_radius}; }
+calendar.highlight { color: @text_secondary; font-size: ${phase2_metadata_font}; }
+calendar:indeterminate { color: @text_tertiary; }
+calendar:focus { outline: 2px solid ${editor_focus}; outline-offset: -2px; }
+
+/* Phase 2 — native Gtk.LinkButton is button.link, including :visited. */
+button.link, button.link:hover, button.link:active, button.link:visited, button.link:disabled, button.link:backdrop { min-height: 0; min-width: 0; padding: 0; border: none; border-radius: ${control_radius}; background: transparent; background-image: none; box-shadow: none; font-size: ${phase2_control_font}; font-weight: 500; color: ${.phase2-link|color}; }
+button.link > label { text-decoration-line: underline; }
+button.link:visited { color: ${.phase2-link.visited|color}; }
+button.link:hover { color: ${.phase2-link:hover|color}; }
+button.link:active { color: ${.phase2-link:active|color}; }
+button.link:focus { outline: 2px solid ${editor_focus}; outline-offset: 2px; border-color: transparent; box-shadow: none; }
+button.link:disabled { color: @text_secondary; }
+button.link:backdrop { color: @text_secondary; }
+
+/* Phase 2 — Gtk.Paned, 1px paint inside a native 8px (wide 16px) hit gutter. */
+paned > separator { padding: 0; margin: 0; border: none; border-radius: 0; background-color: transparent; color: @border_soft; background-image: linear-gradient(currentColor,currentColor); background-position: center; background-repeat: no-repeat; box-shadow: none; transition: color ${control_motion}; }
+paned.horizontal > separator { min-width: ${.phase2-paned|--gutter}; min-height: 0; background-size: 1px 100%; }
+paned.vertical > separator { min-height: ${.phase2-paned|--gutter}; min-width: 0; background-size: 100% 1px; }
+paned.horizontal > separator.wide { min-width: 16px; }
+paned.vertical > separator.wide { min-height: 16px; }
+paned > separator:hover { color: @text_tertiary; }
+paned > separator:active, paned:focus > separator, paned > separator:focus { color: ${editor_focus}; }
+paned > separator:disabled, paned:backdrop > separator { color: @border_soft; }
+
+/* Phase 2 — FlowBox remains a layout; selectable children opt into tiles. */
+flowbox:not(.majoris-flow-tiles), flowbox:not(.majoris-flow-tiles) > flowboxchild { color: inherit; background: transparent; border: none; border-radius: 0; box-shadow: none; }
+flowbox.majoris-flow-tiles { background: transparent; border: none; box-shadow: none; }
+flowbox.majoris-flow-tiles > flowboxchild { padding: ${.phase2-tile|padding}; border-radius: ${.phase2-tile|border-radius}; border: none; background: transparent; color: @text; transition: background-color ${control_motion}, color ${control_motion}; }
+flowbox.majoris-flow-tiles.majoris-flow-compact > flowboxchild { border-radius: ${control_radius}; }
+flowbox.majoris-flow-tiles > flowboxchild:hover { background: @hover; }
+flowbox.majoris-flow-tiles > flowboxchild:active { background: @active; }
+flowbox.majoris-flow-tiles > flowboxchild:selected, flowbox.majoris-flow-tiles > flowboxchild:selected:hover, flowbox.majoris-flow-tiles > flowboxchild:selected:active { background: ${data_selected_paint}; color: @majoris_data_selected_text; }
+flowbox.majoris-flow-tiles > flowboxchild:focus { outline: 2px solid ${editor_focus}; outline-offset: -2px; }
+flowbox.majoris-flow-tiles > flowboxchild:disabled { color: @text_tertiary; opacity: .5; }
+flowbox.majoris-flow-tiles:backdrop > flowboxchild:not(:selected) { color: @text_secondary; }
+flowbox.majoris-flow-tiles > rubberband { background: alpha(${editor_focus},.16); border: 1px solid ${editor_focus}; border-radius: ${control_radius}; }
+
+/* Phase 2 — native Gtk.Expander; exclude specialised sidebar groups explicitly. */
+expander:not(.majoris-sidebar-group) > title { transition: background-color ${control_motion}, color ${control_motion}, box-shadow ${control_motion}; min-height: ${.phase2-expander|min-height}; padding: 0; border: none; border-radius: ${control_radius};  background: transparent; box-shadow: none; font-size: ${phase2_control_font}; font-weight: 500; }
+expander:not(.majoris-sidebar-group) > title > arrow { min-width: 16px; min-height: 16px; margin: 0;  }
+expander:not(.majoris-sidebar-group) > title:hover { background: @hover; }
+expander:not(.majoris-sidebar-group) > title:active { background: @active; }
+expander:not(.majoris-sidebar-group):focus > box > title { box-shadow: inset 0 0 0 2px ${editor_focus}; }
+expander:not(.majoris-sidebar-group):disabled > box > title { color: @text_tertiary; }
+expander:not(.majoris-sidebar-group):backdrop > box > title { color: @text_secondary; }
+
+/* Phase 2 — native SearchBar revealer: no outer padding while hidden. */
+searchbar { padding: 0; border: none; background: transparent; box-shadow: none; }
+searchbar > revealer > box { padding: ${.phase2-searchbar|padding}; border: none; background: transparent;  box-shadow: none; }
+
+paned:focus > separator { outline: 2px solid ${editor_focus}; outline-offset: -2px; }
+
+expander:not(.majoris-sidebar-group) > title > arrow:dir(ltr) { margin-right: 8px; }
+expander:not(.majoris-sidebar-group) > title > arrow:dir(rtl) { margin-left: 8px; }

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 128 128"
+     width="128"
+     height="128">
+  <rect x="0" y="0"
+        width="16" height="16" rx="8"
+        fill="currentColor"/>
+  <rect x="32" y="0"
+        width="96" height="16" rx="8"
+        fill="currentColor"/>
+
+  <rect x="0" y="56"
+        width="16" height="16" rx="8"
+        fill="currentColor"/>
+  <rect x="32" y="56"
+        width="96" height="16" rx="8"
+        fill="currentColor"/>
+
+  <rect x="0" y="112"
+        width="16" height="16" rx="8"
+        fill="currentColor"/>
+  <rect x="32" y="112"
+        width="96" height="16" rx="8"
+        fill="currentColor"/>
+</svg>

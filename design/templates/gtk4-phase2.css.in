@@ -1,0 +1,88 @@
+/* Phase 2 — Gtk.Calendar (GTK 4.18 real label nodes). */
+calendar.view { background: @surface; color: @text; border: none; border-radius: 0; padding: 0; box-shadow: none; }
+calendar.view.majoris-calendar-surface { border-radius: ${structure_radius}; }
+calendar.view > header { padding: 0; border-spacing: 4px; }
+calendar.view > header label { font-size: ${phase2_heading_font}; font-weight: ${.phase2-calendar-heading|font-weight}; color: @text; }
+calendar.view > header > button, searchbar > revealer > box > button.close { min-width: 16px; min-height: 16px; padding: 8px; margin: 0; border: none; border-radius: ${control_radius}; background: transparent; background-image: none; color: @text_secondary; box-shadow: none; transition: background-color ${control_motion}, color ${control_motion}; }
+calendar.view > header > button > image, searchbar > revealer > box > button.close > image { -gtk-icon-size: 16px; min-width: 16px; min-height: 16px; padding: 0; margin: 0; }
+calendar.view > header > button:hover, searchbar > revealer > box > button.close:hover { background: @hover; color: @text; box-shadow: none; }
+calendar.view > header > button:active, searchbar > revealer > box > button.close:active { background: @active; color: @text; box-shadow: none; }
+calendar.view > header > button:focus-visible, searchbar > revealer > box > button.close:focus-visible { outline: 2px solid ${editor_focus}; outline-offset: -2px; box-shadow: none; }
+calendar.view > header > button:disabled, calendar.view > header > button:disabled:hover, searchbar > revealer > box > button.close:disabled, searchbar > revealer > box > button.close:disabled:hover { background: transparent; color: @text_tertiary; box-shadow: none; }
+calendar.view > grid { padding: 0; border-radius: 0; }
+calendar.view > grid > label { padding: 0; margin: 0; border: none; }
+calendar.view > grid > label.day-number { min-width: ${.phase2-day|min-width}; min-height: ${.phase2-day|min-height}; border-radius: ${control_radius}; font-size: ${phase2_control_font}; font-weight: 500; transition: background-color ${control_motion}, color ${control_motion}; }
+calendar.view > grid > label.day-name { min-height: 24px; font-size: ${phase2_metadata_font}; font-weight: 600; color: @text_secondary; }
+calendar.view > grid > label.week-number { min-width: 24px; font-size: ${phase2_metadata_font}; font-weight: 400; color: @text_tertiary; }
+calendar.view > grid > label.other-month { color: @text_secondary; }
+calendar.view > grid > label.day-number:hover { background: @hover; }
+calendar.view > grid > label.day-number:active { background: @active; }
+calendar.view > grid > label.today { box-shadow: inset 0 0 0 1px ${editor_focus}; font-weight: 600; }
+calendar.view > grid > label.day-number:selected, calendar.view > grid > label.day-number:selected:hover { background: ${.phase2-day.selected|background}; color: ${.phase2-day.selected|color}; font-weight: 600; }
+calendar.view > grid > label.today:selected { box-shadow: inset 0 0 0 2px ${.phase2-day.selected|color}; }
+calendar.view > grid > label.day-number:checked { text-decoration-line: underline; text-decoration-color: ${editor_focus}; text-decoration-style: double; }
+calendar.view > grid > label.day-number:checked:not(:selected) { background: transparent; }
+calendar.view > grid > label.day-number:checked:not(:selected):hover { background: @hover; }
+calendar.view > grid > label.day-number:checked:not(:selected):active { background: @active; }
+calendar.view > grid > label.day-number:selected:checked { text-decoration-color: ${.phase2-day.selected|color}; }
+calendar.view:focus:focus-visible > grid > label:selected { outline: 2px solid ${editor_focus}; outline-offset: 2px; }
+calendar.view:disabled > grid > label { color: @text_tertiary; }
+calendar.view:backdrop > grid > label:not(:selected) { color: @text_secondary; }
+
+/* Phase 2 — native Gtk.LinkButton is button.link, including :visited. */
+button.link, button.link:hover, button.link:active, button.link:visited, button.link:disabled, button.link:backdrop { min-height: 0; min-width: 0; padding: 0; border: none; border-radius: ${control_radius}; background: transparent; background-image: none; box-shadow: none; font-size: ${phase2_control_font}; font-weight: 500; color: ${.phase2-link|color}; }
+button.link > label { text-decoration-line: underline; }
+button.link:visited { color: ${.phase2-link.visited|color}; }
+button.link:hover { color: ${.phase2-link:hover|color}; }
+button.link:active { color: ${.phase2-link:active|color}; }
+button.link:focus-visible { outline: 2px solid ${editor_focus}; outline-offset: 2px; border-color: transparent; box-shadow: none; }
+button.link:disabled { color: @text_secondary; }
+button.link:backdrop { color: @text_secondary; }
+
+/* Phase 2 — Gtk.EditableLabel: paint inside text, never add layout borders. */
+editablelabel { transition: background-color ${control_motion}, color ${control_motion}, box-shadow ${control_motion}; min-width: 0; min-height: 0; padding: 0; border: none; background: transparent; box-shadow: none; }
+editablelabel > stack > label, editablelabel > stack > text { transition: background-color ${control_motion}, color ${control_motion}, box-shadow ${control_motion}; padding: 0; margin: 0; border: none; min-height: 0; font-size: inherit; font-weight: inherit; }
+editablelabel.majoris-editable-discoverable:hover { background: @hover; border-radius: ${control_radius}; }
+editablelabel.editing > stack > text { border-radius: ${control_radius}; background: @surface; color: @text; caret-color: @text; box-shadow: inset 0 0 0 1px @border; }
+editablelabel.editing:focus-within > stack > text { box-shadow: inset 0 0 0 2px ${editor_focus}; }
+editablelabel:focus:focus-visible:not(.editing) { outline: 2px solid ${editor_focus}; outline-offset: 2px; border-radius: ${control_radius}; }
+editablelabel:disabled { color: @text_tertiary; }
+editablelabel:backdrop { color: @text_secondary; }
+
+/* Phase 2 — Gtk.Paned, 1px paint inside a native 8px (wide 16px) hit gutter. */
+paned > separator { padding: 0; margin: 0; border: none; border-radius: 0; background-color: transparent; color: @border_soft; background-image: linear-gradient(currentColor,currentColor); background-position: center; background-repeat: no-repeat; box-shadow: none; transition: color ${control_motion}; }
+paned.horizontal > separator { min-width: ${.phase2-paned|--gutter}; min-height: 0; background-size: 1px 100%; }
+paned.vertical > separator { min-height: ${.phase2-paned|--gutter}; min-width: 0; background-size: 100% 1px; }
+paned.horizontal > separator.wide { min-width: 16px; }
+paned.vertical > separator.wide { min-height: 16px; }
+paned > separator:hover { color: @text_tertiary; }
+paned > separator:active, paned:focus:focus-visible > separator, paned > separator:focus-visible { color: ${editor_focus}; }
+paned > separator:disabled, paned:backdrop > separator { color: @border_soft; }
+
+/* Phase 2 — FlowBox remains a layout; selectable children opt into tiles. */
+flowbox:not(.majoris-flow-tiles), flowbox:not(.majoris-flow-tiles) > flowboxchild { color: inherit; background: transparent; border: none; border-radius: 0; box-shadow: none; }
+flowbox.majoris-flow-tiles { background: transparent; border: none; box-shadow: none; }
+flowbox.majoris-flow-tiles > flowboxchild { padding: ${.phase2-tile|padding}; border-radius: ${.phase2-tile|border-radius}; border: none; background: transparent; color: @text; transition: background-color ${control_motion}, color ${control_motion}; }
+flowbox.majoris-flow-tiles.majoris-flow-compact > flowboxchild { border-radius: ${control_radius}; }
+flowbox.majoris-flow-tiles > flowboxchild:hover { background: @hover; }
+flowbox.majoris-flow-tiles > flowboxchild:active { background: @active; }
+flowbox.majoris-flow-tiles > flowboxchild:selected, flowbox.majoris-flow-tiles > flowboxchild:selected:hover, flowbox.majoris-flow-tiles > flowboxchild:selected:active { background: ${data_selected_paint}; color: @majoris_data_selected_text; }
+flowbox.majoris-flow-tiles > flowboxchild:focus-visible { outline: 2px solid ${editor_focus}; outline-offset: -2px; }
+flowbox.majoris-flow-tiles > flowboxchild:disabled { color: @text_tertiary; opacity: .5; }
+flowbox.majoris-flow-tiles:backdrop > flowboxchild:not(:selected) { color: @text_secondary; }
+flowbox.majoris-flow-tiles > rubberband { background: alpha(${editor_focus},.16); border: 1px solid ${editor_focus}; border-radius: ${control_radius}; }
+
+/* Phase 2 — native Gtk.Expander; exclude specialised sidebar groups explicitly. */
+expander-widget:not(.majoris-sidebar-group) > box > title { transition: background-color ${control_motion}, color ${control_motion}, box-shadow ${control_motion}; min-height: ${.phase2-expander|min-height}; padding: 0; border: none; border-radius: ${control_radius}; border-spacing: 8px; background: transparent; box-shadow: none; font-size: ${phase2_control_font}; font-weight: 500; }
+expander-widget:not(.majoris-sidebar-group) > box > title > expander { min-width: 16px; min-height: 16px; margin: 0; -gtk-icon-size: 16px; }
+expander-widget:not(.majoris-sidebar-group) > box > title:hover { background: @hover; }
+expander-widget:not(.majoris-sidebar-group) > box > title:active { background: @active; }
+expander-widget:not(.majoris-sidebar-group):focus:focus-visible > box > title { box-shadow: inset 0 0 0 2px ${editor_focus}; }
+expander-widget:not(.majoris-sidebar-group):disabled > box > title { color: @text_tertiary; }
+expander-widget:not(.majoris-sidebar-group):backdrop > box > title { color: @text_secondary; }
+
+/* Phase 2 — native SearchBar revealer: no outer padding while hidden. */
+searchbar { padding: 0; border: none; background: transparent; box-shadow: none; }
+searchbar > revealer > box { padding: ${.phase2-searchbar|padding}; border: none; background: transparent; border-spacing: 8px; box-shadow: none; }
+
+paned:focus:focus-visible > separator { outline: 2px solid ${editor_focus}; outline-offset: -2px; }

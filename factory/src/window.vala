@@ -39,6 +39,7 @@ namespace MajorisThemeFactory {
             stack.add_titled(switches,"switches","Switches");
             // Build the dedicated fixture when opened, keeping hidden fixtures out of geometry reports.
             stack.notify["visible-child-name"].connect(()=>{if(stack.visible_child_name=="switches" && switches.get_first_child()==null)switches.append(new SwitchPage());});
+            var phase2_scroll=new Gtk.ScrolledWindow();phase2_scroll.child=new Phase2Page();stack.add_titled(phase2_scroll,"phase2","Phase 2 Controls");
             stack.add_titled(new ToolbarsPage(),"toolbars","Toolbars");
             stack.add_titled(new DataViewsPage(app),"data-views","Data Views");
             stack.add_titled(new SidebarPage(app),"sidebar-design","Sidebar Design");

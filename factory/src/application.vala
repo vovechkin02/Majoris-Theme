@@ -39,6 +39,7 @@ namespace MajorisThemeFactory {
                     simple.close (); dense.close (); split.close(); main.close(); quit (); return Source.REMOVE;
                 });
             } else if(page.has_prefix("toolbars")) new ToolbarsFixture(this,page).present();
+            else if(page.has_prefix("phase2")) new Phase2Fixture(this,page).present();
             else if(page.has_prefix("data-")) new DataViewsFixture(this,page).present();
             else if(page.has_prefix("sidebar")) new SidebarFixture(this,page).present();
             else if(page.has_prefix("location")) new LocationFixture(this,page).present();

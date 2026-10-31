@@ -1,4 +1,11 @@
-<svg height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
-<rect fill="currentColor" height="18" rx="1" transform="rotate(45 8 8)" width="2" x="7" y="-1"></rect>
-<rect fill="currentColor" height="18" rx="1" transform="rotate(-45 8 8)" width="2" x="7" y="-1"></rect>
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 128 128"
+     width="128"
+     height="128">
+  <path d="M8 8 L120 120 M120 8 L8 120"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="16"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
 </svg>
