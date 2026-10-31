@@ -96,3 +96,7 @@ switch:focus:not(:disabled) { outline: 2px solid @primary_500; outline-offset: 2
 /* GTK3 boxed-list equivalents; libadwaita components remain GTK4 only. */
 .boxed-list > row label.title { font-size: ${preference_title_font}; font-weight: ${.pref-title|font-weight}; }
 .boxed-list > row label.subtitle { font-size: ${preference_subtitle_font}; font-weight: ${.pref-desc|font-weight}; color: @text_secondary; }
+
+/* Arrowless native menus. Keep check/radio nodes and submenu semantics intact.
+ * GTK4 hierarchy verified with a realized GtkPopoverMenu on GTK 4.18. */
+menu menuitem arrow { -gtk-icon-source: none; min-width: 0; min-height: 0; margin: 0; padding: 0; opacity: 0; }

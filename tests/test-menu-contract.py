@@ -15,3 +15,10 @@ for name,t in variants.items():
  assert value('.menu-item kbd','border-color')==('#43434A' if name=='dark' else '#D8D8DD')
  assert value('.menu-item.destructive','color')==('#F06B79' if name=='dark' else '#DC3C4D')
 print('Menu geometry, typography, opaque surfaces and semantic colours match both references')
+
+for version in ('3','4'):
+ css=(root/f'design/templates/gtk{version}.css.in').read_text()
+ assert 'menuitem arrow' in css if version=='3' else 'modelbutton arrow' in css
+ assert '-gtk-icon-source: none' in css
+ assert 'opacity: 0' in css
+print('Native menu arrows suppressed without selecting check/radio indicators')

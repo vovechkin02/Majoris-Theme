@@ -18,12 +18,6 @@ def menu_row(text, keys, *, action=None, shortcut='', icon=None, activate=None):
             container.append(child)
         else:
             container.pack_start(child, expand, expand, 0)
-    image = Gtk.Image()
-    if icon:
-        image.set_from_icon_name(icon) if gtk4 else image.set_from_icon_name(icon, Gtk.IconSize.MENU)
-    image.set_pixel_size(16)
-    image.set_size_request(16, -1)
-    append(box, image)
     label = Gtk.Label(label=text, xalign=0, hexpand=True)
     append(box, label, True)
     caps = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)

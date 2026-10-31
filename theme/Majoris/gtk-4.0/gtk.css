@@ -314,6 +314,12 @@ switch:disabled { filter: none; }
 .boxed-list > row.button.suggested-action:hover { background-color: @primary_700; background-image: none; }
 .boxed-list > row.button.suggested-action:active { background-color: @primary_800; background-image: none; }
 .boxed-list > row.button.destructive-action { color: @danger; }
+
+/* Arrowless native menus. Keep check/radio nodes and submenu semantics intact.
+ * GTK4 hierarchy verified with a realized GtkPopoverMenu on GTK 4.18. */
+popover.menu modelbutton arrow { -gtk-icon-source: none; -gtk-icon-size: 0; min-width: 0; min-height: 0; margin: 0; padding: 0; opacity: 0; }
+/* Covers internally created menus, including AdwTabBar's context popover. */
+popover.menu > arrow { background: transparent; border: none; box-shadow: none; }
 /* Sidebar roles derive from the canonical light/dark references. No global width. */
 @define-color majoris_sidebar_surface #F2F2F4;
 @define-color majoris_sidebar_selected #EEF2FF;

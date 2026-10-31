@@ -39,7 +39,7 @@ disabled=Gio.SimpleAction.new('disabled',None);disabled.set_enabled(False);group
 checked=Gio.SimpleAction.new_stateful('hidden',None,GLib.Variant('b',True));group.add_action(checked);model.append('Show Hidden Files','test.hidden')
 radio=Gio.SimpleAction.new_stateful('sort',GLib.VariantType.new('s'),GLib.Variant('s','name'));group.add_action(radio)
 model.append('By Name','test.sort::name');model.append('By Date','test.sort::date')
-icon=Gio.MenuItem.new('Open','test.item0');icon.set_icon(Gio.ThemedIcon.new('document-open-symbolic'));model.prepend_item(icon)
+icon=Gio.MenuItem.new('Open','test.item0');model.prepend_item(icon)
 trash=Gio.MenuItem.new('Move to Trash','test.item0')
 if version=='4':trash.set_attribute_value('custom',GLib.Variant('s','trash'))
 section=Gio.Menu();section.append_item(trash);model.append_section(None,section)
@@ -47,7 +47,7 @@ sub=Gio.Menu();sub.append('Text Editor','test.item0');model.append_submenu('Open
 window.insert_action_group('test',group)
 if version=='4':
  window.set_child(box);box.append(Gtk.Label(label='Underlying application text — opaque native menu surface'))
- button=Gtk.MenuButton(label='File context menu');popover=Gtk.PopoverMenu.new_from_model(model);button.set_popover(popover);box.append(button)
+ button=Gtk.MenuButton(label='File context menu');popover=Gtk.PopoverMenu.new_from_model(model);popover.set_has_arrow(False);button.set_popover(popover);box.append(button)
  trash_button=Gtk.Button(label='Move to Trash');trash_button.add_css_class('majoris-menu-danger');popover.add_child(trash_button,'trash')
  dropdown=Gtk.DropDown.new_from_strings(['Automatic','Ask every time','Never']);box.append(dropdown)
 else:
@@ -86,6 +86,11 @@ if version=='3':
  for w in walk(surface):
   if isinstance(w,Gtk.Label) and w.get_text()=='Move to Trash':w.get_parent().get_style_context().add_class('majoris-menu-danger')
 settle()
+if version=='4':
+ arrows=[w for w in walk(surface) if w.get_css_name()=='arrow' and w.get_mapped()]
+ assert all(w.get_width()==0 for w in arrows), 'Submenu arrow reserved width'
+ assert not popover.get_has_arrow(), 'Popover pointer enabled'
+ assert not any(isinstance(w,Gtk.Image) and w.get_mapped() for w in walk(surface)), 'Decorative image in menu'
 results=[]
 for w in walk(surface):
  if not isinstance(w,Gtk.Label) or w.get_text() not in strings or not w.get_mapped():continue

@@ -235,6 +235,10 @@ switch:focus:not(:disabled) { outline: 2px solid @primary_500; outline-offset: 2
 /* GTK3 boxed-list equivalents; libadwaita components remain GTK4 only. */
 .boxed-list > row label.title { font-size: 10.5pt; font-weight: 500; }
 .boxed-list > row label.subtitle { font-size: 9pt; font-weight: 400; color: @text_secondary; }
+
+/* Arrowless native menus. Keep check/radio nodes and submenu semantics intact.
+ * GTK4 hierarchy verified with a realized GtkPopoverMenu on GTK 4.18. */
+menu menuitem arrow { -gtk-icon-source: none; min-width: 0; min-height: 0; margin: 0; padding: 0; opacity: 0; }
 /* Sidebar roles derive from the canonical light/dark references. No global width. */
 @define-color majoris_sidebar_surface #F2F2F4;
 @define-color majoris_sidebar_selected #EEF2FF;

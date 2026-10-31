@@ -7,7 +7,6 @@ namespace MajorisThemeFactory {
             add_css_class("majoris-menu-row");
             action_name=action;
             var row=new Gtk.Box(Gtk.Orientation.HORIZONTAL,0);
-            var image=new Gtk.Image(); if(icon!=null)image.icon_name=icon; image.pixel_size=16; image.width_request=16; row.append(image);
             var title=new Gtk.Label(text); title.xalign=0; title.hexpand=true; row.append(title);
             var caps=new Gtk.Box(Gtk.Orientation.HORIZONTAL,0); caps.add_css_class("majoris-menu-shortcut"); caps.valign=Gtk.Align.CENTER;
             foreach(var key in keys) { var cap=new Gtk.Label(key); cap.add_css_class("majoris-menu-keycap"); caps.append(cap); }
