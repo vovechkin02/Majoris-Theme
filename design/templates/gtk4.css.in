@@ -132,3 +132,9 @@ popover.menu accelerator { min-height: 15px; padding: 2px 6px; margin-left: 16px
 popover.menu stack > box, popover.menu stack > box box { padding: 0; }
 /* GtkDropDown also tags its popup as .menu; keep its existing outer inset. */
 dropdown popover.menu > contents { padding: 8px; }
+
+/* Native keyboard focus; GTK3 keeps its accessible :focus fallback. */
+switch:focus-visible:not(:disabled) { outline: 2px solid @primary_500; outline-offset: 2px; border-color: @primary_500; }
+
+/* libadwaita supplies a disabled opacity filter; use one theme opacity only. */
+switch:disabled { filter: none; }

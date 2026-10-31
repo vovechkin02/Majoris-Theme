@@ -46,11 +46,18 @@ check { border-radius: 4px; }
 radio { border-radius: 50%; }
 check:checked, radio:checked { background-color: @primary_500; border-color: @primary_500; }
 check:indeterminate { background-color: @surface; color: @primary_600; border-color: @border; }
-check:focus, radio:focus, switch:focus { outline: 2px solid alpha(@focus_color,.34); outline-offset: 2px; }
-check:disabled, radio:disabled, switch:disabled { opacity: .45; }
-switch { min-width: 34px; min-height: 16px; padding: 2px; border: 1px solid @border; border-radius: 8px; background-color: @surface_secondary; background-image: none; box-shadow: inset 0 1px 2px rgba(0,0,0,.34); }
+check:focus, radio:focus { outline: 2px solid alpha(@focus_color,.34); outline-offset: 2px; }
+check:disabled, radio:disabled { opacity: .45; }
+switch { min-width: 34px; min-height: 16px; padding: 2px; border: 1px solid @border; border-radius: 4px; background-color: @surface_secondary; background-image: none; box-shadow: inset 0 1px 2px rgba(0,0,0,.34); outline: none; transition: background-color 128ms cubic-bezier(.2,0,0,1), border-color 128ms cubic-bezier(.2,0,0,1), box-shadow 128ms cubic-bezier(.2,0,0,1), opacity 128ms cubic-bezier(.2,0,0,1); }
 switch:checked { background-color: @primary_500; border-color: @primary_500; }
-switch:hover { box-shadow: inset 0 1px 2px rgba(20,20,25,.08),0 1px 2px rgba(20,20,25,.05); }
+switch:hover { background-color: @hover; box-shadow: inset 0 1px 2px rgba(20,20,25,.08),0 1px 2px rgba(20,20,25,.05); }
+switch:active { background-color: @active; box-shadow: none; }
+switch:checked:hover { background-color: @primary_500; border-color: @primary_600; }
+switch:checked:active { background-color: @primary_500; border-color: @primary_700; box-shadow: none; }
+switch:backdrop { box-shadow: none; }
+switch:disabled { opacity: .58; background-color: @surface_secondary; border-color: @border; box-shadow: none; outline: none; }
+switch:checked:disabled { background-color: @primary_500; border-color: @primary_500; }
+switch slider:disabled { opacity: 1; }
 switch slider { min-width: 14px; min-height: 14px; margin: 0; padding: 0; border: 1px solid rgba(0,0,0,.08); border-radius: 4px; background-color: @surface; background-image: none; box-shadow: 0 1px 2px rgba(0,0,0,.40); }
 scale trough { min-height: 4px; border-radius: 4px; background-color: #3B3B40; }
 scale highlight { background-color: @primary_500; border-radius: 4px; }
@@ -217,6 +224,9 @@ menu accelerator { font-size: 12px; font-weight: 600; }
 menuitem.majoris-menu-row > box { min-height: 24px; }
 
 menuitem.majoris-menu-row label.majoris-menu-keycap { color: #C7C8D0; }
+
+/* Native keyboard focus; GTK3 keeps its accessible :focus fallback. */
+switch:focus:not(:disabled) { outline: 2px solid @focus_color; outline-offset: 2px; border-color: @focus_color; }
 /* Dark-only semantic overrides; shared allocations remain in gtk-common.css.in. */
 .view, columnview, treeview, iconview { background-color: @surface; color: @text; }
 columnview row:selected, listview row:selected, gridview child:selected { background-color: rgba(99,102,241,.16); color: #E0E7FF; }
@@ -255,7 +265,7 @@ check:indeterminate { background-color: #26262A; color: @primary_600; border-col
 switch { background-color: #303035; border-color: #48484E; }
 switch:checked { background-color: #6366F1; border-color: #6366F1; }
 switch slider { background-color: #DADAE0; border-color: rgba(255,255,255,.08); }
-switch:checked slider { background-color: white; }
+switch:checked slider { background-color: #fff; }
 entry, entry text, text, searchentry, passwordentry { caret-color: #A5B4FC; }
 :not(.sourceview) > text > selection, entry selection, searchentry selection, passwordentry selection, spinbutton selection, label selection, textview:not(.sourceview) selection { background-color: rgba(99,102,241,.42); color: @text; }
 scale slider { background-color: #F4F4F5; border-color: #818CF8; box-shadow: 0 1px 3px rgba(0,0,0,.42); }

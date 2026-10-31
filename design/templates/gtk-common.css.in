@@ -42,11 +42,18 @@ check { border-radius: ${.checkbox|border-radius}; }
 radio { border-radius: ${.radio|border-radius}; }
 check:checked, radio:checked { background-color: @primary_500; border-color: @primary_500; }
 check:indeterminate { background-color: @surface; color: @primary_600; border-color: @border; }
-check:focus, radio:focus, switch:focus { outline: 2px solid alpha(@primary_500,.24); outline-offset: 2px; }
-check:disabled, radio:disabled, switch:disabled { opacity: .45; }
-switch { min-width: 34px; min-height: 16px; padding: 2px; border: 1px solid @border; border-radius: ${.switch|border-radius}; background-color: @surface_secondary; background-image: none; box-shadow: ${.switch|box-shadow}; }
+check:focus, radio:focus { outline: 2px solid alpha(@primary_500,.24); outline-offset: 2px; }
+check:disabled, radio:disabled { opacity: .45; }
+switch { min-width: 34px; min-height: 16px; padding: 2px; border: 1px solid @border; border-radius: ${.switch|border-radius}; background-color: @surface_secondary; background-image: none; box-shadow: ${.switch|box-shadow}; outline: none; transition: background-color ${control_motion}, border-color ${control_motion}, box-shadow ${control_motion}, opacity ${control_motion}; }
 switch:checked { background-color: @primary_500; border-color: @primary_500; }
-switch:hover { box-shadow: ${.switch:hover|box-shadow}; }
+switch:hover { background-color: @hover; box-shadow: ${.switch:hover|box-shadow}; }
+switch:active { background-color: @active; box-shadow: none; }
+switch:checked:hover { background-color: @primary_500; border-color: @primary_600; }
+switch:checked:active { background-color: @primary_500; border-color: @primary_700; box-shadow: none; }
+switch:backdrop { box-shadow: none; }
+switch:disabled { opacity: ${.switch.is-disabled|opacity}; background-color: @surface_secondary; border-color: @border; box-shadow: none; outline: none; }
+switch:checked:disabled { background-color: @primary_500; border-color: @primary_500; }
+switch slider:disabled { opacity: 1; }
 switch slider { min-width: 14px; min-height: 14px; margin: 0; padding: 0; border: ${.switch:after|border}; border-radius: ${.switch:after|border-radius}; background-color: @surface; background-image: none; box-shadow: ${.switch:after|box-shadow}; }
 scale trough { min-height: ${.track|height}; border-radius: ${.track|border-radius}; background-color: ${.track|background}; }
 scale highlight { background-color: @primary_500; border-radius: ${control_radius}; }

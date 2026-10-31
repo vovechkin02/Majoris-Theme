@@ -109,3 +109,5 @@ focus/opacity and font validation. `toolbars-stacked` demonstrates zero-gap
 document-tab composition; `toolbars-files-parent` reproduces the application
 parent padding for comparison.
 See the specification for Meson consumption, GTK3 composition and migration.
+
+Switches: [design, native geometry and validation](docs/switch-standardisation.md). Open the factory’s Switches page for GTK/libadwaita examples.

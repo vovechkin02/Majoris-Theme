@@ -89,3 +89,6 @@ menu accelerator { font-size: 12px; font-weight: 600; }
 menuitem.majoris-menu-row > box { min-height: 24px; }
 
 menuitem.majoris-menu-row label.majoris-menu-keycap { color: ${.menu-item kbd|color}; }
+
+/* Native keyboard focus; GTK3 keeps its accessible :focus fallback. */
+switch:focus:not(:disabled) { outline: 2px solid @primary_500; outline-offset: 2px; border-color: @primary_500; }

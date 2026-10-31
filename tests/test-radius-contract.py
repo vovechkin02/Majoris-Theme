@@ -32,3 +32,12 @@ for version in ('3','4'):
         expect(css,'.card','border-radius','8px')
 assert html('.toggle','border-radius')=='4px'
 assert html('.toggle-group .toggle','border-radius')=='2px'
+
+for version in ("3","4"):
+    for variant in ("light","dark"):
+        css=rules(version,variant)
+        expect(css,"switch","border-radius","4px")
+        expect(css,"switch slider","border-radius","4px")
+        expect(css,"switch","min-width","34px")
+        expect(css,"switch","min-height","16px")
+        expect(css,"switch","padding","2px")

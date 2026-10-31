@@ -171,3 +171,12 @@ foreach variant : ['light', 'dark']
             'GDK_SCALE': profile == 'double' ? '2' : '1', 'GDK_DPI_SCALE': profile == 'text' ? '1.25' : '1'}, timeout: 45)
   endforeach
 endforeach
+
+foreach switch_version : ['3','4']
+  foreach switch_variant : ['light','dark']
+    foreach switch_scale : ['1','2']
+      test('native switches GTK'+switch_version+' '+switch_variant+' '+switch_scale+'x',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-switch-native.py'),switch_version],env:{'MAJORIS_VARIANT':switch_variant,'GDK_SCALE':switch_scale,'GSK_RENDERER':'cairo','GTK_A11Y':'none'},timeout:60)
+    endforeach
+    test('native switches GTK'+switch_version+' '+switch_variant+' large fonts',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a',python.full_path(),files('tests/test-switch-native.py'),switch_version],env:{'MAJORIS_VARIANT':switch_variant,'MAJORIS_LARGE_FONT':'1','GSK_RENDERER':'cairo','GTK_A11Y':'none'},timeout:60)
+  endforeach
+endforeach
