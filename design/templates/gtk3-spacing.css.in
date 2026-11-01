@@ -1,0 +1,4 @@
+/* GTK3 GtkBox/GtkGrid spacing is a widget property, not CSS border-spacing.
+ * Preserve native dialog/action-area style properties and application layout.
+ * Semantic classes below supply only supported content insets. */
+box.majoris-dialog-content { padding: ${spacing_section}; }

@@ -209,3 +209,12 @@ foreach phase2_variant : ['light','dark']
   endforeach
   test('phase2 GTK4 '+phase2_variant+' large fonts',find_program('dbus-run-session'),args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-phase2-native.py'),'4'],env:{'MAJORIS_VARIANT':phase2_variant,'MAJORIS_LARGE_FONT':'1','GSK_RENDERER':'cairo','GDK_BACKEND':'x11','GTK_A11Y':'none','ADW_DISABLE_PORTAL':'1','GIO_USE_VFS':'local'},timeout:120)
 endforeach
+
+test('layout spacing source contract',python,args:[files('tests/test-spacing-contract.py')])
+foreach spacing_variant : ['light','dark']
+  foreach spacing_profile : ['standard','double','large-font','rtl','narrow','wide']
+    test('native layout spacing '+spacing_variant+' '+spacing_profile,find_program('dbus-run-session'),
+      args:['--',find_program('xvfb-run').full_path(),'-a','-s','-screen 0 2880x2160x24',python.full_path(),files('tests/test-spacing-native.py')],
+      env:{'MAJORIS_VARIANT':spacing_variant,'MAJORIS_SPACING_PROFILE':spacing_profile,'GDK_SCALE':spacing_profile=='double'?'2':'1','GDK_BACKEND':'x11','GSK_RENDERER':'cairo','GTK_A11Y':'none','ADW_DISABLE_PORTAL':'1','GIO_USE_VFS':'local'},timeout:60)
+  endforeach
+endforeach

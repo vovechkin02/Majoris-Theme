@@ -1,0 +1,28 @@
+/* Native hierarchy verified against libadwaita 1.7.6 and GTK 4.18.6.
+ * The second box owns boxed-list/arbitrary-content separation, not row gaps. */
+preferencesgroup > box > box:not(.header) { border-spacing: ${spacing_standard}; }
+/* Ordinary popover boxes are application-owned: their spacing property is
+ * additive with CSS and cannot be selected by value. Use the semantic contract. */
+window.dialog > box.dialog-vbox { border-spacing: ${spacing_section}; }
+window.dialog > box.dialog-vbox > box.dialog-action-box > box.dialog-action-area { border-spacing: ${spacing_standard}; }
+actionbar > revealer > box > box.start,
+actionbar > revealer > box > box.end { border-spacing: ${spacing_standard}; }
+/* Container-owned spacing. GtkBox adds property spacing and CSS spacing.
+ * Semantic containers must use property spacing=0. Do not combine with per-child margins for the same gap. */
+box.majoris-control-stack, box.majoris-action-group,
+box.majoris-form-layout, grid.majoris-form-layout,
+box.majoris-progress-content {
+  border-spacing: ${spacing_standard};
+}
+box.majoris-compact-stack, box.majoris-field {
+  border-spacing: ${spacing_compact};
+}
+box.majoris-section-stack, box.majoris-progress-list { border-spacing: ${spacing_section}; }
+box.majoris-major-stack { border-spacing: ${spacing_major}; }
+box.majoris-dialog-content { border-spacing: ${spacing_standard}; padding: ${spacing_section}; }
+/* Footer separation belongs to its parent; no accumulating child margins. */
+box.majoris-footer-layout { border-spacing: ${spacing_section}; }
+box.majoris-action-footer { border-spacing: ${spacing_standard}; }
+/* Put the bar and its supporting label in this compact sub-container. */
+box.majoris-progress-detail { border-spacing: ${spacing_compact}; }
+box.majoris-connected-group, box.linked { border-spacing: ${spacing_none}; }

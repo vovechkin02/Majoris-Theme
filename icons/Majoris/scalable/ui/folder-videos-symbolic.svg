@@ -1,13 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 128 128"
      width="128" height="128">
-  <rect x="8" y="24" width="112" height="80"
-        rx="16" fill="none"
+
+  <!-- Rounded video frame -->
+  <rect x="8" y="24"
+        width="112" height="80"
+        rx="16"
+        fill="none"
         stroke="currentColor"
         stroke-width="16"/>
-  <path d="M52 44 L88 64 L52 84 Z"
+
+  <!-- Proportionally sized play triangle -->
+  <path d="M54 46 L86 64 L54 82 Z"
         fill="currentColor"
         stroke="currentColor"
-        stroke-width="8"
+        stroke-width="4"
         stroke-linejoin="round"/>
 </svg>

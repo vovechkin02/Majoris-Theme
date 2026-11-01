@@ -13,6 +13,7 @@ values={**t['color'], **{k+'_radius':str(v)+'px' for k,v in t['radius'].items()}
 from generate_sidebar import sidebar_values
 from generate_editor import editor_values, generate_schemes
 values.update(editor_values('light'))
+values.update({'spacing_'+k:str(v)+'px' for k,v in t['spacing'].items()})
 values['control_content_size']=str(t['window']['window_control_size']-2)+'px'
 values['header_padding']=html_value(t,'.headerbar','padding')
 # HTML border-box height includes its divider; GTK min-height excludes padding/border.
@@ -49,6 +50,7 @@ for version in ('3','4'):
     shared,desktop=shared.split('/* Desktop Icons NG:',1)
     desktop='/* Desktop Icons NG:'+desktop
     specific=(ROOT/f'design/templates/gtk{version}.css.in').read_text()
+    specific+=(ROOT/f'design/templates/gtk{version}-spacing.css.in').read_text()
     sidebar=(ROOT/'design/templates/gtk-sidebar.css.in').read_text()
     if version=='3': sidebar=sidebar.replace(':focus-visible',':focus').replace('-gtk-icon-size: 16px;','')
     specific+=sidebar+(ROOT/f'design/templates/gtk{version}-data.css.in').read_text()+toolbar_template(version)

@@ -320,6 +320,34 @@ switch:disabled { filter: none; }
 popover.menu modelbutton arrow { -gtk-icon-source: none; -gtk-icon-size: 0; min-width: 0; min-height: 0; margin: 0; padding: 0; opacity: 0; }
 /* Covers internally created menus, including AdwTabBar's context popover. */
 popover.menu > arrow { background: transparent; border: none; box-shadow: none; }
+/* Native hierarchy verified against libadwaita 1.7.6 and GTK 4.18.6.
+ * The second box owns boxed-list/arbitrary-content separation, not row gaps. */
+preferencesgroup > box > box:not(.header) { border-spacing: 8px; }
+/* Ordinary popover boxes are application-owned: their spacing property is
+ * additive with CSS and cannot be selected by value. Use the semantic contract. */
+window.dialog > box.dialog-vbox { border-spacing: 16px; }
+window.dialog > box.dialog-vbox > box.dialog-action-box > box.dialog-action-area { border-spacing: 8px; }
+actionbar > revealer > box > box.start,
+actionbar > revealer > box > box.end { border-spacing: 8px; }
+/* Container-owned spacing. GtkBox adds property spacing and CSS spacing.
+ * Semantic containers must use property spacing=0. Do not combine with per-child margins for the same gap. */
+box.majoris-control-stack, box.majoris-action-group,
+box.majoris-form-layout, grid.majoris-form-layout,
+box.majoris-progress-content {
+  border-spacing: 8px;
+}
+box.majoris-compact-stack, box.majoris-field {
+  border-spacing: 4px;
+}
+box.majoris-section-stack, box.majoris-progress-list { border-spacing: 16px; }
+box.majoris-major-stack { border-spacing: 32px; }
+box.majoris-dialog-content { border-spacing: 8px; padding: 16px; }
+/* Footer separation belongs to its parent; no accumulating child margins. */
+box.majoris-footer-layout { border-spacing: 16px; }
+box.majoris-action-footer { border-spacing: 8px; }
+/* Put the bar and its supporting label in this compact sub-container. */
+box.majoris-progress-detail { border-spacing: 4px; }
+box.majoris-connected-group, box.linked { border-spacing: 0px; }
 /* Sidebar roles derive from the canonical light/dark references. No global width. */
 @define-color majoris_sidebar_surface #F2F2F4;
 @define-color majoris_sidebar_selected #EEF2FF;

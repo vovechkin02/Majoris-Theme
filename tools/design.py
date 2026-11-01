@@ -33,7 +33,7 @@ def extract(variant='light'):
     def dimension(selector, prop):
         block = re.search(r'(?m)^'+re.escape(selector)+r'\{(.*?)\}', html, re.S).group(1)
         return int(re.search(r'(?:^|;)\s*'+prop+r':(\d+)px', block).group(1))
-    result = {'color': colors, 'radius':{'control':int(variables['r-control'][:-2]),'structure':int(variables['r-struct'][:-2])},
+    result = {'spacing':{k:int(variables['spacing-'+k][:-2]) for k in ('none','compact','standard','section','major')}, 'color': colors, 'radius':{'control':int(variables['r-control'][:-2]),'structure':int(variables['r-struct'][:-2])},
             'motion':{k+'_ms':int(variables['motion-'+k].split('ms')[0]) for k in ('control','surface')},
             'motion_css':{k:variables['motion-'+k] for k in ('control','surface')},
             'shadow':{k[7:].replace('-','_'):v for k,v in variables.items() if k.startswith('shadow-')},

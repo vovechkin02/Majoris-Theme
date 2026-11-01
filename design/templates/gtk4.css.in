@@ -55,13 +55,13 @@ popover separator { min-height: ${.separator|height}; margin: 4px 8px; backgroun
 /* .property intentionally preserves native read-only hierarchy; no global promotion. */
 .boxed-list > row.entry > box.header { min-height: ${preference_content_height}; }
 .boxed-list > row.activatable:focus-visible { outline: 2px solid @primary_500; outline-offset: -2px; border-color: @border_soft; }
-preferencesgroup > box { border-spacing: ${.pref-group-heading|margin-bottom}; }
+preferencesgroup > box { border-spacing: ${spacing_standard}; }
 preferencesgroup > box > box.header { border-spacing: ${.pref-row|--prefix-gap}; margin-bottom: 0; }
 preferencesgroup > box > box.header.single-line { min-height: 0; }
 preferencesgroup > box > box.header > box.labels { border-spacing: ${.pref-group-description|margin-top}; }
 preferencesgroup > box > box.header > box.labels > label.heading { font-size: ${preference_title_font}; font-weight: ${.pref-group-heading|font-weight}; color: @text; }
 preferencesgroup > box > box.header > box.labels > label:not(.heading) { font-size: ${preference_subtitle_font}; font-weight: ${.pref-group-description|font-weight}; color: @text_secondary; opacity: 1; }
-preferencespage > scrolledwindow > viewport > clamp > box { border-spacing: ${.pref-group|margin-bottom}; }
+preferencespage > scrolledwindow > viewport > clamp > box { border-spacing: ${spacing_section}; }
 .boxed-list > row.expander .expander { background-color: @surface_secondary; box-shadow: none; }
 viewswitcher button { min-width: 0; padding: ${.view-switch button|padding}; }
 viewswitcher button box { min-height: 0; padding: 0; margin: 0; }

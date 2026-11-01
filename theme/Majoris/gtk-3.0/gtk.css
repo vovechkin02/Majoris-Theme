@@ -239,6 +239,10 @@ switch:focus:not(:disabled) { outline: 2px solid @primary_500; outline-offset: 2
 /* Arrowless native menus. Keep check/radio nodes and submenu semantics intact.
  * GTK4 hierarchy verified with a realized GtkPopoverMenu on GTK 4.18. */
 menu menuitem arrow { -gtk-icon-source: none; min-width: 0; min-height: 0; margin: 0; padding: 0; opacity: 0; }
+/* GTK3 GtkBox/GtkGrid spacing is a widget property, not CSS border-spacing.
+ * Preserve native dialog/action-area style properties and application layout.
+ * Semantic classes below supply only supported content insets. */
+box.majoris-dialog-content { padding: 16px; }
 /* Sidebar roles derive from the canonical light/dark references. No global width. */
 @define-color majoris_sidebar_surface #F2F2F4;
 @define-color majoris_sidebar_selected #EEF2FF;

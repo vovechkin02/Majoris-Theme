@@ -10,6 +10,7 @@
 <title>Majoris Widget Factory — Dark Theme / Exact Window Icons</title>
 <style>
 :root{
+  --spacing-none:0px; --spacing-compact:4px; --spacing-standard:8px; --spacing-section:16px; --spacing-major:32px;
   --p50:#EEF2FF; --p100:#E0E7FF; --p200:#C7D2FE; --p300:#A5B4FC;
   --p400:#818CF8; --p500:#6366F1; --p600:#4F46E5; --p700:#4338CA; --p800:#3730A3;
   --success:#22A06B; --warning:#D97706; --danger:#DC3C4D; --danger-press:#B92F3E;
@@ -618,6 +619,14 @@ html[dir="rtl"] .nav.active:before{left:auto;right:0}
 .phase2-rubberband{border-color:var(--p400);background:rgba(129,140,248,.16)}
 .phase2-day:focus-visible,.phase2-link:focus-visible,.phase2-flat-icon:focus-visible{outline-color:var(--p400)}
 .phase2-tile.selected{background:rgba(99,102,241,.16);color:#E0E7FF}
+
+/* Layout spacing: canonical geometry shared with native token extraction. */
+.spacing-demo{display:flex;flex-direction:column;gap:var(--spacing-standard)}
+.spacing-actions{display:flex;gap:var(--spacing-standard)}
+.spacing-compact{gap:var(--spacing-compact)}
+.spacing-connected{gap:var(--spacing-none)}
+.spacing-section{gap:var(--spacing-section)}
+.spacing-major{gap:var(--spacing-major)}
 </style>
 <style>
 /* Final menu and interactive typography contract. */
@@ -1148,7 +1157,7 @@ html[dir="rtl"] .nav.active:before{left:auto;right:0}
 <h4>Paned</h4><div class="phase2-paned"><span>Start pane</span><span class="handle"></span><span>End pane — native 8px drag target, 1px line</span></div>
 <h4>FlowBox</h4><div>Neutral layout: <button class="btn">No tile decoration</button></div><div><span class="phase2-tile">Favorites</span><span class="phase2-tile selected">Files</span><span class="phase2-tile">Format gjpqy</span></div>
 <h4>Expander</h4><details><summary class="phase2-expander">Native collapsed section</summary>Natural content</details><details open><summary class="phase2-expander">Expanded section</summary>Ordinary form controls retain their styles.</details>
-<h4>SearchBar</h4><div class="phase2-searchbar"><input class="entry" placeholder="Favorites Files Format gjpqy"/><button class="phase2-flat-icon" aria-label="Dismiss search">×</button></div></section></main>
+<h4>SearchBar</h4><div class="phase2-searchbar"><input class="entry" placeholder="Favorites Files Format gjpqy"/><button class="phase2-flat-icon" aria-label="Dismiss search">×</button></div></section><section aria-label="Layout Spacing"><h2>Layout Spacing</h2><div class="gallery"><article class="card"><h3>Connected controls — 0px</h3><div class="spacing-demo spacing-connected"><input class="entry" aria-label="Example field" placeholder="Example field"><div class="spacing-actions spacing-connected"><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>Compact controls — 4px</h3><div class="spacing-demo spacing-compact"><input class="entry" aria-label="Example field" placeholder="Example field"><div class="spacing-actions spacing-compact"><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>Standard stack — 8px</h3><div class="spacing-demo "><input class="entry" aria-label="Example field" placeholder="Example field"><div class="spacing-actions "><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>Action group — 8px</h3><div class="spacing-demo "><input class="entry" aria-label="Example field" placeholder="Example field"><div class="spacing-actions "><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>Section separation — 16px</h3><div class="spacing-demo spacing-section"><input class="entry" aria-label="Example field" placeholder="Example field"><div class="spacing-actions spacing-section"><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>Major section separation — 32px</h3><div class="spacing-demo spacing-major"><input class="entry" aria-label="Example field" placeholder="Example field"><div class="spacing-actions spacing-major"><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>SearchEntry → ListBox</h3><div class="spacing-demo "><input class="entry" aria-label="Search tags" placeholder="Search tags"><div class="pref-group"><div class="pref-row">Documents</div><div class="pref-row">Work</div></div><div class="spacing-actions "><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>ListBox → action buttons</h3><div class="spacing-demo "><input class="entry" aria-label="Search tags" placeholder="Search tags"><div class="pref-group"><div class="pref-row">Documents</div><div class="pref-row">Work</div></div><div class="spacing-actions "><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>PreferencesGroup arbitrary children</h3><div class="spacing-demo "><input class="entry" aria-label="Search tags" placeholder="Search tags"><div class="pref-group"><div class="pref-row">Documents</div><div class="pref-row">Work</div></div><div class="spacing-actions "><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>Progress content</h3><div class="spacing-demo "><label>Copying files</label><progress value="60" max="100"></progress><div class="spacing-actions "><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>Dialog footer</h3><div class="spacing-demo spacing-section"><input class="entry" aria-label="Example field" placeholder="Example field"><div class="spacing-actions spacing-section"><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article><article class="card"><h3>Popover content</h3><div class="spacing-demo "><input class="entry" aria-label="Example field" placeholder="Example field"><div class="spacing-actions "><button class="btn">Cancel</button><button class="btn">Apply</button></div></div></article></div></section></main>
 </div>
 </section>
 </div>
