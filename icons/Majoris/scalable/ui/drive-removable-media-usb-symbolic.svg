@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 128 128"
+     width="128"
+     height="128">
+  <!-- Main body -->
+  <path fill="currentColor"
+        fill-rule="evenodd"
+        d="
+          M40 16
+          H88
+          Q104 16 104 32
+          V104
+          Q104 120 88 120
+          H40
+          Q24 120 24 104
+          V32
+          Q24 16 40 16
+          Z
+
+          M40 32
+          Q40 24 48 24
+          H80
+          Q88 24 88 32
+          V104
+          Q88 112 80 112
+          H48
+          Q40 112 40 104
+          Z"/>
+
+  <!-- Connector -->
+  <path d="M48 0 H80 V24 H48 Z"
+        fill="currentColor"/>
+
+  <!-- Connector slots -->
+  <rect x="56" y="8" width="8" height="8" rx="4" fill="white"/>
+  <rect x="72" y="8" width="8" height="8" rx="4" fill="white"/>
+</svg>

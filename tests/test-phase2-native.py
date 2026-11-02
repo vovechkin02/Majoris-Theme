@@ -130,21 +130,98 @@ if version=='4':
  tile=Gtk.Box(orientation=Gtk.Orientation.VERTICAL,spacing=4);append(tile,Gtk.Image.new_from_icon_name('text-x-generic-symbolic'));append(tile,editable);wid=show(tile);tile_before=alloc(tile);editable.start_editing();settle();assert alloc(tile)==tile_before;editable.stop_editing(True)
  tile.remove(editable);row=Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL,spacing=8);append(row,Gtk.Label(label='List row:'));append(row,editable);wid=show(row);row_before=alloc(row);editable.start_editing();settle();assert alloc(row)==row_before;editable.stop_editing(True)
  geometry['editablelabel']['tile']=tile_before;geometry['editablelabel']['row']=row_before;interactions['editablelabel']=True
-# Native splitter gutter and keyboard/real pointer resizing.
+# Native splitter allocation is measured from adjoining child edges on both toolkits.
 paned=Gtk.Paned(orientation=Gtk.Orientation.HORIZONTAL);paned.set_size_request(500,150)
-start=Gtk.Entry(text='Start pane');end=Gtk.Label(label='End pane')
+start=Gtk.Entry(text='Sidebar');end=Gtk.Label(label='File content / preview')
 if version=='4':paned.set_start_child(start);paned.set_end_child(end)
 else:paned.pack1(start,True,True);paned.pack2(end,True,True)
-paned.set_position(220);wid=show(paned);start.grab_focus();settle();geometry['paned']=measure(paned);capture('paned')
-if version=='4':
- sep=next(x for x in children(paned) if x.get_css_name()=='separator');assert alloc(sep)[0]==8,alloc(sep);geometry['paned']['gutter']=measure(sep);divider_png=paint(sep,'paned-divider')
+paned.set_position(220);wid=show(paned);start.grab_focus();settle()
+sep=next((x for x in children(paned) if x.get_css_name()=='separator'),None) if version=='4' else None
+
+def pane_rect(child):
+ if version=='4':
+  ok,r=child.compute_bounds(paned);assert ok;return [r.get_x(),r.get_y(),r.get_width(),r.get_height()]
+ r=child.get_allocation();x,y=child.translate_coordinates(paned,0,0);return [x,y,r.width,r.height]
+
+def split_geometry(expected=1):
+ horizontal=paned.get_orientation()==Gtk.Orientation.HORIZONTAL;axis=0 if horizontal else 1
+ rectangles=sorted([pane_rect(start),pane_rect(end)],key=lambda r:r[axis]);first,last=rectangles
+ gap=last[axis]-first[axis]-first[axis+2];assert gap==expected,(version,rectangles,gap,expected)
+ if sep is not None:assert alloc(sep)[axis]==expected,alloc(sep)
+ return dict(separator_allocation=[gap,alloc(paned)[1]] if horizontal else [alloc(paned)[0],gap],panes=rectangles,extra_transparent_gutter=expected-1)
+
+def divider_center():
+ horizontal=paned.get_orientation()==Gtk.Orientation.HORIZONTAL;axis=0 if horizontal else 1
+ rectangles=sorted([pane_rect(start),pane_rect(end)],key=lambda r:r[axis]);first,last=rectangles
+ center=(first[axis]+first[axis+2]+last[axis])/2
+ px,py=(center,alloc(paned)[1]/2) if horizontal else (alloc(paned)[0]/2,center)
+ if version=='4':
+  ok,r=paned.compute_bounds(w);assert ok;px+=r.get_x();py+=r.get_y()
+ else:
+  px,py=paned.translate_coordinates(w,int(px),int(py))
+ return int(px*int(scale)),int(py*int(scale))
+
+def divider_paint(name,focus=False):
+ # Measure physical pixels in the unmodified native window capture. Rendering a
+ # 1px WidgetPaintable into a logical-resolution texture can downsample at 2x.
  from PIL import Image
- divider=Image.open(divider_png).convert('RGBA');coverage=sum(divider.getpixel((i,divider.height//2))[3]/255 for i in range(divider.width));assert .9<=coverage<=1.1,coverage
- geometry['paned']['visible_line_pixel_coverage']=coverage;states(sep,'paned-separator')
- ok,point=sep.translate_coordinates(w,4,40) if False else (False,None)
- ok,r=sep.compute_bounds(w);assert ok;x=int((r.get_x()+4)*int(scale));y=int((r.get_y()+40)*int(scale));position=paned.get_position();subprocess.run(['xdotool','mousemove','--window',wid,str(x),str(y),'mousedown','1','mousemove','--window',wid,str(x+50*int(scale)),str(y),'mouseup','1'],check=True);settle();assert paned.get_position()!=position,('Pointer resize',position,paned.get_position())
- start.grab_focus();key('F8');focus_node=paint(sep,'paned-keyboard-focus-native').with_suffix('.node').read_text();focus_geometry['paned-keyboard']={'border_widths':re.findall(r'widths: ([^;]+);',focus_node),'gutter':alloc(sep)};assert 'widths: 2;' in focus_node;position=paned.get_position();key('Right');assert paned.get_position()!=position,('Keyboard resize',position,paned.get_position())
- paned.set_orientation(Gtk.Orientation.VERTICAL);settle();assert alloc(sep)[1]==8;paned.set_wide_handle(True);settle();assert alloc(sep)[1]==16;paned.set_direction(Gtk.TextDirection.RTL);capture('paned-vertical-wide-rtl')
+ capture(name+'-pixels');im=Image.open(out/(name+'-pixels.png')).convert('RGB')
+ horizontal=paned.get_orientation()==Gtk.Orientation.HORIZONTAL;x,y=divider_center()
+ radius=(16 if paned.get_wide_handle() else 1)*int(scale)
+ samples=[im.getpixel((x+i,y) if horizontal else (x,y+i)) for i in range(-radius,radius+1)]
+ target=('#818CF8' if variant=='dark' else '#6366F1') if focus else ('#313136' if variant=='dark' else '#E5E5E9')
+ expected=tuple(bytes.fromhex(target[1:]));coverage=sum(all(abs(a-b)<=2 for a,b in zip(pixel,expected)) for pixel in samples)
+ assert coverage==int(scale),(name,coverage,target,samples)
+ geometry['paned'][name+'-paint']={'painted_physical_pixels':coverage,'painted_logical_pixels':coverage/int(scale),'colour':target}
+
+def drag_split(name,expected=1):
+ x,y=divider_center();horizontal=paned.get_orientation()==Gtk.Orientation.HORIZONTAL;position=paned.get_position();delta=30 if paned.get_property('max-position')-position>=30 else -30
+ subprocess.run(['xdotool','mousemove','--window',wid,str(x),str(y)],check=True);settle();geometry['paned'][name+'-hover']=split_geometry(expected);capture(name+'-hover')
+ subprocess.run(['xdotool','mousedown','1'],check=True);settle();geometry['paned'][name+'-active']=split_geometry(expected);capture(name+'-active')
+ subprocess.run(['xdotool','mousemove','--window',wid,str(x+delta*int(scale) if horizontal else x),str(y if horizontal else y+delta*int(scale)),'mouseup','1'],check=True);settle()
+ assert paned.get_position()!=position,('Pointer resize',name,position,paned.get_position());split_geometry(expected)
+
+def keyboard_split(name,expected=1):
+ start.grab_focus();key('F8');before=paned.get_position();geometry['paned'][name+'-focus']=split_geometry(expected);capture(name+'-focus');divider_paint(name+'-focus',True);key('Right' if paned.get_orientation()==Gtk.Orientation.HORIZONTAL else 'Down')
+ assert paned.get_position()!=before,('Keyboard resize',name,before,paned.get_position());split_geometry(expected);key('Return')
+
+geometry['paned']={'default':split_geometry()};capture('paned')
+if sep is not None:
+ geometry['paned']['separator']=measure(sep);states(sep,'paned-separator')
+divider_paint('paned-default');drag_split('paned-horizontal');keyboard_split('paned-horizontal')
+for direction,name in [(Gtk.TextDirection.RTL,'rtl'),(Gtk.TextDirection.LTR,'ltr')]:
+ paned.set_direction(direction);settle();geometry['paned'][name]=split_geometry();drag_split('paned-'+name);keyboard_split('paned-'+name)
+if version=='4':w.set_default_size(850,550)
+else:w.resize(850,550)
+settle();geometry['paned']['window-resized']=split_geometry();drag_split('paned-resized')
+paned.set_orientation(Gtk.Orientation.VERTICAL);paned.set_position(65);settle();geometry['paned']['vertical']=split_geometry();capture('paned-vertical');drag_split('paned-vertical');keyboard_split('paned-vertical')
+for orientation in [Gtk.Orientation.HORIZONTAL,Gtk.Orientation.VERTICAL]:
+ paned.set_orientation(orientation);paned.set_wide_handle(True);settle();geometry['paned']['wide-'+str(orientation)]=split_geometry(16);capture('paned-wide-'+str(orientation));keyboard_split('paned-wide',16);drag_split('paned-wide',16)
+ paned.set_wide_handle(False);settle();split_geometry()
+# Explicit native minimum constraints, shrink and resize-child settings.
+start.set_size_request(90,40);end.set_size_request(80,40)
+if version=='4':paned.set_shrink_start_child(False);paned.set_shrink_end_child(False);paned.set_resize_start_child(False)
+else:paned.child_set_property(start,'shrink',False);paned.child_set_property(end,'shrink',False);paned.child_set_property(start,'resize',False)
+for orientation in [Gtk.Orientation.HORIZONTAL,Gtk.Orientation.VERTICAL]:
+ paned.set_orientation(orientation);paned.set_position(0);settle();split_geometry();assert alloc(start)[0 if orientation==Gtk.Orientation.HORIZONTAL else 1]>=(90 if orientation==Gtk.Orientation.HORIZONTAL else 40)
+ paned.set_position(100000);settle();split_geometry();assert alloc(end)[0 if orientation==Gtk.Orientation.HORIZONTAL else 1]>=(80 if orientation==Gtk.Orientation.HORIZONTAL else 40)
+# Nested native splits model sidebar/content/preview without application overrides.
+paned.set_orientation(Gtk.Orientation.HORIZONTAL);paned.set_position(220)
+nested=Gtk.Paned(orientation=Gtk.Orientation.VERTICAL);upper=Gtk.Label(label='Content');lower=Gtk.Label(label='Preview')
+if version=='4':nested.set_start_child(upper);nested.set_end_child(lower);paned.set_end_child(nested)
+else:paned.remove(end);nested.pack1(upper,True,True);nested.pack2(lower,True,True);paned.pack2(nested,True,True);nested.show_all()
+end=nested;nested.set_position(60);settle();geometry['paned']['nested']=split_geometry();assert alloc(nested)[1]-alloc(upper)[1]-alloc(lower)[1]==1;capture('paned-nested');drag_split('paned-nested')
+# Exercise the inner splitter independently, then a three-pane Files-like fixture.
+outer,outer_start=paned,start
+paned,start,end=nested,upper,lower
+sep=next((x for x in children(paned) if x.get_css_name()=='separator'),None) if version=='4' else None
+drag_split('paned-nested-inner')
+paned.set_orientation(Gtk.Orientation.HORIZONTAL);paned.set_position(300)
+outer_start.set_text('Sidebar');upper.set_text('File content');lower.set_text('Preview')
+settle();paned.set_position(alloc(paned)[0]//2);settle();geometry['paned']['content-preview']=split_geometry();capture('paned-content-preview');drag_split('paned-preview')
+paned,start,end=outer,outer_start,nested
+sep=next((x for x in children(paned) if x.get_css_name()=='separator'),None) if version=='4' else None
+geometry['paned']['sidebar-content']=split_geometry();capture('paned-sidebar-content');drag_split('paned-sidebar')
 interactions['paned']=True
 # Neutral container remains neutral; opt-in tiles use native selection modes.
 flow=Gtk.FlowBox();flow.set_selection_mode(Gtk.SelectionMode.NONE);flow.set_min_children_per_line(1);flow.set_max_children_per_line(5)

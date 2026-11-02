@@ -49,15 +49,20 @@ editablelabel:focus:focus-visible:not(.editing) { outline: 2px solid ${editor_fo
 editablelabel:disabled { color: @text_tertiary; }
 editablelabel:backdrop { color: @text_secondary; }
 
-/* Phase 2 — Gtk.Paned, 1px paint inside a native 8px (wide 16px) hit gutter. */
-paned > separator { padding: 0; margin: 0; border: none; border-radius: 0; background-color: transparent; color: @border_soft; background-image: linear-gradient(currentColor,currentColor); background-position: center; background-repeat: no-repeat; box-shadow: none; transition: color ${control_motion}; }
+/* Phase 2 — Gtk.Paned, 1px allocation and paint; explicit wide handles allocate 16px. */
+/* Reset imported direction/state/wide rules, including Adwaita's negative margins. */
+paned > separator,
+paned.horizontal > separator:dir(ltr), paned.horizontal > separator:dir(rtl),
+paned.vertical > separator, paned > separator.wide,
+paned > separator:selected, paned > separator:backdrop, paned > separator.wide:backdrop { padding: 0; margin: 0; border: none; border-radius: 0; background-color: transparent; background-image: linear-gradient(currentColor,currentColor); background-position: center; background-repeat: no-repeat; box-shadow: none; outline: none; transition: color ${control_motion}; }
+paned > separator { color: @border_soft; }
 paned.horizontal > separator { min-width: ${.phase2-paned|--gutter}; min-height: 0; background-size: 1px 100%; }
 paned.vertical > separator { min-height: ${.phase2-paned|--gutter}; min-width: 0; background-size: 100% 1px; }
-paned.horizontal > separator.wide { min-width: 16px; }
-paned.vertical > separator.wide { min-height: 16px; }
+paned.horizontal > separator.wide, paned.horizontal > separator.wide:dir(ltr), paned.horizontal > separator.wide:dir(rtl) { min-width: ${.phase2-paned|--wide-gutter}; background-position: 8px 0; }
+paned.vertical > separator.wide { min-height: ${.phase2-paned|--wide-gutter}; background-position: 0 8px; }
 paned > separator:hover { color: @text_tertiary; }
-paned > separator:active, paned:focus:focus-visible > separator, paned > separator:focus-visible { color: ${editor_focus}; }
-paned > separator:disabled, paned:backdrop > separator { color: @border_soft; }
+paned > separator:active, paned > separator:selected, paned:focus:focus-visible > separator, paned > separator:focus-visible { color: ${editor_focus}; }
+paned:disabled > separator, paned > separator:disabled, paned:backdrop > separator { color: @border_soft; }
 
 /* Phase 2 — FlowBox remains a layout; selectable children opt into tiles. */
 flowbox:not(.majoris-flow-tiles), flowbox:not(.majoris-flow-tiles) > flowboxchild { color: inherit; background: transparent; border: none; border-radius: 0; box-shadow: none; }
@@ -84,5 +89,3 @@ expander-widget:not(.majoris-sidebar-group):backdrop > box > title { color: @tex
 /* Phase 2 — native SearchBar revealer: no outer padding while hidden. */
 searchbar { padding: 0; border: none; background: transparent; box-shadow: none; }
 searchbar > revealer > box { padding: ${.phase2-searchbar|padding}; border: none; background: transparent; border-spacing: 8px; box-shadow: none; }
-
-paned:focus:focus-visible > separator { outline: 2px solid ${editor_focus}; outline-offset: -2px; }

@@ -13,11 +13,21 @@ for variant in ['light','dark']:
  expect(css,'button.link','min-height','0');expect(css,'button.link','padding','0');expect(css,'button.link','box-shadow','none')
  expect(css,'button','min-height','30px');expect(css,'button','border-radius','4px')
  expect(css,'calendar.view > grid > label.day-number','min-height','32px');expect(css,'calendar.view > grid > label.day-number','border-radius','4px')
- expect(css,'paned.horizontal > separator','min-width','8px');expect(css,'paned.horizontal > separator','background-size','1px 100%')
+ expect(css,'paned.horizontal > separator','min-width','1px');expect(css,'paned.horizontal > separator','background-size','1px 100%')
  expect(css,'editablelabel.editing > stack > text','border-radius','4px');expect(css,'editablelabel > stack > text','padding','0')
  expect(css,'flowbox.majoris-flow-tiles > flowboxchild','border-radius','8px')
  expect(css,'expander-widget:not(.majoris-sidebar-group) > box > title','min-height','32px')
  for version in ['3','4']:
+  toolkit=rules(version,variant)
+  for axis,dimension,other,paint in [('horizontal','min-width','min-height','1px 100%'),('vertical','min-height','min-width','100% 1px')]:
+   selector='paned.'+axis+' > separator'
+   expect(toolkit,selector,dimension,'1px');expect(toolkit,selector,other,'0');expect(toolkit,selector,'background-size',paint)
+   expect(toolkit,selector+'.wide',dimension,'16px')
+  for prop,value in [('padding','0'),('margin','0'),('border','none'),('border-radius','0'),('box-shadow','none'),('outline','none')]:expect(toolkit,'paned > separator',prop,value)
+  for selector in ['paned.horizontal > separator:dir(ltr)','paned.horizontal > separator:dir(rtl)','paned.vertical > separator','paned > separator.wide','paned > separator:selected','paned > separator:backdrop','paned > separator.wide:backdrop']:
+   for prop,value in [('padding','0'),('margin','0'),('background-image','linear-gradient(currentColor,currentColor)')]:expect(toolkit,selector,prop,value)
+  assert html_value(tokens,'.phase2-paned','--gutter')=='1px'
+  assert html_value(tokens,'.phase2-paned','gap')=='0'
   text=(ROOT/f'design/templates/gtk{version}-phase2.css.in').read_text()
   assert '!important' not in text and 'windowcontrols' not in text and '.boxed-list' not in text
   import re

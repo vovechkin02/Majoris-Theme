@@ -125,12 +125,14 @@ node and selection machinery. There is no GTK3 replacement/backport.
 
 ## Paned
 
+See [1px allocation verification](paned-divider-verification.md) for the updated measurements and screenshots.
+
 `paned > separator` is the only separator hierarchy targeted. Horizontal Paned
-gets an 8px horizontal gutter containing a centred 1px vertical line; vertical
-Paned gets an 8px vertical gutter with a centred 1px horizontal line. `.wide`
+gets exactly 1px of horizontal allocation and a 1px vertical line; vertical
+Paned gets exactly 1px of vertical allocation and a 1px horizontal line. `.wide`
 retains a larger 16px gutter. Borders, padding, shadows and internal radius are
 zero. Hover increases emphasis, drag uses semantic Indigo, and actual keyboard
-focus adds a 2px inset indication without reallocating either pane.
+focus colours the existing line Indigo without reallocating either pane.
 
 GTK4 can propagate `focus-visible` to ancestors. The new Calendar, Paned and Expander focus
 rules additionally require actual `:focus`, so a focused child field does not
@@ -144,10 +146,17 @@ split.end_child = new Gtk.Label("Content");
 split.wide_handle = false;
 ```
 
-Both toolkits get their native separator rules. Tests measure the 8/16px gutter
-separately from the rendered 1px paint, including a pixel-alpha coverage check.
+Both toolkits get their native separator rules. Tests measure the 1/16px allocation
+separately from the rendered 1px paint, including physical-pixel colour checks on unmodified native screenshots.
 Native pointer coordinates account for physical display scale. The gallery adds
 vertical/nested and wide/RTL examples. Generic GtkSeparator styling is unchanged.
+
+The default has no transparent gutter. The explicit `wide_handle=true` option
+allocates 16px while painting only 1px. It is an intentional wider pointer target,
+never enabled by the theme. A strict 1px default can be harder to acquire with a
+pointer; no extra invisible target is promised. Native F8/arrow-key resizing
+remains available. The same global rules apply to Files without an application
+class or source modification.
 
 ## FlowBox and FlowBoxChild
 
@@ -286,7 +295,7 @@ Headless native tests cannot establish screen-reader output, actual IME/preedit
 behavior, real session preference forwarding, hardware/desktop GPU differences or
 fractional compositor scaling. Those remain desktop checks. Normal native widget
 roles, focus, key handling, context menus and text machinery are retained.
-## Executed results
+## Original Phase 2 results (before Paned standardisation)
 
 The final focused run passed **21/21** (one Phase 2 contract, 18 native profiles
 and two CSS parsers). A further three representative native focus-diagnostic runs

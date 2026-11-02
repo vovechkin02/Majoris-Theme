@@ -2227,14 +2227,16 @@
       "background": "var(--surface)"
     },
     ".phase2-paned": {
-      "--gutter": "8px",
+      "--gutter": "1px",
+      "--wide-gutter": "16px",
       "display": "flex",
       "align-items": "stretch",
-      "gap": "8px"
+      "gap": "0"
     },
     ".phase2-paned .handle": {
-      "width": "8px",
-      "background": "linear-gradient(var(--border),var(--border)) center/1px 100% no-repeat"
+      "width": "var(--gutter)",
+      "flex": "none",
+      "background": "linear-gradient(var(--border-soft),var(--border-soft)) center/1px 100% no-repeat"
     },
     ".phase2-tile": {
       "padding": "8px",

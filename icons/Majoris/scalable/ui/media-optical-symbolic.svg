@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 128 128"
+     width="128"
+     height="128">
+  <path fill="currentColor"
+        fill-rule="evenodd"
+        d="
+          M64 0
+          A64 64 0 1 1 64 128
+          A64 64 0 1 1 64 0
+          Z
+
+          M64 32
+          A32 32 0 1 0 64 96
+          A32 32 0 1 0 64 32
+          Z
+
+          M64 52
+          A12 12 0 1 1 64 76
+          A12 12 0 1 1 64 52
+          Z"/>
+</svg>
